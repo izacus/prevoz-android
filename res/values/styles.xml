@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style
+        name = "PrevozTheme"
+        parent = "@android:style/Theme.Light">
+    </style>
+
+    <style 
+        name = "PrevozTabActivity"
+        parent = "PrevozTheme">
+        <item name="android:background">#F2F7FC</item>     
+    </style>
+
+    <style 
+        name = "MediumText"
+        parent = "@android:style/TextAppearance.Medium">
+        <item name="android:textColor">#626E79</item>  
+        <item name="android:textStyle">bold</item>  
+    </style>
+
+    <style
+        name = "tabHostStyle">
+        <item name="android:background">@android:color/black</item>            
+    </style>
+</resources>
