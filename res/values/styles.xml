@@ -2,13 +2,21 @@
 <resources>
     <style
         name = "PrevozTheme"
-        parent = "@android:style/Theme.Light">
+        parent = "@android:style/Theme.Light.NoTitleBar">
     </style>
 
+    <!-- Style for activities within tabs -->
     <style 
         name = "PrevozTabActivity"
-        parent = "PrevozTheme">
-        <item name="android:background">#F2F7FC</item>     
+        parent = "@android:style/Theme">
+        
+    </style>
+    
+    <!-- Style for background view setting correct background color -->
+    <style
+        name = "ViewStyle">
+        <item name="android:background">@color/view_background</item>
+        <item name="android:padding">8dip</item>
     </style>
 
     <style 
@@ -18,8 +26,66 @@
         <item name="android:textStyle">bold</item>  
     </style>
 
+    <!--  Style keeping black background behind tabs -->
     <style
         name = "tabHostStyle">
         <item name="android:background">@android:color/black</item>            
+    </style>
+    
+    <!-- Style for list headers -->
+    <style
+        name="ListHeaderStyle">
+	    <item
+	      name="android:layout_height">wrap_content</item>
+	    <item
+	      name="android:layout_width">fill_parent</item>
+	    <item
+	      name="android:paddingTop">2dip</item>
+	    <item
+	      name="android:paddingBottom">3dip</item>
+	    <item
+	      name="android:paddingLeft">5dip</item>
+	    <item
+	      name="android:background">@drawable/orange_gradient</item>
+	    <item
+	      name="android:textAppearance">@android:style/TextAppearance.Small</item>
+	    <item
+	      name="android:shadowColor">#111111</item>
+	    <item
+	      name="android:shadowRadius">1</item>
+	    <item
+	      name="android:shadowDy">1</item>
+	    <item
+	      name="android:textStyle">bold</item>
+	    <item
+	      name="android:textColor">@android:color/white</item>
+    </style>
+    
+    <style name="TitleBar">
+        <item
+          name="android:layout_height">wrap_content</item>
+        <item
+          name="android:layout_width">fill_parent</item>
+        <item
+          name="android:paddingTop">2dip</item>
+        <item
+          name="android:paddingBottom">3dip</item>
+        <item
+          name="android:paddingLeft">5dip</item>   
+         
+        <item
+          name="android:background">@drawable/orange_gradient</item>
+        <item
+          name="android:textAppearance">@android:style/TextAppearance.Small</item>
+        <item
+          name="android:shadowColor">#111111</item>
+        <item
+          name="android:shadowRadius">1</item>
+        <item
+          name="android:shadowDy">1</item>
+        <item
+          name="android:textStyle">bold</item>
+        <item
+          name="android:textColor">@android:color/white</item>
     </style>
 </resources>

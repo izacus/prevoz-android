@@ -7,11 +7,16 @@
   <ViewFlipper
     android:id = "@+id/search_flipper"
     android:layout_width = "fill_parent"
-    android:layout_height = "fill_parent"
-    android:layout_margin = "8dip" >
+    android:layout_height = "fill_parent">
     
     <!--  Search dialog -->
     <include layout = "@layout/search_form" />
+      
+    <!--  Result list -->
+    <ListView
+        android:id = "@+id/list_results"
+        android:layout_width = "fill_parent"
+        android:layout_height = "fill_parent" />  
       
   </ViewFlipper>
   

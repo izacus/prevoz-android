@@ -17,8 +17,9 @@ public class MainActivity extends TabActivity
     public void onCreate(Bundle savedInstanceState) 
     {
         super.onCreate(savedInstanceState);
+        // Set custom titlebar
         setContentView(R.layout.main_activity);
-        
+
         // Prepare tabs for use
         initTabs();
     }

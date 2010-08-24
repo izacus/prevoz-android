@@ -2,8 +2,13 @@
 <resources>
     <string name="app_name">Prevoz</string>
     
+    <!-- Error strings -->
+    <string name="server_error">Strežnik prevoz ni na voljo. Prosimo poskusite kasneje.</string>
+    <string name="network_error">Napaka na internetni povezavi.</string>
+    
     <!--  Search tab strings -->
     <string name="search_tab">Iskanje</string>
+    <string name="searching">Iščem...</string>
     
     <string-array name="day_names">
         <item>Nedelja</item>

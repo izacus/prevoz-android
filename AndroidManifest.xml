@@ -16,6 +16,7 @@
     <activity android:name=".search.SearchActivity" android:theme="@style/PrevozTabActivity"></activity>
 </application>
 
-
 <uses-sdk android:targetSdkVersion="4" android:minSdkVersion="3"></uses-sdk>
+<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
 </manifest> 

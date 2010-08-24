@@ -1,0 +1,124 @@
+package org.prevoz.android.search;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+
+import org.prevoz.android.R;
+
+import android.app.Activity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
+
+/**
+ * Adapter for displaying list of search results in ListView
+ * @author Jernej Virag
+ *
+ */
+public class SearchResultAdapter extends ArrayAdapter<SearchRide>
+{
+        /**
+         * Wrapper inside each result display in list to speed up new element creation
+         * @author Jernej Virag
+         *
+         */
+        private class SearchResultViewWrapper
+        {
+        	private int rideId = 0;
+        	
+        	private View base = null;
+        	private TextView time = null;
+        	private TextView price = null;
+        	private TextView driver = null;
+        	
+        	/**
+        	 * Base row displayed
+        	 * @param base
+        	 */
+        	public SearchResultViewWrapper(View base, int rideId)
+        	{
+        	    this.base = base;
+        	    this.rideId = rideId;
+        	}
+        
+        	public int getRideId()
+        	{
+        	    return rideId;
+        	}
+        
+        	public TextView getTime()
+        	{
+        	    if (this.time == null)
+        		this.time = (TextView)base.findViewById(R.id.time);
+        	    
+        	    return time;
+        	}
+        
+        	public TextView getPrice()
+        	{
+        	    if (this.price == null)
+        		this.price = (TextView)base.findViewById(R.id.price);
+        	    
+        	    return price;
+        	}
+        
+        	public TextView getDriver()
+        	{
+        	    if (this.driver == null)
+        		this.driver = (TextView)base.findViewById(R.id.driver);
+        		
+        	    return driver;
+        	}
+        }
+    
+    
+	Activity context;
+	ArrayList<SearchRide> rides;
+	SimpleDateFormat timeFormatter;
+
+	public SearchResultAdapter(Activity context, ArrayList<SearchRide> rides)
+	{
+	    super(context, R.layout.search_result, R.id.price, rides);
+	    this.context = context;
+	    this.rides = rides;
+	    
+	    timeFormatter = new SimpleDateFormat("HH:mm");
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent)
+	{
+	    View row = null;
+	    SearchResultViewWrapper wrapper = null;
+	    
+	    if (convertView == null)
+	    {
+		LayoutInflater inflater = context.getLayoutInflater();
+		row = inflater.inflate(R.layout.search_result, null);
+		wrapper = new SearchResultViewWrapper(row, rides.get(position).getId());
+		row.setTag(wrapper);
+	    }
+	    else 
+	    {
+		row = convertView;
+		wrapper = (SearchResultViewWrapper)row.getTag();
+	    }
+	    
+	    wrapper.getTime().setText(timeFormatter.format(rides.get(position).getTime()));
+	    
+	    if (rides.get(position).getPrice() != null)
+	    {
+		wrapper.getPrice().setText(rides.get(position).getPrice() + " €");
+	    }
+	    else
+	    {
+		wrapper.getPrice().setText("");
+	    }
+		
+	    wrapper.getDriver().setText("Janez Novak");
+	    
+	    return row;
+	}
+}

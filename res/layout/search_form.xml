@@ -4,7 +4,8 @@
   android:layout_width = "fill_parent"
   android:layout_height = "fill_parent"
   android:orientation = "vertical"
-  android:id = "@+id/searchTab">
+  android:id = "@+id/searchTab"
+  style="@style/ViewStyle">
   
   <TextView
     android:layout_width = "fill_parent"
