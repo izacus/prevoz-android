@@ -12,4 +12,8 @@
         name="orange_start">#FFB44B</color>
     <color
         name="orange_end">#EC7100</color>
+        
+    <!-- Separator -->
+    <color
+        name="separator">#626E79</color>
 </resources>

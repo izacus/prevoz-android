@@ -25,6 +25,25 @@
         <item name="android:textColor">#626E79</item>  
         <item name="android:textStyle">bold</item>  
     </style>
+    
+    <style
+        name = "SmallText"
+        parent = "@android:style/TextAppearance.Small">
+        <item 
+            name="android:textSize">14dip</item>    
+    </style>
+
+    <!-- Separator style -->
+    <style
+        name = "Separator">
+        <item name="android:layout_height">2dip</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_marginLeft">3dip</item>
+        <item name="android:layout_marginRight">3dip</item>
+        <item name="android:layout_marginTop">10dip</item>
+        <item name="android:layout_marginBottom">10dip</item>
+        <item name="android:background">@color/separator</item>    
+    </style>
 
     <!--  Style keeping black background behind tabs -->
     <style
@@ -61,6 +80,8 @@
 	      name="android:textColor">@android:color/white</item>
     </style>
     
+    
+    <!-- Colored titlebar -->
     <style name="TitleBar">
         <item
           name="android:layout_height">wrap_content</item>
@@ -88,4 +109,57 @@
         <item
           name="android:textColor">@android:color/white</item>
     </style>
+    
+    <!-- Ride information styles -->
+    <style name="RideInfoTitle" parent="@style/MediumText">
+        <item
+            name="android:gravity">center</item>    
+    </style>
+    
+    <style name="RideInfoClock" parent="@android:style/TextAppearance.Large">
+        <item
+            name="android:gravity">center_horizontal</item>
+        <item
+            name="android:textSize">36dip</item>
+    </style>
+    
+    <style name="RideInfoDay" parent="@style/SmallText">
+        <item
+            name="android:gravity">bottom</item>
+    </style>
+
+    <style name="RideInfoDate" parent="@style/SmallText">
+        <item
+            name="android:gravity">top</item>
+    </style>
+    
+    <style name="PricePplText" parent="@android:style/TextAppearance.Large">
+        <item
+            name="android:gravity">center_horizontal</item>
+        <item
+            name="android:textSize">30dip</item>
+        <item
+            name="android:text">10.0</item>
+    </style>
+    
+    <style name="PricePplTagText" parent="@style/SmallText">
+        <item
+            name="android:text">cena</item>
+            
+        <item
+            name="android:gravity">center_horizontal</item>
+    </style>
+    
+    <style name="DriverNameText">
+        <item
+            name="android:gravity">right</item>
+        <item
+            name="android:textStyle">bold|italic</item>
+    </style>
+    
+    <style name="PhoneNumberText" parent="@android:style/TextAppearance.Medium">
+        <item
+            name="android:gravity">right</item>
+    </style>
+    
 </resources>

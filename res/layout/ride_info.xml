@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:orientation = "vertical">
+
+    <include layout="@layout/title_bar" />
+
+    <LinearLayout
+        android:layout_width = "fill_parent"
+        android:layout_height = "fill_parent"
+        android:orientation = "vertical"
+        style="@style/ViewStyle">
+        
+	    <!-- From location -->
+	    <TextView
+	        android:id = "@+id/fromText" 
+	        android:layout_width = "fill_parent"
+	        android:layout_height = "wrap_content"
+	        style = "@style/RideInfoTitle" />
+	
+	    <!-- From location -->
+	    <TextView
+	        android:id = "@+id/toText" 
+	        android:layout_width = "fill_parent"
+	        android:layout_height = "wrap_content"
+	        style = "@style/RideInfoTitle" />
+	        
+	   <include layout = "@layout/separator" />     
+	        
+	   <!-- Time and date display -->     
+	   <LinearLayout
+	        android:layout_width = "fill_parent"
+	        android:layout_height = "wrap_content"
+	        android:orientation = "horizontal">
+	        
+	        <TextView
+	            android:id = "@+id/timeText"
+	            android:layout_width = "fill_parent"
+	            android:layout_height = "fill_parent"
+	            android:layout_weight = "1"
+	            style = "@style/RideInfoClock"
+	            />
+	            
+	       <LinearLayout
+	            android:layout_width = "fill_parent"
+	            android:layout_height = "fill_parent"
+	            android:layout_weight = "1"
+	            android:orientation = "vertical"
+	            >     
+		       <TextView
+		           android:id = "@+id/dayText"
+		           android:layout_width = "fill_parent"
+		           android:layout_height = "fill_parent"
+		           android:layout_weight = "1"
+		           style="@style/RideInfoDay"
+		           />
+	           <TextView
+	               android:id = "@+id/dateText"
+	               android:layout_width = "fill_parent"
+	               android:layout_height = "fill_parent"
+	               android:layout_weight = "1"
+	               style="@style/RideInfoDate"
+	               />	       
+	        </LinearLayout>
+	   </LinearLayout>    
+	  
+	   <!-- Price and people display -->
+	   <LinearLayout
+	    android:layout_width = "fill_parent"
+	    android:layout_height = "wrap_content"
+	    android:orientation = "horizontal"
+	    >
+	        <LinearLayout
+	            android:layout_width = "fill_parent"
+	            android:layout_height = "fill_parent"
+	            android:layout_weight = "1"
+	            android:orientation = "vertical"
+	            >
+	            <TextView
+		            android:id = "@+id/priceText"
+		            android:layout_width = "fill_parent"
+		            android:layout_height = "wrap_content"
+		            style="@style/PricePplText"
+		            />
+	             <TextView
+	                android:layout_width = "fill_parent"
+	                android:layout_height = "wrap_content"
+	                style="@style/PricePplTagText"
+	                />
+	        </LinearLayout>
+	        
+	        <LinearLayout
+	            android:layout_width = "fill_parent"
+	            android:layout_height = "fill_parent"
+	            android:layout_weight = "1"
+	            android:orientation = "vertical"
+	            >
+	            <TextView
+	                android:id = "@+id/personsText"
+	                android:layout_width = "fill_parent"
+	                android:layout_height = "wrap_content"
+	                style="@style/PricePplText"
+	                />
+	             <TextView
+	                android:layout_width = "fill_parent"
+	                android:layout_height = "wrap_content"
+	                style="@style/PricePplTagText"
+	                />
+	        </LinearLayout>
+	   </LinearLayout>
+	   
+	   <include layout = "@layout/separator" />
+	   
+	   <LinearLayout
+	    android:layout_width = "fill_parent"
+	    android:layout_height = "wrap_content"
+	    android:orientation = "vertical"
+	    >
+	   
+	    <TextView
+	        android:id = "@+id/driverText" 
+	        android:layout_width = "fill_parent"
+	        android:layout_height = "wrap_content"
+	        android:layout_margin = "3dp"
+	        style="@style/DriverNameText" />
+	    
+	     <TextView
+	        android:id = "@+id/contactText" 
+	        android:layout_width = "fill_parent"
+	        android:layout_height = "fill_parent"
+	        android:layout_weight = "1" 
+	        android:layout_margin = "3dp"
+	        style="@style/PhoneNumberText"
+	        />
+	        
+	   </LinearLayout>
+	   
+	   <include layout = "@layout/separator" />
+	   
+	   <ScrollView
+	    android:layout_width = "fill_parent"
+	    android:layout_height = "wrap_content"
+	    android:fillViewport = "true"
+	    android:layout_margin = "3dp" >
+		   <TextView 
+		    android:id = "@+id/detailsText"
+		    android:layout_width = "fill_parent"
+		    android:layout_height = "wrap_content"
+		    />
+	   </ScrollView>
+   
+   </LinearLayout>
+     
+</LinearLayout>

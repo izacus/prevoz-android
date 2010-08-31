@@ -10,6 +10,9 @@
     <string name="search_tab">Iskanje</string>
     <string name="searching">Iščem...</string>
     
+    <!--  Ride details strings -->
+    <string name="loading">Nalagam...</string>
+    
     <string-array name="day_names">
         <item>Nedelja</item>
         <item>Ponedeljek</item>

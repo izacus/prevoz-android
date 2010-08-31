@@ -8,6 +8,9 @@ import java.util.HashMap;
 
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
+import org.prevoz.android.rideinfo.RideInfoActivity;
+import org.prevoz.android.search.SearchResultAdapter.SearchResultViewWrapper;
+import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.SectionedAdapter;
 
 import android.app.Activity;
@@ -15,6 +18,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,6 +26,7 @@ import android.os.Message;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -29,6 +34,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class SearchActivity extends Activity implements OnDateSetListener
 {
@@ -102,13 +108,8 @@ public class SearchActivity extends Activity implements OnDateSetListener
     {
 	StringBuilder dateString = new StringBuilder();
 	
-	String[] dayNames = resources.getStringArray(R.array.day_names);
-	dateString.append(dayNames[date.get(Calendar.DAY_OF_WEEK) - 1]);
-	dateString.append(", ");
-	
-	String[] monthNames =  resources.getStringArray(R.array.month_names);
-	dateString.append(date.get(Calendar.DATE) + ". " + monthNames[date.get(Calendar.MONTH)] + " " + date.get(Calendar.YEAR));
-	
+	dateString.append(LocaleUtil.getDayName(resources, date) + ", ");
+	dateString.append(LocaleUtil.getFormattedDate(resources, date));
 	
 	return dateString.toString();
     }
@@ -255,6 +256,23 @@ public class SearchActivity extends Activity implements OnDateSetListener
         	}
         	
         	resultsList.setAdapter(resultsAdapter);
+        	
+        	// Clicked item activates RideInfo activity
+        	resultsList.setOnItemClickListener(new OnItemClickListener()
+		{
+
+		    @Override
+		    public void onItemClick(AdapterView<?> parent, 
+			    		    View view,
+			    		    int position, 
+			    		    long id)
+		    {
+			SearchResultViewWrapper viewWrapper = (SearchResultViewWrapper)view.getTag();
+			Intent intent = new Intent(SearchActivity.getInstance(), RideInfoActivity.class);
+			intent.putExtra(RideInfoActivity.RIDE_ID, viewWrapper.getRideId());
+			startActivity(intent);
+		    }
+		});
 	}
 	
 	ViewFlipper searchFlipper = (ViewFlipper)findViewById(R.id.search_flipper);
