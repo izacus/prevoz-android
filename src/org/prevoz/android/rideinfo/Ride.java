@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.prevoz.android.RideType;
 
+import android.os.Bundle;
+
 public class Ride
 {
     private int id;
@@ -35,7 +37,6 @@ public class Ride
 	    	String comment, 
 	    	boolean isAuthor)
     {
-	super();
 	this.id = id;
 	this.type = type;
 	this.from = from;
@@ -47,6 +48,25 @@ public class Ride
 	this.contact = contact;
 	this.comment = comment;
 	this.isAuthor = isAuthor;
+    }
+    
+    /**
+     * Used to restore ride from a bundle
+     * @param bundle
+     */
+    public Ride(Bundle bundle)
+    {
+	id = bundle.getInt("rideinfo_id");
+	type = RideType.values()[bundle.getInt("rideinfo_type")];
+	from = bundle.getString("rideinfo_from");
+	to = bundle.getString("rideinfo_to");
+	time = new Date(bundle.getLong("rideinfo_time"));
+	people = bundle.getInt("rideinfo_people");
+	price = bundle.getDouble("rideinfo_price");
+	author = bundle.getString("rideinfo_author");
+	contact = bundle.getString("rideinfo_contact");
+	comment = bundle.getString("rideinfo_comment");
+	isAuthor = bundle.getBoolean("rideinfo_author");
     }
 
     public int getId()
@@ -102,5 +122,20 @@ public class Ride
     public boolean isAuthor()
     {
         return isAuthor;
+    }
+
+    public void storeToBundle(Bundle bundle)
+    {
+	bundle.putInt("rideinfo_id", id);
+	bundle.putInt("rideinfo_type", type.ordinal());
+	bundle.putString("rideinfo_from", from);
+	bundle.putString("rideinfo_to", to);
+	bundle.putLong("rideinfo_time", time.getTime());
+	bundle.putInt("rideinfo_people", people);
+	bundle.putDouble("rideinfo_price", price);
+	bundle.putString("rideinfo_author", author);
+	bundle.putString("rideinfo_contact", contact);
+	bundle.putString("rideinfo_comment", comment);
+	bundle.putBoolean("rideinfo_author", isAuthor);
     }
 }

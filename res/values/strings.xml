@@ -9,9 +9,21 @@
     <!--  Search tab strings -->
     <string name="search_tab">Iskanje</string>
     <string name="searching">Iščem...</string>
+    <string name="search_no_results">Iskanje ni obrodilo sadov.</string>
     
     <!--  Ride details strings -->
     <string name="loading">Nalagam...</string>
+    
+    <!-- My rides tab strings -->
+    <string name="my_rides_tab">Moji prevozi</string>
+    <string name="favorites">Priljubljene</string>
+    <string name="no_favorites">Nimate priljubljenih poti.</string>
+    
+    <string name="delete">Izbriši</string>
+    
+    <!-- Menu options -->
+    <string name="add_to_favorites">Dodaj med priljubljene</string>
+    <string name="added_to_favorites">Pot je bila dodana med priljubljene.</string>
     
     <string-array name="day_names">
         <item>Nedelja</item>

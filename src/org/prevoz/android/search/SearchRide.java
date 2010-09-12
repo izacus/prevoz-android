@@ -45,7 +45,6 @@ public class SearchRide implements Comparable<SearchRide>
         return time;
     }
 
-    @Override
     public int compareTo(SearchRide another)
     {
 	return (this.getFrom().compareTo(another.getFrom()) == 0) ? this.getTo().compareTo(another.getTo()) : this.getFrom().compareTo(another.getFrom());

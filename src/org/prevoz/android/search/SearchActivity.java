@@ -18,15 +18,21 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -38,6 +44,11 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class SearchActivity extends Activity implements OnDateSetListener
 {
+    public static final String SEARCH_REQUEST = "org.prevoz.android.search.SEARCH_REQUEST";
+    public static final String SEARCH_FROM = "org.prevoz.android.search.SEARRCH_FROM";
+    public static final String SEARCH_TO = "org.prevoz.android.search.SEARRCH_TO";
+    public static final String SEARCH_DATE = "org.prevoz.android.search.SEARRCH_DATE";
+    
     private static final int DIALOG_DATEPICKER_ID = 0;
     private static final int DIALOG_LOADING = 1;
     
@@ -48,7 +59,40 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	return instance;
     }
     
+    private static enum SearchViews
+    {
+	SEARCH_FORM,
+	SEARCH_RESULTS
+    }
+    
+    private class SearchIntentReceiver extends BroadcastReceiver
+    {
+	@Override
+	public void onReceive(Context context, Intent intent)
+	{
+	    Log.i(this.toString(), "Got something!");
+	    
+	    // Populate search fields
+	    String from = intent.getExtras().getString(SEARCH_FROM);
+	    String to = intent.getExtras().getString(SEARCH_TO);
+	    
+	    Calendar cal = Calendar.getInstance();
+	    cal.setTimeInMillis(intent.getExtras().getLong(SEARCH_DATE));
+	    
+	    ((EditText)findViewById(R.id.fromField)).setText(from);
+	    ((EditText)findViewById(R.id.toField)).setText(to);
+	    ((EditText)findViewById(R.id.dateField)).setText(localizeDate(cal));
+	    selectedDate = cal;
+	    
+	    startSearch();
+	}
+	
+    }
+    
+    
     private Resources resources = null;
+    
+    private SearchViews currentView;
     
     // Search form fields
     private EditText searchDateText = null;
@@ -58,11 +102,15 @@ public class SearchActivity extends Activity implements OnDateSetListener
     // Progress for search
     private ProgressDialog searchProgress = null;
     
-    // Search resuls
+    // Search results
     private SectionedAdapter resultsAdapter = null;
     
     // Search results
     private SearchResults searchResults = null;
+    
+    // Search broadcast receiver
+    private final IntentFilter intentFilter = new IntentFilter(SEARCH_REQUEST);
+    private SearchIntentReceiver receiver = new SearchIntentReceiver();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -77,10 +125,9 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	searchDateText = (EditText)findViewById(R.id.dateField);
 	selectedDate = Calendar.getInstance();
 	searchDateText.setText(localizeDate(selectedDate));
-	searchDateText.setOnClickListener(new OnClickListener()
+	searchDateText.setOnClickListener(new OnClickListener() 
 	{
 	    
-	    @Override
 	    public void onClick(View v)
 	    {
 		showDialog(DIALOG_DATEPICKER_ID);
@@ -93,14 +140,39 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	Button srchButton = (Button)findViewById(R.id.doSearch);
 	srchButton.setOnClickListener(new OnClickListener()
 	{
-	    @Override
 	    public void onClick(View v)
 	    {
 		startSearch();
 	    }
 	});
+	
+	currentView = SearchViews.SEARCH_FORM;
+	
+	// Register for receival of search requests
+	registerReceiver(receiver, intentFilter);
     }
     
+    @Override
+    protected void onDestroy()
+    {
+	super.onDestroy();
+	unregisterReceiver(receiver);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+	if (currentView == SearchViews.SEARCH_RESULTS && keyCode == KeyEvent.KEYCODE_BACK)
+	{
+	    ViewFlipper searchFlipper = (ViewFlipper)findViewById(R.id.search_flipper);
+	    searchFlipper.showPrevious();
+	    currentView = SearchViews.SEARCH_FORM;
+	    return true;
+	}
+	    
+	return super.onKeyDown(keyCode, event);
+    }
+
     /**
      * Builds a localized date string with day name
      */
@@ -114,7 +186,7 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	return dateString.toString();
     }
 
-    @Override
+    
     /**
      * Invoked when user selects new date in search form
      * Sets new date in the form.
@@ -261,7 +333,6 @@ public class SearchActivity extends Activity implements OnDateSetListener
         	resultsList.setOnItemClickListener(new OnItemClickListener()
 		{
 
-		    @Override
 		    public void onItemClick(AdapterView<?> parent, 
 			    		    View view,
 			    		    int position, 
@@ -274,9 +345,18 @@ public class SearchActivity extends Activity implements OnDateSetListener
 		    }
 		});
 	}
+	else
+	{
+	    String[] noResults = new String[1];
+	    noResults[1] = getString(R.string.search_no_results);
+	    
+	    ArrayAdapter<String> noResultsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, noResults);
+	    resultsList.setAdapter(noResultsAdapter);
+	}
 	
 	ViewFlipper searchFlipper = (ViewFlipper)findViewById(R.id.search_flipper);
 	searchFlipper.showNext();
+	currentView = SearchViews.SEARCH_RESULTS;
     }
     
     // Getters and setters

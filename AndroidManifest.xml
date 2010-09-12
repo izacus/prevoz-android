@@ -15,6 +15,7 @@
 
     <activity android:name=".search.SearchActivity" android:theme="@style/PrevozTabActivity"></activity>
 <activity android:theme="@style/PrevozTheme" android:name=".rideinfo.RideInfoActivity"></activity>
+<activity android:name=".my_rides.MyRidesActivity" android:theme="@style/PrevozTabActivity"></activity>
 </application>
 
 <uses-sdk android:targetSdkVersion="4" android:minSdkVersion="3"></uses-sdk>

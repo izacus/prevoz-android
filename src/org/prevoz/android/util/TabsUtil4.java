@@ -43,7 +43,6 @@ public class TabsUtil4 {
         setNativeLookingTabTextColor(tabView, tabIndex, 0);
             
         tabHost.setOnTabChangedListener(new OnTabChangeListener() {
-            @Override
             public void onTabChanged(String arg0) {
                 int tabSelected = tabHost.getCurrentTab();
                 for (int i = 0, m = TabsUtil4.getTabCount(tabHost); i < m; i++) {

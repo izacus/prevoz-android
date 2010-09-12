@@ -35,7 +35,6 @@ public class LoadInfoTask implements Runnable
 	thread.start();
     }
     
-    @Override
     public void run()
     {
 	String response = null;

@@ -1,5 +1,6 @@
 package org.prevoz.android;
 
+import org.prevoz.android.my_rides.MyRidesActivity;
 import org.prevoz.android.rideinfo.RideInfoActivity;
 import org.prevoz.android.search.SearchActivity;
 import org.prevoz.android.util.TabsUtil;
@@ -11,6 +12,13 @@ import android.widget.TabHost;
 
 public class MainActivity extends TabActivity 
 {
+    private static MainActivity instance = null;
+    
+    public static MainActivity getInstance()
+    {
+	return instance;
+    }
+    
     private TabHost tabHost;
     
     /** Called when the activity is first created. */
@@ -18,6 +26,8 @@ public class MainActivity extends TabActivity
     public void onCreate(Bundle savedInstanceState) 
     {
         super.onCreate(savedInstanceState);
+        MainActivity.instance = this;
+        
         // Set custom titlebar
         setContentView(R.layout.main_activity);
 
@@ -29,13 +39,21 @@ public class MainActivity extends TabActivity
     {
 	tabHost = getTabHost();
 	
+	Intent myRidesIntent = new Intent(this, MyRidesActivity.class);
+	TabsUtil.addNativeLookingTab(this, tabHost, "my_rides", getString(R.string.my_rides_tab), R.drawable.friends_tab, myRidesIntent);
+	
 	Intent searchIntent = new Intent(this, SearchActivity.class);
 	TabsUtil.addNativeLookingTab(this, tabHost, "search", getString(R.string.search_tab), R.drawable.friends_tab, searchIntent);
 	
 	Intent testIntent = new Intent(this, RideInfoActivity.class);
-	testIntent.putExtra(RideInfoActivity.RIDE_ID, 116236);
+	testIntent.putExtra(RideInfoActivity.RIDE_ID, 119678);
 	TabsUtil.addNativeLookingTab(this, tabHost, "test", "Test", R.drawable.friends_tab, testIntent);
 	
+	tabHost.setCurrentTab(0);
+    }
+    
+    public void switchToSearch()
+    {
 	tabHost.setCurrentTab(1);
     }
 }

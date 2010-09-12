@@ -39,7 +39,6 @@ public class SearchTask implements Runnable
     }
 
     @SuppressWarnings("unchecked")
-    @Override
     public void run()
     {
 	String responseString = null;

@@ -126,7 +126,6 @@ abstract public class SectionedAdapter extends BaseAdapter
 	return (getItemViewType(position) != TYPE_SECTION_HEADER);
     }
 
-    @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
 	int sectionIndex = 0;
@@ -154,7 +153,6 @@ abstract public class SectionedAdapter extends BaseAdapter
 	return (null);
     }
 
-    @Override
     public long getItemId(int position)
     {
 	return (position);
