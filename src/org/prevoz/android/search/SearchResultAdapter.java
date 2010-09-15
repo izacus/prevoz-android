@@ -117,7 +117,7 @@ public class SearchResultAdapter extends ArrayAdapter<SearchRide>
 		wrapper.getPrice().setText("");
 	    }
 		
-	    wrapper.getDriver().setText("Janez Novak");
+	    wrapper.getDriver().setText(rides.get(position).getAuthor());
 	    
 	    return row;
 	}

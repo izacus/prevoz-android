@@ -46,7 +46,8 @@ public class SearchTask implements Runnable
 	// Get data from HTTP server
 	try
 	{
-	    responseString = HTTPUtils.httpGet(Globals.API_URL + "/search/shares/", 
+	    responseString = HTTPUtils.httpGet(Globals.API_URL + "/search/" + 
+		    						 (request.getSearchType() == RideType.SHARE ? "shares/" : "seekers/"), 
 		    			       HTTPUtils.buildGetParams(request.getParameters()));
 	}
 	catch(IOException e)
@@ -86,7 +87,8 @@ public class SearchTask implements Runnable
 		    {
 			SearchRide ride = new SearchRide(jsonRide.getInt("id"), 
 			    			     	 jsonRide.getString("from"), 
-			    			     	 jsonRide.getString("to"), 
+			    			     	 jsonRide.getString("to"),
+			    			     	 jsonRide.getString("author"),
 			    			     	 jsonRide.isNull("price") ? null : jsonRide.getDouble("price"), 
 			    			         HTTPUtils.parseISO8601(jsonRide.getString("date_iso8601")));
 			

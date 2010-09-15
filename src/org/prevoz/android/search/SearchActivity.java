@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
+import org.prevoz.android.RideType;
 import org.prevoz.android.rideinfo.RideInfoActivity;
 import org.prevoz.android.search.SearchResultAdapter.SearchResultViewWrapper;
 import org.prevoz.android.util.LocaleUtil;
@@ -37,6 +38,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -70,7 +72,7 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	@Override
 	public void onReceive(Context context, Intent intent)
 	{
-	    Log.i(this.toString(), "Got something!");
+	    Log.i(this.toString(), "Received broadcast to start search!");
 	    
 	    // Populate search fields
 	    String from = intent.getExtras().getString(SEARCH_FROM);
@@ -78,19 +80,12 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	    
 	    Calendar cal = Calendar.getInstance();
 	    cal.setTimeInMillis(intent.getExtras().getLong(SEARCH_DATE));
-	    
-	    ((EditText)findViewById(R.id.fromField)).setText(from);
-	    ((EditText)findViewById(R.id.toField)).setText(to);
-	    ((EditText)findViewById(R.id.dateField)).setText(localizeDate(cal));
-	    selectedDate = cal;
+	    populateSearchForm(from, to, cal);
 	    
 	    startSearch();
 	}
 	
     }
-    
-    
-    private Resources resources = null;
     
     private SearchViews currentView;
     
@@ -119,7 +114,8 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	instance = this;
 	
 	setContentView(R.layout.search_activity);
-	resources = getResources();
+	
+	((RadioGroup)findViewById(R.id.search_type)).check(R.id.shares);
 	
 	// Create beginning search date text
 	searchDateText = (EditText)findViewById(R.id.dateField);
@@ -178,6 +174,8 @@ public class SearchActivity extends Activity implements OnDateSetListener
      */
     private String localizeDate(Calendar date)
     {
+	Resources resources = getResources();
+	
 	StringBuilder dateString = new StringBuilder();
 	
 	dateString.append(LocaleUtil.getDayName(resources, date) + ", ");
@@ -224,6 +222,14 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	return super.onCreateDialog(id);
     }
 
+    private void populateSearchForm(String from, String to, Calendar date)
+    {
+	    ((EditText)findViewById(R.id.fromField)).setText(from);
+	    ((EditText)findViewById(R.id.toField)).setText(to);
+	    ((EditText)findViewById(R.id.dateField)).setText(localizeDate(date));
+	    selectedDate = date;
+    }
+    
     /**
      * Starts search query with populated form data
      */
@@ -243,10 +249,22 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 	parameters.put("d", formatter.format(selectedDate.getTime()));
 	
-	// TODO: implement search types
-	parameters.put("search_type", "0");
+	int search_type = 0;
 	
-	SearchRequest request = new SearchRequest(this, parameters);
+	if (((RadioGroup)findViewById(R.id.search_type)).getCheckedRadioButtonId() == R.id.rides)
+	{
+	    search_type = 0;
+	}
+	else
+	{
+	    search_type = 1;
+	}
+	
+	parameters.put("search_type", String.valueOf(search_type));
+	
+	SearchRequest request = new SearchRequest(this, 
+						  search_type == 0 ? RideType.SHARE : RideType.SEEK, 
+					          parameters);
 	final SearchTask task = new SearchTask();
 	
 	Handler searchHandler = new Handler()

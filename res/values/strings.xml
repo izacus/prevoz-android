@@ -11,6 +11,9 @@
     <string name="searching">Iščem...</string>
     <string name="search_no_results">Iskanje ni obrodilo sadov.</string>
     
+    <string name="im_searching">Iščem:</string>
+    
+    
     <!--  Ride details strings -->
     <string name="loading">Nalagam...</string>
     
