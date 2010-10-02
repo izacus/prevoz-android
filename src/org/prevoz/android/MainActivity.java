@@ -1,7 +1,7 @@
 package org.prevoz.android;
 
+import org.prevoz.android.add_ride.AddRideActivity;
 import org.prevoz.android.my_rides.MyRidesActivity;
-import org.prevoz.android.rideinfo.RideInfoActivity;
 import org.prevoz.android.search.SearchActivity;
 import org.prevoz.android.util.TabsUtil;
 
@@ -45,8 +45,7 @@ public class MainActivity extends TabActivity
 	Intent searchIntent = new Intent(this, SearchActivity.class);
 	TabsUtil.addNativeLookingTab(this, tabHost, "search", getString(R.string.search_tab), R.drawable.friends_tab, searchIntent);
 	
-	Intent testIntent = new Intent(this, RideInfoActivity.class);
-	testIntent.putExtra(RideInfoActivity.RIDE_ID, 119678);
+	Intent testIntent = new Intent(this, AddRideActivity.class);
 	TabsUtil.addNativeLookingTab(this, tabHost, "test", "Test", R.drawable.friends_tab, testIntent);
 	
 	tabHost.setCurrentTab(0);

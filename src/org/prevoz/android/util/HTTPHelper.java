@@ -14,12 +14,38 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.prevoz.android.Globals;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
-public class HTTPUtils
+public class HTTPHelper
 {
     private static SimpleDateFormat iso8601formatter = new SimpleDateFormat("yyyy-MM-DD'T'hh:mm:ssZ");
+    
+    private static final String sessionCookiePrefName = "session_cookies";
+    private static String sessionCookies = null;
+    
+    public static Date parseISO8601(String date) throws ParseException
+    {
+	return iso8601formatter.parse(date);
+    }
+    
+    
+    private Context context = null;
+    
+    public HTTPHelper(Context context)
+    {
+	this.context = context;
+	
+	// Load session cookies
+	if (sessionCookies == null)
+	{
+	    SharedPreferences prefs = context.getSharedPreferences(Globals.PREF_FILE_NAME, Context.MODE_PRIVATE);
+	    prefs.getString(sessionCookiePrefName, "");
+	}
+    }
     
     /**
      * Builds a HTTP parameter string for URL inclusion
@@ -55,7 +81,7 @@ public class HTTPUtils
      * @param is Input stream to read
      * @return data from stream
      */
-    public static String convertStreamToString(InputStream is)
+    private static String convertStreamToString(InputStream is)
     {
 	BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 	StringBuilder sb = new StringBuilder();
@@ -87,12 +113,7 @@ public class HTTPUtils
 	return sb.toString();
     }
     
-    public static Date parseISO8601(String date) throws ParseException
-    {
-	return iso8601formatter.parse(date);
-    }
-    
-    public static String httpGet(String url) throws IOException
+    public String httpGet(String url) throws IOException
     {
 	return httpGet(url, null);
     }
@@ -104,24 +125,37 @@ public class HTTPUtils
      * @return Server response or <b>null</b> if the request failed
      * @throws IOException
      */
-    public static String httpGet(String url, String params) throws IOException
+    public String httpGet(String url, String params) throws IOException
     {
 	DefaultHttpClient client = new DefaultHttpClient();
 	HttpGet get = new HttpGet(url + (params != null ? params : ""));
 	
-	HttpResponse response = client.execute(get);
+	// Add session cookies to request
+	get.addHeader("Cookie", sessionCookies);
 	
+	HttpResponse response = client.execute(get);
 	HttpEntity entity = response.getEntity();
 	 
 	if (entity != null)
 	{
 	    InputStream instream = entity.getContent();
-	    String responseString = HTTPUtils.convertStreamToString(instream);
+	    String responseString = HTTPHelper.convertStreamToString(instream);
 	    instream.close();
 	    
 	    return responseString;
 	}
 	
 	return null;
+    }
+    
+    public void setSessionCookies(String cookies)
+    {
+	sessionCookies = cookies;
+	
+	// Store session cookies to preferences
+	SharedPreferences prefs = context.getSharedPreferences(Globals.PREF_FILE_NAME, Context.MODE_PRIVATE);
+	SharedPreferences.Editor prefsEditor = prefs.edit();
+	prefsEditor.putString(sessionCookiePrefName, cookies);
+	prefsEditor.commit();
     }
 }

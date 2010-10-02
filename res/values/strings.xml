@@ -24,9 +24,14 @@
     
     <string name="delete">Izbriši</string>
     
+    <!-- Add ride strings -->
+    <string name="checking_login_status">Preverjam stanje prijave...</string>
+    
     <!-- Menu options -->
     <string name="add_to_favorites">Dodaj med priljubljene</string>
     <string name="added_to_favorites">Pot je bila dodana med priljubljene.</string>
+    
+    <!--  Day and month names -->
     
     <string-array name="day_names">
         <item>Nedelja</item>

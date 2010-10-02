@@ -11,20 +11,23 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.prevoz.android.Globals;
 import org.prevoz.android.RideType;
-import org.prevoz.android.util.HTTPUtils;
+import org.prevoz.android.util.HTTPHelper;
 
+import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
 public class SearchTask implements Runnable
-{   
+{ 
+    private Context context = null;
     private Handler handler = null;
     
     private SearchRequest request = null;
     private SearchResults response = null;
     
-    public SearchTask()
+    public SearchTask(Context context)
     {
+	this.context = context;
     }
     
     
@@ -46,9 +49,10 @@ public class SearchTask implements Runnable
 	// Get data from HTTP server
 	try
 	{
-	    responseString = HTTPUtils.httpGet(Globals.API_URL + "/search/" + 
-		    						 (request.getSearchType() == RideType.SHARE ? "shares/" : "seekers/"), 
-		    			       HTTPUtils.buildGetParams(request.getParameters()));
+	    HTTPHelper httpHelper = new HTTPHelper(context);
+	    responseString = httpHelper.httpGet(Globals.API_URL + "/search/" + 
+		    			 	(request.getSearchType() == RideType.SHARE ? "shares/" : "seekers/"), 
+		    			 	HTTPHelper.buildGetParams(request.getParameters()));
 	}
 	catch(IOException e)
 	{
@@ -90,7 +94,7 @@ public class SearchTask implements Runnable
 			    			     	 jsonRide.getString("to"),
 			    			     	 jsonRide.getString("author"),
 			    			     	 jsonRide.isNull("price") ? null : jsonRide.getDouble("price"), 
-			    			         HTTPUtils.parseISO8601(jsonRide.getString("date_iso8601")));
+			    			         HTTPHelper.parseISO8601(jsonRide.getString("date_iso8601")));
 			
 			rides.add(ride);
 		    }

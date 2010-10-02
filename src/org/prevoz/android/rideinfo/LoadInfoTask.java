@@ -8,21 +8,23 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.prevoz.android.Globals;
 import org.prevoz.android.RideType;
-import org.prevoz.android.util.HTTPUtils;
+import org.prevoz.android.util.HTTPHelper;
 
+import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
 public class LoadInfoTask implements Runnable
 {
+    private Context context = null;
     private int rideID;
     private Handler callback;
     
     private Ride result = null;
     
-    public LoadInfoTask()
+    public LoadInfoTask(Context context)
     {
-	
+	this.context = context;
     }
 
     public void loadInfo(int id, Handler callback)
@@ -38,11 +40,12 @@ public class LoadInfoTask implements Runnable
     public void run()
     {
 	String response = null;
+	HTTPHelper httpHelper = new HTTPHelper(context);
 	
 	try
 	{
 	    String url = Globals.API_URL + "/carshare/" + rideID + "/";
-	    response = HTTPUtils.httpGet(url);
+	    response = httpHelper.httpGet(url);
 	}
 	catch(IOException e)
 	{
@@ -67,7 +70,7 @@ public class LoadInfoTask implements Runnable
 	    String from = root.getString("from");
 	    String to = root.getString("to");
 	    
-	    Date time = HTTPUtils.parseISO8601(root.getString("date_iso8601"));
+	    Date time = HTTPHelper.parseISO8601(root.getString("date_iso8601"));
 	    
 	    int people = root.getInt("num_people");
 	    

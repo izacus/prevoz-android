@@ -62,7 +62,16 @@ public class Ride
 	to = bundle.getString("rideinfo_to");
 	time = new Date(bundle.getLong("rideinfo_time"));
 	people = bundle.getInt("rideinfo_people");
-	price = bundle.getDouble("rideinfo_price");
+	
+	if (bundle.containsKey("rideinfo_price"))
+	{
+	    price = bundle.getDouble("rideinfo_price");
+	}
+	else
+	{
+	    price = null;
+	}
+	    
 	author = bundle.getString("rideinfo_author");
 	contact = bundle.getString("rideinfo_contact");
 	comment = bundle.getString("rideinfo_comment");
@@ -132,7 +141,12 @@ public class Ride
 	bundle.putString("rideinfo_to", to);
 	bundle.putLong("rideinfo_time", time.getTime());
 	bundle.putInt("rideinfo_people", people);
-	bundle.putDouble("rideinfo_price", price);
+	
+	if (price != null)
+	{
+	    bundle.putDouble("rideinfo_price", price);
+	}
+	
 	bundle.putString("rideinfo_author", author);
 	bundle.putString("rideinfo_contact", contact);
 	bundle.putString("rideinfo_comment", comment);

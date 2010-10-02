@@ -114,12 +114,31 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	instance = this;
 	
 	setContentView(R.layout.search_activity);
+	selectedDate = Calendar.getInstance();
 	
-	((RadioGroup)findViewById(R.id.search_type)).check(R.id.shares);
+	// Try to restore state if able
+	if (savedInstanceState != null)
+	{
+	    // Restore set date
+	    selectedDate.setTimeInMillis(savedInstanceState.getLong("selected_date"));
+	    
+	    // Re-populate search form
+	    populateSearchForm(savedInstanceState.getString("from_loc"), savedInstanceState.getString("to_loc"), selectedDate);
+	    
+	    // Set current view
+	    currentView = SearchViews.values()[savedInstanceState.getInt("current_view")];
+	    
+	    // Select right search type radio button
+	    ((RadioGroup)findViewById(R.id.search_type)).check(savedInstanceState.getInt("search_type"));
+	}
+	else
+	{
+	    currentView = SearchViews.SEARCH_FORM;
+	    ((RadioGroup)findViewById(R.id.search_type)).check(R.id.shares);
+	}
 	
 	// Create beginning search date text
 	searchDateText = (EditText)findViewById(R.id.dateField);
-	selectedDate = Calendar.getInstance();
 	searchDateText.setText(localizeDate(selectedDate));
 	searchDateText.setOnClickListener(new OnClickListener() 
 	{
@@ -142,12 +161,38 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	    }
 	});
 	
-	currentView = SearchViews.SEARCH_FORM;
-	
 	// Register for receival of search requests
 	registerReceiver(receiver, intentFilter);
+	
+	// Re-get search results if on 2nd view
+	if (currentView == SearchViews.SEARCH_RESULTS)
+	{
+	    startSearch();
+	}
     }
     
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+	super.onSaveInstanceState(outState);
+	
+	// Store currently selected date
+	outState.putLong("selected_date", selectedDate.getTimeInMillis());
+	
+	// Store currently shown view
+	outState.putInt("current_view", currentView.ordinal());
+	
+	// Store typed-in locations
+	outState.putString("from_loc", ((TextView)findViewById(R.id.fromField)).getText().toString());
+	outState.putString("to_loc", ((TextView)findViewById(R.id.toField)).getText().toString());
+	
+	// Store currently selected search type
+	outState.putInt("search_type", ((RadioGroup)findViewById(R.id.search_type)).getCheckedRadioButtonId());
+    }
+
+
+
     @Override
     protected void onDestroy()
     {
@@ -265,7 +310,7 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	SearchRequest request = new SearchRequest(this, 
 						  search_type == 0 ? RideType.SHARE : RideType.SEEK, 
 					          parameters);
-	final SearchTask task = new SearchTask();
+	final SearchTask task = new SearchTask(this);
 	
 	Handler searchHandler = new Handler()
 	{
@@ -323,7 +368,7 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	ListView resultsList = (ListView)findViewById(R.id.list_results);
 	
 	// Build categories
-	if (searchResults.getRides().size() > 0)
+	if (searchResults.getRides() != null && searchResults.getRides().size() > 0)
 	{
         	// Put rides into buckets by paths
         	HashMap<String, ArrayList<SearchRide>> ridesByPath = new HashMap<String, ArrayList<SearchRide>>();
@@ -366,7 +411,7 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	else
 	{
 	    String[] noResults = new String[1];
-	    noResults[1] = getString(R.string.search_no_results);
+	    noResults[0] = getString(R.string.search_no_results);
 	    
 	    ArrayAdapter<String> noResultsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, noResults);
 	    resultsList.setAdapter(noResultsAdapter);
