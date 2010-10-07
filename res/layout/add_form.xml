@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+  <LinearLayout
+   android:layout_width = "fill_parent"
+   android:layout_height = "fill_parent"
+   android:orientation = "vertical"
+   style="@style/ViewStyle">
+     <TextView
+       android:layout_width = "fill_parent"
+       android:layout_height = "wrap_content"
+       android:text = "@string/add_offering"
+       style="@style/MediumText"
+       />
+      
+     <RadioGroup
+          android:layout_height = "wrap_content"
+          android:layout_width = "fill_parent"
+          android:orientation = "horizontal"
+          android:id = "@+id/add_type"
+          >
+           <RadioButton
+             android:layout_width = "fill_parent"
+             android:layout_height = "wrap_content"
+             android:layout_weight = "1"
+             android:id = "@+id/add_share" 
+             android:text = "prevoze" />
+      
+           <RadioButton
+             android:layout_width = "fill_parent"
+             android:layout_height = "wrap_content"
+             android:layout_weight = "1"
+             android:id = "@+id/add_ride" 
+             android:text = "iskalce" />
+        </RadioGroup>
+      
+     <TextView
+       android:layout_width = "fill_parent"
+       android:layout_height = "wrap_content"
+       android:text = "@string/origin"
+       android:layout_marginBottom = "2dip"
+       style="@style/MediumText"
+       />
+     
+     <EditText 
+       android:id = "@+id/add_from"
+       android:layout_width = "fill_parent"
+       android:layout_height = "wrap_content"
+       android:inputType = "textCapWords"
+       android:hint = "Začetek"
+       android:layout_marginBottom = "2dip"
+       />
+      
+     <TextView
+       android:layout_width = "fill_parent"
+       android:layout_height = "wrap_content"
+       android:text = "@string/destination"
+       android:layout_marginBottom = "2dip"
+       style="@style/MediumText"
+       />
+     
+     <EditText 
+       android:id = "@+id/add_to"
+       android:layout_width = "fill_parent"
+       android:layout_height = "wrap_content"
+       android:inputType = "textCapWords"
+       android:hint = "Cilj"
+       android:layout_marginBottom = "2dip"
+       />
+      
+     <TextView
+       android:layout_width = "fill_parent"
+       android:layout_height = "wrap_content"
+       android:text = "@string/date"
+       android:layout_marginTop = "2dip"
+       android:layout_marginBottom = "2dip" 
+       style="@style/MediumText"
+       />
+   
+      <EditText
+       android:id = "@+id/add_date"
+       android:layout_width = "fill_parent"
+       android:layout_height = "wrap_content"
+       android:layout_marginBottom = "2dip"
+       android:editable = "false"
+       android:focusableInTouchMode = "false"
+        /> 
+      
+      
+      
+   </LinearLayout>
+</ScrollView>

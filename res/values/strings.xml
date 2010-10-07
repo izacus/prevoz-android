@@ -13,6 +13,9 @@
     
     <string name="im_searching">Iščem:</string>
     
+    <string name="origin">Kraj odhoda:</string>
+    <string name="destination">Kraj prihoda:</string>
+    <string name="date">Datum:</string>
     
     <!--  Ride details strings -->
     <string name="loading">Nalagam...</string>
@@ -25,7 +28,10 @@
     <string name="delete">Izbriši</string>
     
     <!-- Add ride strings -->
+    <string name="add_tab">Dodaj prevoz</string>
     <string name="checking_login_status">Preverjam stanje prijave...</string>
+    
+    <string name="add_offering">Ponujam</string>
     
     <!-- Menu options -->
     <string name="add_to_favorites">Dodaj med priljubljene</string>

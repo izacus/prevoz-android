@@ -13,6 +13,7 @@ import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 public class AddRideActivity extends Activity
 {
@@ -56,9 +57,8 @@ public class AddRideActivity extends Activity
 	super.onCreate(savedInstanceState);
 	AddRideActivity.instance = this;
 	
-	// TODO: update with state saving
 	loginStatus = LoginStatus.UNKNOWN;
-	setContentView(R.layout.add_ride);
+	setContentView(R.layout.add_ride_activity);
 	
 	// Check if user is logged in
 	checkLoginStatus();
@@ -98,7 +98,8 @@ public class AddRideActivity extends Activity
 		    break;
 		    
 		case LOGGED_IN:
-		    Toast.makeText(this, "Vi ste prijavljeni.", Toast.LENGTH_SHORT).show();
+		    ViewFlipper addFlipper = (ViewFlipper)findViewById(R.id.add_flipper);
+		    addFlipper.showNext();
 		    break;
 		    
 		case NOT_LOGGED_IN:
@@ -112,6 +113,9 @@ public class AddRideActivity extends Activity
      */
     private void showWebLogin()
     {
+	ViewFlipper addFlipper = (ViewFlipper)findViewById(R.id.add_flipper);
+	addFlipper.showPrevious();
+	
 	WebView view = (WebView)findViewById(R.id.webview);
 	view.setWebViewClient(new WebViewController());
 	view.loadUrl(Globals.LOGIN_URL);

@@ -45,8 +45,8 @@ public class MainActivity extends TabActivity
 	Intent searchIntent = new Intent(this, SearchActivity.class);
 	TabsUtil.addNativeLookingTab(this, tabHost, "search", getString(R.string.search_tab), R.drawable.friends_tab, searchIntent);
 	
-	Intent testIntent = new Intent(this, AddRideActivity.class);
-	TabsUtil.addNativeLookingTab(this, tabHost, "test", "Test", R.drawable.friends_tab, testIntent);
+	Intent addRideIntent = new Intent(this, AddRideActivity.class);
+	TabsUtil.addNativeLookingTab(this, tabHost, "add_ride", getString(R.string.add_tab), R.drawable.friends_tab, addRideIntent);
 	
 	tabHost.setCurrentTab(0);
     }
