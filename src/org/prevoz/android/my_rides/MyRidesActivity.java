@@ -120,7 +120,7 @@ public class MyRidesActivity extends ListActivity implements OnItemClickListener
 	    			    ContextMenuInfo menuInfo)
     {
 	super.onCreateContextMenu(menu, v, menuInfo);
-	
+
 	ListView listView = (ListView)v;
 	AdapterContextMenuInfo adapterMenuInfo = (AdapterContextMenuInfo)menuInfo;
 	Route selectedObj = (Route)listView.getAdapter().getItem(adapterMenuInfo.position);
@@ -137,7 +137,7 @@ public class MyRidesActivity extends ListActivity implements OnItemClickListener
 	switch(item.getItemId())
 	{
 		case CONTEXT_DELETE:
-		    Database.deleteFavorite(this, contextSelected.getFrom(), contextSelected.getTo());
+		    Database.deleteFavorite(this, contextSelected.getFrom(), contextSelected.getTo(), contextSelected.getType());
 		    buildList();
 		    break;
 		default:

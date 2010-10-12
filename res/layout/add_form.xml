@@ -45,13 +45,13 @@
        style="@style/MediumText"
        />
      
-     <EditText 
+     <AutoCompleteTextView
        android:id = "@+id/add_from"
        android:layout_width = "fill_parent"
        android:layout_height = "wrap_content"
        android:inputType = "textCapWords"
-       android:hint = "Začetek"
        android:layout_marginBottom = "2dip"
+       android:textColor = "#000"
        />
       
      <TextView
@@ -62,13 +62,13 @@
        style="@style/MediumText"
        />
      
-     <EditText 
+     <AutoCompleteTextView
        android:id = "@+id/add_to"
        android:layout_width = "fill_parent"
        android:layout_height = "wrap_content"
        android:inputType = "textCapWords"
-       android:hint = "Cilj"
        android:layout_marginBottom = "2dip"
+       android:textColor = "#000"
        />
       
      <TextView
@@ -88,8 +88,129 @@
        android:editable = "false"
        android:focusableInTouchMode = "false"
         /> 
+     
+      <LinearLayout
+       android:layout_height = "wrap_content"
+       android:layout_width = "fill_parent"
+       android:orientation = "horizontal"
+       android:layout_marginTop = "2dip"
+       android:layout_marginBottom = "2dip"
+       >
+	      <TextView
+	       android:layout_width = "wrap_content"
+	       android:layout_height = "wrap_content"
+	       android:text = "@string/time"
+	       android:layout_marginRight ="2dip"
+	       style="@style/MediumText"
+	       />   
+	       
+	      <EditText
+	       android:id = "@+id/add_time"
+	       android:layout_width = "fill_parent"
+	       android:layout_height = "wrap_content"
+	       android:layout_marginBottom = "2dip"
+	       android:editable = "false"
+	       android:focusableInTouchMode = "false"
+	        />
+      </LinearLayout>    
       
+      <LinearLayout
+       android:layout_height = "wrap_content"
+       android:layout_width = "fill_parent"
+       android:orientation = "horizontal"
+       android:layout_marginTop = "2dip"
+       android:layout_marginBottom = "2dip"
+       >
+         <TextView
+          android:layout_width = "wrap_content"
+          android:layout_height = "wrap_content"
+          android:text = "@string/add_num_ppl"
+          android:layout_marginRight ="2dip"
+          style="@style/MediumText"
+          />   
+          
+         <EditText
+          android:id = "@+id/add_ppl"
+          android:layout_width = "fill_parent"
+          android:layout_height = "wrap_content"
+          android:layout_marginBottom = "2dip"
+          android:inputType = "number"
+           />
+      </LinearLayout>
       
+      <LinearLayout
+       android:layout_height = "wrap_content"
+       android:layout_width = "fill_parent"
+       android:orientation = "horizontal"
+       android:layout_marginTop = "2dip"
+       android:layout_marginBottom = "2dip"
+       >
+         <TextView
+          android:layout_width = "wrap_content"
+          android:layout_height = "wrap_content"
+          android:text = "@string/add_price"
+          android:layout_marginRight ="2dip"
+          style="@style/MediumText"
+          />   
+          
+         <EditText
+          android:id = "@+id/add_price"
+          android:layout_width = "fill_parent"
+          android:layout_height = "wrap_content"
+          android:layout_marginBottom = "2dip"
+          android:inputType = "numberDecimal"
+           />
+      </LinearLayout>
+      
+      <LinearLayout
+       android:layout_height = "wrap_content"
+       android:layout_width = "fill_parent"
+       android:orientation = "horizontal"
+       android:layout_marginTop = "2dip"
+       android:layout_marginBottom = "2dip"
+       >
+         <TextView
+          android:layout_width = "wrap_content"
+          android:layout_height = "wrap_content"
+          android:text = "@string/add_phone"
+          android:layout_marginRight ="2dip"
+          style="@style/MediumText"
+          />   
+          
+         <EditText
+          android:id = "@+id/add_phone"
+          android:layout_width = "fill_parent"
+          android:layout_height = "wrap_content"
+          android:layout_marginBottom = "2dip"
+          android:inputType = "phone"
+           />
+      </LinearLayout>            
+      
+     <TextView
+       android:layout_width = "fill_parent"
+       android:layout_height = "wrap_content"
+       android:text = "@string/add_comment"
+       android:layout_marginTop = "2dip"
+       android:layout_marginBottom = "2dip" 
+       style="@style/MediumText"
+       />
+      
+      <EditText
+          android:id = "@+id/add_comment"
+          android:layout_width = "fill_parent"
+          android:layout_height = "wrap_content"
+          android:layout_marginBottom = "2dip"
+          android:lines = "4"
+          android:inputType = "textMultiLine"
+          android:gravity = "top"
+          />
+          
+      <Button
+         android:id = "@+id/add_button"
+         android:layout_width = "fill_parent"
+         android:layout_height = "wrap_content"
+         android:text = "@string/add_button"
+         />
       
    </LinearLayout>
 </ScrollView>

@@ -14,7 +14,7 @@
      <TextView
        android:layout_width = "fill_parent"
        android:layout_height = "wrap_content"
-       android:text = "Iščem:"
+       android:text = "@string/im_searching"
        style="@style/MediumText"
        />
         <RadioGroup
@@ -28,54 +28,54 @@
 		       android:layout_height = "wrap_content"
 		       android:layout_weight = "1"
 		       android:id = "@+id/shares" 
-		       android:text = "prevoze" />
+		       android:text = "@string/shares" />
 		
 		     <RadioButton
 		       android:layout_width = "fill_parent"
 		       android:layout_height = "wrap_content"
 		       android:layout_weight = "1"
 		       android:id = "@+id/rides" 
-		       android:text = "iskalce" />
+		       android:text = "@string/seekers" />
 	     </RadioGroup>
 	  
 	  <TextView
 	    android:layout_width = "fill_parent"
 	    android:layout_height = "wrap_content"
-	    android:text = "Kraj odhoda:"
+	    android:text = "@string/origin"
 	    android:layout_marginBottom = "2dip"
 	    style="@style/MediumText"
 	    />
 	  
-	  <EditText 
+	  <AutoCompleteTextView 
 	    android:id = "@+id/fromField"
 	    android:layout_width = "fill_parent"
 	    android:layout_height = "wrap_content"
 	    android:inputType = "textCapWords"
-	    android:hint = "Začetek"
 	    android:layout_marginBottom = "2dip"
+	    android:textColor = "#000" 
 	    />
 	    
 	   <TextView
 	    android:layout_width = "fill_parent"
 	    android:layout_height = "wrap_content"
-	    android:text = "Kraj prihoda:"
+	    android:text = "@string/destination"
 	    android:layout_marginTop = "2dip"
 	    android:layout_marginBottom = "2dip" 
 	    style="@style/MediumText" 
 	    />
 	    
-	   <EditText
+	   <AutoCompleteTextView
 	    android:id = "@+id/toField"
 	    android:layout_width = "fill_parent"
 	    android:layout_height = "wrap_content"
 	    android:inputType = "textCapWords"
-	    android:hint = "Cilj" 
-	    android:layout_marginBottom = "2dip"/>
+	    android:layout_marginBottom = "2dip"
+	    android:textColor = "#000" />
 	  
 	   <TextView
 	    android:layout_width = "fill_parent"
 	    android:layout_height = "wrap_content"
-	    android:text = "Kdaj:"
+	    android:text = "@string/date"
 	    android:layout_marginTop = "2dip"
 	    android:layout_marginBottom = "2dip" 
 	    style="@style/MediumText"

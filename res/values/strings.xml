@@ -11,14 +11,25 @@
     <string name="searching">Iščem...</string>
     <string name="search_no_results">Iskanje ni obrodilo sadov.</string>
     
-    <string name="im_searching">Iščem:</string>
+    <string name="im_searching">Iščem</string>
+    <string name="shares">ponudnike</string>
+    <string name="seekers">iskalce</string>
     
-    <string name="origin">Kraj odhoda:</string>
-    <string name="destination">Kraj prihoda:</string>
-    <string name="date">Datum:</string>
+    <string name="origin">Kraj odhoda</string>
+    <string name="destination">Kraj prihoda</string>
+    <string name="date">Datum</string>
+    <string name="time">Čas</string>
     
     <!--  Ride details strings -->
     <string name="loading">Nalagam...</string>
+    <string name="price">cena</string>
+    
+    <string-array name="people_tags">
+      <item>oseba</item>
+      <item>osebi</item>
+      <item>osebe</item>
+      <item>oseb</item>
+    </string-array>
     
     <!-- My rides tab strings -->
     <string name="my_rides_tab">Moji prevozi</string>
@@ -32,6 +43,13 @@
     <string name="checking_login_status">Preverjam stanje prijave...</string>
     
     <string name="add_offering">Ponujam</string>
+    <string name="add_num_ppl">Št. ljudi</string>
+    <string name="add_price">Cena</string>
+    <string name="add_phone">Telefon</string>
+    <string name="add_comment">Opombe</string>
+    <string name="add_button">Naprej</string>
+    
+    <string name="preview">Predogled</string>
     
     <!-- Menu options -->
     <string name="add_to_favorites">Dodaj med priljubljene</string>

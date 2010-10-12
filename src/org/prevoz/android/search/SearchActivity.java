@@ -16,25 +16,26 @@ import org.prevoz.android.util.SectionedAdapter;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -43,7 +44,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class SearchActivity extends Activity implements OnDateSetListener
 {
@@ -116,6 +116,18 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	
 	setContentView(R.layout.search_activity);
 	selectedDate = Calendar.getInstance();
+	
+	// Set autocomplete options for locations
+	AutoCompleteTextView fromText = (AutoCompleteTextView)findViewById(R.id.fromField);
+	AutoCompleteTextView toText = (AutoCompleteTextView)findViewById(R.id.toField);
+	
+	ArrayAdapter<String> places = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, Globals.locations);
+	
+	fromText.setAdapter(places);
+	toText.setAdapter(places);
+	
+	fromText.setThreshold(1);
+	toText.setThreshold(1);
 	
 	// Try to restore state if able
 	if (savedInstanceState != null)
@@ -270,8 +282,8 @@ public class SearchActivity extends Activity implements OnDateSetListener
 
     private void populateSearchForm(String from, String to, Calendar date)
     {
-	    ((EditText)findViewById(R.id.fromField)).setText(from);
-	    ((EditText)findViewById(R.id.toField)).setText(to);
+	    ((AutoCompleteTextView)findViewById(R.id.fromField)).setText(from);
+	    ((AutoCompleteTextView)findViewById(R.id.toField)).setText(to);
 	    ((EditText)findViewById(R.id.dateField)).setText(localizeDate(date));
 	    selectedDate = date;
     }
@@ -286,9 +298,9 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	// Build a search request
 	HashMap<String, String> parameters = new HashMap<String, String>();
 	
-	parameters.put("f", ((EditText)findViewById(R.id.fromField)).getText().toString());
+	parameters.put("f", ((AutoCompleteTextView)findViewById(R.id.fromField)).getText().toString());
 	parameters.put("fc", "SI");
-	parameters.put("t", ((EditText)findViewById(R.id.toField)).getText().toString());
+	parameters.put("t", ((AutoCompleteTextView)findViewById(R.id.toField)).getText().toString());
 	parameters.put("tc", "SI");
 	
 	// Build date
@@ -309,7 +321,7 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	parameters.put("search_type", String.valueOf(search_type));
 	
 	SearchRequest request = new SearchRequest(this, 
-						  search_type == 0 ? RideType.SHARE : RideType.SEEK, 
+						  search_type == 0 ? RideType.SEEK : RideType.SHARE, 
 					          parameters);
 	final SearchTask task = new SearchTask(this);
 	

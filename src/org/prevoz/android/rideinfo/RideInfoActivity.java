@@ -17,6 +17,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -112,56 +113,91 @@ public class RideInfoActivity extends Activity
     private void showRide(Ride ride)
     {
 	this.ride = ride;
-	setContentView(R.layout.ride_info);
+	setContentView(R.layout.ride_info_activity);
 	
 	Resources res = getResources();
 	
 	// From and to
-	TextView fromText = (TextView)findViewById(R.id.fromText);
+	TextView fromText = (TextView)findViewById(R.id.rideinfo_from);
 	fromText.setText(ride.getFrom());
 	
-	TextView toText = (TextView)findViewById(R.id.toText);
+	TextView toText = (TextView)findViewById(R.id.rideinfo_to);
 	toText.setText(ride.getTo());
 	
 	// Time and date
 	SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
 	
-	TextView timeText = (TextView)findViewById(R.id.timeText);
+	TextView timeText = (TextView)findViewById(R.id.rideinfo_time);
 	timeText.setText(timeFormatter.format(ride.getTime()));
 	
-	TextView dayText = (TextView)findViewById(R.id.dayText);
+	TextView dayText = (TextView)findViewById(R.id.rideinfo_day);
 	dayText.setText(LocaleUtil.getDayName(res, ride.getTime()) + ",");
 	
-	TextView dateText = (TextView)findViewById(R.id.dateText);
+	TextView dateText = (TextView)findViewById(R.id.rideinfo_date);
 	dateText.setText(LocaleUtil.getFormattedDate(res, ride.getTime()));
 	
 	// Price and number of people
-	TextView priceText = (TextView)findViewById(R.id.priceText);
+	TextView priceText = (TextView)findViewById(R.id.rideinfo_price);
 	
 	if (ride.getPrice() != null)
 	{
-	    priceText.setText(String.format("%1.1f", ride.getPrice()));
+	    priceText.setText(String.format("%1.1f €", ride.getPrice()));
 	}
 	else
 	{
 	    priceText.setText("?");
 	}
 	
-	TextView pplText = (TextView)findViewById(R.id.personsText);
+	TextView pplText = (TextView)findViewById(R.id.rideinfo_people);
 	pplText.setText(String.valueOf(ride.getPeople()));
 	
-	// Driver and contact
-	TextView driverText = (TextView)findViewById(R.id.driverText);
-	driverText.setText(ride.getAuthor());
+	// Write the correct word for numbering
+	String[] pplTags = res.getStringArray(R.array.people_tags);
+	int mod = ride.getPeople() % 100;
 	
-	TextView contactText = (TextView)findViewById(R.id.contactText);
+	String tagString;
+	
+	
+	switch(mod)
+	{
+		case 1:
+		    	tagString = pplTags[0];
+		    	break;
+		case 2:
+		    	tagString = pplTags[1];
+		    	break;
+		case 3:
+		case 4:
+		    	tagString = pplTags[2];
+		    	break;
+		default:
+		    	tagString = pplTags[3];
+		    	break;
+	}
+	
+	TextView pplTagText = (TextView)findViewById(R.id.rideinfo_peopletag);
+	pplTagText.setText(tagString);
+	
+	// Driver and contact
+	
+	TextView driverText = (TextView)findViewById(R.id.rideinfo_author);
+	
+	if (ride.getAuthor() == null || ride.getAuthor().trim().length() == 0)
+	{
+	    driverText.setVisibility(View.VISIBLE);
+	    driverText.setText(ride.getAuthor());
+	}
+	else
+	{
+	    driverText.setVisibility(View.GONE);
+	}
+	
+	TextView contactText = (TextView)findViewById(R.id.rideinfo_phone);
 	contactText.setText(ride.getContact());
 	
 	// Comment
-	TextView commentText = (TextView)findViewById(R.id.detailsText);
+	TextView commentText = (TextView)findViewById(R.id.rideinfo_comment);
 	commentText.setText(ride.getComment());
-	
-	Debug.stopMethodTracing();
     }
 
     @Override
@@ -180,7 +216,7 @@ public class RideInfoActivity extends Activity
     
     private void AddToFavorites()
     {
-	Database.addFavorite(this, ride.getFrom(), ride.getTo());
+	Database.addFavorite(this, ride.getFrom(), ride.getTo(), ride.getType());
 	Toast.makeText(this, getString(R.string.added_to_favorites), Toast.LENGTH_SHORT).show();
     }
 

@@ -75,7 +75,7 @@ public class Ride
 	author = bundle.getString("rideinfo_author");
 	contact = bundle.getString("rideinfo_contact");
 	comment = bundle.getString("rideinfo_comment");
-	isAuthor = bundle.getBoolean("rideinfo_author");
+	isAuthor = bundle.getBoolean("rideinfo_isauthor");
     }
 
     public int getId()
@@ -150,6 +150,6 @@ public class Ride
 	bundle.putString("rideinfo_author", author);
 	bundle.putString("rideinfo_contact", contact);
 	bundle.putString("rideinfo_comment", comment);
-	bundle.putBoolean("rideinfo_author", isAuthor);
+	bundle.putBoolean("rideinfo_isauthor", isAuthor);
     }
 }
