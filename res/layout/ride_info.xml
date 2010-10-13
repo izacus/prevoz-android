@@ -5,6 +5,12 @@
   android:layout_height="fill_parent"
   android:orientation = "vertical">
 
+  <ScrollView
+      android:layout_width = "fill_parent"
+      android:layout_height = "wrap_content"
+      android:fillViewport = "true"
+      android:layout_margin = "3dp" >
+
     <LinearLayout
         android:layout_width = "fill_parent"
         android:layout_height = "fill_parent"
@@ -138,19 +144,13 @@
 	   </LinearLayout>
 	   
 	   <include layout = "@layout/separator" />
-	   
-	   <ScrollView
+	  
+	   <TextView 
+	    android:id = "@+id/rideinfo_comment"
 	    android:layout_width = "fill_parent"
 	    android:layout_height = "wrap_content"
-	    android:fillViewport = "true"
-	    android:layout_margin = "3dp" >
-		   <TextView 
-		    android:id = "@+id/rideinfo_comment"
-		    android:layout_width = "fill_parent"
-		    android:layout_height = "wrap_content"
-		    />
-	   </ScrollView>
-   
+	    />
+	   
    </LinearLayout>
-     
+  </ScrollView>   
 </LinearLayout>

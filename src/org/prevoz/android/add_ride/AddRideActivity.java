@@ -2,7 +2,6 @@ package org.prevoz.android.add_ride;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
@@ -15,6 +14,8 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
+import android.app.TimePickerDialog.OnTimeSetListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -30,7 +31,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -43,8 +46,9 @@ public class AddRideActivity extends Activity
     }
     
     private static final int DATEPICKER_DIALOG_ID = 0;
+    private static final int TIMEPICKER_DIALOG_ID = 1;
+    private static final SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
     
-    private LoginStatus loginStatus;
     
     private class WebViewController extends WebViewClient
     {
@@ -72,6 +76,26 @@ public class AddRideActivity extends Activity
 	}
     }
     
+    private class PeopleSpinnerObject
+    {
+	public int number;
+	
+	public PeopleSpinnerObject(int number)
+	{
+	    this.number = number;
+	}
+	
+	public int getNumber()
+	{
+	    return number;
+	}
+	
+	public String toString()
+	{
+	    return number + " " + LocaleUtil.getStringNumberForm(getResources(), R.array.people_tags, number);
+	}
+    }
+    
     private enum AddViews
     {
 	LOGIN,
@@ -81,6 +105,8 @@ public class AddRideActivity extends Activity
     
     // Current view
     private AddViews currentView;
+    
+    private LoginStatus loginStatus;
     
     // Private fields
     private Calendar selectedDate;
@@ -149,7 +175,13 @@ public class AddRideActivity extends Activity
     private void prepareAddForm()
     {
 	// Prepare date selector
-	updateSelectedDate(Calendar.getInstance());
+	selectedDate = Calendar.getInstance();
+	// Reset time to some sane value
+	selectedDate.add(Calendar.HOUR_OF_DAY, 1);
+	selectedDate.set(Calendar.MINUTE, 0);
+	
+	updateSelectedDate(selectedDate);
+	updateSelectedTime(selectedDate);
 	
 	// Prepare autocomplete
 	ArrayAdapter<String> places = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, Globals.locations);
@@ -173,6 +205,27 @@ public class AddRideActivity extends Activity
 	    }
 	});
 	
+	// Add clock callback
+	EditText addTimeField = (EditText)findViewById(R.id.add_time);
+	addTimeField.setOnClickListener(new View.OnClickListener()
+	{
+	    public void onClick(View v)
+	    {
+		showDialog(TIMEPICKER_DIALOG_ID);
+	    }
+	});
+	
+	// People list spinner popuation
+	Spinner addPpl = (Spinner)findViewById(R.id.add_ppl);
+	
+	PeopleSpinnerObject[] peopleSpinnerObject = new PeopleSpinnerObject[6];
+	for (int i = 0; i < 6; i++)
+	    peopleSpinnerObject[i] = new PeopleSpinnerObject(i + 1);
+	
+	ArrayAdapter<PeopleSpinnerObject> peopleAdapter = new ArrayAdapter<PeopleSpinnerObject>(this, android.R.layout.simple_spinner_item, peopleSpinnerObject);
+	addPpl.setAdapter(peopleAdapter);
+	peopleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	
 	// Add next button callback
 	Button nextButton = (Button)findViewById(R.id.add_button);
 	nextButton.setOnClickListener(new View.OnClickListener()
@@ -187,8 +240,6 @@ public class AddRideActivity extends Activity
     
     private void showPreview()
     {
-	SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
-	
 	// Get entered data
 	Ride ride = getEnteredRide();
 	
@@ -198,13 +249,12 @@ public class AddRideActivity extends Activity
 	((TextView)findViewById(R.id.rideinfo_from)).setText(ride.getFrom());
 	((TextView)findViewById(R.id.rideinfo_to)).setText(ride.getTo());
 	((TextView)findViewById(R.id.rideinfo_time)).setText(timeFormatter.format(ride.getTime()));
-	((TextView)findViewById(R.id.rideinfo_day)).setText(LocaleUtil.getDayName(getResources(), ride.getTime()));
+	((TextView)findViewById(R.id.rideinfo_day)).setText(LocaleUtil.getDayName(getResources(), ride.getTime()) + ",");
 	((TextView)findViewById(R.id.rideinfo_date)).setText(LocaleUtil.getFormattedDate(getResources(), ride.getTime()));
 	
 	((TextView)findViewById(R.id.rideinfo_price)).setText(String.format("%1.1f €", ride.getPrice()));
 	((TextView)findViewById(R.id.rideinfo_people)).setText(String.valueOf(ride.getPeople()));
-	
-	// TODO people tag
+	((TextView)findViewById(R.id.rideinfo_peopletag)).setText(LocaleUtil.getStringNumberForm(getResources(), R.array.people_tags, ride.getPeople()));
 	
 	((TextView)findViewById(R.id.rideinfo_comment)).setText(ride.getComment());
 	((TextView)findViewById(R.id.rideinfo_phone)).setText(ride.getContact());
@@ -239,6 +289,22 @@ public class AddRideActivity extends Activity
 			    			selectedDate.get(Calendar.YEAR), 
 			    			selectedDate.get(Calendar.MONTH), 
 			    			selectedDate.get(Calendar.DATE));
+		case TIMEPICKER_DIALOG_ID:
+		    OnTimeSetListener timePicked = new OnTimeSetListener()
+		    {
+		        public void onTimeSet(TimePicker view, int hourOfDay, int minute)
+		        {
+		    		Calendar selectedTime = Calendar.getInstance();
+		    		selectedTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+		    		selectedTime.set(Calendar.MINUTE, minute);
+		    		updateSelectedTime(selectedTime);
+		        }
+		    };
+		    
+		    return new TimePickerDialog(this, 
+			    			timePicked, 
+			    			selectedDate.get(Calendar.HOUR_OF_DAY), 
+			    			selectedDate.get(Calendar.MINUTE), true);
 	}
 	
 	return super.onCreateDialog(id);
@@ -247,8 +313,17 @@ public class AddRideActivity extends Activity
     private void updateSelectedDate(Calendar newDate)
     {
 	EditText addDateField = (EditText)findViewById(R.id.add_date);
-	selectedDate = newDate;
+	selectedDate.set(newDate.get(Calendar.YEAR), newDate.get(Calendar.MONTH), newDate.get(Calendar.DATE));
 	addDateField.setText(LocaleUtil.getDayName(getResources(), selectedDate) + ", " + LocaleUtil.getFormattedDate(getResources(), selectedDate));
+    }
+    
+    private void updateSelectedTime(Calendar newTime)
+    {
+	EditText addTimeField = (EditText)findViewById(R.id.add_time);
+	selectedDate.set(Calendar.HOUR_OF_DAY, newTime.get(Calendar.HOUR_OF_DAY));
+	selectedDate.set(Calendar.MINUTE, newTime.get(Calendar.MINUTE));
+	
+	addTimeField.setText(timeFormatter.format(newTime.getTime()));
     }
     
     /**
@@ -281,16 +356,32 @@ public class AddRideActivity extends Activity
 	    type = RideType.SEEK;
 	}
 	
-	// TODO
-	Date time = Calendar.getInstance().getTime(); 
+	String from = ((AutoCompleteTextView)findViewById(R.id.add_from)).getText().toString();
+	String to = ((AutoCompleteTextView)findViewById(R.id.add_to)).getText().toString();
+	
+	// Get price and check if it's empty
+	Double price;
+	EditText priceText = (EditText)findViewById(R.id.add_price);
+	if (priceText.getText().toString().trim().length() == 0)
+	{
+	    price = null;
+	}
+	else 
+	{
+	    price = Double.parseDouble(priceText.getText().toString());
+	}
+	
+	// Get number of people count
+	Spinner numPeople = (Spinner)findViewById(R.id.add_ppl);
+	  
 	
 	Ride ride = new Ride(-1,
 			     type,
-			     ((AutoCompleteTextView)findViewById(R.id.add_from)).getText().toString(),
-			     ((AutoCompleteTextView)findViewById(R.id.add_to)).getText().toString(),
-			     time,
-			     Integer.parseInt(((EditText)findViewById(R.id.add_ppl)).getText().toString()),
-			     Double.parseDouble(((EditText)findViewById(R.id.add_price)).getText().toString()),
+			     from,
+			     to,
+			     selectedDate.getTime(),
+			     ((PeopleSpinnerObject)numPeople.getSelectedItem()).getNumber(),
+			     price,
 			     null,
 			     ((EditText)findViewById(R.id.add_phone)).getText().toString(),
 			     ((EditText)findViewById(R.id.add_comment)).getText().toString(),

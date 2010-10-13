@@ -40,9 +40,10 @@
      <TextView
        android:layout_width = "fill_parent"
        android:layout_height = "wrap_content"
-       android:text = "@string/origin"
+       android:text = "Kam?"
        android:layout_marginBottom = "2dip"
-       style="@style/MediumText"
+       android:padding = "-8dip"
+       style="@style/ListHeaderStyle"
        />
      
      <AutoCompleteTextView
@@ -51,15 +52,8 @@
        android:layout_height = "wrap_content"
        android:inputType = "textCapWords"
        android:layout_marginBottom = "2dip"
+       android:hint = "@string/origin"
        android:textColor = "#000"
-       />
-      
-     <TextView
-       android:layout_width = "fill_parent"
-       android:layout_height = "wrap_content"
-       android:text = "@string/destination"
-       android:layout_marginBottom = "2dip"
-       style="@style/MediumText"
        />
      
      <AutoCompleteTextView
@@ -69,15 +63,15 @@
        android:inputType = "textCapWords"
        android:layout_marginBottom = "2dip"
        android:textColor = "#000"
+       android:hint = "@string/destination"
        />
       
-     <TextView
+      <TextView
        android:layout_width = "fill_parent"
        android:layout_height = "wrap_content"
-       android:text = "@string/date"
-       android:layout_marginTop = "2dip"
-       android:layout_marginBottom = "2dip" 
-       style="@style/MediumText"
+       android:text = "Kdaj?"
+       android:layout_marginBottom = "2dip"
+       style="@style/ListHeaderStyle"
        />
    
       <EditText
@@ -88,31 +82,23 @@
        android:editable = "false"
        android:focusableInTouchMode = "false"
         /> 
-     
-      <LinearLayout
-       android:layout_height = "wrap_content"
-       android:layout_width = "fill_parent"
-       android:orientation = "horizontal"
-       android:layout_marginTop = "2dip"
-       android:layout_marginBottom = "2dip"
-       >
-	      <TextView
-	       android:layout_width = "wrap_content"
-	       android:layout_height = "wrap_content"
-	       android:text = "@string/time"
-	       android:layout_marginRight ="2dip"
-	       style="@style/MediumText"
-	       />   
 	       
-	      <EditText
-	       android:id = "@+id/add_time"
-	       android:layout_width = "fill_parent"
-	       android:layout_height = "wrap_content"
-	       android:layout_marginBottom = "2dip"
-	       android:editable = "false"
-	       android:focusableInTouchMode = "false"
-	        />
-      </LinearLayout>    
+      <EditText
+       android:id = "@+id/add_time"
+       android:layout_width = "fill_parent"
+       android:layout_height = "wrap_content"
+       android:layout_marginBottom = "2dip"
+       android:editable = "false"
+       android:focusableInTouchMode = "false"
+        />
+      
+      <TextView
+       android:layout_width = "fill_parent"
+       android:layout_height = "wrap_content"
+       android:text = "Kdo?"
+       android:layout_marginBottom = "2dip"
+       style="@style/ListHeaderStyle"
+       />
       
       <LinearLayout
        android:layout_height = "wrap_content"
@@ -121,78 +107,42 @@
        android:layout_marginTop = "2dip"
        android:layout_marginBottom = "2dip"
        >
-         <TextView
-          android:layout_width = "wrap_content"
-          android:layout_height = "wrap_content"
-          android:text = "@string/add_num_ppl"
-          android:layout_marginRight ="2dip"
-          style="@style/MediumText"
-          />   
-          
-         <EditText
-          android:id = "@+id/add_ppl"
-          android:layout_width = "fill_parent"
-          android:layout_height = "wrap_content"
-          android:layout_marginBottom = "2dip"
-          android:inputType = "number"
-           />
-      </LinearLayout>
-      
-      <LinearLayout
-       android:layout_height = "wrap_content"
-       android:layout_width = "fill_parent"
-       android:orientation = "horizontal"
-       android:layout_marginTop = "2dip"
-       android:layout_marginBottom = "2dip"
-       >
-         <TextView
-          android:layout_width = "wrap_content"
-          android:layout_height = "wrap_content"
-          android:text = "@string/add_price"
-          android:layout_marginRight ="2dip"
-          style="@style/MediumText"
-          />   
-          
          <EditText
           android:id = "@+id/add_price"
           android:layout_width = "fill_parent"
           android:layout_height = "wrap_content"
-          android:layout_marginBottom = "2dip"
-          android:inputType = "numberDecimal"
-           />
-      </LinearLayout>
-      
-      <LinearLayout
-       android:layout_height = "wrap_content"
-       android:layout_width = "fill_parent"
-       android:orientation = "horizontal"
-       android:layout_marginTop = "2dip"
-       android:layout_marginBottom = "2dip"
-       >
-         <TextView
-          android:layout_width = "wrap_content"
-          android:layout_height = "wrap_content"
-          android:text = "@string/add_phone"
-          android:layout_marginRight ="2dip"
-          style="@style/MediumText"
-          />   
-          
-         <EditText
-          android:id = "@+id/add_phone"
-          android:layout_width = "fill_parent"
-          android:layout_height = "wrap_content"
+          android:layout_weight = "1"
           android:layout_marginBottom = "2dip"
           android:inputType = "phone"
-           />
-      </LinearLayout>            
+          android:hint = "@string/add_price"
+           />       
+       
+         <Spinner
+          android:id = "@+id/add_ppl"
+          android:layout_width = "fill_parent"
+          android:layout_height = "wrap_content"
+          android:layout_weight = "1"
+          android:prompt = "@string/add_num_ppl"
+          android:layout_marginBottom = "2dip"/> 
+          
+      </LinearLayout>
+      
+     <EditText
+      android:id = "@+id/add_phone"
+      android:layout_width = "fill_parent"
+      android:layout_height = "wrap_content"
+      android:layout_marginBottom = "2dip"
+      android:inputType = "phone"
+      android:hint = "@string/add_phone"
+       />
+     
       
      <TextView
        android:layout_width = "fill_parent"
        android:layout_height = "wrap_content"
        android:text = "@string/add_comment"
-       android:layout_marginTop = "2dip"
-       android:layout_marginBottom = "2dip" 
-       style="@style/MediumText"
+       android:layout_marginBottom = "2dip"
+       style="@style/ListHeaderStyle"
        />
       
       <EditText

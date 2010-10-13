@@ -47,7 +47,7 @@ public class Database
     
     public static void addFavorite(Context context, String from, String to, RideType type)
     {
-	Log.i("Database - AddFavorite", "Adding to favorites " + from + " - " + to);
+	Log.i("Database - AddFavorite", "Adding to favorites " + from + " - " + to + " type " + type);
 	SQLiteDatabase database = new DatabaseHelper(context).getWritableDatabase();
 	
 	// Check if entry exists
@@ -108,6 +108,8 @@ public class Database
         	{
         	    routes.add(new Route(results.getString(from_index), results.getString(to_index), RideType.values()[results.getInt(type_index)]));
         	    results.moveToNext();
+        	    
+        	    Log.d("Database - GetFavorites", routes.get(routes.size() - 1).toString() + " type " + routes.get(routes.size() - 1).getType());
         	}
 	
 	}

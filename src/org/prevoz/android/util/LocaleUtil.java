@@ -35,4 +35,24 @@ public class LocaleUtil
 	String[] monthNames =  res.getStringArray(R.array.month_names);
 	return date.get(Calendar.DATE) + ". " + monthNames[date.get(Calendar.MONTH)] + " " + date.get(Calendar.YEAR);
     }
+    
+    public static String getStringNumberForm(Resources res, int resourceArray, int number)
+    {
+	String[] wordArray = res.getStringArray(resourceArray);
+	
+	int mod = number % 100;
+	
+	switch(mod)
+	{
+	   case 1:
+	       return wordArray[0];
+	   case 2:
+	       return wordArray[1];
+	   case 3:
+	   case 4:
+	       return wordArray[2];
+	   default:
+	       return wordArray[3];
+	}
+    }
 }

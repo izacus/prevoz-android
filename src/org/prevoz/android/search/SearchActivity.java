@@ -219,7 +219,7 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	if (currentView == SearchViews.SEARCH_RESULTS && keyCode == KeyEvent.KEYCODE_BACK)
 	{
 	    ViewFlipper searchFlipper = (ViewFlipper)findViewById(R.id.search_flipper);
-	    searchFlipper.showPrevious();
+	    searchFlipper.setDisplayedChild(0);
 	    currentView = SearchViews.SEARCH_FORM;
 	    return true;
 	}
@@ -431,7 +431,7 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	}
 	
 	ViewFlipper searchFlipper = (ViewFlipper)findViewById(R.id.search_flipper);
-	searchFlipper.showNext();
+	searchFlipper.setDisplayedChild(1);
 	currentView = SearchViews.SEARCH_RESULTS;
     }
     

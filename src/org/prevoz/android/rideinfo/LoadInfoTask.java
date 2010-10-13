@@ -65,7 +65,7 @@ public class LoadInfoTask implements Runnable
 	    JSONObject root = new JSONObject(response);
 	    
 	    int id = root.getInt("id");
-	    RideType type = root.getString("share_type") == "share" ? RideType.SHARE : RideType.SEEK;
+	    RideType type = root.getString("share_type").equalsIgnoreCase("share") ? RideType.SHARE : RideType.SEEK;
 	    
 	    String from = root.getString("from");
 	    String to = root.getString("to");

@@ -32,7 +32,7 @@ public class Route
     @Override
     public String toString()
     {
-	return from + " - " + to + " of type " + type;
+	return from + " - " + to;
     }
 
     public RideType getType()

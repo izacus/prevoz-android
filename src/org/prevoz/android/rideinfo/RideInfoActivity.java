@@ -11,7 +11,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -151,32 +150,8 @@ public class RideInfoActivity extends Activity
 	TextView pplText = (TextView)findViewById(R.id.rideinfo_people);
 	pplText.setText(String.valueOf(ride.getPeople()));
 	
-	// Write the correct word for numbering
-	String[] pplTags = res.getStringArray(R.array.people_tags);
-	int mod = ride.getPeople() % 100;
-	
-	String tagString;
-	
-	
-	switch(mod)
-	{
-		case 1:
-		    	tagString = pplTags[0];
-		    	break;
-		case 2:
-		    	tagString = pplTags[1];
-		    	break;
-		case 3:
-		case 4:
-		    	tagString = pplTags[2];
-		    	break;
-		default:
-		    	tagString = pplTags[3];
-		    	break;
-	}
-	
 	TextView pplTagText = (TextView)findViewById(R.id.rideinfo_peopletag);
-	pplTagText.setText(tagString);
+	pplTagText.setText(LocaleUtil.getStringNumberForm(res, R.array.people_tags, ride.getPeople()));
 	
 	// Driver and contact
 	
@@ -214,7 +189,7 @@ public class RideInfoActivity extends Activity
 	return true;
     }
     
-    private void AddToFavorites()
+    private void addToFavorites()
     {
 	Database.addFavorite(this, ride.getFrom(), ride.getTo(), ride.getType());
 	Toast.makeText(this, getString(R.string.added_to_favorites), Toast.LENGTH_SHORT).show();
@@ -226,7 +201,7 @@ public class RideInfoActivity extends Activity
 	switch(item.getItemId())
 	{
 	    case MENU_ADD_FAVORITES:
-		AddToFavorites();
+		addToFavorites();
 		break;
 		
 	    default:

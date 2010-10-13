@@ -27,6 +27,7 @@ import android.view.View.OnCreateContextMenuListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
@@ -41,6 +42,7 @@ public class MyRidesActivity extends ListActivity implements OnItemClickListener
     
     private SectionedAdapter listAdapter = null;
     
+    private ArrayList<Route> favorites = null;
     private Route contextSelected = null;
     private Route selected = null;
     
@@ -59,14 +61,41 @@ public class MyRidesActivity extends ListActivity implements OnItemClickListener
     
     private void buildList()
     {
-	ArrayList<Route> favorites = Database.getFavorites(this);
+	favorites = Database.getFavorites(this);
 	
 	listAdapter = getSectionedAdapter();
 	
 	
 	if (favorites.size() > 0)
 	{
-        	ArrayAdapter<Route> favsAdapter = new ArrayAdapter<Route>(this, android.R.layout.simple_list_item_1, favorites);
+        	ArrayAdapter<Route> favsAdapter = new ArrayAdapter<Route>(this, R.layout.favorite_item, favorites)
+        	{
+
+		    @Override
+		    public View getView(int position, 
+			    		View convertView,
+			    		ViewGroup parent)
+		    {
+			Route route = this.getItem(position);
+			
+			View view = convertView;
+			
+			if (convertView == null)
+			{
+			    view = (LinearLayout)getLayoutInflater().inflate(R.layout.favorite_item, null);
+			}
+			
+			TextView routeText = (TextView)view.findViewById(R.id.favorite_route);
+			routeText.setText(route.toString());
+			
+			TextView routeType = (TextView)view.findViewById(R.id.favorite_type);
+			routeType.setText(route.getType().toString());
+			
+			return view;
+		    }
+        	};
+        	
+        	
         	listAdapter.addSection(getString(R.string.favorites), favsAdapter);
 	}
 	else
@@ -189,6 +218,16 @@ public class MyRidesActivity extends ListActivity implements OnItemClickListener
 		result.setText(caption);
 		return result;
 	    }
+
+	    @Override
+	    public View getView(int position, 
+		    		View convertView, 
+		    		ViewGroup parent)
+	    {
+		return super.getView(position, convertView, parent);
+	    }
+	    
+	    
 	};
     }
 }
