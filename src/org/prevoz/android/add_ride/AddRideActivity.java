@@ -30,7 +30,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -226,6 +225,12 @@ public class AddRideActivity extends Activity
 	addPpl.setAdapter(peopleAdapter);
 	peopleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	
+	// Search type spinner population
+	String[] types = new String[] { getString(R.string.add_share), getString(R.string.add_seek) };
+	ArrayAdapter<String> typesAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, types);
+	typesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	((Spinner)findViewById(R.id.add_type)).setAdapter(typesAdapter);
+	
 	// Add next button callback
 	Button nextButton = (Button)findViewById(R.id.add_button);
 	nextButton.setOnClickListener(new View.OnClickListener()
@@ -347,7 +352,7 @@ public class AddRideActivity extends Activity
     {
 	RideType type;
 	
-	if (((RadioGroup)findViewById(R.id.add_type)).getCheckedRadioButtonId() == R.id.add_share)
+	if (((Spinner)findViewById(R.id.add_type)).getSelectedItemPosition() == 0)
 	{
 	    type = RideType.SHARE;
 	}

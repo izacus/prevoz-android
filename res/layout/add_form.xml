@@ -9,33 +9,12 @@
    android:layout_height = "fill_parent"
    android:orientation = "vertical"
    style="@style/ViewStyle">
-     <TextView
+      
+     <Spinner
+       android:id="@+id/add_type"
        android:layout_width = "fill_parent"
        android:layout_height = "wrap_content"
-       android:text = "@string/add_offering"
-       style="@style/MediumText"
-       />
-      
-     <RadioGroup
-          android:layout_height = "wrap_content"
-          android:layout_width = "fill_parent"
-          android:orientation = "horizontal"
-          android:id = "@+id/add_type"
-          >
-           <RadioButton
-             android:layout_width = "fill_parent"
-             android:layout_height = "wrap_content"
-             android:layout_weight = "1"
-             android:id = "@+id/add_share" 
-             android:text = "prevoze" />
-      
-           <RadioButton
-             android:layout_width = "fill_parent"
-             android:layout_height = "wrap_content"
-             android:layout_weight = "1"
-             android:id = "@+id/add_ride" 
-             android:text = "iskalce" />
-        </RadioGroup>
+       android:layout_margin = "8dip" /> 
       
      <TextView
        android:layout_width = "fill_parent"
@@ -49,9 +28,8 @@
        android:layout_width = "fill_parent"
        android:layout_height = "wrap_content"
        android:inputType = "textCapWords"
-       android:layout_marginBottom = "2dip"
        android:hint = "@string/origin"
-       android:textColor = "#000"
+       style = "@style/PaddedBox"
        />
      
      <AutoCompleteTextView
@@ -59,9 +37,8 @@
        android:layout_width = "fill_parent"
        android:layout_height = "wrap_content"
        android:inputType = "textCapWords"
-       android:layout_marginBottom = "2dip"
-       android:textColor = "#000"
        android:hint = "@string/destination"
+       style = "@style/PaddedBox"
        />
       
       <TextView
@@ -79,6 +56,7 @@
        android:layout_marginBottom = "2dip"
        android:editable = "false"
        android:focusableInTouchMode = "false"
+       style = "@style/PaddedBox"
         /> 
 	       
       <EditText
@@ -88,6 +66,7 @@
        android:layout_marginBottom = "2dip"
        android:editable = "false"
        android:focusableInTouchMode = "false"
+       style = "@style/PaddedBox"
         />
       
       <TextView
@@ -113,6 +92,7 @@
           android:layout_marginBottom = "2dip"
           android:inputType = "phone"
           android:hint = "@string/add_price"
+          style = "@style/PaddedBox"
            />       
        
          <Spinner
@@ -132,6 +112,7 @@
       android:layout_marginBottom = "2dip"
       android:inputType = "phone"
       android:hint = "@string/add_phone"
+      style = "@style/PaddedBox"
        />
      
       
@@ -151,6 +132,7 @@
           android:lines = "4"
           android:inputType = "textMultiLine"
           android:gravity = "top"
+          style = "@style/PaddedBox"
           />
           
       <Button
