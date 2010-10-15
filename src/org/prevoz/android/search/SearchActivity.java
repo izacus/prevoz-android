@@ -40,7 +40,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -74,6 +74,10 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	public void onReceive(Context context, Intent intent)
 	{
 	    Log.i(this.toString(), "Received broadcast to start search!");
+	 
+	    currentView = SearchViews.SEARCH_FORM;
+	    ViewFlipper searchFlipper = (ViewFlipper)findViewById(R.id.search_flipper);
+	    searchFlipper.setDisplayedChild(0);
 	    
 	    // Populate search fields
 	    String from = intent.getExtras().getString(SEARCH_FROM);
@@ -86,6 +90,28 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	    startSearch();
 	}
 	
+    }
+    
+    private class SearchTypeSpinnerItem
+    {
+	private int typeNum;
+	private String displayName;
+	
+	public SearchTypeSpinnerItem(int typeNum, String displayName)
+	{
+	    this.typeNum = typeNum;
+	    this.displayName = displayName;
+	}
+	
+	public String toString()
+	{
+	    return displayName;
+	}
+	
+	public int type()
+	{
+	    return typeNum;
+	}
     }
     
     private SearchViews currentView;
@@ -129,6 +155,21 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	fromText.setThreshold(1);
 	toText.setThreshold(1);
 	
+	// Populate search type spinner
+	SearchTypeSpinnerItem items[] = new SearchTypeSpinnerItem[2];
+	
+	// Watch out for the search type number, it's switched in API
+	items[0] = new SearchTypeSpinnerItem(1, getString(R.string.searching_shares));
+	items[1] = new SearchTypeSpinnerItem(0, getString(R.string.searching_seekers));
+	
+	Spinner searchTypeSpinner = (Spinner)findViewById(R.id.search_type);
+	
+	ArrayAdapter<SearchTypeSpinnerItem> spinnerAdapter = new ArrayAdapter<SearchActivity.SearchTypeSpinnerItem>(this, 
+														    android.R.layout.simple_spinner_item, 
+														    items);
+	searchTypeSpinner.setAdapter(spinnerAdapter);
+	spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	
 	// Try to restore state if able
 	if (savedInstanceState != null)
 	{
@@ -142,12 +183,12 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	    currentView = SearchViews.values()[savedInstanceState.getInt("current_view")];
 	    
 	    // Select right search type radio button
-	    ((RadioGroup)findViewById(R.id.search_type)).check(savedInstanceState.getInt("search_type"));
+	    searchTypeSpinner.setSelection(savedInstanceState.getInt("search_type"));
 	}
 	else
 	{
 	    currentView = SearchViews.SEARCH_FORM;
-	    ((RadioGroup)findViewById(R.id.search_type)).check(R.id.shares);
+	    searchTypeSpinner.setSelection(0);
 	}
 	
 	// Create beginning search date text
@@ -201,7 +242,7 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	outState.putString("to_loc", ((TextView)findViewById(R.id.toField)).getText().toString());
 	
 	// Store currently selected search type
-	outState.putInt("search_type", ((RadioGroup)findViewById(R.id.search_type)).getCheckedRadioButtonId());
+	outState.putInt("search_type", ((Spinner)findViewById(R.id.search_type)).getSelectedItemPosition());
     }
 
 
@@ -307,17 +348,7 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 	parameters.put("d", formatter.format(selectedDate.getTime()));
 	
-	int search_type = 0;
-	
-	if (((RadioGroup)findViewById(R.id.search_type)).getCheckedRadioButtonId() == R.id.rides)
-	{
-	    search_type = 0;
-	}
-	else
-	{
-	    search_type = 1;
-	}
-	
+	int search_type = ((SearchTypeSpinnerItem)((Spinner)findViewById(R.id.search_type)).getSelectedItem()).type();
 	parameters.put("search_type", String.valueOf(search_type));
 	
 	SearchRequest request = new SearchRequest(this, 

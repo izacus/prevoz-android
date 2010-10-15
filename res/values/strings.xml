@@ -9,11 +9,11 @@
     <!--  Search tab strings -->
     <string name="search_tab">Iskanje</string>
     <string name="searching">Iščem...</string>
-    <string name="search_no_results">Iskanje ni obrodilo sadov.</string>
+    <string name="search_no_results">Prevozov za ta dan ni.</string>
     
     <string name="im_searching">Iščem</string>
-    <string name="shares">ponudnike</string>
-    <string name="seekers">iskalce</string>
+    <string name="searching_shares">ponujene prevoze</string>
+    <string name="searching_seekers">iskalce prevozov</string>
     
     <string name="origin">Kraj odhoda</string>
     <string name="destination">Kraj prihoda</string>
