@@ -119,36 +119,55 @@
 	   
 	   <include layout = "@layout/separator" />
 	   
-	   <LinearLayout
-	    android:layout_width = "fill_parent"
-	    android:layout_height = "wrap_content"
-	    android:orientation = "vertical"
-	    >
+	   <RelativeLayout
+	     android:layout_width = "fill_parent"
+	     android:layout_height = "wrap_content"
+	     android:layout_margin = "8dip"
+	     >
 	   
-	    <TextView
-	        android:id = "@+id/rideinfo_author" 
-	        android:layout_width = "fill_parent"
-	        android:layout_height = "wrap_content"
-	        android:layout_margin = "3dp"
-	        style="@style/DriverNameText" />
-	    
 	     <TextView
-	        android:id = "@+id/rideinfo_phone" 
-	        android:layout_width = "fill_parent"
+           android:id = "@+id/rideinfo_author" 
+           android:layout_width = "wrap_content"
+           android:layout_height = "fill_parent"
+           android:layout_alignParentTop = "true"
+           style="@style/DriverNameText" />
+           
+         <TextView
+           android:id = "@+id/rideinfo_phone" 
+           android:layout_width = "wrap_content"
+           android:layout_height = "fill_parent"
+           android:layout_below = "@id/rideinfo_author"
+           android:layout_centerVertical = "true"
+           style="@style/PhoneNumberText"
+           />
+	     
+	      <Button
+           android:id = "@+id/rideinfo_sms"
+           android:layout_width = "wrap_content"
+           android:layout_height = "fill_parent"
+           android:layout_alignParentRight = "true"
+           android:layout_alignParentTop = "true"
+           android:text = "Pošlji SMS"
+           />
+	     
+	      <Button
+	        android:id = "@+id/rideinfo_call"
+	        android:layout_width = "wrap_content"
 	        android:layout_height = "fill_parent"
-	        android:layout_weight = "1" 
-	        android:layout_margin = "3dp"
-	        style="@style/PhoneNumberText"
+	        android:layout_toLeftOf = "@id/rideinfo_sms"
+	        android:layout_alignParentTop = "true"
+	        android:text = "Pokliči"
 	        />
-	        
-	   </LinearLayout>
-	   
+	     
+	   </RelativeLayout>
+	  
 	   <include layout = "@layout/separator" />
 	  
 	   <TextView 
 	    android:id = "@+id/rideinfo_comment"
 	    android:layout_width = "fill_parent"
 	    android:layout_height = "wrap_content"
+	    android:layout_margin = "8dip"
 	    />
 	   
    </LinearLayout>

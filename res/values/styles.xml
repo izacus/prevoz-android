@@ -166,14 +166,10 @@
     
     <style name="DriverNameText">
         <item
-            name="android:gravity">right</item>
-        <item
             name="android:textStyle">bold|italic</item>
     </style>
     
     <style name="PhoneNumberText" parent="@android:style/TextAppearance.Medium">
-        <item
-            name="android:gravity">right</item>
     </style>
     
 </resources>

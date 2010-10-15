@@ -250,6 +250,10 @@ public class AddRideActivity extends Activity
 	
 	// TODO: validate
 	
+	// Hide call and SMS buttons
+	((Button)findViewById(R.id.rideinfo_call)).setVisibility(View.INVISIBLE);
+	((Button)findViewById(R.id.rideinfo_sms)).setVisibility(View.INVISIBLE);
+	
 	// Populate preview view
 	((TextView)findViewById(R.id.rideinfo_from)).setText(ride.getFrom());
 	((TextView)findViewById(R.id.rideinfo_to)).setText(ride.getTo());
@@ -263,6 +267,8 @@ public class AddRideActivity extends Activity
 	
 	((TextView)findViewById(R.id.rideinfo_comment)).setText(ride.getComment());
 	((TextView)findViewById(R.id.rideinfo_phone)).setText(ride.getContact());
+	
+	
 	
 	switchView(AddViews.PREVIEW);
     }

@@ -47,7 +47,7 @@
 	    android:layout_width = "fill_parent"
 	    android:layout_height = "wrap_content"
 	    android:inputType = "textCapWords"
-	    android:hint = "@string/origin"
+	    android:hint = "@string/destination"
 	    style = "@style/PaddedBox"
 	    />
 	  

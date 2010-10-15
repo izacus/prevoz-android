@@ -9,7 +9,9 @@ import org.prevoz.android.util.LocaleUtil;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,6 +19,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -159,12 +163,12 @@ public class RideInfoActivity extends Activity
 	
 	if (ride.getAuthor() == null || ride.getAuthor().trim().length() == 0)
 	{
-	    driverText.setVisibility(View.VISIBLE);
-	    driverText.setText(ride.getAuthor());
+	    driverText.setVisibility(View.GONE);
 	}
 	else
 	{
-	    driverText.setVisibility(View.GONE);
+	    driverText.setVisibility(View.VISIBLE);
+	    driverText.setText(ride.getAuthor());
 	}
 	
 	TextView contactText = (TextView)findViewById(R.id.rideinfo_phone);
@@ -173,6 +177,23 @@ public class RideInfoActivity extends Activity
 	// Comment
 	TextView commentText = (TextView)findViewById(R.id.rideinfo_comment);
 	commentText.setText(ride.getComment());
+	
+	// Setup button callbacks
+	((Button)findViewById(R.id.rideinfo_call)).setOnClickListener(new OnClickListener()
+	{
+	    public void onClick(View v)
+	    {
+		callAuthor();
+	    }
+	});
+	
+	((Button)findViewById(R.id.rideinfo_sms)).setOnClickListener(new OnClickListener()
+	{
+	    public void onClick(View v)
+	    {
+		sendSMS();
+	    }
+	});
     }
 
     @Override
@@ -189,10 +210,31 @@ public class RideInfoActivity extends Activity
 	return true;
     }
     
+    /**
+     * Adds this route to favorites
+     */
     private void addToFavorites()
     {
 	Database.addFavorite(this, ride.getFrom(), ride.getTo(), ride.getType());
 	Toast.makeText(this, getString(R.string.added_to_favorites), Toast.LENGTH_SHORT).show();
+    }
+    
+    /**
+     * Opens SMS messaging application with authors phone number entered
+     */
+    private void sendSMS()
+    {
+	Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + ride.getContact()));
+	this.startActivity(intent);
+    }
+    
+    /**
+     * Opens the dialer with authors phone number entered
+     */
+    private void callAuthor()
+    {
+	Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + ride.getContact()));
+	this.startActivity(intent);
     }
 
     @Override
