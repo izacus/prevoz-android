@@ -54,6 +54,8 @@
     <string name="preview">Predogled</string>
     <string name="add_send">Pošlji</string>
     
+    <string name="add_sending">Pošiljam...</string>
+    
     <!--  Add ride error strings -->
     <string name = "add_missing_loc">Kraja odhoda in prihoda morata biti izpolnjena.</string>
     <string name = "add_missing_phone">Telefonska številka mora biti vpisana.</string>

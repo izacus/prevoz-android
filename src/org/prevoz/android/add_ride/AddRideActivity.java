@@ -2,20 +2,23 @@ package org.prevoz.android.add_ride;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
 import org.prevoz.android.RideType;
 import org.prevoz.android.rideinfo.Ride;
-import org.prevoz.android.util.HTTPHelper;
+import org.prevoz.android.rideinfo.RideInfoActivity;
 import org.prevoz.android.util.LocaleUtil;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +26,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
@@ -74,17 +78,12 @@ public class AddRideActivity extends Activity
 		CookieManager cookieManager = CookieManager.getInstance();
 		
 		// Get newly received session cookies in header form
-		
-		// TODO: change to api URL
-		sessionCookie = cookieManager.getCookie("http://prevoz.org");
+		sessionCookie = cookieManager.getCookie(Globals.API_DOMAIN);
 		checkLoginStatus();
 	    }
 	    
 	    super.onPageStarted(view, url, favicon);
 	}
-	
-	
-	
 	
     }
     
@@ -117,9 +116,7 @@ public class AddRideActivity extends Activity
     
     // Current view
     private AddViews currentView;
-    
-    private LoginStatus loginStatus;
-    
+
     // Current cookies
     private String sessionCookie;
     
@@ -132,14 +129,13 @@ public class AddRideActivity extends Activity
 	super.onCreate(savedInstanceState);
 	AddRideActivity.instance = this;
 	
-	loginStatus = LoginStatus.UNKNOWN;
 	setContentView(R.layout.add_ride_activity);
 	switchView(AddViews.LOGIN);
 	
 	// Restore session cookies
 	CookieSyncManager.createInstance(AddRideActivity.getInstance());
 	CookieManager cookieManager = CookieManager.getInstance();
-	sessionCookie = cookieManager.getCookie("http://prevoz.org");
+	sessionCookie = cookieManager.getCookie(Globals.API_DOMAIN);
 	
 	// Check if user is logged in
 	checkLoginStatus();
@@ -286,7 +282,7 @@ public class AddRideActivity extends Activity
     private void showPreview()
     {
 	// Get entered data
-	Ride ride = getEnteredRide();
+	final Ride ride = getEnteredRide();
 	
 	if (!validateRide(ride))
 	    return;
@@ -321,7 +317,84 @@ public class AddRideActivity extends Activity
 	postButton.setText(getString(R.string.add_send));
 	postButton.setVisibility(View.VISIBLE);
 	
+	postButton.setOnClickListener(new OnClickListener()
+	{
+	    public void onClick(View v)
+	    {
+		postRide(ride);
+	    }
+	});
+	
 	switchView(AddViews.PREVIEW);
+    }
+    
+    private void postRide(Ride ride)
+    {
+	SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+	SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
+	
+	HashMap<String, String> parameters = new HashMap<String, String>();
+	parameters.put("transptype", String.valueOf(ride.getType().ordinal()));
+	parameters.put("transpfrom", ride.getFrom());
+	parameters.put("transpfromcountry", "SI");
+	parameters.put("transpto", ride.getTo());
+	parameters.put("transptocountry", "SI");
+	
+	parameters.put("transpdate", dateFormatter.format(ride.getTime()));
+	parameters.put("transptime", timeFormatter.format(ride.getTime()));
+	
+	parameters.put("transpppl", String.valueOf(ride.getPeople()));
+	
+	if (ride.getPrice() != null)
+	{
+	    parameters.put("transpprice", String.valueOf(ride.getPrice()));
+	}
+	else
+	{
+	    parameters.put("transpprice", "");
+	}
+	
+	parameters.put("transpphone", ride.getContact());
+	parameters.put("transpdescr", ride.getComment());
+	
+	
+	final ProgressDialog sendProgress = ProgressDialog.show(this, null, getString(R.string.add_sending));
+	final SendRideTask task = new SendRideTask(sessionCookie);
+	
+	Handler sendCallback = new Handler()
+	{
+	    @Override
+	    public void handleMessage(Message msg)
+	    {
+		sendProgress.dismiss();
+		rideSent(msg.what, task);
+	    }
+	};
+	
+	sendProgress.show();
+	task.startTask(parameters, sendCallback);
+    }
+    
+    private void rideSent(int status, SendRideTask doneTask)
+    {
+	switch(status)
+	{
+		case SendRideTask.SERVER_ERROR:
+		    Toast.makeText(this, R.string.server_error, Toast.LENGTH_LONG).show();
+		    break;
+		
+		case SendRideTask.SEND_ERROR:
+		    Toast.makeText(this, doneTask.getErrorMessage(), Toast.LENGTH_LONG).show();
+		    switchView(AddViews.FORM);
+		    break;
+		  
+		case SendRideTask.SEND_SUCCESS:
+		    switchView(AddViews.FORM);
+		    Intent intent = new Intent(this, RideInfoActivity.class);
+		    intent.putExtra(RideInfoActivity.RIDE_ID, doneTask.getRideId());
+		    startActivity(intent);
+		    break;
+	}
     }
     
     @Override
