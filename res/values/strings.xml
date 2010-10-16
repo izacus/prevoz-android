@@ -31,12 +31,12 @@
       <item>oseb</item>
     </string-array>
     
+    <string name="delete">Izbriši</string>
+    
     <!-- My rides tab strings -->
     <string name="my_rides_tab">Moji prevozi</string>
     <string name="favorites">Priljubljene</string>
     <string name="no_favorites">Nimate priljubljenih poti.</string>
-    
-    <string name="delete">Izbriši</string>
     
     <!-- Add ride strings -->
     <string name="add_tab">Dodaj prevoz</string>

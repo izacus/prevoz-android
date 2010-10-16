@@ -194,6 +194,24 @@ public class RideInfoActivity extends Activity
 		sendSMS();
 	    }
 	});
+	
+	// Setup delete button
+	if (ride.isAuthor())
+	{
+	    Button delButton = (Button)findViewById(R.id.rideinfo_delsend);
+	    delButton.setText(R.string.delete);
+	    delButton.setVisibility(View.VISIBLE);
+	    
+	    final int id = rideID;
+	    
+	    delButton.setOnClickListener(new OnClickListener()
+	    {
+	        public void onClick(View v)
+	        {
+	            deleteRide(id);
+	        }
+	    });
+	}
     }
 
     @Override
@@ -235,6 +253,11 @@ public class RideInfoActivity extends Activity
     {
 	Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + ride.getContact()));
 	this.startActivity(intent);
+    }
+    
+    private void deleteRide(int id)
+    {
+	
     }
 
     @Override
