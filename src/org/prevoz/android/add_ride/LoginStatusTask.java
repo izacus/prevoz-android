@@ -18,11 +18,13 @@ public class LoginStatusTask implements Runnable
     private Activity context;
     
     private Handler callback = null;
+    private String sessionCookies = null;
     private ProgressDialog statusDialog = null;
     
-    public LoginStatusTask(Activity context)
+    public LoginStatusTask(Activity context, String sessionCookies)
     {
 	this.context = context;
+	this.sessionCookies = sessionCookies;
     }
     
     public void start(Handler callback)
@@ -42,8 +44,7 @@ public class LoginStatusTask implements Runnable
     {
 	try
 	{
-	    HTTPHelper httpHelper = new HTTPHelper(context);
-	    String response = httpHelper.httpGet(Globals.API_URL + "/accounts/status/");
+	    String response = HTTPHelper.httpGet(Globals.API_URL + "/accounts/status/", null, sessionCookies);
 	    
 	    JSONObject jsonObj = new JSONObject(response);
 	    boolean isLoggedIn = jsonObj.getBoolean("is_authenticated");

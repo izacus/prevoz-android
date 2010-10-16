@@ -14,37 +14,16 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.prevoz.android.Globals;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 public class HTTPHelper
 {
     private static SimpleDateFormat iso8601formatter = new SimpleDateFormat("yyyy-MM-DD'T'hh:mm:ssZ");
     
-    private static final String sessionCookiePrefName = "session_cookies";
-    private static String sessionCookies = null;
-    
     public static Date parseISO8601(String date) throws ParseException
     {
 	return iso8601formatter.parse(date);
-    }
-    
-    
-    private Context context = null;
-    
-    public HTTPHelper(Context context)
-    {
-	this.context = context;
-	
-	// Load session cookies
-	if (sessionCookies == null)
-	{
-	    SharedPreferences prefs = context.getSharedPreferences(Globals.PREF_FILE_NAME, Context.MODE_PRIVATE);
-	    prefs.getString(sessionCookiePrefName, "");
-	}
     }
     
     /**
@@ -113,9 +92,14 @@ public class HTTPHelper
 	return sb.toString();
     }
     
-    public String httpGet(String url) throws IOException
+    public static String httpGet(String url) throws IOException
     {
-	return httpGet(url, null);
+	return httpGet(url, null, null);
+    }
+    
+    public static String httpGet(String url, String params) throws IOException
+    {
+	return httpGet(url, params, null);
     }
     
     /**
@@ -125,13 +109,16 @@ public class HTTPHelper
      * @return Server response or <b>null</b> if the request failed
      * @throws IOException
      */
-    public String httpGet(String url, String params) throws IOException
+    public static String httpGet(String url, String params, String sessionCookies) throws IOException
     {
 	DefaultHttpClient client = new DefaultHttpClient();
 	HttpGet get = new HttpGet(url + (params != null ? params : ""));
 	
 	// Add session cookies to request
-	get.addHeader("Cookie", sessionCookies);
+	if (sessionCookies != null)
+	{
+	    get.addHeader("Cookie", sessionCookies);
+	}
 	
 	HttpResponse response = client.execute(get);
 	HttpEntity entity = response.getEntity();
@@ -146,16 +133,5 @@ public class HTTPHelper
 	}
 	
 	return null;
-    }
-    
-    public void setSessionCookies(String cookies)
-    {
-	sessionCookies = cookies;
-	
-	// Store session cookies to preferences
-	SharedPreferences prefs = context.getSharedPreferences(Globals.PREF_FILE_NAME, Context.MODE_PRIVATE);
-	SharedPreferences.Editor prefsEditor = prefs.edit();
-	prefsEditor.putString(sessionCookiePrefName, cookies);
-	prefsEditor.commit();
     }
 }

@@ -10,21 +10,18 @@ import org.prevoz.android.Globals;
 import org.prevoz.android.RideType;
 import org.prevoz.android.util.HTTPHelper;
 
-import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
 public class LoadInfoTask implements Runnable
 {
-    private Context context = null;
     private int rideID;
     private Handler callback;
     
     private Ride result = null;
     
-    public LoadInfoTask(Context context)
+    public LoadInfoTask()
     {
-	this.context = context;
     }
 
     public void loadInfo(int id, Handler callback)
@@ -40,12 +37,11 @@ public class LoadInfoTask implements Runnable
     public void run()
     {
 	String response = null;
-	HTTPHelper httpHelper = new HTTPHelper(context);
 	
 	try
 	{
 	    String url = Globals.API_URL + "/carshare/" + rideID + "/";
-	    response = httpHelper.httpGet(url);
+	    response = HTTPHelper.httpGet(url);
 	}
 	catch(IOException e)
 	{

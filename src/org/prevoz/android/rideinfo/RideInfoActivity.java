@@ -83,7 +83,7 @@ public class RideInfoActivity extends Activity
     {
 	loadingDialog = ProgressDialog.show(this, "", getString(R.string.loading));
 	
-	final LoadInfoTask loadInfo = new LoadInfoTask(this);
+	final LoadInfoTask loadInfo = new LoadInfoTask();
 	
 	Handler handler = new Handler()
 	{

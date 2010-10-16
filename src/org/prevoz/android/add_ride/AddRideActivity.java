@@ -16,9 +16,11 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.CookieManager;
@@ -54,25 +56,36 @@ public class AddRideActivity extends Activity
 	@Override
 	public boolean shouldOverrideUrlLoading(WebView view, String url)
 	{
+	    Log.d(this.toString(), "Loading URL " + url);
+	    
+	    view.loadUrl(url);
+	    
+	    return true;
+	}
+	
+	@Override
+	public void onPageStarted(WebView view, String url, Bitmap favicon)
+	{
+	    Log.i(this.toString(), "Page started " + url);
+	    
 	    if (url.contains("/login/success"))
 	    {
 		CookieSyncManager.createInstance(AddRideActivity.getInstance());
 		CookieManager cookieManager = CookieManager.getInstance();
 		
 		// Get newly received session cookies in header form
-		String cookies = cookieManager.getCookie("http://prevoz.org");
 		
-		// Store them to HTTP client
-		new HTTPHelper(instance).setSessionCookies(cookies);
+		// TODO: change to api URL
+		sessionCookie = cookieManager.getCookie("http://prevoz.org");
 		checkLoginStatus();
 	    }
-	    else
-	    {
-		view.loadUrl(url);
-	    }
 	    
-	    return true;
+	    super.onPageStarted(view, url, favicon);
 	}
+	
+	
+	
+	
     }
     
     private class PeopleSpinnerObject
@@ -107,6 +120,9 @@ public class AddRideActivity extends Activity
     
     private LoginStatus loginStatus;
     
+    // Current cookies
+    private String sessionCookie;
+    
     // Private fields
     private Calendar selectedDate;
     
@@ -120,9 +136,13 @@ public class AddRideActivity extends Activity
 	setContentView(R.layout.add_ride_activity);
 	switchView(AddViews.LOGIN);
 	
+	// Restore session cookies
+	CookieSyncManager.createInstance(AddRideActivity.getInstance());
+	CookieManager cookieManager = CookieManager.getInstance();
+	sessionCookie = cookieManager.getCookie("http://prevoz.org");
+	
 	// Check if user is logged in
-	//checkLoginStatus();
-	updateLoginStatus(LoginStatus.LOGGED_IN);
+	checkLoginStatus();
     }
     
     /**
@@ -130,7 +150,7 @@ public class AddRideActivity extends Activity
      */
     private void checkLoginStatus()
     {
-	LoginStatusTask checkStatusTask = new LoginStatusTask(this);
+	LoginStatusTask checkStatusTask = new LoginStatusTask(this, sessionCookie);
 	
 	// Dispatch response to updateLoginStatus method
 	Handler callbackHandler = new Handler()
@@ -151,9 +171,6 @@ public class AddRideActivity extends Activity
      */
     private void updateLoginStatus(LoginStatus status)
     {
-	// TODO: remove!
-	status = LoginStatus.LOGGED_IN;
-	
 	switch(status)
 	{
 		case UNKNOWN:
@@ -243,12 +260,36 @@ public class AddRideActivity extends Activity
 	});
     }
     
+    /**
+     * Validates ride information
+     * @return true if the ride is valid, false otherwise
+     */
+    private boolean validateRide(Ride ride)
+    {
+	// Check origin and destination
+	if (ride.getFrom().trim().length() == 0 || ride.getTo().trim().length() == 0)
+	{
+	    Toast.makeText(this, R.string.add_missing_loc, Toast.LENGTH_LONG).show();
+	    return false;
+	}
+	
+	// Check phone number
+	if (ride.getContact().trim().length() == 0)
+	{
+	    Toast.makeText(this, R.string.add_missing_phone, Toast.LENGTH_LONG).show();
+	    return false;
+	}
+	
+	return true;
+    }
+    
     private void showPreview()
     {
 	// Get entered data
 	Ride ride = getEnteredRide();
 	
-	// TODO: validate
+	if (!validateRide(ride))
+	    return;
 	
 	// Hide call and SMS buttons
 	((Button)findViewById(R.id.rideinfo_call)).setVisibility(View.INVISIBLE);
@@ -261,14 +302,24 @@ public class AddRideActivity extends Activity
 	((TextView)findViewById(R.id.rideinfo_day)).setText(LocaleUtil.getDayName(getResources(), ride.getTime()) + ",");
 	((TextView)findViewById(R.id.rideinfo_date)).setText(LocaleUtil.getFormattedDate(getResources(), ride.getTime()));
 	
-	((TextView)findViewById(R.id.rideinfo_price)).setText(String.format("%1.1f €", ride.getPrice()));
+	if (ride.getPrice() == null)
+	{
+	    ((TextView)findViewById(R.id.rideinfo_price)).setText("?");
+	}
+	else
+	{
+	    ((TextView)findViewById(R.id.rideinfo_price)).setText(String.format("%1.1f €", ride.getPrice()));
+	}
 	((TextView)findViewById(R.id.rideinfo_people)).setText(String.valueOf(ride.getPeople()));
 	((TextView)findViewById(R.id.rideinfo_peopletag)).setText(LocaleUtil.getStringNumberForm(getResources(), R.array.people_tags, ride.getPeople()));
 	
 	((TextView)findViewById(R.id.rideinfo_comment)).setText(ride.getComment());
 	((TextView)findViewById(R.id.rideinfo_phone)).setText(ride.getContact());
 	
-	
+	// Show post button
+	Button postButton = (Button)findViewById(R.id.rideinfo_delsend);
+	postButton.setText(getString(R.string.add_send));
+	postButton.setVisibility(View.VISIBLE);
 	
 	switchView(AddViews.PREVIEW);
     }
@@ -276,6 +327,8 @@ public class AddRideActivity extends Activity
     @Override
     protected Dialog onCreateDialog(int id)
     {
+	
+	
 	switch(id)
 	{
 		case DATEPICKER_DIALOG_ID:
@@ -342,12 +395,12 @@ public class AddRideActivity extends Activity
      */
     private void showWebLogin()
     {
-	ViewFlipper addFlipper = (ViewFlipper)findViewById(R.id.add_flipper);
-	addFlipper.showPrevious();
-	
 	WebView view = (WebView)findViewById(R.id.webview);
 	view.setWebViewClient(new WebViewController());
+	
 	view.loadUrl(Globals.LOGIN_URL);
+	
+	switchView(AddViews.LOGIN);
     }
     
     /**

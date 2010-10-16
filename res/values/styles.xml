@@ -14,7 +14,7 @@
     <!-- Style for background view setting correct background color -->
     <style
         name = "ViewStyle">
-        <item name="android:background">@color/view_background</item>
+        <!-- <item name="android:background">@color/view_background</item> -->
     </style>
 
     <!-- Style for input boxes by default -->

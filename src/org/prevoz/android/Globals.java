@@ -11,9 +11,9 @@ public class Globals
     /**
      * URL to access Prevoz API
      */
-    public static final String API_URL = "http://new-www.prevoz.org/api";
+    public static final String API_URL = "http://prevoz.org/api";
     
-    public static final String LOGIN_URL = "http://new-www.prevoz.org/accounts/simple/signin/";
+    public static final String LOGIN_URL = "http://prevoz.org/accounts/simple/signin/";
     
     public static final String PREF_FILE_NAME = "PrevozPreferences";
     

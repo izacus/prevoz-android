@@ -2,6 +2,7 @@ package org.prevoz.android.util;
 
 import java.util.ArrayList;
 
+import org.prevoz.android.R;
 import org.prevoz.android.RideType;
 import org.prevoz.android.Route;
 
@@ -21,9 +22,12 @@ public class Database
 {   
     private static class DatabaseHelper extends SQLiteOpenHelper
     {
+	private Context storedContext;
+	
 	public DatabaseHelper(Context context)
 	{
-	    super(context, "settings.db", null, 2);
+	    super(context, "settings.db", null, 3);
+	    this.storedContext = context;
 	}
 
 	@Override
@@ -33,7 +37,12 @@ public class Database
     			 		       "from_loc TEXT NOT NULL," +
     			 		       "to_loc TEXT NOT NULL," +
     			 		       "type INTEGER NOT NULL)");
-	    
+    	   
+    	   
+    	   // Load SQL location script from raw folder and insert all relevant data into database
+    	   String locationSQL = FileUtil.readTxtFile(storedContext, R.raw.locations);
+    	   db.execSQL(locationSQL);
+	   
 	}
 
 	@Override

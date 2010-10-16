@@ -31,7 +31,6 @@
          />
          
       <include layout="@layout/ride_info" />
-   
    </LinearLayout>
   
 </ViewFlipper>

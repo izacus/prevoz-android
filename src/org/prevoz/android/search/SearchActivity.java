@@ -354,7 +354,7 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	SearchRequest request = new SearchRequest(this, 
 						  search_type == 0 ? RideType.SEEK : RideType.SHARE, 
 					          parameters);
-	final SearchTask task = new SearchTask(this);
+	final SearchTask task = new SearchTask();
 	
 	Handler searchHandler = new Handler()
 	{

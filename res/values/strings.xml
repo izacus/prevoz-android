@@ -52,6 +52,12 @@
     <string name="add_button">Naprej</string>
     
     <string name="preview">Predogled</string>
+    <string name="add_send">Pošlji</string>
+    
+    <!--  Add ride error strings -->
+    <string name = "add_missing_loc">Kraja odhoda in prihoda morata biti izpolnjena.</string>
+    <string name = "add_missing_phone">Telefonska številka mora biti vpisana.</string>
+    
     
     <!-- Menu options -->
     <string name="add_to_favorites">Dodaj med priljubljene</string>
