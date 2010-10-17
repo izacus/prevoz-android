@@ -6,9 +6,9 @@ import java.util.Calendar;
 import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.Route;
+import org.prevoz.android.SectionedAdapter;
 import org.prevoz.android.search.SearchActivity;
 import org.prevoz.android.util.Database;
-import org.prevoz.android.util.SectionedAdapter;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;

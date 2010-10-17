@@ -12,6 +12,7 @@ import org.prevoz.android.rideinfo.RideInfoActivity;
 import org.prevoz.android.search.LocationAutocompleteAdapter;
 import org.prevoz.android.util.HTTPHelper;
 import org.prevoz.android.util.LocaleUtil;
+import org.prevoz.android.util.StringUtil;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -79,7 +80,10 @@ public class AddRideActivity extends Activity
 	@Override
 	public void onPageStarted(WebView view, String url, Bitmap favicon)
 	{
-	    loadingDialog = ProgressDialog.show(context, null, context.getString(R.string.loading));
+	    if (loadingDialog == null || !loadingDialog.isShowing())
+	    {
+		loadingDialog = ProgressDialog.show(context, null, context.getString(R.string.loading));
+	    }
 	    
 	    Log.i(this.toString(), "Page started " + url);
 	    
@@ -87,6 +91,11 @@ public class AddRideActivity extends Activity
 	    {
 		HTTPHelper.updateSessionCookies(AddRideActivity.getInstance());
 		checkLoginStatus();
+		
+		if (loadingDialog != null && loadingDialog.isShowing())
+		{
+		    loadingDialog.dismiss();
+		}
 	    }
 	    
 	    super.onPageStarted(view, url, favicon);
@@ -152,6 +161,8 @@ public class AddRideActivity extends Activity
 	    
 	    Ride existing = new Ride(savedInstanceState);
 	    
+	    ((Spinner)findViewById(R.id.add_type)).setSelection(existing.getType().ordinal());
+	    
 	    ((AutoCompleteTextView)findViewById(R.id.add_from)).setText(existing.getFrom());
 	    ((AutoCompleteTextView)findViewById(R.id.add_to)).setText(existing.getTo());
 	    ((EditText)findViewById(R.id.add_phone)).setText(existing.getContact());
@@ -204,8 +215,6 @@ public class AddRideActivity extends Activity
      */
     private void updateLoginStatus(LoginStatus status)
     {
-	status = LoginStatus.LOGGED_IN;
-	
 	switch(status)
 	{
 		case UNKNOWN:
@@ -532,13 +541,16 @@ public class AddRideActivity extends Activity
 	// Get price and check if it's empty
 	Double price;
 	EditText priceText = (EditText)findViewById(R.id.add_price);
-	if (priceText.getText().toString().trim().length() == 0)
+	
+	String priceString = StringUtil.numberOnly(priceText.getText().toString().trim(), true);
+	
+	if (priceString.length() == 0)
 	{
 	    price = null;
 	}
 	else 
 	{
-	    price = Double.parseDouble(priceText.getText().toString());
+	    price = Double.parseDouble(priceString);
 	}
 	
 	// Get number of people count
@@ -553,7 +565,7 @@ public class AddRideActivity extends Activity
 			     ((PeopleSpinnerObject)numPeople.getSelectedItem()).getNumber(),
 			     price,
 			     null,
-			     ((EditText)findViewById(R.id.add_phone)).getText().toString(),
+			     StringUtil.numberOnly(((EditText)findViewById(R.id.add_phone)).getText().toString(), false),
 			     ((EditText)findViewById(R.id.add_comment)).getText().toString(),
 			     true);
 	

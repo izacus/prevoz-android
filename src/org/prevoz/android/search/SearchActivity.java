@@ -6,14 +6,14 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 
+import org.prevoz.android.GPSManager;
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
 import org.prevoz.android.RideType;
+import org.prevoz.android.SectionedAdapter;
 import org.prevoz.android.rideinfo.RideInfoActivity;
 import org.prevoz.android.search.SearchResultAdapter.SearchResultViewWrapper;
-import org.prevoz.android.util.GPSManager;
 import org.prevoz.android.util.LocaleUtil;
-import org.prevoz.android.util.SectionedAdapter;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -507,8 +507,6 @@ public class SearchActivity extends Activity implements OnDateSetListener
     private void fillInGPS(int field)
     {
 	final AutoCompleteTextView fillField = (AutoCompleteTextView)findViewById(field);
-	
-	
 	
 	// Disable GPS buttons
 	((ImageButton)findViewById(R.id.gps_to)).setEnabled(false);

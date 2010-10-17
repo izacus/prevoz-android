@@ -74,7 +74,7 @@ public class LoadInfoTask implements Runnable
 	    
 	    String author = root.getString("author");
 	    String contact = root.getString("contact");
-	    String comment = root.getString("comment");
+	    String comment = root.getString("comment").replace('\r', ' ');
 	    
 	    boolean isAuthor = root.getBoolean("is_author");
 	    

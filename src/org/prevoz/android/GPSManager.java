@@ -1,8 +1,10 @@
-package org.prevoz.android.util;
+package org.prevoz.android;
 
 import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import org.prevoz.android.util.Database;
 
 import android.content.Context;
 import android.location.Location;
