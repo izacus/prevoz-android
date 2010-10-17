@@ -11,6 +11,7 @@ import org.prevoz.android.R;
 import org.prevoz.android.RideType;
 import org.prevoz.android.rideinfo.RideInfoActivity;
 import org.prevoz.android.search.SearchResultAdapter.SearchResultViewWrapper;
+import org.prevoz.android.util.GPSManager;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.SectionedAdapter;
 
@@ -39,6 +40,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -143,14 +145,14 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	setContentView(R.layout.search_activity);
 	selectedDate = Calendar.getInstance();
 	
+	LocationAutocompleteAdapter adapter = new LocationAutocompleteAdapter(this, null);
+	
 	// Set autocomplete options for locations
 	AutoCompleteTextView fromText = (AutoCompleteTextView)findViewById(R.id.fromField);
 	AutoCompleteTextView toText = (AutoCompleteTextView)findViewById(R.id.toField);
 	
-	ArrayAdapter<String> places = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, Globals.locations);
-	
-	fromText.setAdapter(places);
-	toText.setAdapter(places);
+	fromText.setAdapter(adapter);
+	toText.setAdapter(adapter);
 	
 	fromText.setThreshold(1);
 	toText.setThreshold(1);
@@ -212,6 +214,23 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	    public void onClick(View v)
 	    {
 		startSearch();
+	    }
+	});
+	
+	// GPS buttons
+	((ImageButton)findViewById(R.id.gps_from)).setOnClickListener(new OnClickListener()
+	{
+	    public void onClick(View v)
+	    {
+		fillInGPS(R.id.fromField);
+	    }
+	});
+	
+	((ImageButton)findViewById(R.id.gps_to)).setOnClickListener(new OnClickListener()
+	{
+	    public void onClick(View v)
+	    {
+		fillInGPS(R.id.toField);
 	    }
 	});
 	
@@ -475,5 +494,49 @@ public class SearchActivity extends Activity implements OnDateSetListener
     private void setSearchResults(SearchResults searchResults)
     {
         this.searchResults = searchResults;
+    }
+    
+    private void fillInGPS(int field)
+    {
+	final AutoCompleteTextView fillField = (AutoCompleteTextView)findViewById(field);
+	
+	
+	
+	// Disable GPS buttons
+	((ImageButton)findViewById(R.id.gps_to)).setEnabled(false);
+	((ImageButton)findViewById(R.id.gps_from)).setEnabled(false);
+	fillField.setEnabled(false);
+	
+	final String oldHint = fillField.getHint().toString(); 
+	
+	fillField.setHint(R.string.searching);
+	
+	final GPSManager gpsManager = new GPSManager();
+	final SearchActivity searchActivity = this;
+	
+	Handler callback = new Handler()
+	{
+	    @Override
+	    public void handleMessage(Message msg)
+	    {
+		fillField.setHint(oldHint);
+		
+		// Re-enable fields
+		((ImageButton)findViewById(R.id.gps_to)).setEnabled(true);
+		((ImageButton)findViewById(R.id.gps_from)).setEnabled(true);
+		fillField.setEnabled(true);
+		
+		if (msg.what == GPSManager.GPS_PROVIDER_UNAVALABLE)
+		{
+		    Toast.makeText(searchActivity, R.string.gps_error, Toast.LENGTH_LONG).show();
+		}
+		else
+		{
+		    fillField.setText(gpsManager.getCurrentCity());
+		}
+	    }
+	};
+	
+	gpsManager.findCurrentCity(this, callback);
     }
 }

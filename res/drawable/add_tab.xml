@@ -3,10 +3,10 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
   <item
     android:state_selected="true"
-    android:drawable="@drawable/ic_tab_search_sel" />
+    android:drawable="@drawable/ic_tab_add_sel" />
   <item
     android:state_selected="false"
-    android:drawable="@drawable/ic_tab_search_unsel" />
+    android:drawable="@drawable/ic_tab_add_unsel" />
 
 
 </selector>

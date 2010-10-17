@@ -33,23 +33,57 @@
 	    style="@style/ListHeaderStyle"
 	    />
 	  
-	  <AutoCompleteTextView 
-	    android:id = "@+id/fromField"
+	  <RelativeLayout
 	    android:layout_width = "fill_parent"
 	    android:layout_height = "wrap_content"
-	    android:inputType = "textCapWords"
-	    android:hint = "@string/origin"
-	    style = "@style/PaddedBox"
-	    />
+	    >
 	    
-	   <AutoCompleteTextView
-	    android:id = "@+id/toField"
-	    android:layout_width = "fill_parent"
-	    android:layout_height = "wrap_content"
-	    android:inputType = "textCapWords"
-	    android:hint = "@string/destination"
-	    style = "@style/PaddedBox"
-	    />
+	     <ImageButton
+	       android:id = "@+id/gps_from"
+	       android:layout_width = "wrap_content"
+	       android:layout_height = "wrap_content"
+	       android:layout_alignParentRight = "true"
+	       android:layout_marginRight = "8dip"
+	       android:src = "@drawable/gps_button"
+	       />
+	  
+		  <AutoCompleteTextView 
+		    android:id = "@+id/fromField"
+		    android:layout_toLeftOf = "@id/gps_from"
+		    android:layout_width = "fill_parent"
+		    android:layout_height = "wrap_content"
+		    android:inputType = "textCapWords"
+		    android:hint = "@string/origin"
+		    style = "@style/PaddedBox"
+		    />
+	   
+	   </RelativeLayout>
+	   
+	   <RelativeLayout
+       android:layout_width = "fill_parent"
+       android:layout_height = "wrap_content"
+       >
+       
+        <ImageButton
+          android:id = "@+id/gps_to"
+          android:layout_width = "wrap_content"
+          android:layout_height = "wrap_content"
+          android:layout_alignParentRight = "true"
+          android:layout_marginRight = "8dip"
+          android:src = "@drawable/gps_button"
+          />
+     
+        <AutoCompleteTextView 
+          android:id = "@+id/toField"
+          android:layout_toLeftOf = "@id/gps_to"
+          android:layout_width = "fill_parent"
+          android:layout_height = "wrap_content"
+          android:inputType = "textCapWords"
+          android:hint = "@string/destination"
+          style = "@style/PaddedBox"
+          />
+      
+      </RelativeLayout>
 	  
 	  <TextView
        android:layout_width = "fill_parent"

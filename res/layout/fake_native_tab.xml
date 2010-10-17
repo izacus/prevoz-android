@@ -15,7 +15,7 @@
     android:id="@+id/fakeNativeTabImageView" 
     android:layout_width="wrap_content" 
     android:layout_height="wrap_content"
-    android:src="@drawable/friends_tab" />
+    android:src="@drawable/myrides_tab" />
     
   <TextView 
     android:id="@+id/fakeNativeTabTextView" 

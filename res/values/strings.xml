@@ -20,6 +20,8 @@
     <string name="date">Datum</string>
     <string name="time">Čas</string>
     
+    <string name="gps_error">Vaše lokacije ni bilo mogoče najti.</string>
+    
     <!--  Ride details strings -->
     <string name="loading">Nalagam...</string>
     <string name="price">cena</string>

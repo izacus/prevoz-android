@@ -9,6 +9,7 @@ import org.prevoz.android.Route;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -26,7 +27,7 @@ public class Database
 	
 	public DatabaseHelper(Context context)
 	{
-	    super(context, "settings.db", null, 3);
+	    super(context, "settings.db", null, 4);
 	    this.storedContext = context;
 	}
 
@@ -40,15 +41,24 @@ public class Database
     	   
     	   
     	   // Load SQL location script from raw folder and insert all relevant data into database
-    	   String locationSQL = FileUtil.readTxtFile(storedContext, R.raw.locations);
-    	   db.execSQL(locationSQL);
-	   
+    	   String[] locationSQL = FileUtil.readSQLStatements(storedContext, R.raw.locations);
+    	   
+    	   for (String statement : locationSQL)
+    	   {
+    	       db.execSQL(statement);
+    	   }
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 	{
 	    db.execSQL("DROP TABLE favorites");
+	    
+	    if (oldVersion > 3)
+	    {
+		db.execSQL("DROP TABLE locations");
+	    }
+	    
 	    onCreate(db);
 	}
     }
@@ -136,5 +146,46 @@ public class Database
 	SQLiteDatabase database = new DatabaseHelper(context).getWritableDatabase();
 	database.delete("favorites", "from_loc = ? AND to_loc = ? AND type = ?", new String[] { from, to, String.valueOf(type.ordinal()) });
 	database.close();
+    }
+    
+    public static SQLiteDatabase getSettingsDatabase(Context context)
+    {
+	return new DatabaseHelper(context).getReadableDatabase();
+    }
+    
+    /**
+     * Returns all cities starting with string
+     * @param database database on which to do query on (to prevent handle leaks)
+     * @param what string to look for
+     * @return result cursos
+     */
+    public static Cursor getCitiesStartingWith(SQLiteDatabase database, String what)
+    {
+	// There's an Android bug when using pre-built queries with LIKE so rawQuery has to be done
+	
+	Cursor cursor = database.rawQuery("SELECT _id, name FROM locations WHERE name LIKE '" + what + "%' " + 
+									   "OR name_ascii LIKE '" + what + "%' " + 
+									   "LIMIT 5", null);
+	
+	return cursor;
+    }
+    
+    public static String getClosestCity(Context context, double latitude, double longtitude)
+    {
+	SQLiteDatabase database = new DatabaseHelper(context).getReadableDatabase();
+	
+	String query = "SELECT name, ABS(lat - " + latitude + ") + ABS(long - " + longtitude + ") AS distance " +
+		       "FROM locations " +
+	               "ORDER BY distance LIMIT 1";
+	
+	SQLiteCursor cursor = (SQLiteCursor) database.rawQuery(query, null);
+	cursor.moveToFirst();
+	
+	int nameColumn = cursor.getColumnIndex("name");
+	String city = cursor.getString(nameColumn);
+	
+	database.close();
+	
+	return city;
     }
 }

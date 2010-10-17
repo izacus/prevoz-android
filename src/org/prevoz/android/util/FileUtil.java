@@ -4,13 +4,20 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 import android.content.Context;
 import android.util.Log;
 
 public class FileUtil
 {
-    public static String readTxtFile(Context context, int rawResId)
+    /**
+     * Reads text SQL file and breaks it up on ";" signs to be used separately by execSQL
+     * @param context
+     * @param rawResId resource id of .sql file
+     * @return string array of SQL statements in file
+     */
+    public static String[] readSQLStatements(Context context, int rawResId)
     {
 	InputStream is = context.getResources().openRawResource(rawResId);
 	BufferedReader reader = new BufferedReader(new InputStreamReader(is));
@@ -29,9 +36,19 @@ public class FileUtil
 	catch (IOException e)
 	{
 	    Log.e("FileUtil", "Failed to read resource with ID " + rawResId, e);
-	    return "";
+	    return new String[0];
+	}
+
+	StringTokenizer tokenizeSQL = new StringTokenizer(fileContent.toString(), ";");
+	String[] SQLStatements = new String[tokenizeSQL.countTokens()];
+	
+	int i = 0;
+	
+	while(tokenizeSQL.hasMoreTokens())
+	{
+	    SQLStatements[i++] = tokenizeSQL.nextToken();
 	}
 	
-	return fileContent.toString();
+	return SQLStatements;
     }
 }

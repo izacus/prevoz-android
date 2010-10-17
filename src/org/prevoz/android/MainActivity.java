@@ -3,6 +3,7 @@ package org.prevoz.android;
 import org.prevoz.android.add_ride.AddRideActivity;
 import org.prevoz.android.my_rides.MyRidesActivity;
 import org.prevoz.android.search.SearchActivity;
+import org.prevoz.android.util.Database;
 import org.prevoz.android.util.TabsUtil;
 
 import android.app.TabActivity;
@@ -40,15 +41,22 @@ public class MainActivity extends TabActivity
 	tabHost = getTabHost();
 	
 	Intent myRidesIntent = new Intent(this, MyRidesActivity.class);
-	TabsUtil.addNativeLookingTab(this, tabHost, "my_rides", getString(R.string.my_rides_tab), R.drawable.friends_tab, myRidesIntent);
+	TabsUtil.addNativeLookingTab(this, tabHost, "my_rides", getString(R.string.my_rides_tab), R.drawable.myrides_tab, myRidesIntent);
 	
 	Intent searchIntent = new Intent(this, SearchActivity.class);
 	TabsUtil.addNativeLookingTab(this, tabHost, "search", getString(R.string.search_tab), R.drawable.search_tab, searchIntent);
 	
 	Intent addRideIntent = new Intent(this, AddRideActivity.class);
-	TabsUtil.addNativeLookingTab(this, tabHost, "add_ride", getString(R.string.add_tab), R.drawable.friends_tab, addRideIntent);
+	TabsUtil.addNativeLookingTab(this, tabHost, "add_ride", getString(R.string.add_tab), R.drawable.add_tab, addRideIntent);
 	
-	tabHost.setCurrentTab(0);
+	if (Database.getFavorites(this).size() > 0)
+	{
+	    tabHost.setCurrentTab(0);
+	}
+	else
+	{
+	    tabHost.setCurrentTab(1);
+	}
     }
     
     public void switchToSearch()

@@ -9,6 +9,7 @@ import org.prevoz.android.R;
 import org.prevoz.android.RideType;
 import org.prevoz.android.rideinfo.Ride;
 import org.prevoz.android.rideinfo.RideInfoActivity;
+import org.prevoz.android.search.LocationAutocompleteAdapter;
 import org.prevoz.android.util.LocaleUtil;
 
 import android.app.Activity;
@@ -196,7 +197,7 @@ public class AddRideActivity extends Activity
 	updateSelectedTime(selectedDate);
 	
 	// Prepare autocomplete
-	ArrayAdapter<String> places = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, Globals.locations);
+	LocationAutocompleteAdapter places = new LocationAutocompleteAdapter(this, null);
 	
 	AutoCompleteTextView fromField = (AutoCompleteTextView)findViewById(R.id.add_from);
 	AutoCompleteTextView toField = (AutoCompleteTextView)findViewById(R.id.add_to);
