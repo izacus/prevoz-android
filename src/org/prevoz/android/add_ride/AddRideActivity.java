@@ -10,6 +10,7 @@ import org.prevoz.android.RideType;
 import org.prevoz.android.rideinfo.Ride;
 import org.prevoz.android.rideinfo.RideInfoActivity;
 import org.prevoz.android.search.LocationAutocompleteAdapter;
+import org.prevoz.android.util.HTTPHelper;
 import org.prevoz.android.util.LocaleUtil;
 
 import android.app.Activity;
@@ -19,6 +20,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -28,8 +30,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
@@ -58,6 +58,14 @@ public class AddRideActivity extends Activity
     
     private class WebViewController extends WebViewClient
     {
+	private ProgressDialog loadingDialog;
+	private Context context;
+	
+	public WebViewController(Context context)
+	{
+	    this.context = context;
+	}
+	
 	@Override
 	public boolean shouldOverrideUrlLoading(WebView view, String url)
 	{
@@ -71,19 +79,23 @@ public class AddRideActivity extends Activity
 	@Override
 	public void onPageStarted(WebView view, String url, Bitmap favicon)
 	{
+	    loadingDialog = ProgressDialog.show(context, null, context.getString(R.string.loading));
+	    
 	    Log.i(this.toString(), "Page started " + url);
 	    
 	    if (url.contains("/login/success"))
 	    {
-		CookieSyncManager.createInstance(AddRideActivity.getInstance());
-		CookieManager cookieManager = CookieManager.getInstance();
-		
-		// Get newly received session cookies in header form
-		sessionCookie = cookieManager.getCookie(Globals.API_DOMAIN);
+		HTTPHelper.updateSessionCookies(AddRideActivity.getInstance());
 		checkLoginStatus();
 	    }
 	    
 	    super.onPageStarted(view, url, favicon);
+	}
+
+	@Override
+	public void onPageFinished(WebView view, String url)
+	{
+	    loadingDialog.dismiss();
 	}
 	
     }
@@ -117,9 +129,6 @@ public class AddRideActivity extends Activity
     
     // Current view
     private AddViews currentView;
-
-    // Current cookies
-    private String sessionCookie;
     
     // Private fields
     private Calendar selectedDate;
@@ -129,17 +138,44 @@ public class AddRideActivity extends Activity
     {
 	super.onCreate(savedInstanceState);
 	AddRideActivity.instance = this;
-	
 	setContentView(R.layout.add_ride_activity);
-	switchView(AddViews.LOGIN);
 	
-	// Restore session cookies
-	CookieSyncManager.createInstance(AddRideActivity.getInstance());
-	CookieManager cookieManager = CookieManager.getInstance();
-	sessionCookie = cookieManager.getCookie(Globals.API_DOMAIN);
+	selectedDate = Calendar.getInstance();
+	// Reset time to some sane value
+	selectedDate.add(Calendar.HOUR_OF_DAY, 1);
+	selectedDate.set(Calendar.MINUTE, 0);
 	
-	// Check if user is logged in
-	checkLoginStatus();
+	if (savedInstanceState != null)
+	{
+	    selectedDate.setTimeInMillis(savedInstanceState.getLong("selected_date"));
+	    prepareAddForm();
+	    
+	    Ride existing = new Ride(savedInstanceState);
+	    
+	    ((AutoCompleteTextView)findViewById(R.id.add_from)).setText(existing.getFrom());
+	    ((AutoCompleteTextView)findViewById(R.id.add_to)).setText(existing.getTo());
+	    ((EditText)findViewById(R.id.add_phone)).setText(existing.getContact());
+	    ((EditText)findViewById(R.id.add_comment)).setText(existing.getComment());
+	    ((Spinner)findViewById(R.id.add_ppl)).setSelection(existing.getPeople() - 1);
+	    
+	    if (existing.getPrice() != null)
+	    {
+		((EditText)findViewById(R.id.add_price)).setText(String.valueOf(existing.getPrice()));
+	    }
+	    
+	    AddViews view = AddViews.values()[savedInstanceState.getInt("view")];
+	    switchView(view);
+	    
+	    if (view == AddViews.PREVIEW)
+	    {
+		showPreview();
+	    }
+	}
+	else
+	{
+	    switchView(AddViews.LOGIN);
+	    checkLoginStatus();
+	}
     }
     
     /**
@@ -147,7 +183,7 @@ public class AddRideActivity extends Activity
      */
     private void checkLoginStatus()
     {
-	LoginStatusTask checkStatusTask = new LoginStatusTask(this, sessionCookie);
+	LoginStatusTask checkStatusTask = new LoginStatusTask(this);
 	
 	// Dispatch response to updateLoginStatus method
 	Handler callbackHandler = new Handler()
@@ -168,6 +204,8 @@ public class AddRideActivity extends Activity
      */
     private void updateLoginStatus(LoginStatus status)
     {
+	status = LoginStatus.LOGGED_IN;
+	
 	switch(status)
 	{
 		case UNKNOWN:
@@ -186,13 +224,7 @@ public class AddRideActivity extends Activity
     }
     
     private void prepareAddForm()
-    {
-	// Prepare date selector
-	selectedDate = Calendar.getInstance();
-	// Reset time to some sane value
-	selectedDate.add(Calendar.HOUR_OF_DAY, 1);
-	selectedDate.set(Calendar.MINUTE, 0);
-	
+    {	
 	updateSelectedDate(selectedDate);
 	updateSelectedTime(selectedDate);
 	
@@ -360,7 +392,7 @@ public class AddRideActivity extends Activity
 	
 	
 	final ProgressDialog sendProgress = ProgressDialog.show(this, null, getString(R.string.add_sending));
-	final SendRideTask task = new SendRideTask(sessionCookie);
+	final SendRideTask task = new SendRideTask();
 	
 	Handler sendCallback = new Handler()
 	{
@@ -470,7 +502,7 @@ public class AddRideActivity extends Activity
     private void showWebLogin()
     {
 	WebView view = (WebView)findViewById(R.id.webview);
-	view.setWebViewClient(new WebViewController());
+	view.setWebViewClient(new WebViewController(this));
 	
 	view.loadUrl(Globals.LOGIN_URL);
 	
@@ -548,5 +580,18 @@ public class AddRideActivity extends Activity
 	}
 	
 	return super.onKeyUp(keyCode, event);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+	// Store current instance state
+	outState.putLong("selected_date", selectedDate.getTimeInMillis());
+	
+	Ride ride = getEnteredRide();
+	ride.storeToBundle(outState);
+	
+	// Store current view
+	outState.putInt("view", currentView.ordinal());
     }
 }

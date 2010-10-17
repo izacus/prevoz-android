@@ -19,17 +19,14 @@ public class SendRideTask implements Runnable
     public static final int SEND_ERROR = 1;
     public static final int SERVER_ERROR = 2;
     
-    private String sessionCookies;
-    
     private HashMap<String, String> parameters;
     private Handler callback;
     
     private String errorMessage = "";
     private int createdRideId = 0;
     
-    public SendRideTask(String sessionCookies)
+    public SendRideTask()
     {
-	this.sessionCookies = sessionCookies;
     }
     
     public void startTask(HashMap<String, String> parameters, Handler callback)
@@ -50,7 +47,7 @@ public class SendRideTask implements Runnable
 	
 	try
 	{
-	    String response = HTTPHelper.httpGet(Globals.API_URL + "/carshare/create/", params, sessionCookies);
+	    String response = HTTPHelper.httpGet(Globals.API_URL + "/carshare/create/", params);
 	    
 	    JSONObject jsonO = new JSONObject(response);
 	    

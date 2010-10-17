@@ -14,12 +14,17 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.prevoz.android.Globals;
 
+import android.content.Context;
 import android.util.Log;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 
 public class HTTPHelper
 {
     private static SimpleDateFormat iso8601formatter = new SimpleDateFormat("yyyy-MM-DD'T'hh:mm:ssZ");
+    private static String sessionCookies = "";
     
     public static Date parseISO8601(String date) throws ParseException
     {
@@ -94,12 +99,7 @@ public class HTTPHelper
     
     public static String httpGet(String url) throws IOException
     {
-	return httpGet(url, null, null);
-    }
-    
-    public static String httpGet(String url, String params) throws IOException
-    {
-	return httpGet(url, params, null);
+	return httpGet(url, null);
     }
     
     /**
@@ -109,7 +109,7 @@ public class HTTPHelper
      * @return Server response or <b>null</b> if the request failed
      * @throws IOException
      */
-    public static String httpGet(String url, String params, String sessionCookies) throws IOException
+    public static String httpGet(String url, String params) throws IOException
     {
 	DefaultHttpClient client = new DefaultHttpClient();
 	HttpGet get = new HttpGet(url + (params != null ? params : ""));
@@ -133,5 +133,13 @@ public class HTTPHelper
 	}
 	
 	return null;
+    }
+    
+    public static void updateSessionCookies(Context context)
+    {
+	// Restore session cookies
+	CookieSyncManager.createInstance(context);
+	CookieManager cookieManager = CookieManager.getInstance();
+	sessionCookies = cookieManager.getCookie(Globals.API_DOMAIN);
     }
 }

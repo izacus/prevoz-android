@@ -61,7 +61,6 @@ public class LocationAutocompleteAdapter extends CursorAdapter implements Filter
     public Cursor runQueryOnBackgroundThread(CharSequence constraint)
     {
 	Cursor cur = Database.getCitiesStartingWith(database, constraint.toString()); 
-	
 	Log.i(this.toString(), "Retrieved " + cur.getCount() + " records.");
 	
 	return cur;

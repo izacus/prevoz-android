@@ -16,6 +16,7 @@ public class GPSManager implements LocationListener
 {
     public static final int GPS_PROVIDER_UNAVALABLE = 0;
     public static final int GPS_LOCATION_OK = 1;
+    public static final int GPS_CANCELED = 2;
     
     private static final int NEW_LOCATION_FIX_MILLIS = 180000;
     private static final int LOCATION_LOCK_TIMEOUT_MILLIS = 30000;
@@ -122,6 +123,9 @@ public class GPSManager implements LocationListener
 	long currentTime = Calendar.getInstance().getTimeInMillis();
 	Location loc = manager.getLastKnownLocation(provider);
 	
+	if (loc == null)
+	    return false;
+	
 	if (currentTime - loc.getTime() < NEW_LOCATION_FIX_MILLIS)
 	{
 	    Log.d(this.toString(), "Cached location time " + loc.getTime() + " current " + currentTime);
@@ -142,6 +146,13 @@ public class GPSManager implements LocationListener
 	
 	currentCity = Database.getClosestCity(context, latitude, longtitude);
 	Log.i(this.toString(), "Closest city determined to be " + currentCity);
+    }
+    
+    public void cancelSearch()
+    {
+	timeoutTimer.cancel();
+	locationManager.removeUpdates(this);
+	callback.sendEmptyMessage(GPS_CANCELED);
     }
     
     public String getCurrentCity()

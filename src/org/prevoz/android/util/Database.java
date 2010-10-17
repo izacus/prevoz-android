@@ -39,12 +39,16 @@ public class Database
     			 		       "to_loc TEXT NOT NULL," +
     			 		       "type INTEGER NOT NULL)");
     	   
-    	   
     	   // Load SQL location script from raw folder and insert all relevant data into database
     	   String[] locationSQL = FileUtil.readSQLStatements(storedContext, R.raw.locations);
     	   
     	   for (String statement : locationSQL)
     	   {
+    	       if (statement.contains("nomelj"))
+    	       {
+    		   Log.d("","");
+    	       }
+    	       
     	       db.execSQL(statement);
     	   }
 	}
@@ -163,8 +167,9 @@ public class Database
     {
 	// There's an Android bug when using pre-built queries with LIKE so rawQuery has to be done
 	
-	Cursor cursor = database.rawQuery("SELECT _id, name FROM locations WHERE name LIKE '" + what + "%' " + 
-									   "OR name_ascii LIKE '" + what + "%' " + 
+	Cursor cursor = database.rawQuery("SELECT _id, name FROM locations WHERE (name LIKE '" + what + "%' " + 
+									   "OR name_ascii LIKE '" + what + "%') " +
+									   "AND country = 'SI' " +
 									   "LIMIT 5", null);
 	
 	return cursor;

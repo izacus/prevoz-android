@@ -6,10 +6,15 @@ import org.prevoz.android.search.SearchActivity;
 import org.prevoz.android.util.Database;
 import org.prevoz.android.util.TabsUtil;
 
+import android.app.Dialog;
 import android.app.TabActivity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 public class MainActivity extends TabActivity 
 {
@@ -19,6 +24,8 @@ public class MainActivity extends TabActivity
     {
 	return instance;
     }
+    
+    private static final int MENU_ABOUT = 0;
     
     private TabHost tabHost;
     
@@ -62,5 +69,38 @@ public class MainActivity extends TabActivity
     public void switchToSearch()
     {
 	tabHost.setCurrentTab(1);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+	super.onCreateOptionsMenu(menu);
+	menu.add(0, MENU_ABOUT, 0, getString(R.string.about)).setIcon(android.R.drawable.ic_menu_info_details);
+	
+	return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+	switch(item.getItemId())
+	{
+	   case MENU_ABOUT:
+	       final Dialog newDialog = new Dialog(this);
+	       newDialog.setTitle(getString(R.string.app_name) + " " + getString(R.string.app_version));
+	       
+	       TextView text = new TextView(this);
+	       text.setText(getString(R.string.about_text));
+	       text.setPadding(10, 10, 10, 10);
+	       text.setTextColor(Color.WHITE);
+	       
+	       newDialog.setContentView(text);
+	       newDialog.setCanceledOnTouchOutside(true);
+	       newDialog.show();
+	       return false;
+	      
+	   default:
+	       return super.onOptionsItemSelected(item);
+	}
     }
 }

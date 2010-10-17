@@ -132,6 +132,9 @@ public class SearchActivity extends Activity implements OnDateSetListener
     // Search results
     private SearchResults searchResults = null;
     
+    // GPS manager
+    private GPSManager activeManager = null;
+    
     // Search broadcast receiver
     private final IntentFilter intentFilter = new IntentFilter(SEARCH_REQUEST);
     private SearchIntentReceiver receiver = new SearchIntentReceiver();
@@ -262,6 +265,9 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	
 	// Store currently selected search type
 	outState.putInt("search_type", ((Spinner)findViewById(R.id.search_type)).getSelectedItemPosition());
+	
+	if (activeManager != null)
+	    activeManager.cancelSearch();
     }
 
 
@@ -362,6 +368,8 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	parameters.put("fc", "SI");
 	parameters.put("t", ((AutoCompleteTextView)findViewById(R.id.toField)).getText().toString());
 	parameters.put("tc", "SI");
+	
+	parameters.put("client", "android" + getString(R.string.app_version).replace('.', '_'));
 	
 	// Build date
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -512,6 +520,8 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	fillField.setHint(R.string.searching);
 	
 	final GPSManager gpsManager = new GPSManager();
+	activeManager = gpsManager;
+	
 	final SearchActivity searchActivity = this;
 	
 	Handler callback = new Handler()
@@ -530,10 +540,12 @@ public class SearchActivity extends Activity implements OnDateSetListener
 		{
 		    Toast.makeText(searchActivity, R.string.gps_error, Toast.LENGTH_LONG).show();
 		}
-		else
+		else if (msg.what == GPSManager.GPS_LOCATION_OK)
 		{
 		    fillField.setText(gpsManager.getCurrentCity());
 		}
+		
+		activeManager = null;
 	    }
 	};
 	

@@ -97,6 +97,12 @@ public class MyRidesActivity extends ListActivity implements OnItemClickListener
         	
         	
         	listAdapter.addSection(getString(R.string.favorites), favsAdapter);
+        	
+        	// Click callback 
+        	getListView().setOnItemClickListener(this);
+        	
+        	// Context menu callback
+        	getListView().setOnCreateContextMenuListener(this);
 	}
 	else
 	{
@@ -105,12 +111,7 @@ public class MyRidesActivity extends ListActivity implements OnItemClickListener
 	}
 	
 	getListView().setAdapter(listAdapter);
-	
-	// Click callback 
-	getListView().setOnItemClickListener(this);
-	
-	// Context menu callback
-	getListView().setOnCreateContextMenuListener(this);
+
     }
     
     public void onItemClick(AdapterView<?> parent, 
