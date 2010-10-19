@@ -110,7 +110,7 @@ public class HTTPHelper
      * @throws IOException
      */
     public static String httpGet(String url, String params) throws IOException
-    {
+    {	
 	DefaultHttpClient client = new DefaultHttpClient();
 	HttpGet get = new HttpGet(url + (params != null ? params : ""));
 	

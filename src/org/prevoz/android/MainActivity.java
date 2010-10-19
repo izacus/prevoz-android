@@ -1,9 +1,12 @@
 package org.prevoz.android;
 
+import java.io.IOException;
+
 import org.prevoz.android.add_ride.AddRideActivity;
 import org.prevoz.android.my_rides.MyRidesActivity;
 import org.prevoz.android.search.SearchActivity;
 import org.prevoz.android.util.Database;
+import org.prevoz.android.util.HTTPHelper;
 import org.prevoz.android.util.TabsUtil;
 
 import android.app.Dialog;
@@ -13,8 +16,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends TabActivity 
 {
@@ -26,6 +32,7 @@ public class MainActivity extends TabActivity
     }
     
     private static final int MENU_ABOUT = 0;
+    private static final int MENU_LOGOUT = 1;
     
     private TabHost tabHost;
     
@@ -38,7 +45,7 @@ public class MainActivity extends TabActivity
         
         // Set custom titlebar
         setContentView(R.layout.main_activity);
-
+        
         // Prepare tabs for use
         initTabs();
     }
@@ -76,6 +83,7 @@ public class MainActivity extends TabActivity
     {
 	super.onCreateOptionsMenu(menu);
 	menu.add(0, MENU_ABOUT, 0, getString(R.string.about)).setIcon(android.R.drawable.ic_menu_info_details);
+	menu.add(1, MENU_LOGOUT, 1, "Odjavi").setIcon(android.R.drawable.ic_menu_delete);
 	
 	return true;
     }
@@ -97,6 +105,25 @@ public class MainActivity extends TabActivity
 	       newDialog.setContentView(text);
 	       newDialog.setCanceledOnTouchOutside(true);
 	       newDialog.show();
+	       return false;
+	       
+	   case MENU_LOGOUT:
+	       try
+	       {
+		   HTTPHelper.httpGet(Globals.API_URL + "/accounts/logout/");
+	       } 
+	       catch (IOException e)
+	       {
+		   // TODO Auto-generated catch block
+		   e.printStackTrace();
+	       }
+	       
+	       CookieSyncManager.createInstance(this);
+	       CookieManager cookieManager = CookieManager.getInstance();
+	       cookieManager.removeAllCookie();
+	       CookieSyncManager.getInstance().sync();
+	       
+	       Toast.makeText(this, "Odjava uspešna.", Toast.LENGTH_SHORT).show();
 	       return false;
 	      
 	   default:

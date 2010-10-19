@@ -104,7 +104,8 @@ public class AddRideActivity extends Activity
 	@Override
 	public void onPageFinished(WebView view, String url)
 	{
-	    loadingDialog.dismiss();
+	    if (loadingDialog != null && loadingDialog.isShowing())
+		loadingDialog.dismiss();
 	}
 	
     }
@@ -176,19 +177,22 @@ public class AddRideActivity extends Activity
 	    
 	    AddViews view = AddViews.values()[savedInstanceState.getInt("view")];
 	    switchView(view);
-	    
-	    if (view == AddViews.PREVIEW)
-	    {
-		showPreview();
-	    }
 	}
 	else
 	{
 	    switchView(AddViews.LOGIN);
-	    checkLoginStatus();
 	}
     }
     
+    
+    
+    @Override
+    protected void onResume()
+    {
+	super.onResume();
+	checkLoginStatus();
+    }
+
     /**
      * Request current user's login status 
      */
@@ -222,6 +226,10 @@ public class AddRideActivity extends Activity
 		    break;
 		    
 		case LOGGED_IN:
+		    
+		    // Store received api key
+		    
+		    
 		    prepareAddForm();
 		    switchView(AddViews.FORM);
 		    break;
@@ -554,15 +562,17 @@ public class AddRideActivity extends Activity
 	}
 	
 	// Get number of people count
-	Spinner numPeople = (Spinner)findViewById(R.id.add_ppl);
-	  
+	Spinner numPeopleSpinner = (Spinner)findViewById(R.id.add_ppl);
+	PeopleSpinnerObject psObject = (PeopleSpinnerObject)numPeopleSpinner.getSelectedItem();
+	
+	int numPeople = (psObject == null ? 0 : psObject.getNumber());
 	
 	Ride ride = new Ride(-1,
 			     type,
 			     from,
 			     to,
 			     selectedDate.getTime(),
-			     ((PeopleSpinnerObject)numPeople.getSelectedItem()).getNumber(),
+			     numPeople,
 			     price,
 			     null,
 			     StringUtil.numberOnly(((EditText)findViewById(R.id.add_phone)).getText().toString(), false),

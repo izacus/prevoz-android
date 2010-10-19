@@ -1,6 +1,7 @@
 package org.prevoz.android.add_ride;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,8 +11,10 @@ import org.prevoz.android.util.HTTPHelper;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.util.Log;
+import android.webkit.CookieSyncManager;
 
 public class LoginStatusTask implements Runnable
 {
@@ -40,9 +43,19 @@ public class LoginStatusTask implements Runnable
     
     public void run()
     {
+	HTTPHelper.updateSessionCookies(context);
+	
 	try
 	{
-	    String response = HTTPHelper.httpGet(Globals.API_URL + "/accounts/status/", null);
+/*	    SharedPreferences settings = context.getSharedPreferences(Globals.PREF_FILE_NAME, 0);
+	    String apikey = settings.getString("apikey", "");
+	    
+	    Log.d(this.toString(), "API key is" + apikey);
+	    
+	    HashMap<String, String> params = new HashMap<String, String>();
+	    params.put("apikey", apikey); */
+	   
+	    String response = HTTPHelper.httpGet(Globals.API_URL + "/accounts/status/", null); // HTTPHelper.buildGetParams(params));
 	    
 	    JSONObject jsonObj = new JSONObject(response);
 	    boolean isLoggedIn = jsonObj.getBoolean("is_authenticated");
@@ -51,6 +64,18 @@ public class LoginStatusTask implements Runnable
 	    {
 		callback.sendEmptyMessage(LoginStatus.LOGGED_IN.ordinal());
 		Log.i(this.toString(), "User is logged in.");
+		
+		CookieSyncManager.createInstance(context).sync();
+		
+	/*	if (jsonObj.has("apikey"))
+		{
+		    apikey = jsonObj.getString("apikey");
+		    SharedPreferences.Editor editor = settings.edit();
+		    editor.putString("apikey", apikey);
+		    editor.commit();
+		    
+		    Log.d(this.toString(), "Storing API key " + apikey);
+		} */
 	    }
 	    else
 	    {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ViewFlipper
+<view
   xmlns:android="http://schemas.android.com/apk/res/android"
+  class = "org.prevoz.android.FixedViewFlipper"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent"
   android:id = "@+id/add_flipper">
@@ -33,4 +34,4 @@
       <include layout="@layout/ride_info" />
    </LinearLayout>
   
-</ViewFlipper>
+</view>

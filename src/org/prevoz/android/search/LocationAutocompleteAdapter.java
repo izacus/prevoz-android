@@ -30,7 +30,9 @@ public class LocationAutocompleteAdapter extends CursorAdapter implements Filter
 	int nameColumn = cursor.getColumnIndexOrThrow("name");
 	String name = cursor.getString(nameColumn);
 	
-	((TextView)view).setText(name);
+	((TextView)view).setText(name.toString());
+	
+	Log.d(this.toString(), "Name set to " + ((TextView)view).getText());
     }
 
     @Override
@@ -40,10 +42,13 @@ public class LocationAutocompleteAdapter extends CursorAdapter implements Filter
 	// Create new simple dropdown item
 	TextView dropDown = (TextView)inflater.inflate(android.R.layout.simple_dropdown_item_1line, parent, false);
 	dropDown.setTextColor(Color.BLACK);
-	
+	/*
 	int nameColumn = cursor.getColumnIndexOrThrow("name");
-	String name = cursor.getString(nameColumn);
-	dropDown.setText(name);
+	String name = cursor.getString(nameColumn);	
+	
+	dropDown.setText(name.toString());
+	
+	Log.d(this.toString(), "Name set to " + dropDown.getText()); */
 	
 	return dropDown;
     }
