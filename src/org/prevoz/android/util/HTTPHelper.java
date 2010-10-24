@@ -17,6 +17,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.prevoz.android.Globals;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -113,6 +114,8 @@ public class HTTPHelper
     {	
 	DefaultHttpClient client = new DefaultHttpClient();
 	HttpGet get = new HttpGet(url + (params != null ? params : ""));
+	
+	get.addHeader("User-Agent", "Prevoz on Android " + Build.VERSION.SDK_INT);
 	
 	// Add session cookies to request
 	if (sessionCookies != null)

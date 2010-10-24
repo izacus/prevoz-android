@@ -9,11 +9,17 @@ import org.prevoz.android.util.Database;
 import org.prevoz.android.util.HTTPHelper;
 import org.prevoz.android.util.TabsUtil;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TabActivity;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.CookieManager;
@@ -48,6 +54,50 @@ public class MainActivity extends TabActivity
         
         // Prepare tabs for use
         initTabs();
+        
+        // Check for updates
+        final UpdateCheckTask updateCheckTask = new UpdateCheckTask();
+        Handler callback = new Handler()
+        {
+	    @Override
+	    public void handleMessage(Message msg)
+	    {
+		showUpdateNotify(updateCheckTask);
+	    }
+        };
+        
+        updateCheckTask.checkForUpdate(this, callback);
+    }
+    
+    private void showUpdateNotify(UpdateCheckTask task)
+    {
+	final UpdateCheckTask updateTask = task;
+	
+	if (task.hasNewVersion())
+	{
+	    AlertDialog dialog = new AlertDialog.Builder(this).create();
+	    dialog.setTitle("Nova različica");
+	    dialog.setMessage(task.getDescripton());
+	    
+	    dialog.setButton("V redu", new OnClickListener()
+	    {
+	        public void onClick(DialogInterface dialog, int which)
+	        {
+	            Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(updateTask.getUrl()));
+	            startActivity(myIntent);
+	        }
+	    });
+	    
+	    dialog.setButton2("Prekliči", new OnClickListener()
+	    {
+	        public void onClick(DialogInterface dialog, int which)
+	        {
+	            return;
+	        }
+	    });
+	    
+	    dialog.show();
+	}
     }
     
     private void initTabs()

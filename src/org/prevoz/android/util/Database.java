@@ -27,7 +27,7 @@ public class Database
 	
 	public DatabaseHelper(Context context)
 	{
-	    super(context, "settings.db", null, 4);
+	    super(context, "settings.db", null, 5);
 	    this.storedContext = context;
 	}
 

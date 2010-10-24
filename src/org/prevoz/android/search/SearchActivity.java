@@ -14,6 +14,7 @@ import org.prevoz.android.SectionedAdapter;
 import org.prevoz.android.rideinfo.RideInfoActivity;
 import org.prevoz.android.search.SearchResultAdapter.SearchResultViewWrapper;
 import org.prevoz.android.util.LocaleUtil;
+import org.prevoz.android.util.StringUtil;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -368,8 +369,7 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	parameters.put("fc", "SI");
 	parameters.put("t", ((AutoCompleteTextView)findViewById(R.id.toField)).getText().toString());
 	parameters.put("tc", "SI");
-	
-	parameters.put("client", "android" + getString(R.string.app_version).replace('.', '_'));
+	parameters.put("client", "android" + StringUtil.numberOnly(getString(R.string.app_version), false));
 	
 	// Build date
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -486,6 +486,7 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	    
 	    ArrayAdapter<String> noResultsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, noResults);
 	    resultsList.setAdapter(noResultsAdapter);
+	    resultsList.setOnItemClickListener(null);
 	}
 	
 	ViewFlipper searchFlipper = (ViewFlipper)findViewById(R.id.search_flipper);
