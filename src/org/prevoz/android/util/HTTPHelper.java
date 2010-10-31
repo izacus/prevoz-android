@@ -13,6 +13,7 @@ import java.util.Map;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.prevoz.android.Globals;
 
@@ -124,6 +125,33 @@ public class HTTPHelper
 	}
 	
 	HttpResponse response = client.execute(get);
+	HttpEntity entity = response.getEntity();
+	 
+	if (entity != null)
+	{
+	    InputStream instream = entity.getContent();
+	    String responseString = HTTPHelper.convertStreamToString(instream);
+	    instream.close();
+	    
+	    return responseString;
+	}
+	
+	return null;
+    }
+    
+    public static String httpPost(String url) throws IOException
+    {
+	DefaultHttpClient client = new DefaultHttpClient();
+	HttpPost post = new HttpPost(url);
+	
+	post.addHeader("User-Agent", "Prevoz on Android " + Build.VERSION.SDK_INT);
+	
+	if (sessionCookies != null)
+	{
+	    post.addHeader("Cookie", sessionCookies);
+	}
+	
+	HttpResponse response = client.execute(post);
 	HttpEntity entity = response.getEntity();
 	 
 	if (entity != null)

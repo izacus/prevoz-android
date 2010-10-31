@@ -104,8 +104,15 @@ public class AddRideActivity extends Activity
 	@Override
 	public void onPageFinished(WebView view, String url)
 	{
-	    if (loadingDialog != null && loadingDialog.isShowing())
-		loadingDialog.dismiss();
+	    try
+	    {
+		if (loadingDialog != null && loadingDialog.isShowing())
+		{
+		    loadingDialog.dismiss();
+		}
+	    }
+	    catch (IllegalArgumentException e)
+	    {};
 	}
 	
     }

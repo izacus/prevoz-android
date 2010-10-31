@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
 import org.prevoz.android.util.Database;
+import org.prevoz.android.util.HTTPHelper;
 import org.prevoz.android.util.LocaleUtil;
 
 import android.app.Activity;
@@ -83,6 +84,7 @@ public class RideInfoActivity extends Activity
     {
 	loadingDialog = ProgressDialog.show(this, "", getString(R.string.loading));
 	
+	HTTPHelper.updateSessionCookies(this);
 	final LoadInfoTask loadInfo = new LoadInfoTask();
 	
 	Handler handler = new Handler()
@@ -257,7 +259,20 @@ public class RideInfoActivity extends Activity
     
     private void deleteRide(int id)
     {
+	final ProgressDialog deleteDialog = ProgressDialog.show(this, null, getString(R.string.deleting));
 	
+	DeleteRideTask deleteRide = new DeleteRideTask();
+	Handler callback = new Handler()
+	{
+	    @Override
+	    public void handleMessage(Message msg)
+	    {
+		deleteDialog.dismiss();
+		finish();
+	    }
+	};
+	
+	deleteRide.startTask(id, callback);
     }
 
     @Override

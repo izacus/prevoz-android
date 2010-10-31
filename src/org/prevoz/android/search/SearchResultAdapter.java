@@ -71,6 +71,11 @@ public class SearchResultAdapter extends ArrayAdapter<SearchRide>
         		
         	    return driver;
         	}
+        	
+        	public void setId(int id)
+        	{
+        	    this.rideId = id;
+        	}
         }
     
     
@@ -118,6 +123,7 @@ public class SearchResultAdapter extends ArrayAdapter<SearchRide>
 	    }
 		
 	    wrapper.getDriver().setText(rides.get(position).getAuthor());
+	    wrapper.setId(rides.get(position).getId());
 	    
 	    return row;
 	}

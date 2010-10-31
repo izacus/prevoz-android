@@ -106,7 +106,12 @@ public class LoginStatusTask implements Runnable
 	{
 	    public void run()
 	    {
-		statusDialog.dismiss();
+		try
+		{
+		    statusDialog.dismiss();
+		}
+		catch (IllegalArgumentException e)
+		{};
 	    }
 	};
 	

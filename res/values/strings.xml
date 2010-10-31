@@ -98,4 +98,5 @@
         <item>december</item>
     </string-array>
     
+<string name="deleting">Brišem...</string>
 </resources>
