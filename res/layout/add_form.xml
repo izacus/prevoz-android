@@ -24,24 +24,59 @@
        style="@style/ListHeaderStyle"
        />
      
-     <AutoCompleteTextView
-       android:id = "@+id/add_from"
+     <RelativeLayout
        android:layout_width = "fill_parent"
        android:layout_height = "wrap_content"
-       android:inputType = "textCapWords"
-       android:hint = "@string/origin"
-       style = "@style/PaddedBox"
-       />
+       >
+       
+        <ImageButton
+          android:id = "@+id/add_gps_from"
+          android:layout_width = "wrap_content"
+          android:layout_height = "wrap_content"
+          android:layout_alignParentRight = "true"
+          android:layout_marginRight = "8dip"
+          android:scaleType = "center"
+          android:src = "@drawable/gps_button"
+          />
      
-     <AutoCompleteTextView
-       android:id = "@+id/add_to"
+        <AutoCompleteTextView 
+          android:id = "@+id/add_from"
+          android:layout_toLeftOf = "@id/add_gps_from"
+          android:layout_width = "fill_parent"
+          android:layout_height = "wrap_content"
+          android:inputType = "textCapWords"
+          android:hint = "@string/origin"
+          style = "@style/PaddedBox"
+          />
+      
+      </RelativeLayout>
+     
+      <RelativeLayout
        android:layout_width = "fill_parent"
        android:layout_height = "wrap_content"
-       android:inputType = "textCapWords"
-       android:hint = "@string/destination"
-       style = "@style/PaddedBox"
-       />
+       >
+       
+        <ImageButton
+          android:id = "@+id/add_gps_to"
+          android:layout_width = "wrap_content"
+          android:layout_height = "wrap_content"
+          android:layout_alignParentRight = "true"
+          android:layout_marginRight = "8dip"
+          android:scaleType = "center"
+          android:src = "@drawable/gps_button"
+          />
+     
+        <AutoCompleteTextView 
+          android:id = "@+id/add_to"
+          android:layout_toLeftOf = "@id/add_gps_to"
+          android:layout_width = "fill_parent"
+          android:layout_height = "wrap_content"
+          android:inputType = "textCapWords"
+          android:hint = "@string/destination"
+          style = "@style/PaddedBox"
+          />
       
+      </RelativeLayout>
       <TextView
        android:layout_width = "fill_parent"
        android:layout_height = "wrap_content"

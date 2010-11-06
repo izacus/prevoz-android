@@ -29,6 +29,8 @@ import android.widget.Toast;
 public class RideInfoActivity extends Activity
 {
     public static final String RIDE_ID = RideInfoActivity.class.toString() + ".ride_id";
+    public static final int RIDE_DELETED = Activity.RESULT_FIRST_USER;
+    
     private static final int MENU_ADD_FAVORITES = Menu.FIRST;
     
     private static RideInfoActivity instance = null;
@@ -75,8 +77,12 @@ public class RideInfoActivity extends Activity
      */
     protected void onSaveInstanceState(Bundle outState)
     {
-	outState.putBoolean("suspended", true);
-	ride.storeToBundle(outState);
+	if (ride != null)
+	{
+	    outState.putBoolean("suspended", true);
+	    ride.storeToBundle(outState);
+	}
+	
 	super.onSaveInstanceState(outState);
     }
     
@@ -268,6 +274,7 @@ public class RideInfoActivity extends Activity
 	    public void handleMessage(Message msg)
 	    {
 		deleteDialog.dismiss();
+		setResult(RIDE_DELETED);
 		finish();
 	    }
 	};

@@ -58,6 +58,8 @@ public class SearchActivity extends Activity implements OnDateSetListener
     private static final int DIALOG_DATEPICKER_ID = 0;
     private static final int DIALOG_LOADING = 1;
     
+    private static final int RIDEINFO_ACTIVITY_REQUEST = 1;
+    
     private static SearchActivity instance = null;
     
     public static SearchActivity getInstance()
@@ -475,7 +477,8 @@ public class SearchActivity extends Activity implements OnDateSetListener
 			SearchResultViewWrapper viewWrapper = (SearchResultViewWrapper)view.getTag();
 			Intent intent = new Intent(SearchActivity.getInstance(), RideInfoActivity.class);
 			intent.putExtra(RideInfoActivity.RIDE_ID, viewWrapper.getRideId());
-			startActivity(intent);
+			//startActivity(intent);
+			startActivityForResult(intent, 1);
 		    }
 		});
 	}
@@ -494,6 +497,27 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	currentView = SearchViews.SEARCH_RESULTS;
     }
     
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+	super.onActivityResult(requestCode, resultCode, data);
+	
+	switch(requestCode)
+	{
+		// Refresh search results on delete of activity
+		case RIDEINFO_ACTIVITY_REQUEST:
+		    if (resultCode == RideInfoActivity.RIDE_DELETED)
+		    {
+			startSearch();
+		    }
+		    break;
+		    
+		default:
+		    break;
+	}
+    }
+
+
     // Getters and setters
     public SearchResults getSearchResults()
     {
@@ -514,9 +538,11 @@ public class SearchActivity extends Activity implements OnDateSetListener
 	((ImageButton)findViewById(R.id.gps_from)).setEnabled(false);
 	fillField.setEnabled(false);
 	
-	final String oldHint = fillField.getHint().toString(); 
+	final String oldHint = fillField.getHint().toString();
+	final String oldText = fillField.getText().toString();
 	
 	fillField.setHint(R.string.searching);
+	fillField.setText("");
 	
 	final GPSManager gpsManager = new GPSManager();
 	activeManager = gpsManager;
@@ -538,6 +564,7 @@ public class SearchActivity extends Activity implements OnDateSetListener
 		if (msg.what == GPSManager.GPS_PROVIDER_UNAVALABLE)
 		{
 		    Toast.makeText(searchActivity, R.string.gps_error, Toast.LENGTH_LONG).show();
+		    fillField.setText(oldText);
 		}
 		else if (msg.what == GPSManager.GPS_LOCATION_OK)
 		{

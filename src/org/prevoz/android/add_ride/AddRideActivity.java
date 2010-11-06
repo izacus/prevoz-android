@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import org.prevoz.android.GPSManager;
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
 import org.prevoz.android.RideType;
@@ -38,6 +39,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -55,7 +57,6 @@ public class AddRideActivity extends Activity
     private static final int DATEPICKER_DIALOG_ID = 0;
     private static final int TIMEPICKER_DIALOG_ID = 1;
     private static final SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
-    
     
     private class WebViewController extends WebViewClient
     {
@@ -94,7 +95,14 @@ public class AddRideActivity extends Activity
 		
 		if (loadingDialog != null && loadingDialog.isShowing())
 		{
-		    loadingDialog.dismiss();
+		    try
+		    {
+			loadingDialog.dismiss();
+		    }
+		    catch(IllegalArgumentException e)
+		    {
+			loadingDialog = null;
+		    }
 		}
 	    }
 	    
@@ -112,7 +120,9 @@ public class AddRideActivity extends Activity
 		}
 	    }
 	    catch (IllegalArgumentException e)
-	    {};
+	    {
+		loadingDialog = null;
+	    };
 	}
 	
     }
@@ -149,6 +159,8 @@ public class AddRideActivity extends Activity
     
     // Private fields
     private Calendar selectedDate;
+    private GPSManager activeManager = null;
+    
     
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -309,6 +321,23 @@ public class AddRideActivity extends Activity
 	    public void onClick(View v)
 	    {
 		showPreview();
+	    }
+	});
+	
+	// Prepare GPS button callbacks
+	((ImageButton)findViewById(R.id.add_gps_from)).setOnClickListener(new OnClickListener()
+	{
+	    public void onClick(View v)
+	    {
+		fillInGPS(R.id.add_from);
+	    }
+	});
+	
+	((ImageButton)findViewById(R.id.add_gps_to)).setOnClickListener(new OnClickListener()
+	{
+	    public void onClick(View v)
+	    {
+		fillInGPS(R.id.add_to);
 	    }
 	});
     }
@@ -622,5 +651,58 @@ public class AddRideActivity extends Activity
 	
 	// Store current view
 	outState.putInt("view", currentView.ordinal());
+	
+	if (activeManager != null)
+	    activeManager.cancelSearch();
+    }
+    
+    private void fillInGPS(int field)
+    {
+	final AutoCompleteTextView fillField = (AutoCompleteTextView)findViewById(field);
+	
+	// Disable GPS buttons
+	((ImageButton)findViewById(R.id.add_gps_to)).setEnabled(false);
+	((ImageButton)findViewById(R.id.add_gps_from)).setEnabled(false);
+	fillField.setEnabled(false);
+	
+	final String oldHint = fillField.getHint().toString();
+	final String oldText = fillField.getText().toString();
+	
+	fillField.setHint(R.string.searching);
+	fillField.setText("");
+	
+	final GPSManager gpsManager = new GPSManager();
+	activeManager = gpsManager;
+	
+	final AddRideActivity addActivity = this;
+	
+	Handler callback = new Handler()
+	{
+	    @Override
+	    public void handleMessage(Message msg)
+	    {
+		fillField.setHint(oldHint);
+		
+		// Re-enable fields
+		((ImageButton)findViewById(R.id.add_gps_to)).setEnabled(true);
+		((ImageButton)findViewById(R.id.add_gps_from)).setEnabled(true);
+		fillField.setEnabled(true);
+		
+		if (msg.what == GPSManager.GPS_PROVIDER_UNAVALABLE)
+		{
+		    Toast.makeText(addActivity, R.string.gps_error, Toast.LENGTH_LONG).show();
+		    fillField.setText(oldText);
+		}
+		else if (msg.what == GPSManager.GPS_LOCATION_OK)
+		{
+		    fillField.setText(gpsManager.getCurrentCity());
+		}
+		
+		activeManager = null;
+	    }
+	};
+	
+	gpsManager.findCurrentCity(this, callback);
     }
 }
+

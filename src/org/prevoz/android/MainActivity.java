@@ -1,6 +1,10 @@
 package org.prevoz.android;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.prevoz.android.add_ride.AddRideActivity;
 import org.prevoz.android.my_rides.MyRidesActivity;
@@ -20,6 +24,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.CookieManager;
@@ -28,7 +33,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends TabActivity 
+public class MainActivity extends TabActivity
 {
     private static MainActivity instance = null;
     
@@ -57,7 +62,7 @@ public class MainActivity extends TabActivity
         
         // Check for updates
         final UpdateCheckTask updateCheckTask = new UpdateCheckTask();
-        Handler callback = new Handler()
+        final Handler callback = new Handler()
         {
 	    @Override
 	    public void handleMessage(Message msg)
@@ -66,7 +71,18 @@ public class MainActivity extends TabActivity
 	    }
         };
         
-        updateCheckTask.checkForUpdate(this, callback);
+        final MainActivity mainActivity = this;
+        TimerTask ttask = new TimerTask()
+	{
+	    @Override
+	    public void run()
+	    {
+		updateCheckTask.checkForUpdate(mainActivity, callback);
+	    }
+	};
+	
+	Timer t = new Timer(true);
+	t.schedule(ttask, 1000);
     }
     
     private void showUpdateNotify(UpdateCheckTask task)

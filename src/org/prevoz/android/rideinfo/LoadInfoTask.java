@@ -66,7 +66,9 @@ public class LoadInfoTask implements Runnable
 	    String from = root.getString("from");
 	    String to = root.getString("to");
 	    
-	    Date time = HTTPHelper.parseISO8601(root.getString("date_iso8601"));
+	    
+	    String iso8601 = root.getString("date_iso8601");
+	    Date time = HTTPHelper.parseISO8601(iso8601);
 	    
 	    int people = root.getInt("num_people");
 	    
