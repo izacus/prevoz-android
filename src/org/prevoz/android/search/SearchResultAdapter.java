@@ -2,6 +2,7 @@ package org.prevoz.android.search;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import org.prevoz.android.R;
 

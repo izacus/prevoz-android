@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Prevoz</string>
-    <string name="app_version">1.0.0</string>
+    <string name="app_version">1.0.1</string>
     
     <string name="about">O aplikaciji</string>
     <string name="about_text">Pripombe na info@prevoz.org</string>

@@ -1,7 +1,6 @@
 package org.prevoz.android.add_ride;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,7 +10,6 @@ import org.prevoz.android.util.HTTPHelper;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.util.Log;
 import android.webkit.CookieSyncManager;

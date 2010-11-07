@@ -25,13 +25,15 @@ import android.webkit.CookieSyncManager;
 
 public class HTTPHelper
 {
-    private static SimpleDateFormat iso8601formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
     private static String sessionCookies = "";
     
     public static Date parseISO8601(String date) throws ParseException
     {
-	Date result = iso8601formatter.parse(date);
-	return result;
+    	// There's a bug in SimpleDateFormatter library so we're parsing dates manually
+    	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssz");
+    	Date result = formatter.parse(date);
+    	
+    	return result;
     }
     
     /**
