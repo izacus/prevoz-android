@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Prevoz</string>
-    <string name="app_version">1.0.1</string>
+    <string name="app_version">1.0.2</string>
     
     <string name="about">O aplikaciji</string>
     <string name="about_text">Pripombe na info@prevoz.org</string>
@@ -70,6 +70,16 @@
     <!-- Menu options -->
     <string name="add_to_favorites">Dodaj med priljubljene</string>
     <string name="added_to_favorites">Pot je bila dodana med priljubljene.</string>
+    
+    <!--  Update query -->
+    <string name="new_version">Nova različica</string>
+    <string name="ok">V redu</string>
+    <string name="cancel">Prekliči</string>
+    
+    
+    <!-- Logout -->
+    <string name="logout">Odjavi</string>
+    <string name="logout_success">Odjava uspešna.</string>
     
     <!--  Day and month names -->
     

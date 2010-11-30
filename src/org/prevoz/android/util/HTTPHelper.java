@@ -25,155 +25,166 @@ import android.webkit.CookieSyncManager;
 
 public class HTTPHelper
 {
-    private static String sessionCookies = "";
-    
-    public static Date parseISO8601(String date) throws ParseException
-    {
-    	// There's a bug in SimpleDateFormatter library so we're parsing dates manually
-    	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssz");
-    	Date result = formatter.parse(date);
-    	
-    	return result;
-    }
-    
-    /**
-     * Builds a HTTP parameter string for URL inclusion
-     * @param params Parameter key/value pairs
-     * @return built parameter string
-     */
-    public static String buildGetParams(Map<String, String> params)
-    {
-	if (params == null)
-	    return "";
+	private static String sessionCookies = "";
 
-	StringBuilder paramString = new StringBuilder();
-	paramString.append("?");
-
-	for (String key : params.keySet())
+	public static Date parseISO8601(String date) throws ParseException
 	{
-	    paramString.append(URLEncoder.encode(key));
-	    paramString.append("=");
-	    paramString.append(URLEncoder.encode(params.get(key)));
-	    paramString.append("&");
+		// There's a bug in SimpleDateFormatter library so we're parsing dates
+		// manually
+		SimpleDateFormat formatter = new SimpleDateFormat(
+				"yyyy-MM-dd'T'hh:mm:ssz");
+		Date result = formatter.parse(date);
+
+		return result;
 	}
 
-	// Delete the last amperstand
-	paramString.deleteCharAt(paramString.length() - 1);
+	/**
+	 * Builds a HTTP parameter string for URL inclusion
+	 * 
+	 * @param params
+	 *            Parameter key/value pairs
+	 * @return built parameter string
+	 */
+	public static String buildGetParams(Map<String, String> params)
+	{
+		if (params == null)
+			return "";
 
-	Log.d("Utilities", paramString.toString());
+		StringBuilder paramString = new StringBuilder();
+		paramString.append("?");
 
-	return paramString.toString();
-    }
+		for (String key : params.keySet())
+		{
+			paramString.append(URLEncoder.encode(key));
+			paramString.append("=");
+			paramString.append(URLEncoder.encode(params.get(key)));
+			paramString.append("&");
+		}
 
-    /**
-     * Reads data from input stream to the end and returns it as single string
-     * @param is Input stream to read
-     * @return data from stream
-     */
-    private static String convertStreamToString(InputStream is)
-    {
-	BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-	StringBuilder sb = new StringBuilder();
+		// Delete the last amperstand
+		paramString.deleteCharAt(paramString.length() - 1);
 
-	String line = null;
-	try
-	{
-	    while ((line = reader.readLine()) != null)
-	    {
-		sb.append(line + "\n");
-	    }
-	} 
-	catch (IOException e)
-	{
-	    e.printStackTrace();
-	} 
-	finally
-	{
-	    try
-	    {
-		is.close();
-	    } 
-	    catch (IOException e)
-	    {
-		e.printStackTrace();
-	    }
+		Log.d("Utilities", paramString.toString());
+
+		return paramString.toString();
 	}
-	
-	return sb.toString();
-    }
-    
-    public static String httpGet(String url) throws IOException
-    {
-	return httpGet(url, null);
-    }
-    
-    /**
-     * Makes a GET request to a server and reads response
-     * @param url URL of the resource on server
-     * @param params Parameters to be appended to URL
-     * @return Server response or <b>null</b> if the request failed
-     * @throws IOException
-     */
-    public static String httpGet(String url, String params) throws IOException
-    {	
-	DefaultHttpClient client = new DefaultHttpClient();
-	HttpGet get = new HttpGet(url + (params != null ? params : ""));
-	
-	get.addHeader("User-Agent", "Prevoz on Android " + Build.VERSION.SDK_INT);
-	
-	// Add session cookies to request
-	if (sessionCookies != null)
+
+	/**
+	 * Reads data from input stream to the end and returns it as single string
+	 * 
+	 * @param is
+	 *            Input stream to read
+	 * @return data from stream
+	 */
+	private static String convertStreamToString(InputStream is)
 	{
-	    get.addHeader("Cookie", sessionCookies);
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+		StringBuilder sb = new StringBuilder();
+
+		String line = null;
+		try
+		{
+			while ((line = reader.readLine()) != null)
+			{
+				sb.append(line + "\n");
+			}
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			try
+			{
+				is.close();
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		return sb.toString();
 	}
-	
-	HttpResponse response = client.execute(get);
-	HttpEntity entity = response.getEntity();
-	 
-	if (entity != null)
+
+	public static String httpGet(String url) throws IOException
 	{
-	    InputStream instream = entity.getContent();
-	    String responseString = HTTPHelper.convertStreamToString(instream);
-	    instream.close();
-	    
-	    return responseString;
+		return httpGet(url, null);
 	}
-	
-	return null;
-    }
-    
-    public static String httpPost(String url) throws IOException
-    {
-	DefaultHttpClient client = new DefaultHttpClient();
-	HttpPost post = new HttpPost(url);
-	
-	post.addHeader("User-Agent", "Prevoz on Android " + Build.VERSION.SDK_INT);
-	
-	if (sessionCookies != null)
+
+	/**
+	 * Makes a GET request to a server and reads response
+	 * 
+	 * @param url
+	 *            URL of the resource on server
+	 * @param params
+	 *            Parameters to be appended to URL
+	 * @return Server response or <b>null</b> if the request failed
+	 * @throws IOException
+	 */
+	public static String httpGet(String url, String params) throws IOException
 	{
-	    post.addHeader("Cookie", sessionCookies);
+		DefaultHttpClient client = new DefaultHttpClient();
+		HttpGet get = new HttpGet(url + (params != null ? params : ""));
+
+		get.addHeader("User-Agent", "Prevoz on Android "
+				+ Build.VERSION.SDK_INT);
+
+		// Add session cookies to request
+		if (sessionCookies != null)
+		{
+			get.addHeader("Cookie", sessionCookies);
+		}
+
+		HttpResponse response = client.execute(get);
+		HttpEntity entity = response.getEntity();
+
+		if (entity != null)
+		{
+			InputStream instream = entity.getContent();
+			String responseString = HTTPHelper.convertStreamToString(instream);
+			instream.close();
+
+			return responseString;
+		}
+
+		return null;
 	}
-	
-	HttpResponse response = client.execute(post);
-	HttpEntity entity = response.getEntity();
-	 
-	if (entity != null)
+
+	public static String httpPost(String url) throws IOException
 	{
-	    InputStream instream = entity.getContent();
-	    String responseString = HTTPHelper.convertStreamToString(instream);
-	    instream.close();
-	    
-	    return responseString;
+		DefaultHttpClient client = new DefaultHttpClient();
+		HttpPost post = new HttpPost(url);
+
+		post.addHeader("User-Agent", "Prevoz on Android "
+				+ Build.VERSION.SDK_INT);
+
+		if (sessionCookies != null)
+		{
+			post.addHeader("Cookie", sessionCookies);
+		}
+
+		HttpResponse response = client.execute(post);
+		HttpEntity entity = response.getEntity();
+
+		if (entity != null)
+		{
+			InputStream instream = entity.getContent();
+			String responseString = HTTPHelper.convertStreamToString(instream);
+			instream.close();
+
+			return responseString;
+		}
+
+		return null;
 	}
-	
-	return null;
-    }
-    
-    public static void updateSessionCookies(Context context)
-    {
-	// Restore session cookies
-	CookieSyncManager.createInstance(context);
-	CookieManager cookieManager = CookieManager.getInstance();
-	sessionCookies = cookieManager.getCookie(Globals.API_DOMAIN);
-    }
+
+	public static void updateSessionCookies(Context context)
+	{
+		// Restore session cookies
+		CookieSyncManager.createInstance(context);
+		CookieManager cookieManager = CookieManager.getInstance();
+		sessionCookies = cookieManager.getCookie(Globals.API_DOMAIN);
+	}
 }

@@ -11,44 +11,48 @@ import android.util.Log;
 
 public class FileUtil
 {
-    /**
-     * Reads text SQL file and breaks it up on ";" signs to be used separately by execSQL
-     * @param context
-     * @param rawResId resource id of .sql file
-     * @return string array of SQL statements in file
-     */
-    public static String[] readSQLStatements(Context context, int rawResId)
-    {
-	InputStream is = context.getResources().openRawResource(rawResId);
-	BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-	
-	StringBuilder fileContent = new StringBuilder(8192);
-	
-	String line = null;
-	
-	try
+	/**
+	 * Reads text SQL file and breaks it up on ";" signs to be used separately
+	 * by execSQL
+	 * 
+	 * @param context
+	 * @param rawResId
+	 *            resource id of .sql file
+	 * @return string array of SQL statements in file
+	 */
+	public static String[] readSQLStatements(Context context, int rawResId)
 	{
-	    while ((line = reader.readLine()) != null)
-	    {
-	        fileContent.append(line);
-	    }
-	} 
-	catch (IOException e)
-	{
-	    Log.e("FileUtil", "Failed to read resource with ID " + rawResId, e);
-	    return new String[0];
-	}
+		InputStream is = context.getResources().openRawResource(rawResId);
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
-	StringTokenizer tokenizeSQL = new StringTokenizer(fileContent.toString(), ";");
-	String[] SQLStatements = new String[tokenizeSQL.countTokens()];
-	
-	int i = 0;
-	
-	while(tokenizeSQL.hasMoreTokens())
-	{
-	    SQLStatements[i++] = tokenizeSQL.nextToken();
+		StringBuilder fileContent = new StringBuilder(8192);
+
+		String line = null;
+
+		try
+		{
+			while ((line = reader.readLine()) != null)
+			{
+				fileContent.append(line);
+			}
+		}
+		catch (IOException e)
+		{
+			Log.e("FileUtil", "Failed to read resource with ID " + rawResId, e);
+			return new String[0];
+		}
+
+		StringTokenizer tokenizeSQL = new StringTokenizer(
+				fileContent.toString(), ";");
+		String[] SQLStatements = new String[tokenizeSQL.countTokens()];
+
+		int i = 0;
+
+		while (tokenizeSQL.hasMoreTokens())
+		{
+			SQLStatements[i++] = tokenizeSQL.nextToken();
+		}
+
+		return SQLStatements;
 	}
-	
-	return SQLStatements;
-    }
 }

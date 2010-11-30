@@ -25,49 +25,66 @@ import android.widget.TabHost.TabSpec;
  * 
  * @date March 9, 2010
  * @author Mark Wyszomierski (markww@gmail.com), foursquare.
- */ 
-public abstract class TabsUtil {
+ */
+public abstract class TabsUtil
+{
 
-    public static void setTabIndicator(TabSpec spec, String title, Drawable drawable, View view) {
-        int sdk = new Integer(Build.VERSION.SDK).intValue();
-        if (sdk < 4) {
-            TabsUtil3.setTabIndicator(spec, title, drawable);
-        } else {
-            TabsUtil4.setTabIndicator(spec, view);
-        }
-    }
-    
-    private static TabHost.TabSpec addNativeLookingTab(Context context, final TabHost tabHost, String specName, 
-            String label, int iconId) {
-        View view = LayoutInflater.from(context).inflate(R.layout.fake_native_tab, null);
-        ImageView iv = (ImageView) view.findViewById(R.id.fakeNativeTabImageView);
-        iv.setImageResource(iconId);
-        TextView tv = (TextView) view.findViewById(R.id.fakeNativeTabTextView);
-        tv.setText(label);
-        
-        int sdk = new Integer(Build.VERSION.SDK).intValue();
-        if (sdk > 3) {
-            TabsUtil4.addNativeLookingTab(context, tabHost, view);
-        }
-        
-        TabHost.TabSpec spec = tabHost.newTabSpec(specName);
-        TabsUtil.setTabIndicator(spec, label, context.getResources().getDrawable(iconId), view);
-        return spec;
-    }
-    
-    public static void addNativeLookingTab(Context context, final TabHost tabHost, String specName, 
-            String label, int iconId, int layout) {
-        TabHost.TabSpec spec = addNativeLookingTab(context, tabHost, specName, label, iconId);
-        
-        spec.setContent(layout);
-        tabHost.addTab(spec);
-    }
-    
-    public static void addNativeLookingTab(Context context, final TabHost tabHost, String specName, 
-            String label, int iconId, Intent intent) {
-        TabHost.TabSpec spec = addNativeLookingTab(context, tabHost, specName, label, iconId);
-        
-        spec.setContent(intent);
-        tabHost.addTab(spec);
-    }
+	public static void setTabIndicator(TabSpec spec, String title,
+			Drawable drawable, View view)
+	{
+		int sdk = new Integer(Build.VERSION.SDK).intValue();
+		if (sdk < 4)
+		{
+			TabsUtil3.setTabIndicator(spec, title, drawable);
+		}
+		else
+		{
+			TabsUtil4.setTabIndicator(spec, view);
+		}
+	}
+
+	private static TabHost.TabSpec addNativeLookingTab(Context context,
+			final TabHost tabHost, String specName, String label, int iconId)
+	{
+		View view = LayoutInflater.from(context).inflate(
+				R.layout.fake_native_tab, null);
+		ImageView iv = (ImageView) view
+				.findViewById(R.id.fakeNativeTabImageView);
+		iv.setImageResource(iconId);
+		TextView tv = (TextView) view.findViewById(R.id.fakeNativeTabTextView);
+		tv.setText(label);
+
+		int sdk = new Integer(Build.VERSION.SDK).intValue();
+		if (sdk > 3)
+		{
+			TabsUtil4.addNativeLookingTab(context, tabHost, view);
+		}
+
+		TabHost.TabSpec spec = tabHost.newTabSpec(specName);
+		TabsUtil.setTabIndicator(spec, label, context.getResources()
+				.getDrawable(iconId), view);
+		return spec;
+	}
+
+	public static void addNativeLookingTab(Context context,
+			final TabHost tabHost, String specName, String label, int iconId,
+			int layout)
+	{
+		TabHost.TabSpec spec = addNativeLookingTab(context, tabHost, specName,
+				label, iconId);
+
+		spec.setContent(layout);
+		tabHost.addTab(spec);
+	}
+
+	public static void addNativeLookingTab(Context context,
+			final TabHost tabHost, String specName, String label, int iconId,
+			Intent intent)
+	{
+		TabHost.TabSpec spec = addNativeLookingTab(context, tabHost, specName,
+				label, iconId);
+
+		spec.setContent(intent);
+		tabHost.addTab(spec);
+	}
 }
