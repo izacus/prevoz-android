@@ -8,17 +8,22 @@ import org.json.JSONObject;
 import org.prevoz.android.util.HTTPHelper;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.util.Log;
 
 public class UpdateCheckTask implements Runnable
 {
+	private static final String UUID_PREF = "org.prevoz.UUID";
+	
 	private Activity context;
 	private Handler callback;
 
 	private boolean hasNewVersion = false;
 	private String message = "";
 	private String url = "";
+	
+	private String UUID = "";
 
 	public UpdateCheckTask()
 	{
@@ -29,6 +34,23 @@ public class UpdateCheckTask implements Runnable
 	{
 		this.context = context;
 		this.callback = callback;
+		
+		SharedPreferences prefs = context.getSharedPreferences(UUID_PREF, 0);
+		UUID = prefs.getString("uuid", "");
+		
+		// No UUID is generated
+		if (UUID.equals(""))
+		{
+			Log.i(this.toString(), "Missing UUID, generating new one...");
+			UUID = java.util.UUID.randomUUID().toString();
+			
+			Log.i(this.toString(), "New UUID generated: " + UUID);
+			
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putString("uuid", UUID);
+			editor.commit();
+		}
+		
 		Thread checkThread = new Thread(this);
 		checkThread.setDaemon(true);
 		checkThread.run();
@@ -39,6 +61,7 @@ public class UpdateCheckTask implements Runnable
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("platform", "android");
 		params.put("version", context.getString(R.string.app_version));
+		params.put("uuid", UUID);
 
 		String getParams = HTTPHelper.buildGetParams(params);
 
