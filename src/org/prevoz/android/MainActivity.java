@@ -5,6 +5,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.prevoz.android.add_ride.AddRideActivity;
+import org.prevoz.android.auth.AuthenticationManager;
+import org.prevoz.android.auth.AuthenticationStatus;
 import org.prevoz.android.my_rides.MyRidesActivity;
 import org.prevoz.android.search.SearchActivity;
 import org.prevoz.android.util.Database;
@@ -41,6 +43,7 @@ public class MainActivity extends TabActivity
 
 	private static final int MENU_ABOUT = 0;
 	private static final int MENU_LOGOUT = 1;
+	private static final int MENU_LOGIN = 2;
 
 	private TabHost tabHost;
 
@@ -56,7 +59,7 @@ public class MainActivity extends TabActivity
 
 		// Prepare tabs for use
 		initTabs();
-
+		
 		// Check for updates
 		final UpdateCheckTask updateCheckTask = new UpdateCheckTask();
 		final Handler callback = new Handler()
@@ -80,6 +83,9 @@ public class MainActivity extends TabActivity
 
 		Timer t = new Timer(true);
 		t.schedule(ttask, 1000);
+		
+		// Check for current authentication status
+		AuthenticationManager.getInstance().getAuthenticationStatus(this, false);
 	}
 
 	private void showUpdateNotify(UpdateCheckTask task)
@@ -147,11 +153,19 @@ public class MainActivity extends TabActivity
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
+	public boolean onPrepareOptionsMenu(Menu menu)
 	{
 		super.onCreateOptionsMenu(menu);
-		menu.add(0, MENU_ABOUT, 0, getString(R.string.about)).setIcon(android.R.drawable.ic_menu_info_details);
-		menu.add(1, MENU_LOGOUT, 1, getString(R.string.logout)).setIcon(android.R.drawable.ic_menu_delete);
+		menu.add(Menu.NONE , MENU_ABOUT, 0, getString(R.string.about)).setIcon(android.R.drawable.ic_menu_info_details);
+		
+		if (AuthenticationManager.getInstance().getAuthenticationStatus(this, false) == AuthenticationStatus.AUTHENTICATED)
+		{
+			menu.add(Menu.NONE, MENU_LOGOUT, 1, getString(R.string.logout)).setIcon(android.R.drawable.ic_menu_delete);
+		}
+		else
+		{
+			menu.add(Menu.NONE, MENU_LOGIN, 1, getString(R.string.login)).setIcon(android.R.drawable.ic_menu_upload);
+		}
 
 		return true;
 	}

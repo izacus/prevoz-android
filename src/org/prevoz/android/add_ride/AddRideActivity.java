@@ -5,13 +5,13 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 import org.prevoz.android.GPSManager;
-import org.prevoz.android.Globals;
 import org.prevoz.android.R;
 import org.prevoz.android.RideType;
+import org.prevoz.android.auth.AuthenticationManager;
+import org.prevoz.android.auth.AuthenticationStatus;
 import org.prevoz.android.rideinfo.Ride;
 import org.prevoz.android.rideinfo.RideInfoActivity;
 import org.prevoz.android.search.LocationAutocompleteAdapter;
-import org.prevoz.android.util.HTTPHelper;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
 
@@ -22,18 +22,13 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -59,77 +54,6 @@ public class AddRideActivity extends Activity
 	private static final int TIMEPICKER_DIALOG_ID = 1;
 	private static final SimpleDateFormat timeFormatter = new SimpleDateFormat(
 			"HH:mm");
-
-	private class WebViewController extends WebViewClient
-	{
-		private ProgressDialog loadingDialog;
-		private Context context;
-
-		public WebViewController(Context context)
-		{
-			this.context = context;
-		}
-
-		@Override
-		public boolean shouldOverrideUrlLoading(WebView view, String url)
-		{
-			Log.d(this.toString(), "Loading URL " + url);
-
-			view.loadUrl(url);
-
-			return true;
-		}
-
-		@Override
-		public void onPageStarted(WebView view, String url, Bitmap favicon)
-		{
-			if (loadingDialog == null || !loadingDialog.isShowing())
-			{
-				loadingDialog = ProgressDialog.show(context, null,
-						context.getString(R.string.loading));
-			}
-
-			Log.i(this.toString(), "Page started " + url);
-
-			if (url.contains("/login/success"))
-			{
-				HTTPHelper.updateSessionCookies(AddRideActivity.getInstance());
-				checkLoginStatus();
-
-				if (loadingDialog != null && loadingDialog.isShowing())
-				{
-					try
-					{
-						loadingDialog.dismiss();
-					}
-					catch (IllegalArgumentException e)
-					{
-						loadingDialog = null;
-					}
-				}
-			}
-
-			super.onPageStarted(view, url, favicon);
-		}
-
-		@Override
-		public void onPageFinished(WebView view, String url)
-		{
-			try
-			{
-				if (loadingDialog != null && loadingDialog.isShowing())
-				{
-					loadingDialog.dismiss();
-				}
-			}
-			catch (IllegalArgumentException e)
-			{
-				loadingDialog = null;
-			}
-			;
-		}
-
-	}
 
 	private class PeopleSpinnerObject
 	{
@@ -178,6 +102,26 @@ public class AddRideActivity extends Activity
 		selectedDate.add(Calendar.HOUR_OF_DAY, 1);
 		selectedDate.set(Calendar.MINUTE, 0);
 
+		// Bind login button
+		Button loginButton = (Button)findViewById(R.id.add_login_button);
+		
+		final Activity context = this;
+		loginButton.setOnClickListener(new OnClickListener()
+		{
+			public void onClick(View v)
+			{
+				final AuthenticationManager manager = AuthenticationManager.getInstance();
+				manager.requestLogin(context, new Handler() {
+
+					@Override
+					public void handleMessage(Message msg)
+					{
+						updateLoginStatus(manager.getAuthenticationStatus(context, false));
+					}
+				});
+			}
+		});
+		
 		if (savedInstanceState != null)
 		{
 			selectedDate.setTimeInMillis(savedInstanceState
@@ -227,19 +171,19 @@ public class AddRideActivity extends Activity
 	 */
 	private void checkLoginStatus()
 	{
-		LoginStatusTask checkStatusTask = new LoginStatusTask(this);
-
+		AuthenticationManager manager = AuthenticationManager.getInstance();
+		
 		// Dispatch response to updateLoginStatus method
 		Handler callbackHandler = new Handler()
 		{
 			@Override
 			public void handleMessage(Message msg)
 			{
-				updateLoginStatus(LoginStatus.values()[msg.what]);
+				updateLoginStatus(AuthenticationStatus.values()[msg.what]);
 			}
 		};
 
-		checkStatusTask.start(callbackHandler);
+		manager.getAuthenticationStatus(this, false, callbackHandler);
 	}
 
 	/**
@@ -247,26 +191,22 @@ public class AddRideActivity extends Activity
 	 * 
 	 * @param status
 	 */
-	private void updateLoginStatus(LoginStatus status)
+	private void updateLoginStatus(AuthenticationStatus status)
 	{
 		switch (status)
 		{
-		case UNKNOWN:
-			Toast.makeText(this, R.string.server_error, Toast.LENGTH_LONG)
-					.show();
-			break;
+			case UNKNOWN:
+				Toast.makeText(this, R.string.server_error, Toast.LENGTH_LONG).show();
+				break;
 
-		case LOGGED_IN:
+			case AUTHENTICATED:
+				prepareAddForm();
+				switchView(AddViews.FORM);
+				break;
 
-			// Store received api key
-
-			prepareAddForm();
-			switchView(AddViews.FORM);
-			break;
-
-		case NOT_LOGGED_IN:
-			showWebLogin();
-			break;
+			case NOT_AUTHENTICATED:
+				switchView(AddViews.LOGIN);
+				break;
 		}
 	}
 
@@ -516,6 +456,10 @@ public class AddRideActivity extends Activity
 			intent.putExtra(RideInfoActivity.RIDE_ID, doneTask.getRideId());
 			startActivity(intent);
 			break;
+			
+		case SendRideTask.AUTHENTICATION_ERROR:
+			switchView(AddViews.LOGIN);
+			Toast.makeText(this, R.string.add_login_required, Toast.LENGTH_LONG).show();
 		}
 	}
 
@@ -583,19 +527,6 @@ public class AddRideActivity extends Activity
 		selectedDate.set(Calendar.MINUTE, newTime.get(Calendar.MINUTE));
 
 		addTimeField.setText(timeFormatter.format(newTime.getTime()));
-	}
-
-	/**
-	 * Shows user the login form
-	 */
-	private void showWebLogin()
-	{
-		WebView view = (WebView) findViewById(R.id.webview);
-		view.setWebViewClient(new WebViewController(this));
-
-		view.loadUrl(Globals.LOGIN_URL);
-
-		switchView(AddViews.LOGIN);
 	}
 
 	/**

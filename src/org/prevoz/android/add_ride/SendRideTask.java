@@ -18,6 +18,7 @@ public class SendRideTask implements Runnable
 	public static final int SEND_SUCCESS = 0;
 	public static final int SEND_ERROR = 1;
 	public static final int SERVER_ERROR = 2;
+	public static final int AUTHENTICATION_ERROR = 3;
 
 	private HashMap<String, String> parameters;
 	private Handler callback;
@@ -49,6 +50,13 @@ public class SendRideTask implements Runnable
 			String response = HTTPHelper.httpGet(Globals.API_URL
 					+ "/carshare/create/", params);
 
+			// Check for non-JSON authentication error response
+			if (response.equalsIgnoreCase("Forbidden\n"))
+			{
+				callback.sendEmptyMessage(AUTHENTICATION_ERROR);
+				return;
+			}
+			
 			JSONObject jsonO = new JSONObject(response);
 
 			if (jsonO.has("error"))

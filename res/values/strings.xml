@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Prevoz</string>
-    <string name="app_version">1.0.2</string>
+    <string name="app_version">1.0.3</string>
     
     <string name="about">O aplikaciji</string>
     <string name="about_text">Pripombe na info@prevoz.org</string>
@@ -46,6 +46,7 @@
     
     <!-- Add ride strings -->
     <string name="add_tab">Dodaj prevoz</string>
+    <string name="add_login_required">Za dodajanje prevoza se morate prijaviti.</string>
     <string name="checking_login_status">Preverjam stanje prijave...</string>
     
     <string name="add_share">ponujam prevoz</string>
@@ -78,7 +79,8 @@
     
     
     <!-- Logout -->
-    <string name="logout">Odjavi</string>
+    <string name="login">Prijava</string>
+    <string name="logout">Odjava</string>
     <string name="logout_success">Odjava uspešna.</string>
     
     <!--  Day and month names -->

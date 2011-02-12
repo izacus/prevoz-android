@@ -155,7 +155,7 @@ public class RideInfoActivity extends Activity
 
 		if (ride.getPrice() != null)
 		{
-			priceText.setText(String.format("%1.1f €", ride.getPrice()));
+			priceText.setText(String.format("%1.1f â‚¬", ride.getPrice()));
 		}
 		else
 		{

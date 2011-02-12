@@ -120,7 +120,7 @@ public class SearchResultAdapter extends ArrayAdapter<SearchRide>
 
 		if (rides.get(position).getPrice() != null)
 		{
-			wrapper.getPrice().setText(rides.get(position).getPrice() + " €");
+			wrapper.getPrice().setText(rides.get(position).getPrice() + " â‚¬");
 		}
 		else
 		{

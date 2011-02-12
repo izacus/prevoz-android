@@ -134,6 +134,7 @@ public class HTTPHelper
 		// Add session cookies to request
 		if (sessionCookies != null)
 		{
+			Log.d("HTTPHelper", "Getting with session cookies " + sessionCookies);
 			get.addHeader("Cookie", sessionCookies);
 		}
 
@@ -162,6 +163,7 @@ public class HTTPHelper
 
 		if (sessionCookies != null)
 		{
+			Log.d("HTTPHelper", "Posting with session cookies " + sessionCookies);
 			post.addHeader("Cookie", sessionCookies);
 		}
 
@@ -186,5 +188,7 @@ public class HTTPHelper
 		CookieSyncManager.createInstance(context);
 		CookieManager cookieManager = CookieManager.getInstance();
 		sessionCookies = cookieManager.getCookie(Globals.API_DOMAIN);
+		
+		Log.d("HTTPHelper", "Storing session cookies " + sessionCookies);
 	}
 }
