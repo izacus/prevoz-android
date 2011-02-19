@@ -2,12 +2,15 @@ package org.prevoz.android.auth;
 
 import java.util.LinkedList;
 
+import org.prevoz.android.Globals;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
 /**
@@ -98,6 +101,28 @@ public class AuthenticationManager
 		Intent intent = new Intent(context, LoginActivity.class);
 		context.startActivity(intent);
 		Log.d(this.toString(), "Starting authentication process...");
+	}
+	
+	public void requestLogout(Activity context)
+	{
+		LogoutTask logoutTask = new LogoutTask(context);
+		logoutTask.execute();
+		
+		try
+		{
+			if (logoutTask.get() == Globals.REQUEST_SUCCESS)
+			{
+				// Clear stored login cookies
+				CookieSyncManager.createInstance(context);
+				CookieManager cookieManager = CookieManager.getInstance();
+				cookieManager.removeAllCookie();
+				CookieSyncManager.getInstance().sync();
+			}
+		}
+		catch (Exception e)
+		{
+			Log.e(this.toString(), "Logout task failed.", e);
+		}
 	}
 	
 	/**

@@ -81,6 +81,7 @@
     <!-- Logout -->
     <string name="login">Prijava</string>
     <string name="logout">Odjava</string>
+    <string name="logout_progress">Odjavljam...</string>
     <string name="logout_success">Odjava uspešna.</string>
     
     <!--  Day and month names -->

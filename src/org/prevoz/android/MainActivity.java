@@ -1,6 +1,5 @@
 package org.prevoz.android;
 
-import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -10,7 +9,6 @@ import org.prevoz.android.auth.AuthenticationStatus;
 import org.prevoz.android.my_rides.MyRidesActivity;
 import org.prevoz.android.search.SearchActivity;
 import org.prevoz.android.util.Database;
-import org.prevoz.android.util.HTTPHelper;
 import org.prevoz.android.util.TabsUtil;
 
 import android.app.AlertDialog;
@@ -26,8 +24,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,10 +37,14 @@ public class MainActivity extends TabActivity
 		return instance;
 	}
 
+	private static final String UPDATE_NOTIFY_KEY = "updatenotifyshown";
+	
 	private static final int MENU_ABOUT = 0;
 	private static final int MENU_LOGOUT = 1;
 	private static final int MENU_LOGIN = 2;
 
+	private boolean updateNotifyShown = false;
+	
 	private TabHost tabHost;
 
 	/** Called when the activity is first created. */
@@ -52,6 +52,12 @@ public class MainActivity extends TabActivity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		
+		if (savedInstanceState != null)
+		{	
+			updateNotifyShown = savedInstanceState.getBoolean(UPDATE_NOTIFY_KEY);
+		}
+		
 		MainActivity.instance = this;
 
 		// Set custom titlebar
@@ -61,28 +67,31 @@ public class MainActivity extends TabActivity
 		initTabs();
 		
 		// Check for updates
-		final UpdateCheckTask updateCheckTask = new UpdateCheckTask();
-		final Handler callback = new Handler()
+		if (!updateNotifyShown)
 		{
-			@Override
-			public void handleMessage(Message msg)
+			final UpdateCheckTask updateCheckTask = new UpdateCheckTask();
+			final Handler callback = new Handler()
 			{
-				showUpdateNotify(updateCheckTask);
-			}
-		};
-
-		final MainActivity mainActivity = this;
-		TimerTask ttask = new TimerTask()
-		{
-			@Override
-			public void run()
+				@Override
+				public void handleMessage(Message msg)
+				{
+					showUpdateNotify(updateCheckTask);
+				}
+			};
+	
+			final MainActivity mainActivity = this;
+			TimerTask ttask = new TimerTask()
 			{
-				updateCheckTask.checkForUpdate(mainActivity, callback);
-			}
-		};
-
-		Timer t = new Timer(true);
-		t.schedule(ttask, 1000);
+				@Override
+				public void run()
+				{
+					updateCheckTask.checkForUpdate(mainActivity, callback);
+				}
+			};
+	
+			Timer t = new Timer(true);
+			t.schedule(ttask, 1000);
+		}
 		
 		// Check for current authentication status
 		AuthenticationManager.getInstance().getAuthenticationStatus(this, false);
@@ -90,6 +99,9 @@ public class MainActivity extends TabActivity
 
 	private void showUpdateNotify(UpdateCheckTask task)
 	{
+		if (updateNotifyShown)
+			return;
+		
 		final UpdateCheckTask updateTask = task;
 
 		if (task.hasNewVersion())
@@ -116,6 +128,7 @@ public class MainActivity extends TabActivity
 			});
 
 			dialog.show();
+			updateNotifyShown = true;
 		}
 	}
 
@@ -206,21 +219,7 @@ public class MainActivity extends TabActivity
 			return false;
 
 		case MENU_LOGOUT:
-			try
-			{
-				HTTPHelper.httpGet(Globals.API_URL + "/accounts/logout/");
-			}
-			catch (IOException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			CookieSyncManager.createInstance(this);
-			CookieManager cookieManager = CookieManager.getInstance();
-			cookieManager.removeAllCookie();
-			CookieSyncManager.getInstance().sync();
-
+			AuthenticationManager.getInstance().requestLogout(this);
 			Toast.makeText(this, getString(R.string.logout_success), Toast.LENGTH_SHORT).show();
 			return false;
 			
@@ -232,5 +231,12 @@ public class MainActivity extends TabActivity
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState)
+	{
+		super.onSaveInstanceState(outState);
+		outState.putBoolean(UPDATE_NOTIFY_KEY, updateNotifyShown);
 	}
 }

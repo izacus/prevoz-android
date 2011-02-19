@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.WindowManager.BadTokenException;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -42,8 +43,17 @@ public class LoginActivity extends Activity
 		{
 			if (loadingDialog == null || !loadingDialog.isShowing())
 			{
-				loadingDialog = ProgressDialog.show(context, null,
-						context.getString(R.string.loading));
+				try
+				{
+					loadingDialog = ProgressDialog.show(context, null,
+							context.getString(R.string.loading));
+				}
+				// Is thrown if this activity finishes and this event is triggered
+				catch (BadTokenException e)
+				{
+					// Ignore the action
+					return;
+				}
 			}
 
 			Log.i(this.toString(), "Page started " + url);
