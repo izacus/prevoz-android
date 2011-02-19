@@ -90,6 +90,11 @@ public class AuthenticationManager
 	public void requestLogin(Activity context, Handler loginCallback)
 	{
 		callbackQueue.add(loginCallback);
+		requestLogin(context);
+	}
+	
+	public void requestLogin(Activity context)
+	{
 		Intent intent = new Intent(context, LoginActivity.class);
 		context.startActivity(intent);
 		Log.d(this.toString(), "Starting authentication process...");

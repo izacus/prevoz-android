@@ -156,15 +156,30 @@ public class MainActivity extends TabActivity
 	public boolean onPrepareOptionsMenu(Menu menu)
 	{
 		super.onCreateOptionsMenu(menu);
-		menu.add(Menu.NONE , MENU_ABOUT, 0, getString(R.string.about)).setIcon(android.R.drawable.ic_menu_info_details);
+		
+		if (menu.findItem(MENU_ABOUT) == null)
+		{
+			menu.add(Menu.NONE , MENU_ABOUT, 0, getString(R.string.about)).setIcon(android.R.drawable.ic_menu_info_details);
+		}
+		
 		
 		if (AuthenticationManager.getInstance().getAuthenticationStatus(this, false) == AuthenticationStatus.AUTHENTICATED)
 		{
-			menu.add(Menu.NONE, MENU_LOGOUT, 1, getString(R.string.logout)).setIcon(android.R.drawable.ic_menu_delete);
+			if (menu.findItem(MENU_LOGOUT) == null)
+			{
+				// Add logout button
+				menu.add(Menu.NONE, MENU_LOGOUT, 1, getString(R.string.logout)).setIcon(android.R.drawable.ic_menu_delete);
+				// Remove login button
+				menu.removeItem(MENU_LOGIN);
+			}
 		}
 		else
 		{
-			menu.add(Menu.NONE, MENU_LOGIN, 1, getString(R.string.login)).setIcon(android.R.drawable.ic_menu_upload);
+			if (menu.findItem(MENU_LOGIN) == null)
+			{
+				menu.add(Menu.NONE, MENU_LOGIN, 1, getString(R.string.login)).setIcon(android.R.drawable.ic_menu_upload);
+				menu.removeItem(MENU_LOGOUT);
+			}
 		}
 
 		return true;
@@ -207,6 +222,11 @@ public class MainActivity extends TabActivity
 			CookieSyncManager.getInstance().sync();
 
 			Toast.makeText(this, getString(R.string.logout_success), Toast.LENGTH_SHORT).show();
+			return false;
+			
+		case MENU_LOGIN:
+			// Request authentication manager to log user in
+			AuthenticationManager.getInstance().requestLogin(this);
 			return false;
 
 		default:
