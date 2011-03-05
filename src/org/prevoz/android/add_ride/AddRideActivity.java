@@ -155,7 +155,7 @@ public class AddRideActivity extends Activity
 		}
 		else
 		{
-			switchView(AddViews.LOGIN);
+			updateLoginStatus(AuthenticationManager.getInstance().getAuthenticationStatus(this, false));
 		}
 	}
 

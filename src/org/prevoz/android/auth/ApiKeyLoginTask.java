@@ -1,6 +1,7 @@
 package org.prevoz.android.auth;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,11 +12,16 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
 
-public class AuthenticationCheckTask extends AsyncTask<Handler, Void, AuthenticationStatus>
+public class ApiKeyLoginTask extends AsyncTask<Handler, Void, AuthenticationStatus>
 {
+	private String apikey;
 	private Handler callback = null;
-	private String apiKey = null;
 	
+	public ApiKeyLoginTask(String apiKey)
+	{
+		this.apikey = apiKey;
+	}
+
 	@Override
 	protected AuthenticationStatus doInBackground(Handler... params)
 	{
@@ -25,40 +31,41 @@ public class AuthenticationCheckTask extends AsyncTask<Handler, Void, Authentica
 			callback = params[0];
 		}
 		
-		Log.i(this.toString(), "Retreving current login status...");
+		Log.i(this.toString(), "Requesting apikey login...");
 		
 		try
 		{
-			String response = HTTPHelper.httpGet(Globals.API_URL + "/accounts/status/", null);
+			HashMap<String, String> paramMap = new HashMap<String, String>();
+			paramMap.put("apikey", apikey);
+			
+			String response = HTTPHelper.httpPost(Globals.API_URL + "/accounts/login/apikey", paramMap);
+			Log.d(this.toString(), response);
 			
 			JSONObject jsonObj = new JSONObject(response);
 			boolean isLoggedIn = jsonObj.getBoolean("is_authenticated");
-
+			
 			if (isLoggedIn)
 			{
-				Log.i(this.toString(), "User is logged in.");
-				// Retrieve passed apikey
-				apiKey = jsonObj.getString("apikey");
+				Log.i(this.toString(), "Apikey login succeeded!");
 				return AuthenticationStatus.AUTHENTICATED;
 			}
 			else
 			{
-				Log.i(this.toString(), "User is not logged in.");
 				return AuthenticationStatus.NOT_AUTHENTICATED;
 			}
 		}
 		catch (IOException e)
 		{
-			Log.e(this.toString(), "Failed to retrieve current login status.", e);
-			return AuthenticationStatus.UNKNOWN;
+			Log.e(this.toString(), "Apikey login request failed!", e);
+			return AuthenticationStatus.NOT_AUTHENTICATED;
 		}
 		catch (JSONException e)
 		{
-			Log.e(this.toString(), "Failed to parse current login status.", e);
-			return AuthenticationStatus.UNKNOWN;
+			Log.e(this.toString(), "Filed to parse apikey login response!", e);
+			return AuthenticationStatus.NOT_AUTHENTICATED;
 		}
 	}
-
+	
 	@Override
 	protected void onPostExecute(AuthenticationStatus result)
 	{
@@ -67,9 +74,5 @@ public class AuthenticationCheckTask extends AsyncTask<Handler, Void, Authentica
 			callback.sendEmptyMessage(result.ordinal());
 		}
 	}
-	
-	public String getApiKey()
-	{
-		return apiKey;
-	}
+
 }

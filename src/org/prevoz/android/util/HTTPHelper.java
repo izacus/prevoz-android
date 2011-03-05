@@ -7,14 +7,19 @@ import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.prevoz.android.Globals;
 
 import android.content.Context;
@@ -155,18 +160,39 @@ public class HTTPHelper
 
 	public static String httpPost(String url) throws IOException
 	{
+		return httpPost(url, null);
+	}
+	
+	public static String httpPost(String url, Map<String, String> parameters) throws IOException
+	{
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpPost post = new HttpPost(url);
 
+		// Set user agent for sending
 		post.addHeader("User-Agent", "Prevoz on Android "
 				+ Build.VERSION.SDK_INT);
 
+		// Prepare session cookies
 		if (sessionCookies != null)
 		{
 			Log.d("HTTPHelper", "Posting with session cookies " + sessionCookies);
 			post.addHeader("Cookie", sessionCookies);
 		}
-
+		
+		// Prepare POST parameters
+		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		
+		if (parameters != null)
+		{
+			for (String param : parameters.keySet())
+			{
+				nameValuePairs.add(new BasicNameValuePair(param, parameters.get(param)));
+			}
+		}
+		
+		post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+		
+		// Do call
 		HttpResponse response = client.execute(post);
 		HttpEntity entity = response.getEntity();
 

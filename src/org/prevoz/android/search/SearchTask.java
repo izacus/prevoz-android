@@ -13,6 +13,7 @@ import org.prevoz.android.Globals;
 import org.prevoz.android.RideType;
 import org.prevoz.android.util.HTTPHelper;
 
+import android.os.Debug;
 import android.os.Handler;
 import android.util.Log;
 
@@ -40,6 +41,8 @@ public class SearchTask implements Runnable
 	@SuppressWarnings("unchecked")
 	public void run()
 	{
+		Debug.startMethodTracing();
+		
 		String responseString = null;
 
 		// Get data from HTTP server
@@ -132,7 +135,9 @@ public class SearchTask implements Runnable
 
 			return;
 		}
-
+		
+		Debug.stopMethodTracing();
+		
 		// Send completion message
 		handler.sendEmptyMessage(Globals.REQUEST_SUCCESS);
 	}

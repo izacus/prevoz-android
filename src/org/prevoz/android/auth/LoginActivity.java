@@ -75,7 +75,7 @@ public class LoginActivity extends Activity
 				}
 				
 				// Notify all threads of successful login
-				AuthenticationManager.getInstance().notifyLoginResult(AuthenticationStatus.AUTHENTICATED);
+				AuthenticationManager.getInstance().notifyLoginResult(LoginActivity.this, AuthenticationStatus.AUTHENTICATED);
 				// Close this activity
 				context.finish();
 			}
@@ -113,6 +113,9 @@ public class LoginActivity extends Activity
 		view.loadUrl(Globals.LOGIN_URL);
 	}
 
+	/**
+	 * Send not authenticated status if user pressed the back button to cancel login
+	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
@@ -120,7 +123,7 @@ public class LoginActivity extends Activity
 		
 		if (resultCode == Activity.RESULT_CANCELED)
 		{
-			AuthenticationManager.getInstance().notifyLoginResult(AuthenticationStatus.NOT_AUTHENTICATED);
+			AuthenticationManager.getInstance().notifyLoginResult(this, AuthenticationStatus.NOT_AUTHENTICATED);
 		}
 	}
 }

@@ -18,6 +18,8 @@
   		 android:id = "@+id/add_login_required_text"
   		 android:layout_width = "fill_parent"
          android:layout_height = "wrap_content"
+         android:layout_margin = "10dip"
+         android:layout_marginBottom = "15dip"         
          android:gravity = "center_horizontal"
          android:text = "@string/add_login_required"
          style = "@style/MediumText"
@@ -27,6 +29,9 @@
   		 android:id = "@+id/add_login_button"
 		 android:layout_width = "wrap_content"
          android:layout_height = "wrap_content"
+         android:layout_marginTop = "15dip"
+         android:paddingLeft = "20dip"
+         android:paddingRight = "20dip"
          android:text = "Prijava"
         /> 	          
   </LinearLayout>
