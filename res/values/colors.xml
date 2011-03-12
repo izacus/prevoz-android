@@ -9,11 +9,14 @@
         
     <!-- Orange gradient colors -->
     <color
-        name="orange_start">#FFB44B</color>
+        name="title_gradient_start">#EC7100</color>
     <color
-        name="orange_end">#EC7100</color>
+        name="title_gradient_end">#FF9029</color>
         
     <!-- Separator -->
     <color
         name="separator">#626E79</color>
+    <color name="title_background">#EC7100</color>
+    <color name="title_text">#FFF</color>
+    <color name="title_separator">#FFB44B</color>
 </resources>

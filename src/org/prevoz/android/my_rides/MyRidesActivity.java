@@ -189,7 +189,8 @@ public class MyRidesActivity extends ListActivity implements
 		cal.set(year, monthOfYear, dayOfMonth);
 
 		// Switch to search tab
-		MainActivity.getInstance().switchToSearch();
+		// TODO: fix switch
+		//MainActivity.getInstance().switchToSearch();
 
 		// Send search request
 		Intent intent = new Intent(SearchActivity.SEARCH_REQUEST);

@@ -82,7 +82,7 @@
 	    <item
 	      name="android:paddingLeft">5dip</item>
 	    <item
-	      name="android:background">@drawable/orange_gradient</item>
+	      name="android:background">@drawable/title_gradient</item>
 	    <item
 	      name="android:textAppearance">@android:style/TextAppearance.Small</item>
 	    <item
@@ -99,32 +99,13 @@
     
     
     <!-- Colored titlebar -->
-    <style name="TitleBar">
-        <item
-          name="android:layout_height">wrap_content</item>
-        <item
-          name="android:layout_width">fill_parent</item>
-        <item
-          name="android:paddingTop">2dip</item>
-        <item
-          name="android:paddingBottom">3dip</item>
-        <item
-          name="android:paddingLeft">5dip</item>   
-         
-        <item
-          name="android:background">@drawable/orange_gradient</item>
-        <item
-          name="android:textAppearance">@android:style/TextAppearance.Small</item>
+    <style name="title_text_style">
         <item
           name="android:shadowColor">#111111</item>
         <item
           name="android:shadowRadius">1</item>
         <item
           name="android:shadowDy">1</item>
-        <item
-          name="android:textStyle">bold</item>
-        <item
-          name="android:textColor">@android:color/white</item>
     </style>
     
     <!-- Ride information styles -->
