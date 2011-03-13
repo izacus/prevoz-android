@@ -3,7 +3,6 @@ package org.prevoz.android.my_rides;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.Route;
 import org.prevoz.android.SectionedAdapter;
@@ -11,27 +10,27 @@ import org.prevoz.android.search.SearchActivity;
 import org.prevoz.android.util.Database;
 
 import android.app.DatePickerDialog;
+import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.app.ListActivity;
-import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnCreateContextMenuListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class MyRidesActivity extends ListActivity implements
 		OnItemClickListener, OnCreateContextMenuListener, OnDateSetListener

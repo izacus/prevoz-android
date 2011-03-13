@@ -11,5 +11,9 @@
     android:textSize = "@dimen/text_size_medium"
     android:textColor = "@color/title_text"
     android:background = "@drawable/title_gradient"
+    
+    android:layout_alignParentTop = "true"
+    android:layout_alignParentLeft = "true"
+    
     style = "@style/title_text_style"
     />

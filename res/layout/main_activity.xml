@@ -1,11 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width = "fill_parent"
     android:layout_height = "fill_parent"
     >
     
-    <include layout="@layout/title_bar" />
+    <include layout="@layout/title_bar" 
+    		 android:id = "@+id/title_bar" />
     
-</LinearLayout>
+    <TextView
+    	android:id = "@+id/from_label"
+    	android:layout_width = "fill_parent"
+    	android:layout_height = "wrap_content"
+    	
+    	android:layout_below = "@id/title_bar"
+    	android:layout_marginTop = "15dip"
+    	android:layout_marginLeft = "17dip"
+    	android:layout_marginRight = "15dip"
+    	
+    	android:text = "@string/search_label_from"
+    	style = "@style/field_labels"
+    	/>
+    	
+     <Button
+    	android:id = "@+id/gps_button"
+    	android:layout_height = "wrap_content"
+    	android:layout_width = "wrap_content"
+    	
+    	android:layout_below = "@id/from_label"
+    	android:layout_alignParentRight = "true"
+    	android:layout_marginRight = "15dip"
+    	android:layout_marginLeft = "8dip"
+    	
+    	android:text = "GPS"
+    	/>	
+    	
+    <AutoCompleteTextView
+    	android:id = "@+id/from_field"
+    	android:layout_width = "fill_parent"
+    	android:layout_height = "wrap_content"
+    	
+    	android:layout_below = "@id/from_label"
+    	android:layout_alignParentLeft = "true"
+    	android:layout_toLeftOf = "@id/gps_button"
+    	android:layout_marginLeft = "15dip"
+    	android:layout_marginRight = "7dip"
+    	
+    	android:inputType = "textCapWords"
+    	android:hint = "@string/search_hint_from"
+    	android:textColor = "@android:color/black"
+    	/>
+    	
+
+    
+    <TextView
+    	android:id = "@+id/to_label"
+    	android:layout_width = "fill_parent"
+    	android:layout_height = "wrap_content"
+    	
+    	android:layout_below = "@id/from_field"
+    	android:layout_marginLeft = "17dip"
+    	android:layout_marginRight = "15dip"
+    	
+    	android:text = "@string/search_label_to"
+    	style = "@style/field_labels"
+    	/>
+    	
+     <AutoCompleteTextView
+    	android:id = "@+id/to_field"
+    	android:layout_width = "fill_parent"
+    	android:layout_height = "wrap_content"
+    	
+    	android:layout_below = "@id/to_label"
+    	android:layout_marginLeft = "15dip"
+    	android:layout_marginRight = "15dip"
+    	
+    	android:inputType = "textCapWords"
+    	android:hint = "@string/search_hint_to"
+    	android:textColor = "@android:color/black"
+    	/>
+    	
+    <Button
+    	android:id = "@+id/date_button"
+    	android:layout_height = "wrap_content"
+    	android:layout_width = "fill_parent"
+    	
+    	android:layout_below = "@id/to_field"
+    	android:layout_margin = "15dip" 
+    	/>
+    
+    <TextView
+    	android:id = "@+id/search_button"
+    	android:text = "Išči"
+    	android:gravity = "center"
+    	android:layout_height = "@dimen/title_height"
+    	android:layout_width = "fill_parent"
+    	android:textStyle = "bold"
+    	android:textSize = "@dimen/text_size_medium"
+    	android:textColor = "@color/title_text"
+    	android:background = "@drawable/dark_gradient"
+    
+    	android:layout_alignParentBottom = "true"
+    	android:layout_alignParentLeft = "true"
+    
+    	style = "@style/title_text_style"
+    />
+</RelativeLayout>

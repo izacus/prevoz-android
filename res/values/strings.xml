@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<!-- General application data -->
     <string name="app_name">Prevoz</string>
     <string name="app_version">1.0.3</string>
     
@@ -11,6 +12,12 @@
     <string name="network_error">Napaka na internetni povezavi.</string>
     
     <!--  Search tab strings -->
+    <string name="search_label_from">Od</string>
+    <string name="search_label_to">Do</string>
+    
+    <string name="search_hint_from">Odhod iz</string>
+    <string name="search_hint_to">Prihod v</string>
+    
     <string name="search_tab">Iskanje</string>
     <string name="searching">Iščem...</string>
     <string name="search_no_results">Prevozov za ta dan ni.</string>

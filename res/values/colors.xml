@@ -12,6 +12,12 @@
         name="title_gradient_start">#EC7100</color>
     <color
         name="title_gradient_end">#FF9029</color>
+
+    <!-- Dark gradient colors -->
+    <color
+        name="dark_gradient_start">#000</color>
+    <color
+        name="dark_gradient_end">#444</color>
         
     <!-- Separator -->
     <color

@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<!-- Standard styles -->
+	<style
+		name = "field_labels">
+		<item name="android:textSize">@dimen/text_size_small</item>
+		<item name="android:textStyle">bold</item>
+	</style>
+
+
+
+<!--  OLD STYLES -->
     <style
         name = "PrevozTheme"
         parent = "@android:style/Theme.Light.NoTitleBar">
