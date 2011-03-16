@@ -2,12 +2,12 @@ package org.prevoz.android.search;
 
 import org.prevoz.android.R;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
-public class MainActivity extends Activity
+public class MainActivity extends FragmentActivity
 {
 	// Activity form fields
 	private Button buttonDate;
@@ -27,19 +27,6 @@ public class MainActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_activity);
-		prepareFormFields();
-		
-		// Initialize date display
-		buttonDate.setText("danes");
-		
-		// Initialize locations autocomplete
-		LocationAutocompleteAdapter locAdapter = new LocationAutocompleteAdapter(this, null);
-		fromField.setAdapter(locAdapter);
-		toField.setAdapter(locAdapter);
-		
-		// Set treshold for autocomplete
-		fromField.setThreshold(1);
-		toField.setThreshold(1);
 	}
 
 

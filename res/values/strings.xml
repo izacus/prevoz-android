@@ -14,10 +14,12 @@
     <!--  Search tab strings -->
     <string name="search_label_from">Od</string>
     <string name="search_label_to">Do</string>
+    <string name="search_label_date">Datum</string>
     
     <string name="search_hint_from">Odhod iz</string>
     <string name="search_hint_to">Prihod v</string>
     
+    <!--  DEPRECATED DEPRECATED DEPRECATED -->
     <string name="search_tab">Iskanje</string>
     <string name="searching">Iščem...</string>
     <string name="search_no_results">Prevozov za ta dan ni.</string>
@@ -92,6 +94,9 @@
     <string name="logout_success">Odjava uspešna.</string>
     
     <!--  Day and month names -->
+    
+    <string name="today">danes</string>
+    <string name="tomorrow">jutri</string>
     
     <string-array name="day_names">
         <item>Nedelja</item>
