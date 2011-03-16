@@ -97,7 +97,8 @@
     	
     	android:layout_below = "@id/date_label"
     	android:layout_marginLeft = "15dip"
-    	android:layout_marginRight = "15dip" 
+    	android:layout_marginRight = "15dip"
+    	android:layout_marginTop = "5dip" 
     	
     	android:background = "@drawable/button_black_rnd"
     	style = "@style/button_black"
