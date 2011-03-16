@@ -2,7 +2,7 @@
 <resources>
 	<!-- General application data -->
     <string name="app_name">Prevoz</string>
-    <string name="app_version">1.0.3</string>
+    <string name="app_version">2.0.0</string>
     
     <string name="about">O aplikaciji</string>
     <string name="about_text">Pripombe na info@prevoz.org</string>
@@ -18,6 +18,8 @@
     
     <string name="search_hint_from">Odhod iz</string>
     <string name="search_hint_to">Prihod v</string>
+    
+    <string name="search_go">Išči</string>
     
     <!--  DEPRECATED DEPRECATED DEPRECATED -->
     <string name="search_tab">Iskanje</string>

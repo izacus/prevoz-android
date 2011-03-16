@@ -28,6 +28,9 @@
     	android:layout_marginRight = "15dip"
     	android:layout_marginLeft = "8dip"
     	
+    	android:background = "@drawable/button_black_rnd"
+    	style = "@style/button_black"
+    	
     	android:text = "GPS"
     	/>	
     	
@@ -95,25 +98,26 @@
     	android:layout_below = "@id/date_label"
     	android:layout_marginLeft = "15dip"
     	android:layout_marginRight = "15dip" 
+    	
+    	android:background = "@drawable/button_black_rnd"
+    	style = "@style/button_black"
     	/>
     
     
     
-    <TextView
+    <Button
     	android:id = "@+id/search_button"
-    	android:text = "Išči"
+    	android:text = "@string/search_go"
     	android:gravity = "center"
     	android:layout_height = "@dimen/title_height"
     	android:layout_width = "@dimen/search_button_width"
-    	android:textStyle = "bold"
-    	android:textSize = "@dimen/text_size_medium"
-    	android:textColor = "@color/title_text"
-    	android:background = "@drawable/dark_gradient"
+    	
+    	android:background = "@drawable/button_black"
     
     	android:layout_alignParentBottom = "true"
     	android:layout_alignParentRight = "true"
     
-    	style = "@style/title_text_style"
+    	style = "@style/button_black"
     />
     
     <!-- Separator -->

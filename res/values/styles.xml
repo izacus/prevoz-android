@@ -8,6 +8,15 @@
 	</style>
 
 
+	<style
+		name = "button_black">
+		
+		<item name="android:textStyle">bold</item>
+		<item name="android:textColor">@color/title_text</item>
+		<item name="android:textSize">@dimen/text_size_medium</item>
+		
+	</style>
+
 
 <!--  OLD STYLES -->
     <style
