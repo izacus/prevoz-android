@@ -3,13 +3,8 @@ package org.prevoz.android;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.prevoz.android.add_ride.AddRideActivity;
 import org.prevoz.android.auth.AuthenticationManager;
 import org.prevoz.android.auth.AuthenticationStatus;
-import org.prevoz.android.my_rides.MyRidesActivity;
-import org.prevoz.android.search.SearchActivity;
-import org.prevoz.android.util.Database;
-import org.prevoz.android.util.TabsUtil;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -136,7 +131,7 @@ public class OldMainActivity extends TabActivity
 	{
 		tabHost = getTabHost();
 
-		Intent myRidesIntent = new Intent(this, MyRidesActivity.class);
+/*		Intent myRidesIntent = new Intent(this, MyRidesActivity.class);
 		TabsUtil.addNativeLookingTab(this, tabHost, "my_rides",
 				getString(R.string.my_rides_tab), R.drawable.myrides_tab,
 				myRidesIntent);
@@ -157,7 +152,7 @@ public class OldMainActivity extends TabActivity
 		else
 		{
 			tabHost.setCurrentTab(1);
-		}
+		}*/
 	}
 
 	public void switchToSearch()

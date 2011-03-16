@@ -35,9 +35,9 @@
           android:layout_height = "wrap_content"
           android:layout_alignParentRight = "true"
           android:layout_marginRight = "8dip"
-          android:scaleType = "center"
-          android:src = "@drawable/gps_button"
-          />
+          android:scaleType = "center" />
+<!--           android:src = "@drawable/gps_button"
+          />  -->
      
         <AutoCompleteTextView 
           android:id = "@+id/add_from"
@@ -62,9 +62,9 @@
           android:layout_height = "wrap_content"
           android:layout_alignParentRight = "true"
           android:layout_marginRight = "8dip"
-          android:scaleType = "center"
-          android:src = "@drawable/gps_button"
-          />
+          android:scaleType = "center" />
+<!--      android:src = "@drawable/gps_button"  -->
+          
      
         <AutoCompleteTextView 
           android:id = "@+id/add_to"
