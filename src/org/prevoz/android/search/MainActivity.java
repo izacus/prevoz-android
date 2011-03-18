@@ -9,7 +9,6 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.widget.DatePicker;
 
 public class MainActivity extends FragmentActivity implements OnDateSetListener

@@ -20,6 +20,8 @@
     <string name="search_hint_to">Prihod v</string>
     
     <string name="search_go">Išči</string>
+    <string name="search_gps_locating">Lociram...</string>
+    <string name="search_gps_error">Vaše lokacije ni bilo mogoče najti.</string>
     
     <!--  DEPRECATED DEPRECATED DEPRECATED -->
     <string name="search_tab">Iskanje</string>
@@ -34,8 +36,6 @@
     <string name="destination">Kraj prihoda</string>
     <string name="date">Datum</string>
     <string name="time">Čas</string>
-    
-    <string name="gps_error">Vaše lokacije ni bilo mogoče najti.</string>
     
     <!--  Ride details strings -->
     <string name="loading">Nalagam...</string>

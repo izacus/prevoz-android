@@ -2,11 +2,14 @@ package org.prevoz.android.search;
 
 import java.util.Calendar;
 
+import org.prevoz.android.GPSManager;
 import org.prevoz.android.R;
 import org.prevoz.android.util.LocaleUtil;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +17,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class SearchFormFragment extends Fragment 
 {
 	private Button buttonDate;
+	private Button buttonGps;
 	private AutoCompleteTextView fromField;
 	private AutoCompleteTextView toField;
 	
@@ -26,6 +32,7 @@ public class SearchFormFragment extends Fragment
 	private void prepareFormFields()
 	{
 		buttonDate = (Button)getActivity().findViewById(R.id.date_button);
+		buttonGps = (Button)getActivity().findViewById(R.id.gps_button);
 		fromField = (AutoCompleteTextView)getActivity().findViewById(R.id.from_field);
 		toField = (AutoCompleteTextView)getActivity().findViewById(R.id.to_field);
 		
@@ -46,6 +53,16 @@ public class SearchFormFragment extends Fragment
 			public void onClick(View v) 
 			{
 				getActivity().showDialog(MainActivity.DIALOG_SEARCH_DATE);
+			}
+		});
+		
+		// Set GPS button action
+		buttonGps.setOnClickListener(new OnClickListener() 
+		{
+			
+			public void onClick(View arg0) 
+			{
+				fillInCurrentLocation(fromField);
 			}
 		});
 	}
@@ -109,5 +126,39 @@ public class SearchFormFragment extends Fragment
 	{
 		this.selectedDate = date;
 		buttonDate.setText(localizeDate(selectedDate));
+	}
+	
+	private void fillInCurrentLocation(final TextView view)
+	{
+		view.setEnabled(false);
+		
+		final String currentText = view.getText().toString();
+		final String currentHint = view.getHint().toString();
+		
+		view.setText("");
+		view.setHint(getResources().getString(R.string.search_gps_locating));
+		
+		// Determine location
+		final GPSManager gpsManager = new GPSManager();
+		Handler callback = new Handler()
+		{
+			@Override
+			public void handleMessage(Message msg) 
+			{
+				view.setHint(currentHint);
+				
+				if (msg.what == GPSManager.GPS_PROVIDER_UNAVALABLE)
+				{
+					Toast.makeText(getActivity(), R.string.search_gps_error, Toast.LENGTH_SHORT).show();
+					// Restore old entry
+					view.setText(currentText);
+					return;
+				}
+				
+				view.setText(gpsManager.getCurrentCity());
+			}
+		};
+		
+		gpsManager.findCurrentCity(getActivity(), callback);
 	}
 }

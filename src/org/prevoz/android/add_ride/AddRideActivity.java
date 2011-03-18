@@ -658,9 +658,9 @@ public class AddRideActivity extends Activity
 
 				if (msg.what == GPSManager.GPS_PROVIDER_UNAVALABLE)
 				{
-					Toast.makeText(addActivity, R.string.gps_error,
+				/*	Toast.makeText(addActivity, R.string.gps_error,
 							Toast.LENGTH_LONG).show();
-					fillField.setText(oldText);
+					fillField.setText(oldText); */
 				}
 				else if (msg.what == GPSManager.GPS_LOCATION_OK)
 				{

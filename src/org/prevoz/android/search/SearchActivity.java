@@ -584,8 +584,8 @@ public class SearchActivity extends Activity implements OnDateSetListener
 
 				if (msg.what == GPSManager.GPS_PROVIDER_UNAVALABLE)
 				{
-					Toast.makeText(searchActivity, R.string.gps_error,
-							Toast.LENGTH_LONG).show();
+					/*Toast.makeText(searchActivity, R.string.gps_error,
+							Toast.LENGTH_LONG).show(); */
 					fillField.setText(oldText);
 				}
 				else if (msg.what == GPSManager.GPS_LOCATION_OK)
