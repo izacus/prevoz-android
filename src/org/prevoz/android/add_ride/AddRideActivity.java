@@ -635,7 +635,7 @@ public class AddRideActivity extends Activity
 		final String oldHint = fillField.getHint().toString();
 		final String oldText = fillField.getText().toString();
 
-		fillField.setHint(R.string.searching);
+//		fillField.setHint(R.string.searching);
 		fillField.setText("");
 
 		final GPSManager gpsManager = new GPSManager();

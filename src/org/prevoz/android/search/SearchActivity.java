@@ -349,7 +349,7 @@ public class SearchActivity extends Activity implements OnDateSetListener
 
 		case DIALOG_LOADING:
 			searchProgress = new ProgressDialog(this);
-			searchProgress.setMessage(getString(R.string.searching));
+//			searchProgress.setMessage(getString(R.string.searching));
 			return searchProgress;
 
 		default:
@@ -562,7 +562,7 @@ public class SearchActivity extends Activity implements OnDateSetListener
 		final String oldHint = fillField.getHint().toString();
 		final String oldText = fillField.getText().toString();
 
-		fillField.setHint(R.string.searching);
+//		fillField.setHint(R.string.searching);
 		fillField.setText("");
 
 		final GPSManager gpsManager = new GPSManager();

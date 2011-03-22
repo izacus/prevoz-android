@@ -24,6 +24,7 @@ public class SearchFormFragment extends Fragment
 {
 	private Button buttonDate;
 	private Button buttonGps;
+	private Button buttonSearch;
 	private AutoCompleteTextView fromField;
 	private AutoCompleteTextView toField;
 	
@@ -33,6 +34,7 @@ public class SearchFormFragment extends Fragment
 	{
 		buttonDate = (Button)getActivity().findViewById(R.id.date_button);
 		buttonGps = (Button)getActivity().findViewById(R.id.gps_button);
+		buttonSearch = (Button)getActivity().findViewById(R.id.search_button);
 		fromField = (AutoCompleteTextView)getActivity().findViewById(R.id.from_field);
 		toField = (AutoCompleteTextView)getActivity().findViewById(R.id.to_field);
 		
@@ -65,6 +67,16 @@ public class SearchFormFragment extends Fragment
 				fillInCurrentLocation(fromField);
 			}
 		});
+		
+		// Set search button action
+		buttonSearch.setOnClickListener(new OnClickListener()
+		{
+			
+			public void onClick(View arg0)
+			{
+				startSearch();
+			}
+		});
 	}
 	
 	@Override
@@ -82,9 +94,11 @@ public class SearchFormFragment extends Fragment
 							 ViewGroup container,
 							 Bundle savedInstanceState) 
 	{
-		View newView = inflater.inflate(R.layout.search_form_frag, container);
+		View newView = inflater.inflate(R.layout.search_form_frag, container, false);
 		return newView;
 	}
+	
+	
 	
 	/**
 	 * Builds a localized date string with day name
@@ -160,5 +174,14 @@ public class SearchFormFragment extends Fragment
 		};
 		
 		gpsManager.findCurrentCity(getActivity(), callback);
+	}
+	
+	private void startSearch()
+	{
+		String from = fromField.getText().toString();
+		String to = toField.getText().toString();
+		
+		MainActivity mainActivity = (MainActivity) getActivity();
+		mainActivity.startSearch(from, to, selectedDate);
 	}
 }
