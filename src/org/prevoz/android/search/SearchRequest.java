@@ -1,23 +1,49 @@
 package org.prevoz.android.search;
 
-import java.util.HashMap;
+import java.util.Calendar;
 
 import org.prevoz.android.RideType;
 
 import android.app.Activity;
+import android.os.Handler;
 
 public class SearchRequest
 {
 	private Activity context = null;
 	private RideType searchType = null;
-	private HashMap<String, String> parameters = null;
+	
+	private String from;
+	private String to;
+	private Calendar when;
+	
+	private Handler callback;
 
-	public SearchRequest(Activity context, RideType searchType,
-			HashMap<String, String> parameters)
+	public SearchRequest(Activity context,
+						 Handler callback,
+						 RideType searchType,
+						 String from,
+						 String to,
+						 Calendar when)
 	{
 		this.context = context;
+		this.callback = callback;
 		this.searchType = searchType;
-		this.parameters = parameters;
+		
+		this.from = from;
+		this.to = to;
+		this.when = when;
+	}
+
+	public String getFrom() {
+		return from;
+	}
+
+	public String getTo() {
+		return to;
+	}
+
+	public Calendar getWhen() {
+		return when;
 	}
 
 	public Activity getContext()
@@ -25,13 +51,14 @@ public class SearchRequest
 		return context;
 	}
 
-	public HashMap<String, String> getParameters()
-	{
-		return parameters;
-	}
 
 	public RideType getSearchType()
 	{
 		return searchType;
+	}
+	
+	public Handler getCallback()
+	{
+		return callback;
 	}
 }

@@ -2,6 +2,7 @@ package org.prevoz.android.search;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -10,61 +11,48 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.prevoz.android.Globals;
+import org.prevoz.android.R;
 import org.prevoz.android.RideType;
 import org.prevoz.android.util.HTTPHelper;
+import org.prevoz.android.util.StringUtil;
 
-import android.os.Debug;
-import android.os.Handler;
+import android.os.AsyncTask;
 import android.util.Log;
 
-public class SearchTask implements Runnable
+public class SearchTask extends AsyncTask<SearchRequest, Void, SearchResults>
 {
-	private Handler handler = null;
-
-	private SearchRequest request = null;
-	private SearchResults response = null;
-
 	public SearchTask()
-	{
-	}
+	{}
 
-	public void startSearch(SearchRequest request, Handler callback)
-	{
-		this.request = request;
-		this.handler = callback;
-
-		Thread thread = new Thread(this);
-		thread.setDaemon(true);
-		thread.start();
-	}
-
-	@SuppressWarnings("unchecked")
-	public void run()
-	{
-		Debug.startMethodTracing();
+	@Override
+	protected SearchResults doInBackground(SearchRequest... request) {
 		
+		SearchResults results = null;
 		String responseString = null;
 
+		
+		// Parameter sanity check
+		if (request.length != 1)
+			return null;
+		
 		// Get data from HTTP server
 		try
 		{
-			responseString = HTTPHelper.httpGet(Globals.API_URL
-					+ "/search/"
-					+ (request.getSearchType() == RideType.SHARE ? "shares/"
-							: "seekers/"),
-					HTTPHelper.buildGetParams(request.getParameters()));
+			responseString = HTTPHelper.httpGet(Globals.API_URL + "/search/" + 
+					                            (request[0].getSearchType() == RideType.SHARE ? "shares/": "seekers/"),
+					                            HTTPHelper.buildGetParams(prepareParameters(request[0])));
 		}
 		catch (IOException e)
 		{
 			Log.e(this.toString(), "Error while requesting search data!", e);
-			handler.sendEmptyMessage(Globals.REQUEST_ERROR_NETWORK);
-			return;
+			request[0].getCallback().sendEmptyMessage(0);
+			return new SearchResults(request[0].getSearchType(), prepareError(request[0].getContext().getString(R.string.network_error)));
 		}
 
 		if (responseString == null)
 		{
-			handler.sendEmptyMessage(Globals.REQUEST_ERROR_SERVER);
-			return;
+			request[0].getCallback().sendEmptyMessage(0);
+			return new SearchResults(request[0].getSearchType(), prepareError(request[0].getContext().getString(R.string.server_error)));
 		}
 
 		// Parse into a response object
@@ -90,31 +78,28 @@ public class SearchTask implements Runnable
 					try
 					{
 						SearchRide ride = new SearchRide(jsonRide.getInt("id"),
-								jsonRide.getString("from"),
-								jsonRide.getString("to"),
-								jsonRide.getString("author"),
-								jsonRide.isNull("price") ? null : jsonRide
-										.getDouble("price"),
-								HTTPHelper.parseISO8601(jsonRide
-										.getString("date_iso8601")));
+														 jsonRide.getString("from"),
+														 jsonRide.getString("to"),
+														 jsonRide.getString("author"),
+														 jsonRide.isNull("price") ? null : jsonRide.getDouble("price"),
+														 HTTPHelper.parseISO8601(jsonRide.getString("date_iso8601")));
 
 						rides.add(ride);
 					}
 					catch (ParseException e)
 					{
-						Log.e(this.toString(),
-								"Failed to parse date for ride ID"
-										+ jsonRide.getInt("id"), e);
+						Log.e(this.toString(), "Failed to parse date for ride ID" + jsonRide.getInt("id"), e);
 					}
 				}
 
-				this.response = new SearchResults(rideType, rides);
+				results = new SearchResults(rideType, rides);
 			}
 			else
 			{
 				HashMap<String, String> errors = new HashMap<String, String>();
 				JSONObject errorList = root.getJSONObject("error");
 
+				@SuppressWarnings("unchecked")
 				Iterator<String> keyIterator = errorList.keys();
 
 				while (keyIterator.hasNext())
@@ -125,25 +110,43 @@ public class SearchTask implements Runnable
 					errors.put(key, value);
 				}
 
-				this.response = new SearchResults(rideType, errors);
+				results = new SearchResults(rideType, errors);
 			}
 		}
 		catch (JSONException e)
 		{
 			Log.e(this.toString(), "Error while parsing JSON response!", e);
-			handler.sendEmptyMessage(Globals.REQUEST_ERROR_SERVER);
-
-			return;
+			results = new SearchResults(request[0].getSearchType(), prepareError(request[0].getContext().getString(R.string.server_error)));
 		}
 		
-		Debug.stopMethodTracing();
-		
-		// Send completion message
-		handler.sendEmptyMessage(Globals.REQUEST_SUCCESS);
+		request[0].getCallback().sendEmptyMessage(0);
+		return results;
 	}
-
-	public SearchResults getResults()
+	
+	private HashMap<String, String> prepareError(String message)
 	{
-		return response;
+		HashMap<String, String> errors = new HashMap<String, String>();
+		errors.put("error", message);
+		return errors;
+	}
+	
+	private HashMap<String, String> prepareParameters(SearchRequest request)
+	{
+		HashMap<String, String> parameters = new HashMap<String, String>();
+		
+		parameters.put("f", request.getFrom());
+		parameters.put("fc", "SI");
+		parameters.put("t", request.getTo());
+		parameters.put("tc", "SI");
+		parameters.put("client", "android" + StringUtil.numberOnly(request.getContext().getString(R.string.app_version), false));
+
+		// Build date
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		parameters.put("d", formatter.format(request.getWhen().getTime()));
+
+		int search_type = request.getSearchType().ordinal();
+		parameters.put("search_type", String.valueOf(search_type));
+		
+		return parameters;
 	}
 }

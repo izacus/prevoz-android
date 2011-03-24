@@ -398,9 +398,9 @@ public class SearchActivity extends Activity implements OnDateSetListener
 				.getSelectedItem()).type();
 		parameters.put("search_type", String.valueOf(search_type));
 
-		SearchRequest request = new SearchRequest(this,
+/*		SearchRequest request = new SearchRequest(this,
 				search_type == 0 ? RideType.SEEK : RideType.SHARE, parameters);
-		final SearchTask task = new SearchTask();
+		final SearchTask task = new SearchTask(); 
 
 		Handler searchHandler = new Handler()
 		{
@@ -431,7 +431,7 @@ public class SearchActivity extends Activity implements OnDateSetListener
 
 		};
 
-		task.startSearch(request, searchHandler);
+		task.startSearch(request, searchHandler); */
 	}
 
 	private void buildResultsList()

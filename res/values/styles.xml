@@ -101,7 +101,7 @@
 	    <item
 	      name="android:paddingLeft">5dip</item>
 	    <item
-	      name="android:background">@drawable/title_gradient</item>
+	      name="android:background">@drawable/dark_gradient</item>
 	    <item
 	      name="android:textAppearance">@android:style/TextAppearance.Small</item>
 	    <item
