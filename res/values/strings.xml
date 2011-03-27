@@ -7,6 +7,9 @@
     <string name="about">O aplikaciji</string>
     <string name="about_text">Pripombe na info@prevoz.org</string>
     
+    <!-- General strings -->
+    <string name="loading">Nalagam...</string>
+    
     <!-- Error strings -->
     <string name="server_error">Strežnik prevoz ni na voljo. Prosimo poskusite kasneje.</string>
     <string name="network_error">Napaka na internetni povezavi.</string>
@@ -40,7 +43,6 @@
     <string name="time">Čas</string>
     
     <!--  Ride details strings -->
-    <string name="loading">Nalagam...</string>
     <string name="price">cena</string>
     
     <string-array name="people_tags">

@@ -4,12 +4,10 @@ import java.text.SimpleDateFormat;
 
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
-import org.prevoz.android.util.Database;
 import org.prevoz.android.util.HTTPHelper;
 import org.prevoz.android.util.LocaleUtil;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -17,39 +15,50 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 public class RideInfoActivity extends Activity
 {
-	public static final String RIDE_ID = RideInfoActivity.class.toString()
-			+ ".ride_id";
-	public static final int RIDE_DELETED = Activity.RESULT_FIRST_USER;
-
-	private static final int MENU_ADD_FAVORITES = Menu.FIRST;
-
-	private static RideInfoActivity instance = null;
-
+	// UI fields
+	private ViewFlipper rideFlipper;
+	
+	private TextView fromText;
+	private TextView toText;
+	private TextView timeText;
+	private TextView dayText;
+	private TextView dateText;
+	private TextView priceText;
+	private TextView pplText;
+	private TextView pplTagText;
+	private TextView driverText;
+	private TextView contactText;
+	private TextView commentText;
+	
+	private Button callButton;
+	private Button smsButton;
+	private Button delButton;
+	
+	public static final String RIDE_ID = RideInfoActivity.class.toString() + ".ride_id";
+	
 	private int rideID;
 	private Ride ride = null;
-	private ProgressDialog loadingDialog = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		RideInfoActivity.instance = this;
-
-		// Create an empty layout to speed up loading transition
-		LinearLayout layout = new LinearLayout(this);
-		setContentView(layout);
-
+		setContentView(R.layout.ride_info_activity);
+		prepareUIElements();
+		
+		rideFlipper.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
+		rideFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
+		
 		// Get ride ID
 		if (getIntent().getExtras() != null)
 		{
@@ -70,6 +79,28 @@ public class RideInfoActivity extends Activity
 			loadRideData();
 		}
 	}
+	
+	private void prepareUIElements()
+	{
+		// UI fields
+		rideFlipper = (ViewFlipper)findViewById(R.id.rideinfo_flipper);
+		
+		fromText = (TextView) findViewById(R.id.rideinfo_from);
+		toText = (TextView) findViewById(R.id.rideinfo_to);
+		timeText = (TextView) findViewById(R.id.rideinfo_time);
+		dayText = (TextView) findViewById(R.id.rideinfo_day);
+		dateText = (TextView) findViewById(R.id.rideinfo_date);
+		priceText = (TextView) findViewById(R.id.rideinfo_price);
+		pplText = (TextView) findViewById(R.id.rideinfo_people);
+		pplTagText = (TextView) findViewById(R.id.rideinfo_peopletag);
+		driverText = (TextView) findViewById(R.id.rideinfo_author);
+		contactText = (TextView) findViewById(R.id.rideinfo_phone);
+		commentText = (TextView) findViewById(R.id.rideinfo_comment);
+		
+		callButton = (Button)findViewById(R.id.rideinfo_call);
+		smsButton = (Button)findViewById(R.id.rideinfo_sms);
+		delButton = (Button) findViewById(R.id.rideinfo_delsend);
+	}
 
 	@Override
 	/**
@@ -88,9 +119,8 @@ public class RideInfoActivity extends Activity
 
 	private void loadRideData()
 	{
-		loadingDialog = ProgressDialog.show(this, "",
-				getString(R.string.loading));
-
+		rideFlipper.setDisplayedChild(0);
+		
 		HTTPHelper.updateSessionCookies(this);
 		final LoadInfoTask loadInfo = new LoadInfoTask();
 
@@ -102,22 +132,20 @@ public class RideInfoActivity extends Activity
 			{
 				switch (msg.what)
 				{
-				case Globals.REQUEST_SUCCESS:
-					showRide(loadInfo.getResult());
-					break;
-
-				case Globals.REQUEST_ERROR_SERVER:
-					Toast.makeText(RideInfoActivity.instance,
-							R.string.server_error, Toast.LENGTH_LONG).show();
-					break;
-
-				case Globals.REQUEST_ERROR_NETWORK:
-					Toast.makeText(RideInfoActivity.instance,
-							R.string.network_error, Toast.LENGTH_LONG).show();
-					break;
+					case Globals.REQUEST_SUCCESS:
+						showRide(loadInfo.getResult());
+						rideFlipper.showNext();
+						break;
+	
+					// TODO: error handling
+					case Globals.REQUEST_ERROR_SERVER:
+						Toast.makeText(RideInfoActivity.this, R.string.server_error, Toast.LENGTH_LONG).show();
+						break;
+	
+					case Globals.REQUEST_ERROR_NETWORK:
+						Toast.makeText(RideInfoActivity.this, R.string.network_error, Toast.LENGTH_LONG).show();
+						break;
 				}
-
-				loadingDialog.dismiss();
 			}
 		};
 
@@ -127,32 +155,20 @@ public class RideInfoActivity extends Activity
 	private void showRide(Ride ride)
 	{
 		this.ride = ride;
-		setContentView(R.layout.ride_info_activity);
 
 		Resources res = getResources();
-
+		
 		// From and to
-		TextView fromText = (TextView) findViewById(R.id.rideinfo_from);
 		fromText.setText(ride.getFrom());
-
-		TextView toText = (TextView) findViewById(R.id.rideinfo_to);
 		toText.setText(ride.getTo());
 
 		// Time and date
-		SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
-
-		TextView timeText = (TextView) findViewById(R.id.rideinfo_time);
+		SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");		
 		timeText.setText(timeFormatter.format(ride.getTime()));
-
-		TextView dayText = (TextView) findViewById(R.id.rideinfo_day);
 		dayText.setText(LocaleUtil.getDayName(res, ride.getTime()) + ",");
-
-		TextView dateText = (TextView) findViewById(R.id.rideinfo_date);
 		dateText.setText(LocaleUtil.getFormattedDate(res, ride.getTime()));
 
 		// Price and number of people
-		TextView priceText = (TextView) findViewById(R.id.rideinfo_price);
-
 		if (ride.getPrice() != null)
 		{
 			priceText.setText(String.format("%1.1f €", ride.getPrice()));
@@ -162,17 +178,12 @@ public class RideInfoActivity extends Activity
 			priceText.setText("?");
 		}
 
-		TextView pplText = (TextView) findViewById(R.id.rideinfo_people);
+		
 		pplText.setText(String.valueOf(ride.getPeople()));
-
-		TextView pplTagText = (TextView) findViewById(R.id.rideinfo_peopletag);
 		pplTagText.setText(LocaleUtil.getStringNumberForm(res,
 				R.array.people_tags, ride.getPeople()));
 
-		// Driver and contact
-
-		TextView driverText = (TextView) findViewById(R.id.rideinfo_author);
-
+		// Driver and contact		
 		if (ride.getAuthor() == null || ride.getAuthor().trim().length() == 0)
 		{
 			driverText.setVisibility(View.GONE);
@@ -183,36 +194,32 @@ public class RideInfoActivity extends Activity
 			driverText.setText(ride.getAuthor());
 		}
 
-		TextView contactText = (TextView) findViewById(R.id.rideinfo_phone);
+		// Contact info
 		contactText.setText(ride.getContact());
 
 		// Comment
-		TextView commentText = (TextView) findViewById(R.id.rideinfo_comment);
 		commentText.setText(ride.getComment());
 
 		// Setup button callbacks
-		((Button) findViewById(R.id.rideinfo_call))
-				.setOnClickListener(new OnClickListener()
-				{
-					public void onClick(View v)
-					{
-						callAuthor();
-					}
-				});
+		callButton.setOnClickListener(new OnClickListener()
+		{
+			public void onClick(View v)
+			{
+				callAuthor();
+			}
+		});
 
-		((Button) findViewById(R.id.rideinfo_sms))
-				.setOnClickListener(new OnClickListener()
-				{
-					public void onClick(View v)
-					{
-						sendSMS();
-					}
-				});
+		smsButton.setOnClickListener(new OnClickListener()
+		{
+			public void onClick(View v)
+			{
+				sendSMS();
+			}
+		});
 
 		// Setup delete button
 		if (ride.isAuthor())
 		{
-			Button delButton = (Button) findViewById(R.id.rideinfo_delsend);
 			delButton.setText(R.string.delete);
 			delButton.setVisibility(View.VISIBLE);
 
@@ -222,35 +229,10 @@ public class RideInfoActivity extends Activity
 			{
 				public void onClick(View v)
 				{
-					deleteRide(id);
+					// TODO: ride delete
 				}
 			});
 		}
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
-		super.onCreateOptionsMenu(menu);
-		// Do not display menu if ride is not loaded yet
-		if (ride == null)
-			return false;
-
-		// Add favorite option
-		menu.add(0, MENU_ADD_FAVORITES, 0, getString(R.string.add_to_favorites))
-				.setIcon(android.R.drawable.ic_menu_add);
-
-		return true;
-	}
-
-	/**
-	 * Adds this route to favorites
-	 */
-	private void addToFavorites()
-	{
-		Database.addFavorite(this, ride.getFrom(), ride.getTo(), ride.getType());
-		Toast.makeText(this, getString(R.string.added_to_favorites),
-				Toast.LENGTH_SHORT).show();
 	}
 
 	/**
@@ -258,8 +240,7 @@ public class RideInfoActivity extends Activity
 	 */
 	private void sendSMS()
 	{
-		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:"
-				+ ride.getContact()));
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + ride.getContact()));
 		intent.putExtra("address", ride.getContact());
 		intent.setType("vnd.android-dir/mms-sms");
 		this.startActivity(intent);
@@ -270,46 +251,7 @@ public class RideInfoActivity extends Activity
 	 */
 	private void callAuthor()
 	{
-		Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"
-				+ ride.getContact()));
+		Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + ride.getContact()));
 		this.startActivity(intent);
 	}
-
-	private void deleteRide(int id)
-	{
-		final ProgressDialog deleteDialog = ProgressDialog.show(this, null,
-				getString(R.string.deleting));
-
-		DeleteRideTask deleteRide = new DeleteRideTask();
-		Handler callback = new Handler()
-		{
-			@Override
-			public void handleMessage(Message msg)
-			{
-				deleteDialog.dismiss();
-				setResult(RIDE_DELETED);
-				finish();
-			}
-		};
-
-		deleteRide.startTask(id, callback);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
-		switch (item.getItemId())
-		{
-		case MENU_ADD_FAVORITES:
-			addToFavorites();
-			break;
-
-		default:
-			Log.e(this.toString(), "Unknown menu option selected!");
-			break;
-		}
-
-		return false;
-	}
-
 }

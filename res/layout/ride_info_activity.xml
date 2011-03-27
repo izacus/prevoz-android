@@ -6,6 +6,15 @@
   android:orientation = "vertical">
   
   <include layout="@layout/title_bar" />
-  <include layout="@layout/ride_info" />
+  
+  <ViewFlipper
+  	android:id = "@+id/rideinfo_flipper"
+  	android:layout_width = "fill_parent"
+  	android:layout_height = "fill_parent">
+  
+    <include layout = "@layout/loading_screen" />
+  	<include layout="@layout/ride_info" />
+  
+  </ViewFlipper>
   
 </LinearLayout>

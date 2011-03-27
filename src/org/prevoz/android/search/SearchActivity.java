@@ -519,26 +519,6 @@ public class SearchActivity extends Activity implements OnDateSetListener
 		currentView = SearchViews.SEARCH_RESULTS;
 	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data)
-	{
-		super.onActivityResult(requestCode, resultCode, data);
-
-		switch (requestCode)
-		{
-		// Refresh search results on delete of activity
-		case RIDEINFO_ACTIVITY_REQUEST:
-			if (resultCode == RideInfoActivity.RIDE_DELETED)
-			{
-				startSearch();
-			}
-			break;
-
-		default:
-			break;
-		}
-	}
-
 	// Getters and setters
 	public SearchResults getSearchResults()
 	{
