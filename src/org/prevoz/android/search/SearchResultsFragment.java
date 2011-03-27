@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
 
 import org.prevoz.android.R;
 import org.prevoz.android.RideType;
 import org.prevoz.android.SectionedAdapter;
+import org.prevoz.android.rideinfo.RideInfoActivity;
+import org.prevoz.android.search.SearchResultAdapter.SearchResultViewWrapper;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,6 +21,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -78,6 +82,21 @@ public class SearchResultsFragment extends Fragment
 		viewFlipper = (ViewFlipper) view.findViewById(R.id.search_results_flipper);
 		resultList = (ListView) view.findViewById(R.id.search_results_list);
 		
+		// Prepare click callback for resultlist
+		resultList.setOnItemClickListener(new OnItemClickListener() 
+		{
+			public void onItemClick(AdapterView<?> parent, 
+									View view,
+									int position, 
+									long id) 
+			{
+				SearchResultViewWrapper viewWrapper = (SearchResultViewWrapper)view.getTag();
+				Intent intent = new Intent(getActivity(), RideInfoActivity.class);
+				intent.putExtra(RideInfoActivity.RIDE_ID, viewWrapper.getRideId());
+				startActivityForResult(intent, 1);
+			};
+		});
+		
 		// Set animations
 		viewFlipper.setInAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in));
 		viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out));
@@ -131,6 +150,7 @@ public class SearchResultsFragment extends Fragment
 			
 			// Show results
 			resultList.setAdapter(resultsAdapter);
+			
 			viewFlipper.showNext();
 		}
 		else
