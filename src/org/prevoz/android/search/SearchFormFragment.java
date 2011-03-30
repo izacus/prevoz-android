@@ -85,6 +85,11 @@ public class SearchFormFragment extends Fragment
 		super.onActivityCreated(savedInstanceState);
 		
 		selectedDate = Calendar.getInstance();
+		if (savedInstanceState != null && savedInstanceState.containsKey("selected_date"))
+		{
+			selectedDate.setTimeInMillis(savedInstanceState.getLong("selected_date"));
+		}
+		
 		
 		prepareFormFields();
 	}
@@ -100,6 +105,12 @@ public class SearchFormFragment extends Fragment
 	
 	
 	
+	@Override
+	public void onSaveInstanceState(Bundle outState)
+	{
+		outState.putLong("selected_date", selectedDate.getTimeInMillis());
+	}
+
 	/**
 	 * Builds a localized date string with day name
 	 */
