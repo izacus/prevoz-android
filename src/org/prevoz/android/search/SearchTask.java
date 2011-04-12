@@ -16,11 +16,15 @@ import org.prevoz.android.RideType;
 import org.prevoz.android.util.HTTPHelper;
 import org.prevoz.android.util.StringUtil;
 
+import android.app.Activity;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 
 public class SearchTask extends AsyncTask<SearchRequest, Void, SearchResults>
 {
+	private SearchRequest searchRequest;
+	
 	public SearchTask()
 	{}
 
@@ -35,24 +39,26 @@ public class SearchTask extends AsyncTask<SearchRequest, Void, SearchResults>
 		if (request.length != 1)
 			return null;
 		
+		searchRequest = request[0];
+		
 		// Get data from HTTP server
 		try
 		{
 			responseString = HTTPHelper.httpGet(Globals.API_URL + "/search/" + 
-					                            (request[0].getSearchType() == RideType.SHARE ? "shares/": "seekers/"),
-					                            HTTPHelper.buildGetParams(prepareParameters(request[0])));
+					                            (searchRequest.getSearchType() == RideType.SHARE ? "shares/": "seekers/"),
+					                            HTTPHelper.buildGetParams(prepareParameters(searchRequest)));
 		}
 		catch (IOException e)
 		{
 			Log.e(this.toString(), "Error while requesting search data!", e);
-			request[0].getCallback().sendEmptyMessage(0);
-			return new SearchResults(request[0].getSearchType(), prepareError(request[0].getContext().getString(R.string.network_error)));
+			searchRequest.getCallback().sendEmptyMessage(0);
+			return new SearchResults(searchRequest.getSearchType(), prepareError(searchRequest.getContext().getString(R.string.network_error)));
 		}
 
 		if (responseString == null)
 		{
-			request[0].getCallback().sendEmptyMessage(0);
-			return new SearchResults(request[0].getSearchType(), prepareError(request[0].getContext().getString(R.string.server_error)));
+			searchRequest.getCallback().sendEmptyMessage(0);
+			return new SearchResults(searchRequest.getSearchType(), prepareError(searchRequest.getContext().getString(R.string.server_error)));
 		}
 
 		// Parse into a response object
@@ -116,10 +122,10 @@ public class SearchTask extends AsyncTask<SearchRequest, Void, SearchResults>
 		catch (JSONException e)
 		{
 			Log.e(this.toString(), "Error while parsing JSON response!", e);
-			results = new SearchResults(request[0].getSearchType(), prepareError(request[0].getContext().getString(R.string.server_error)));
+			results = new SearchResults(searchRequest.getSearchType(), prepareError(searchRequest.getContext().getString(R.string.server_error)));
 		}
 		
-		request[0].getCallback().sendEmptyMessage(0);
+		searchRequest.getCallback().sendEmptyMessage(0);
 		return results;
 	}
 	
@@ -148,5 +154,10 @@ public class SearchTask extends AsyncTask<SearchRequest, Void, SearchResults>
 		parameters.put("search_type", String.valueOf(search_type));
 		
 		return parameters;
+	}
+	
+	public void contextChanged(Activity context, Handler callback)
+	{
+		searchRequest.contextChanged(context, callback);
 	}
 }

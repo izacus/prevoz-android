@@ -6,14 +6,12 @@ import java.util.Calendar;
 import org.prevoz.android.R;
 import org.prevoz.android.Route;
 import org.prevoz.android.SectionedAdapter;
-import org.prevoz.android.search.SearchActivity;
 import org.prevoz.android.util.Database;
 
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.app.ListActivity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -192,11 +190,11 @@ public class MyRidesActivity extends ListActivity implements
 		//MainActivity.getInstance().switchToSearch();
 
 		// Send search request
-		Intent intent = new Intent(SearchActivity.SEARCH_REQUEST);
+/*		Intent intent = new Intent(SearchActivity.SEARCH_REQUEST);
 		intent.putExtra(SearchActivity.SEARCH_TO, selected.getTo());
 		intent.putExtra(SearchActivity.SEARCH_FROM, selected.getFrom());
 		intent.putExtra(SearchActivity.SEARCH_DATE, cal.getTimeInMillis());
-		sendBroadcast(intent);
+		sendBroadcast(intent); */
 	}
 
 	private SectionedAdapter getSectionedAdapter()

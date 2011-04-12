@@ -7,6 +7,7 @@ import org.prevoz.android.R;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -21,13 +22,15 @@ public class MainActivity extends FragmentActivity implements OnDateSetListener
 	
 	public void startSearch(String from, String to, Calendar when)
 	{
-		// Show the search results fragment
-		SearchResultsFragment newSearch = new SearchResultsFragment(from, to, when);
-		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-		transaction.replace(R.id.search_form_fragment, newSearch);		
-		transaction.addToBackStack(null);
-		transaction.commit();
+		// Start new activity with search results
+		Intent intent = new Intent(getApplication(), SearchResultsActivity.class);
+		Bundle dataBundle = new Bundle();
+		dataBundle.putString("from", from);
+		dataBundle.putString("to", to);
+		dataBundle.putLong("when", when.getTimeInMillis());
+		
+		intent.putExtras(dataBundle);
+		this.startActivity(intent);
 	}
 	
 	/** Called when the activity is first created. */
@@ -35,8 +38,7 @@ public class MainActivity extends FragmentActivity implements OnDateSetListener
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main_activity);
-		
+		setContentView(R.layout.main_activity);		
 		Calendar now = Calendar.getInstance();
 		datePicker = new DatePickerDialog(this, this, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
 	}
@@ -51,6 +53,8 @@ public class MainActivity extends FragmentActivity implements OnDateSetListener
 		SearchFormFragment searchForm = (SearchFormFragment)getSupportFragmentManager().findFragmentById(R.id.search_form_fragment);
 		searchForm.setSelectedDate(date);
 	}
+	
+	
 	
 	@Override
 	protected Dialog onCreateDialog(int id) 

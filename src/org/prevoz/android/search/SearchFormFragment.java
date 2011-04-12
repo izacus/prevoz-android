@@ -98,7 +98,7 @@ public class SearchFormFragment extends Fragment
 	public View onCreateView(LayoutInflater inflater, 
 							 ViewGroup container,
 							 Bundle savedInstanceState) 
-	{
+	{		
 		View newView = inflater.inflate(R.layout.search_form_frag, container, false);
 		return newView;
 	}

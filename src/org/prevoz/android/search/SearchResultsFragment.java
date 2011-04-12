@@ -41,18 +41,19 @@ public class SearchResultsFragment extends Fragment
 	
 	private SearchTask taskInProgress;
 	
-	public SearchResultsFragment(String from, String to, Calendar when)
-	{
-		this.from = from;
-		this.to = to;
-		this.when = when;
-	}
 	
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState) 
+	public void onActivityCreated(Bundle savedInstanceState)
 	{
-		super.onCreate(savedInstanceState);
+		super.onActivityCreated(savedInstanceState);
+		
+		SearchResultsActivity activity = (SearchResultsActivity) getActivity();
+		this.from = activity.getFrom();
+		this.to = activity.getTo();
+		this.when = activity.getWhen();
+		
+		Log.d(this.toString(), "Activity created, succefully fetched data.");
 		
 		Handler searchCallback = new Handler()
 		{
@@ -70,6 +71,11 @@ public class SearchResultsFragment extends Fragment
 		taskInProgress.execute(request);
 	}
 
+	@Override
+	public void onCreate(Bundle savedInstanceState) 
+	{
+		super.onCreate(savedInstanceState);
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, 
@@ -161,6 +167,8 @@ public class SearchResultsFragment extends Fragment
 			ArrayAdapter<String> noResultsAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, noResults);
 			resultList.setAdapter(noResultsAdapter);
 			resultList.setOnItemClickListener(null);
+			
+			viewFlipper.showNext();
 		}
 		
 		

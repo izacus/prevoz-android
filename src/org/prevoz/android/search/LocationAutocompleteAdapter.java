@@ -41,17 +41,8 @@ public class LocationAutocompleteAdapter extends CursorAdapter implements
 	{
 		LayoutInflater inflater = LayoutInflater.from(context);
 		// Create new simple dropdown item
-		TextView dropDown = (TextView) inflater.inflate(
-				android.R.layout.simple_dropdown_item_1line, parent, false);
+		TextView dropDown = (TextView) inflater.inflate(android.R.layout.simple_dropdown_item_1line, parent, false);
 		dropDown.setTextColor(Color.BLACK);
-		/*
-		 * int nameColumn = cursor.getColumnIndexOrThrow("name"); String name =
-		 * cursor.getString(nameColumn);
-		 * 
-		 * dropDown.setText(name.toString());
-		 * 
-		 * Log.d(this.toString(), "Name set to " + dropDown.getText());
-		 */
 
 		return dropDown;
 	}
@@ -68,10 +59,11 @@ public class LocationAutocompleteAdapter extends CursorAdapter implements
 	@Override
 	public Cursor runQueryOnBackgroundThread(CharSequence constraint)
 	{
-		Cursor cur = Database.getCitiesStartingWith(database,
-				constraint.toString());
+		Cursor cur = Database.getCitiesStartingWith(database, constraint.toString());
 		Log.i(this.toString(), "Retrieved " + cur.getCount() + " records.");
 
 		return cur;
 	}
+	
+	
 }

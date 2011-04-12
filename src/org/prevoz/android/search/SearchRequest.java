@@ -46,19 +46,24 @@ public class SearchRequest
 		return when;
 	}
 
-	public Activity getContext()
+	public synchronized Activity getContext()
 	{
 		return context;
 	}
-
 
 	public RideType getSearchType()
 	{
 		return searchType;
 	}
 	
-	public Handler getCallback()
+	public synchronized Handler getCallback()
 	{
 		return callback;
+	}
+	
+	public synchronized void contextChanged(Activity context, Handler callback)
+	{
+		this.context = context;
+		this.callback = callback;
 	}
 }
