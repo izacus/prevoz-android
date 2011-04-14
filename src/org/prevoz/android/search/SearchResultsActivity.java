@@ -19,7 +19,6 @@ public class SearchResultsActivity extends FragmentActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.search_results);
-		
 		// Extract passed intent data
 		Bundle data = getIntent().getExtras();
 		from = data.getString("from");

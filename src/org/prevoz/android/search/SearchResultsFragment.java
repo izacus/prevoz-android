@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 
+import org.prevoz.android.Globals;
 import org.prevoz.android.R;
 import org.prevoz.android.RideType;
 import org.prevoz.android.SectionedAdapter;
@@ -13,9 +14,9 @@ import org.prevoz.android.search.SearchResultAdapter.SearchResultViewWrapper;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,8 +29,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-public class SearchResultsFragment extends Fragment
+public class SearchResultsFragment extends Fragment implements LoaderCallbacks<SearchResults>
 {
+	private enum DisplayScreens
+	{
+		LOADING_SCREEN,
+		RESULTS_SCREEN
+	};
+	
 	// Status
 	private String from;
 	private String to;
@@ -38,10 +45,6 @@ public class SearchResultsFragment extends Fragment
 	// Views
 	private ViewFlipper viewFlipper;
 	private ListView resultList;
-	
-	private SearchTask taskInProgress;
-	
-	
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState)
@@ -53,22 +56,12 @@ public class SearchResultsFragment extends Fragment
 		this.to = activity.getTo();
 		this.when = activity.getWhen();
 		
+		showView(DisplayScreens.RESULTS_SCREEN);
+		
 		Log.d(this.toString(), "Activity created, succefully fetched data.");
+		// Get loader for search results
+		getLoaderManager().initLoader(Globals.LOADER_SEARCH_RESULTS, null, this);
 		
-		Handler searchCallback = new Handler()
-		{
-			@Override
-			public void handleMessage(Message msg) 
-			{
-				SearchResultsFragment.this.showSearchResults();
-			}
-		};
-		
-		SearchRequest request = new SearchRequest(getActivity(), searchCallback, RideType.SHARE, from, to, when);
-		
-		// Start new search task
-		taskInProgress = new SearchTask();
-		taskInProgress.execute(request);
 	}
 
 	@Override
@@ -111,21 +104,8 @@ public class SearchResultsFragment extends Fragment
 	}
 
 	
-	private void showSearchResults()
+	private void showSearchResults(SearchResults results)
 	{
-		SearchResults results;
-		
-		try 
-		{
-			results = taskInProgress.get();
-			taskInProgress = null;
-		} 
-		catch (Exception e)
-		{
-			Log.e(this.toString(), "Failed to retrieve search results from task.", e);
-			return;
-		}
-		
 		Log.d(this.toString(), "Search results retrieved, drawing...");
 		
 		SectionedAdapter resultsAdapter = getSectionedAdapter();
@@ -150,14 +130,13 @@ public class SearchResultsFragment extends Fragment
 
 			for (String path : ridePaths)
 			{
-				resultsAdapter.addSection(path, 
-										  new SearchResultAdapter(getActivity(), ridesByPath.get(path)));
+				resultsAdapter.addSection(path, new SearchResultAdapter(getActivity(), ridesByPath.get(path)));
 			}
 			
 			// Show results
 			resultList.setAdapter(resultsAdapter);
 			
-			viewFlipper.showNext();
+			
 		}
 		else
 		{
@@ -167,11 +146,9 @@ public class SearchResultsFragment extends Fragment
 			ArrayAdapter<String> noResultsAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, noResults);
 			resultList.setAdapter(noResultsAdapter);
 			resultList.setOnItemClickListener(null);
-			
-			viewFlipper.showNext();
 		}
 		
-		
+		viewFlipper.showNext();
 	}
 	
 	private SectionedAdapter getSectionedAdapter()
@@ -199,5 +176,34 @@ public class SearchResultsFragment extends Fragment
 		};
 		
 		return adapter;
+	}
+	
+	private void showView(DisplayScreens screen)
+	{
+		switch(screen)
+		{
+			case LOADING_SCREEN:
+				viewFlipper.setDisplayedChild(1);
+				break;
+			case RESULTS_SCREEN:
+				viewFlipper.setDisplayedChild(0);
+				break;
+		}
+	}
+
+	public Loader<SearchResults> onCreateLoader(int id, Bundle args) 
+	{
+		SearchRequest request = new SearchRequest(getActivity(), RideType.SHARE, from, to, when);
+		return new SearchResultsLoader(getActivity(), request);
+	}
+
+	public void onLoadFinished(Loader<SearchResults> loader, SearchResults results) 
+	{
+		showSearchResults(results);
+	}
+
+	public void onLoaderReset(Loader<SearchResults> arg0) 
+	{
+		// Nothing TBD
 	}
 }

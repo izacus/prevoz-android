@@ -5,7 +5,6 @@ import java.util.Calendar;
 import org.prevoz.android.RideType;
 
 import android.app.Activity;
-import android.os.Handler;
 
 public class SearchRequest
 {
@@ -16,17 +15,13 @@ public class SearchRequest
 	private String to;
 	private Calendar when;
 	
-	private Handler callback;
-
 	public SearchRequest(Activity context,
-						 Handler callback,
 						 RideType searchType,
 						 String from,
 						 String to,
 						 Calendar when)
 	{
 		this.context = context;
-		this.callback = callback;
 		this.searchType = searchType;
 		
 		this.from = from;
@@ -54,16 +49,5 @@ public class SearchRequest
 	public RideType getSearchType()
 	{
 		return searchType;
-	}
-	
-	public synchronized Handler getCallback()
-	{
-		return callback;
-	}
-	
-	public synchronized void contextChanged(Activity context, Handler callback)
-	{
-		this.context = context;
-		this.callback = callback;
 	}
 }

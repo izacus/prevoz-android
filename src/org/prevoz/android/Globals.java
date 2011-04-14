@@ -23,4 +23,9 @@ public class Globals
     public static final int REQUEST_SUCCESS = 0;
     public static final int REQUEST_ERROR_NETWORK = 1;
     public static final int REQUEST_ERROR_SERVER = 2;
+    
+    /**
+     * Loader IDs
+     */
+    public static final int LOADER_SEARCH_RESULTS = 1;
 }
