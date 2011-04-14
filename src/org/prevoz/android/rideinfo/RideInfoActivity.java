@@ -2,18 +2,16 @@ package org.prevoz.android.rideinfo;
 
 import java.text.SimpleDateFormat;
 
-import org.prevoz.android.Globals;
 import org.prevoz.android.R;
-import org.prevoz.android.util.HTTPHelper;
 import org.prevoz.android.util.LocaleUtil;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-public class RideInfoActivity extends Activity
+public class RideInfoActivity extends FragmentActivity implements LoaderCallbacks<Ride>
 {
 	// UI fields
 	private ViewFlipper rideFlipper;
@@ -58,6 +56,7 @@ public class RideInfoActivity extends Activity
 		
 		rideFlipper.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
 		rideFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
+		rideFlipper.setDisplayedChild(0);
 		
 		// Get ride ID
 		if (getIntent().getExtras() != null)
@@ -65,19 +64,8 @@ public class RideInfoActivity extends Activity
 			rideID = getIntent().getExtras().getInt(RIDE_ID);
 			Log.d(this.toString(), "Requesting ride info for id " + rideID);
 		}
-
-		if (savedInstanceState != null
-				&& savedInstanceState.containsKey("suspended")
-				&& savedInstanceState.getBoolean("suspended"))
-		{
-			ride = new Ride(savedInstanceState);
-			rideID = ride.getId();
-			showRide(ride);
-		}
-		else
-		{
-			loadRideData();
-		}
+		
+		getSupportLoaderManager().initLoader(rideID, null, this);
 	}
 	
 	private void prepareUIElements()
@@ -102,60 +90,8 @@ public class RideInfoActivity extends Activity
 		delButton = (Button) findViewById(R.id.rideinfo_delsend);
 	}
 
-	@Override
-	/**
-	 * Called when activity is about to be killed
-	 */
-	protected void onSaveInstanceState(Bundle outState)
-	{
-		if (ride != null)
-		{
-			outState.putBoolean("suspended", true);
-			ride.storeToBundle(outState);
-		}
-
-		super.onSaveInstanceState(outState);
-	}
-
-	private void loadRideData()
-	{
-		rideFlipper.setDisplayedChild(0);
-		
-		HTTPHelper.updateSessionCookies(this);
-		final LoadInfoTask loadInfo = new LoadInfoTask();
-
-		Handler handler = new Handler()
-		{
-
-			@Override
-			public void handleMessage(Message msg)
-			{
-				switch (msg.what)
-				{
-					case Globals.REQUEST_SUCCESS:
-						showRide(loadInfo.getResult());
-						rideFlipper.showNext();
-						break;
-	
-					// TODO: error handling
-					case Globals.REQUEST_ERROR_SERVER:
-						Toast.makeText(RideInfoActivity.this, R.string.server_error, Toast.LENGTH_LONG).show();
-						break;
-	
-					case Globals.REQUEST_ERROR_NETWORK:
-						Toast.makeText(RideInfoActivity.this, R.string.network_error, Toast.LENGTH_LONG).show();
-						break;
-				}
-			}
-		};
-
-		loadInfo.loadInfo(rideID, handler);
-	}
-
 	private void showRide(Ride ride)
 	{
-		this.ride = ride;
-
 		Resources res = getResources();
 		
 		// From and to
@@ -216,6 +152,8 @@ public class RideInfoActivity extends Activity
 				sendSMS();
 			}
 		});
+		
+		rideFlipper.showNext();
 	}
 
 	/**
@@ -236,6 +174,29 @@ public class RideInfoActivity extends Activity
 	{
 		Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + ride.getContact()));
 		this.startActivity(intent);
+	}
+
+	public Loader<Ride> onCreateLoader(int loaderID, Bundle args) 
+	{
+		return new RideInfoLoader(this, rideID); 
+	}
+
+	public void onLoadFinished(Loader<Ride> loader, Ride result) 
+	{
+		if (result == null)
+		{
+			Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_LONG).show();
+			return;
+		}
+		
+		this.ride = result;
+		showRide(ride);
+	}
+
+	public void onLoaderReset(Loader<Ride> loader) 
+	{
+		// Nothing TBD
+		
 	}
 	
 	

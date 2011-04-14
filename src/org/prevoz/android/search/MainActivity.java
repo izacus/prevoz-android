@@ -10,7 +10,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.widget.DatePicker;
 
 public class MainActivity extends FragmentActivity implements OnDateSetListener
