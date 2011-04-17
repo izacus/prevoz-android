@@ -36,10 +36,12 @@ public final class R {
         public static final int white=0x7f050001;
     }
     public static final class dimen {
-        public static final int search_button_width=0x7f060003;
-        public static final int text_size_medium=0x7f060001;
-        public static final int text_size_small=0x7f060002;
+        public static final int search_button_width=0x7f060005;
+        public static final int text_size_large=0x7f060002;
+        public static final int text_size_medium=0x7f060003;
+        public static final int text_size_small=0x7f060004;
         public static final int title_height=0x7f060000;
+        public static final int title_height_landscape=0x7f060001;
     }
     public static final class drawable {
         public static final int button_black=0x7f020000;
@@ -240,21 +242,21 @@ public final class R {
     }
     public static final class style {
         public static final int DriverNameText=0x7f090013;
-        public static final int LargeText=0x7f090006;
+        public static final int LargeText=0x7f090007;
         /**  Style for list headers 
          */
         public static final int ListHeaderStyle=0x7f09000b;
-        public static final int MediumText=0x7f090007;
+        public static final int MediumText=0x7f090008;
         /**  Style for input boxes by default 
          */
-        public static final int PaddedBox=0x7f090005;
+        public static final int PaddedBox=0x7f090006;
         public static final int PhoneNumberText=0x7f090014;
         /**  Style for activities within tabs 
          */
-        public static final int PrevozTabActivity=0x7f090003;
+        public static final int PrevozTabActivity=0x7f090004;
         /**   OLD STYLES 
          */
-        public static final int PrevozTheme=0x7f090002;
+        public static final int PrevozTheme=0x7f090003;
         public static final int PricePplTagText=0x7f090012;
         public static final int PricePplText=0x7f090011;
         public static final int RideInfoClock=0x7f09000e;
@@ -263,18 +265,16 @@ public final class R {
         /**  Ride information styles 
          */
         public static final int RideInfoTitle=0x7f09000d;
-        /**  Separator style 
-         */
-        public static final int Separator=0x7f090009;
-        public static final int SmallText=0x7f090008;
+        public static final int SmallText=0x7f090009;
         /**  Style for background view setting correct background color 
  <item name="android:background">@color/view_background</item> 
          */
-        public static final int ViewStyle=0x7f090004;
+        public static final int ViewStyle=0x7f090005;
         public static final int button_black=0x7f090001;
         /**  Standard styles 
          */
         public static final int field_labels=0x7f090000;
+        public static final int location_title=0x7f090002;
         /**   Style keeping black background behind tabs 
          */
         public static final int tabHostStyle=0x7f09000a;

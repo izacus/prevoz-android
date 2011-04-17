@@ -20,8 +20,7 @@
         name="dark_gradient_end">#444</color>
         
     <!-- Separator -->
-    <color
-        name="separator">#626E79</color>
+    <color name="separator">#515D68</color>
     <color name="title_background">#EC7100</color>
     <color name="title_text">#FFF</color>
     <color name="title_separator">#FFB44B</color> 
