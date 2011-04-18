@@ -113,43 +113,13 @@
     	android:id = "@+id/search_button"
     	android:text = "@string/search_go"
     	android:gravity = "center"
-    	android:layout_height = "@dimen/title_height"
-    	android:layout_width = "@dimen/search_button_width"
-    	
-    	android:background = "@drawable/button_black"
-    
+    	android:layout_height = "wrap_content"
+    	android:layout_width = "fill_parent"
+    	android:layout_margin = "15dip"
+    	android:layout_marginBottom = "30dp"
+    	android:background = "@drawable/button_black_rnd"
     	android:layout_alignParentBottom = "true"
-    	android:layout_alignParentRight = "true"
-    
     	style = "@style/button_black"
     />
-     
-    <!-- Separator -->
-    <ImageView
-    	android:id = "@+id/bottom_bar_sep"
-    	android:layout_width = "1px"
-    	android:layout_height = "@dimen/title_height"
-    	android:background = "@color/title_bar_separator"
-    	android:layout_alignParentBottom = "true"
-    	android:layout_toLeftOf = "@id/search_button"
-    	/>
-    
-    <TextView
-    	android:id = "@+id/my_rides"
-    	android:text = "Moji prevozi"
-    	android:gravity = "center"
-    	android:layout_height = "@dimen/title_height"
-    	android:layout_width = "fill_parent"
-		
-		android:textStyle = "bold"
-    	android:textSize = "@dimen/text_size_medium"
-    	android:textColor = "@color/title_text"
-    	android:background = "@drawable/title_gradient"
-		    	
-    	android:layout_alignParentBottom = "true"
-    	android:layout_alignParentLeft = "true"
-    	android:layout_toLeftOf = "@id/bottom_bar_sep"
-    	
-    	style = "@style/title_text_style" />
   
 </RelativeLayout>
