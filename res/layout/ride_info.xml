@@ -27,6 +27,7 @@
 	        android:id = "@+id/rideinfo_to" 
 	        android:layout_width = "fill_parent"
 	        android:layout_height = "wrap_content"
+	        android:layout_marginTop = "1dip"
 	        android:padding = "5dp"
 	        style = "@style/location_title" />
 	        
@@ -144,7 +145,11 @@
            android:layout_height = "fill_parent"
            android:layout_alignParentRight = "true"
            android:layout_alignParentTop = "true"
+           android:layout_margin = "2dip"
            android:text = "Pošlji SMS"
+           
+           android:background = "@drawable/button_black_rnd"
+           style = "@style/button_black_small"
            />
 	     
 	      <Button
@@ -153,7 +158,11 @@
 	        android:layout_height = "fill_parent"
 	        android:layout_toLeftOf = "@id/rideinfo_sms"
 	        android:layout_alignParentTop = "true"
+	        android:layout_margin = "2dip"
 	        android:text = "Pokliči"
+	        
+	        android:background = "@drawable/button_black_rnd"
+            style = "@style/button_black_small"
 	        />
 	     
 	   </RelativeLayout>
