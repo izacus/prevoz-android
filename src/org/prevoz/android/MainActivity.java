@@ -1,8 +1,10 @@
-package org.prevoz.android.search;
+package org.prevoz.android;
 
 import java.util.Calendar;
 
 import org.prevoz.android.R;
+import org.prevoz.android.search.SearchFormFragment;
+import org.prevoz.android.search.SearchResultsActivity;
 
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;

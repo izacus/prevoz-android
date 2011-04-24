@@ -3,6 +3,7 @@ package org.prevoz.android.search;
 import java.util.Calendar;
 
 import org.prevoz.android.GPSManager;
+import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.util.LocaleUtil;
 
