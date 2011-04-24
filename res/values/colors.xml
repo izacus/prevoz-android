@@ -17,7 +17,13 @@
     <color
         name="dark_gradient_start">#000</color>
     <color
-        name="dark_gradient_end">#444</color>
+		name="dark_gradient_end">#444</color>
+		
+	<!-- Light gradient colors -->
+	<color
+        name="light_gradient_start">#DDD</color>
+    <color
+        name="light_gradient_end">#EEE</color>
         
     <!-- Separator -->
     <color name="separator">#515D68</color>

@@ -21,17 +21,21 @@ public final class R {
          */
         public static final int dark_gradient_start=0x7f050005;
         public static final int dgrey_start=0x7f050000;
+        public static final int light_gradient_end=0x7f050008;
+        /**  Light gradient colors 
+         */
+        public static final int light_gradient_start=0x7f050007;
         /**  Separator 
          */
-        public static final int separator=0x7f050007;
-        public static final int title_background=0x7f050008;
-        public static final int title_bar_separator=0x7f05000b;
+        public static final int separator=0x7f050009;
+        public static final int title_background=0x7f05000a;
+        public static final int title_bar_separator=0x7f05000d;
         public static final int title_gradient_end=0x7f050004;
         /**  Orange gradient colors 
          */
         public static final int title_gradient_start=0x7f050003;
-        public static final int title_separator=0x7f05000a;
-        public static final int title_text=0x7f050009;
+        public static final int title_separator=0x7f05000c;
+        public static final int title_text=0x7f05000b;
         public static final int view_background=0x7f050002;
         public static final int white=0x7f050001;
     }
@@ -46,24 +50,25 @@ public final class R {
     public static final class drawable {
         public static final int button_black=0x7f020000;
         public static final int button_black_rnd=0x7f020001;
-        public static final int dark_gradient=0x7f020002;
-        public static final int ic_tab_add_sel=0x7f020003;
-        public static final int ic_tab_add_unsel=0x7f020004;
-        public static final int ic_tab_fav_sel=0x7f020005;
-        public static final int ic_tab_fav_unsel=0x7f020006;
-        public static final int ic_tab_search_sel=0x7f020007;
-        public static final int ic_tab_search_unsel=0x7f020008;
-        public static final int icon=0x7f020009;
-        public static final int search_selected=0x7f02000a;
-        public static final int search_unselected=0x7f02000b;
-        public static final int status_24=0x7f02000c;
-        public static final int status_32=0x7f02000d;
-        public static final int status_48=0x7f02000e;
-        public static final int tab_focus=0x7f02000f;
-        public static final int tab_press=0x7f020010;
-        public static final int tab_selected=0x7f020011;
-        public static final int tab_unselected=0x7f020012;
-        public static final int title_gradient=0x7f020013;
+        public static final int button_white=0x7f020002;
+        public static final int dark_gradient=0x7f020003;
+        public static final int ic_tab_add_sel=0x7f020004;
+        public static final int ic_tab_add_unsel=0x7f020005;
+        public static final int ic_tab_fav_sel=0x7f020006;
+        public static final int ic_tab_fav_unsel=0x7f020007;
+        public static final int ic_tab_search_sel=0x7f020008;
+        public static final int ic_tab_search_unsel=0x7f020009;
+        public static final int icon=0x7f02000a;
+        public static final int search_selected=0x7f02000b;
+        public static final int search_unselected=0x7f02000c;
+        public static final int status_24=0x7f02000d;
+        public static final int status_32=0x7f02000e;
+        public static final int status_48=0x7f02000f;
+        public static final int tab_focus=0x7f020010;
+        public static final int tab_press=0x7f020011;
+        public static final int tab_selected=0x7f020012;
+        public static final int tab_unselected=0x7f020013;
+        public static final int title_gradient=0x7f020014;
     }
     public static final class id {
         public static final int add_button=0x7f0a000b;
@@ -81,12 +86,11 @@ public final class R {
         public static final int add_time=0x7f0a0006;
         public static final int add_to=0x7f0a0004;
         public static final int add_type=0x7f0a0000;
-        public static final int bottom_bar_sep=0x7f0a0039;
         public static final int dateField=0x7f0a002f;
         public static final int date_button=0x7f0a0037;
         public static final int date_label=0x7f0a0036;
         public static final int doSearch=0x7f0a0030;
-        public static final int driver=0x7f0a003d;
+        public static final int driver=0x7f0a003b;
         public static final int favorite_route=0x7f0a000f;
         public static final int favorite_type=0x7f0a0010;
         public static final int fromField=0x7f0a002c;
@@ -101,8 +105,7 @@ public final class R {
         public static final int loading_text=0x7f0a0012;
         public static final int loginView=0x7f0a0014;
         public static final int main_activity=0x7f0a0015;
-        public static final int my_rides=0x7f0a003a;
-        public static final int price=0x7f0a003c;
+        public static final int price=0x7f0a003a;
         public static final int rideinfo_author=0x7f0a0020;
         public static final int rideinfo_call=0x7f0a0023;
         public static final int rideinfo_comment=0x7f0a0024;
@@ -122,12 +125,12 @@ public final class R {
         public static final int search_button=0x7f0a0038;
         public static final int search_flipper=0x7f0a0027;
         public static final int search_form_fragment=0x7f0a0017;
-        public static final int search_results_activity=0x7f0a003e;
-        public static final int search_results_flipper=0x7f0a0040;
-        public static final int search_results_fragment=0x7f0a003f;
-        public static final int search_results_list=0x7f0a0041;
+        public static final int search_results_activity=0x7f0a003c;
+        public static final int search_results_flipper=0x7f0a003e;
+        public static final int search_results_fragment=0x7f0a003d;
+        public static final int search_results_list=0x7f0a003f;
         public static final int search_type=0x7f0a002a;
-        public static final int time=0x7f0a003b;
+        public static final int time=0x7f0a0039;
         public static final int title_bar=0x7f0a0016;
         public static final int toField=0x7f0a002e;
         public static final int to_field=0x7f0a0035;
@@ -241,45 +244,47 @@ public final class R {
         public static final int tomorrow=0x7f070037;
     }
     public static final class style {
-        public static final int DriverNameText=0x7f090013;
-        public static final int LargeText=0x7f090007;
+        public static final int DriverNameText=0x7f090015;
+        public static final int LargeText=0x7f090009;
         /**  Style for list headers 
          */
-        public static final int ListHeaderStyle=0x7f09000b;
-        public static final int MediumText=0x7f090008;
+        public static final int ListHeaderStyle=0x7f09000d;
+        public static final int MediumText=0x7f09000a;
         /**  Style for input boxes by default 
          */
-        public static final int PaddedBox=0x7f090006;
-        public static final int PhoneNumberText=0x7f090014;
+        public static final int PaddedBox=0x7f090008;
+        public static final int PhoneNumberText=0x7f090016;
         /**  Style for activities within tabs 
          */
-        public static final int PrevozTabActivity=0x7f090004;
+        public static final int PrevozTabActivity=0x7f090006;
         /**   OLD STYLES 
          */
-        public static final int PrevozTheme=0x7f090003;
-        public static final int PricePplTagText=0x7f090012;
-        public static final int PricePplText=0x7f090011;
-        public static final int RideInfoClock=0x7f09000e;
-        public static final int RideInfoDate=0x7f090010;
-        public static final int RideInfoDay=0x7f09000f;
+        public static final int PrevozTheme=0x7f090005;
+        public static final int PricePplTagText=0x7f090014;
+        public static final int PricePplText=0x7f090013;
+        public static final int RideInfoClock=0x7f090010;
+        public static final int RideInfoDate=0x7f090012;
+        public static final int RideInfoDay=0x7f090011;
         /**  Ride information styles 
          */
-        public static final int RideInfoTitle=0x7f09000d;
-        public static final int SmallText=0x7f090009;
+        public static final int RideInfoTitle=0x7f09000f;
+        public static final int SmallText=0x7f09000b;
         /**  Style for background view setting correct background color 
  <item name="android:background">@color/view_background</item> 
          */
-        public static final int ViewStyle=0x7f090005;
-        public static final int button_black=0x7f090001;
+        public static final int ViewStyle=0x7f090007;
+        public static final int button_black=0x7f090002;
+        public static final int button_black_small=0x7f090003;
+        public static final int button_white=0x7f090001;
         /**  Standard styles 
          */
         public static final int field_labels=0x7f090000;
-        public static final int location_title=0x7f090002;
+        public static final int location_title=0x7f090004;
         /**   Style keeping black background behind tabs 
          */
-        public static final int tabHostStyle=0x7f09000a;
+        public static final int tabHostStyle=0x7f09000c;
         /**  Colored titlebar 
          */
-        public static final int title_text_style=0x7f09000c;
+        public static final int title_text_style=0x7f09000e;
     }
 }

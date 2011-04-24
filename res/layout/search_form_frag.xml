@@ -28,8 +28,8 @@
     	android:layout_marginRight = "15dip"
     	android:layout_marginLeft = "8dip"
     	
-    	android:background = "@drawable/button_black_rnd"
-    	style = "@style/button_black"
+    	android:background = "@drawable/button_white"
+    	style = "@style/button_white"
     	
     	android:text = "GPS"
     	/>	
@@ -100,8 +100,8 @@
     	android:layout_marginRight = "15dip"
     	android:layout_marginTop = "5dip" 
    
-    	android:background = "@drawable/button_black_rnd"
-    	style = "@style/button_black"
+    	android:background = "@drawable/button_white"
+    	style = "@style/button_white"
     	/>
     
     <Button
