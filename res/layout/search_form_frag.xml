@@ -17,37 +17,21 @@
     	android:text = "@string/search_label_from"
     	style = "@style/field_labels"
     	/>
+   
     	
-     <Button
-    	android:id = "@+id/gps_button"
-    	android:layout_height = "wrap_content"
-    	android:layout_width = "wrap_content"
-    	
-    	android:layout_below = "@id/from_label"
-    	android:layout_alignParentRight = "true"
-    	android:layout_marginRight = "15dip"
-    	android:layout_marginLeft = "8dip"
-    	
-    	android:background = "@drawable/button_white"
-    	style = "@style/button_white"
-    	
-    	android:text = "GPS"
-    	/>	
-    	
-    <AutoCompleteTextView
-    	android:id = "@+id/from_field"
+    <Button
+    	android:id = "@+id/from_button"
     	android:layout_width = "fill_parent"
     	android:layout_height = "wrap_content"
     	
     	android:layout_below = "@id/from_label"
     	android:layout_alignParentLeft = "true"
-    	android:layout_toLeftOf = "@id/gps_button"
     	android:layout_marginLeft = "15dip"
-    	android:layout_marginRight = "7dip"
+    	android:layout_marginRight = "15dip"
+    	android:layout_marginTop = "5dip"
     	
-    	android:inputType = "textCapWords"
-    	android:hint = "@string/search_hint_from"
-    	android:textColor = "@android:color/black"
+    	android:background = "@drawable/button_white"
+    	style = "@style/button_white"
     	/>
     
     <TextView
@@ -55,26 +39,28 @@
     	android:layout_width = "fill_parent"
     	android:layout_height = "wrap_content"
     	
-    	android:layout_below = "@id/from_field"
-    	android:layout_marginLeft = "17dip"
+    	android:layout_below = "@id/from_button"
+ 		android:layout_marginTop = "5dip"   
+ 		android:layout_marginLeft = "17dip"
     	android:layout_marginRight = "15dip"
     	
     	android:text = "@string/search_label_to"
     	style = "@style/field_labels"
     	/>
     	
-     <AutoCompleteTextView
-    	android:id = "@+id/to_field"
+    <Button
+    	android:id = "@+id/to_button"
     	android:layout_width = "fill_parent"
     	android:layout_height = "wrap_content"
     	
     	android:layout_below = "@id/to_label"
+    	android:layout_alignParentLeft = "true"
     	android:layout_marginLeft = "15dip"
     	android:layout_marginRight = "15dip"
+    	android:layout_marginTop = "5dip"
     	
-    	android:inputType = "textCapWords"
-    	android:hint = "@string/search_hint_to"
-    	android:textColor = "@android:color/black"
+    	android:background = "@drawable/button_white"
+    	style = "@style/button_white"
     	/>
     	
      <TextView
@@ -82,9 +68,10 @@
     	android:layout_width = "fill_parent"
     	android:layout_height = "wrap_content"
     	
-    	android:layout_below = "@id/to_field"
+    	android:layout_below = "@id/to_button"
     	android:layout_marginLeft = "17dip"
     	android:layout_marginRight = "15dip"
+    	android:layout_marginTop = "5dip"
     	
     	android:text = "@string/search_label_date"
     	style = "@style/field_labels"

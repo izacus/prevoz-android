@@ -166,7 +166,7 @@ public class Database
 	{
 		return new DatabaseHelper(context).getReadableDatabase();
 	}
-
+	
 	/**
 	 * Returns all cities starting with string
 	 * 
@@ -185,7 +185,7 @@ public class Database
 		Cursor cursor = database.rawQuery(
 				"SELECT _id, name FROM locations WHERE (name LIKE '" + what
 						+ "%' " + "OR name_ascii LIKE '" + what + "%') "
-						+ "AND country = 'SI' " + "LIMIT 5", null);
+						+ "AND country = 'SI' ORDER BY name", null);
 
 		return cursor;
 	}

@@ -2,51 +2,64 @@ package org.prevoz.android.search;
 
 import java.util.Calendar;
 
-import org.prevoz.android.GPSManager;
+import org.prevoz.android.CitySelectorActivity;
 import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.util.LocaleUtil;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class SearchFormFragment extends Fragment 
 {
-	private Button buttonDate;
-	private Button buttonGps;
-	private Button buttonSearch;
-	private AutoCompleteTextView fromField;
-	private AutoCompleteTextView toField;
+	private static final int FROM_CITY_REQUEST = 1;
+	private static final int TO_CITY_REQUEST = 2;
 	
+	private Button buttonDate;
+	private Button buttonSearch;
+	
+	private Button buttonFrom;
+	private Button buttonTo;
+	
+	private String from;
+	private String to;
 	private Calendar selectedDate;
 	
 	private void prepareFormFields()
 	{
 		buttonDate = (Button)getActivity().findViewById(R.id.date_button);
-		buttonGps = (Button)getActivity().findViewById(R.id.gps_button);
 		buttonSearch = (Button)getActivity().findViewById(R.id.search_button);
-		fromField = (AutoCompleteTextView)getActivity().findViewById(R.id.from_field);
-		toField = (AutoCompleteTextView)getActivity().findViewById(R.id.to_field);
 		
-		// Initialize locations autocomplete
-		LocationAutocompleteAdapter locAdapter = new LocationAutocompleteAdapter(getActivity(), null);
-		fromField.setAdapter(locAdapter);
-		toField.setAdapter(locAdapter);
-		
-		// Set treshold for autocomplete
-		fromField.setThreshold(1);
-		toField.setThreshold(1);
+		buttonFrom = (Button)getActivity().findViewById(R.id.from_button);
+		setLocationButtonText(buttonFrom, from);
+		buttonFrom.setOnClickListener(new OnClickListener() 
+		{
+			public void onClick(View v) 
+			{
+				Intent intent = new Intent(getActivity(), CitySelectorActivity.class);
+				getActivity().startActivityForResult(intent, FROM_CITY_REQUEST);
+			}
+		});
+
+		buttonTo = (Button)getActivity().findViewById(R.id.to_button);
+		setLocationButtonText(buttonTo, to);
+		buttonTo.setOnClickListener(new OnClickListener() 
+		{
+			public void onClick(View v) 
+			{
+				Intent intent = new Intent(getActivity(), CitySelectorActivity.class);
+				getActivity().startActivityForResult(intent, TO_CITY_REQUEST);
+			}
+		});
 		
 		// Set initial date
 		buttonDate.setText(localizeDate(selectedDate));
@@ -56,16 +69,6 @@ public class SearchFormFragment extends Fragment
 			public void onClick(View v) 
 			{
 				getActivity().showDialog(MainActivity.DIALOG_SEARCH_DATE);
-			}
-		});
-		
-		// Set GPS button action
-		buttonGps.setOnClickListener(new OnClickListener() 
-		{
-			
-			public void onClick(View arg0) 
-			{
-				fillInCurrentLocation(fromField);
 			}
 		});
 		
@@ -86,11 +89,19 @@ public class SearchFormFragment extends Fragment
 		super.onActivityCreated(savedInstanceState);
 		
 		selectedDate = Calendar.getInstance();
-		if (savedInstanceState != null && savedInstanceState.containsKey("selected_date"))
+		if (savedInstanceState != null)
 		{
-			selectedDate.setTimeInMillis(savedInstanceState.getLong("selected_date"));
+			if (savedInstanceState.containsKey("selected_date"))
+			{
+				selectedDate.setTimeInMillis(savedInstanceState.getLong("selected_date"));
+			}
+			
+			if (savedInstanceState.containsKey("from") && savedInstanceState.containsKey("to"))
+			{
+				from = savedInstanceState.getString("from");
+				to = savedInstanceState.getString("to");
+			}
 		}
-		
 		
 		prepareFormFields();
 	}
@@ -110,8 +121,22 @@ public class SearchFormFragment extends Fragment
 	public void onSaveInstanceState(Bundle outState)
 	{
 		outState.putLong("selected_date", selectedDate.getTimeInMillis());
+		outState.putString("from", from);
+		outState.putString("to", to);
 	}
 
+	private void setLocationButtonText(Button button, String location)
+	{
+		if (location == null || location.length() == 0)
+		{
+			button.setText("- -");
+		}
+		else
+		{
+			button.setText(location);
+		}
+	}
+	
 	/**
 	 * Builds a localized date string with day name
 	 */
@@ -154,45 +179,44 @@ public class SearchFormFragment extends Fragment
 		buttonDate.setText(localizeDate(selectedDate));
 	}
 	
-	private void fillInCurrentLocation(final TextView view)
+	public void onParentActivityResult(int requestCode,
+									   int resultCode,
+									   Intent intent)
 	{
-		view.setEnabled(false);
-		
-		final String currentText = view.getText().toString();
-		final String currentHint = view.getHint().toString();
-		
-		view.setText("");
-		view.setHint(getResources().getString(R.string.search_gps_locating));
-		
-		// Determine location
-		final GPSManager gpsManager = new GPSManager();
-		Handler callback = new Handler()
+		if (resultCode != Activity.RESULT_OK)
 		{
-			@Override
-			public void handleMessage(Message msg) 
+			switch (requestCode)
 			{
-				view.setHint(currentHint);
-				
-				if (msg.what == GPSManager.GPS_PROVIDER_UNAVALABLE)
-				{
-					Toast.makeText(getActivity(), R.string.search_gps_error, Toast.LENGTH_SHORT).show();
-					// Restore old entry
-					view.setText(currentText);
+				case FROM_CITY_REQUEST:
+					from = "";
+					setLocationButtonText(buttonFrom, from);
 					return;
-				}
-				
-				view.setText(gpsManager.getCurrentCity());
+				case TO_CITY_REQUEST:
+					to = "";
+					setLocationButtonText(buttonTo, to);
+					return;
 			}
-		};
+		}
 		
-		gpsManager.findCurrentCity(getActivity(), callback);
+		switch(requestCode)
+		{
+			case FROM_CITY_REQUEST:
+				from = intent.getStringExtra("city");
+				setLocationButtonText(buttonFrom, from);
+				break;
+			case TO_CITY_REQUEST:
+				to = intent.getStringExtra("city");
+				setLocationButtonText(buttonTo, to);
+				break;
+				
+			default:
+				Log.e(this.toString(), "Handling activity result that does not belong here!");
+				return;
+		}
 	}
 	
 	private void startSearch()
-	{
-		String from = fromField.getText().toString();
-		String to = toField.getText().toString();
-		
+	{	
 		MainActivity mainActivity = (MainActivity) getActivity();
 		mainActivity.startSearch(from, to, selectedDate);
 	}

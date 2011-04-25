@@ -58,6 +58,17 @@ public class MainActivity extends FragmentActivity implements OnDateSetListener
 	
 	
 	@Override
+	protected void onActivityResult(int requestCode, 
+									int resultCode, 
+									Intent intent) 
+	{
+		super.onActivityResult(requestCode, resultCode, intent);
+		
+		SearchFormFragment searchFormFrag = (SearchFormFragment) getSupportFragmentManager().findFragmentById(R.id.search_form_fragment);
+		searchFormFrag.onParentActivityResult(requestCode, resultCode, intent);
+	}
+
+	@Override
 	protected Dialog onCreateDialog(int id) 
 	{
 		switch(id)
