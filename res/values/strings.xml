@@ -14,6 +14,9 @@
     <string name="server_error">Strežnik prevoz ni na voljo. Prosimo poskusite kasneje.</string>
     <string name="network_error">Napaka na internetni povezavi.</string>
     
+    <!-- City selector strings -->
+    <string name="city_hint">Kraj</string>
+    
     <!--  Search tab strings -->
     <string name="search_label_from">Od</string>
     <string name="search_label_to">Do</string>

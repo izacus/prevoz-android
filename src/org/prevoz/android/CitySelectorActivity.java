@@ -19,8 +19,8 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -32,7 +32,7 @@ public class CitySelectorActivity extends FragmentActivity implements TextWatche
 	private SQLiteDatabase database = null;	
 	private ListView cityList;
 	private EditText cityText;
-	private Button gpsButton;
+	private ImageButton gpsButton;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -54,7 +54,7 @@ public class CitySelectorActivity extends FragmentActivity implements TextWatche
 		cityText.setOnEditorActionListener(this);
 		cityText.requestFocus();
 		
-		gpsButton = (Button)findViewById(R.id.gps_button);
+		gpsButton = (ImageButton)findViewById(R.id.gps_button);
 		gpsButton.setOnClickListener(new OnClickListener() 
 		{
 			public void onClick(View v) 

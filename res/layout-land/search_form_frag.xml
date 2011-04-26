@@ -17,39 +17,21 @@
     	android:text = "@string/search_label_from"
     	style = "@style/field_labels"
     	/>
-    	
-	 <Button
-    	android:id = "@+id/gps_button"
-    	android:layout_height = "wrap_content"
-    	android:layout_width = "wrap_content"
-    	
-    	android:layout_alignBaseline = "@id/from_label"
-    	android:layout_alignParentRight = "true"
-    	android:layout_marginRight = "15dip"
-    	android:layout_marginLeft = "8dip"
-    	
-    	android:background = "@drawable/button_black_rnd"
-    	style = "@style/button_black"
-    	
-    	android:text = "GPS"
-    	/>
-    	
-    <AutoCompleteTextView
-    	android:id = "@+id/from_field"
+    
+    <Button
+    	android:id = "@+id/from_button"
     	android:layout_width = "fill_parent"
     	android:layout_height = "wrap_content"
     	
     	android:layout_alignBaseline = "@id/from_label"
     	android:layout_toRightOf = "@id/from_label"
-    	android:layout_toLeftOf = "@id/gps_button"
     	android:layout_marginLeft = "5dip"
-    	android:layout_marginRight = "7dip"
+    	android:layout_marginRight = "15dip"
     	
-    	android:inputType = "textCapWords"
-    	android:hint = "@string/search_hint_from"
-    	android:textColor = "@android:color/black"
+    	android:background = "@drawable/button_white"
+    	style = "@style/button_white"
     	/>
-    
+
     <TextView
     	android:id = "@+id/to_label"
     	android:layout_width = "50dip"
@@ -64,21 +46,19 @@
     	style = "@style/field_labels"
     	/>
     	
-     <AutoCompleteTextView
-    	android:id = "@+id/to_field"
+    <Button
+    	android:id = "@+id/to_button"
     	android:layout_width = "fill_parent"
     	android:layout_height = "wrap_content"
     	
     	android:layout_alignBaseline = "@id/to_label"
     	android:layout_toRightOf = "@id/to_label"
-    	android:layout_alignParentRight = "true"
     	android:layout_marginLeft = "5dip"
     	android:layout_marginRight = "15dip"
     	
-    	android:inputType = "textCapWords"
-    	android:hint = "@string/search_hint_to"
-    	android:textColor = "@android:color/black"
-    	/>
+    	android:background = "@drawable/button_white"
+    	style = "@style/button_white"
+    	/>	
     
      <TextView
     	android:id = "@+id/date_label"
@@ -104,8 +84,8 @@
     	android:layout_marginLeft = "5dip"
     	android:layout_marginRight = "15dip"
     	
-    	android:background = "@drawable/button_black_rnd"
-    	style = "@style/button_black"
+    	android:background = "@drawable/button_white"
+    	style = "@style/button_white"
     	/>
     
     
