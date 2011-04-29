@@ -1,10 +1,13 @@
 package org.prevoz.android.search;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import org.prevoz.android.CitySelectorActivity;
 import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
+import org.prevoz.android.Route;
+import org.prevoz.android.util.Database;
 import org.prevoz.android.util.LocaleUtil;
 
 import android.app.Activity;
@@ -17,7 +20,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 
 public class SearchFormFragment extends Fragment 
 {
@@ -30,12 +35,16 @@ public class SearchFormFragment extends Fragment
 	private Button buttonFrom;
 	private Button buttonTo;
 	
-	private String from;
-	private String to;
+	private ListView lastSearches;
+	
+	private String from = "";
+	private String to = "";
 	private Calendar selectedDate;
 	
 	private void prepareFormFields()
 	{
+		lastSearches = (ListView)getActivity().findViewById(R.id.search_last_list);
+		
 		buttonDate = (Button)getActivity().findViewById(R.id.date_button);
 		buttonSearch = (Button)getActivity().findViewById(R.id.search_button);
 		
@@ -83,6 +92,24 @@ public class SearchFormFragment extends Fragment
 		});
 	}
 	
+	private void populateLastSearchList()
+	{
+		ArrayList<Route> routes = Database.getLastSearches(getActivity(), 2);
+		
+		if (routes.size() > 0)
+		{
+			ArrayAdapter<Route> lastSearchesAdapter = new ArrayAdapter<Route>(getActivity(), R.layout.last_search_item, routes);
+			lastSearches.setAdapter(lastSearchesAdapter);
+			getActivity().findViewById(R.id.last_search_label).setVisibility(View.VISIBLE);
+		}
+		else
+		{
+			getActivity().findViewById(R.id.last_search_label).setVisibility(View.INVISIBLE);
+		}
+		
+	}
+	
+	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) 
 	{
@@ -104,6 +131,15 @@ public class SearchFormFragment extends Fragment
 		}
 		
 		prepareFormFields();
+	}
+
+	
+	
+	@Override
+	public void onResume() 
+	{
+		super.onResume();
+		populateLastSearchList();
 	}
 
 	@Override
@@ -216,7 +252,10 @@ public class SearchFormFragment extends Fragment
 	}
 	
 	private void startSearch()
-	{	
+	{
+		// Record search request
+		Database.addSearchToHistory(getActivity(), from, to, Calendar.getInstance().getTime());
+		
 		MainActivity mainActivity = (MainActivity) getActivity();
 		mainActivity.startSearch(from, to, selectedDate);
 	}

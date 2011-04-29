@@ -1,6 +1,8 @@
 package org.prevoz.android.util;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.prevoz.android.R;
 import org.prevoz.android.RideType;
@@ -28,13 +30,18 @@ public class Database
 
 		public DatabaseHelper(Context context)
 		{
-			super(context, "settings.db", null, 5);
+			super(context, "settings.db", null, 6);
 			this.storedContext = context;
 		}
 
 		@Override
 		public void onCreate(SQLiteDatabase db)
 		{
+			db.execSQL("CREATE TABLE search_history (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+					   "from_loc TEXT NOT NULL, " +
+					   "to_loc TEXT NOT NULL, " +
+					   "date DATE NOT NULL)");
+			
 			db.execSQL("CREATE TABLE favorites (ID INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ "from_loc TEXT NOT NULL,"
 					+ "to_loc TEXT NOT NULL,"
@@ -69,6 +76,45 @@ public class Database
 			onCreate(db);
 		}
 	}
+	
+	public static void addSearchToHistory(Context context, String from, String to, Date date)
+	{
+		Log.i("Database","Adding search to history " + from + " - " + to);
+		
+		SimpleDateFormat sqlDateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SQLiteDatabase database = new DatabaseHelper(context).getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put("from_loc", from);
+		values.put("to_loc", to);
+		values.put("date", sqlDateFormatter.format(date));
+		database.insert("search_history", null, values);
+		database.close();
+	}
+	
+	public static ArrayList<Route> getLastSearches(Context context, int count)
+	{
+		Log.i("Database", "Retrieving last " + count + " search records...");
+		
+		SQLiteDatabase database = new DatabaseHelper(context).getReadableDatabase();
+		
+		ArrayList<Route> searches = new ArrayList<Route>();
+		Cursor results = database.query(true, "search_history", new String[] { "from_loc", "to_loc" }, null, null, null, null, "date DESC", String.valueOf(count));
+		
+		int fromIndex = results.getColumnIndex("from_loc");
+		int toIndex = results.getColumnIndex("to_loc");
+		
+		while(results.moveToNext())
+		{
+			Route route = new Route(results.getString(fromIndex), results.getString(toIndex), null);
+			searches.add(route);
+		}
+		
+		results.close();
+		database.close();
+		
+		return searches;
+	}
+	
 
 	public static void addFavorite(Context context, String from, String to,
 			RideType type)

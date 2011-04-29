@@ -10,7 +10,7 @@
     	android:layout_height = "wrap_content"
     	
     	android:layout_alignParentTop = "true"
-    	android:layout_marginTop = "15dip"
+    	android:layout_marginTop = "5dip"
     	android:layout_marginLeft = "17dip"
     	android:layout_marginRight = "15dip"
     	
@@ -90,18 +90,51 @@
     	android:background = "@drawable/button_white"
     	style = "@style/button_white"
     	/>
-    
+    	
+	<TextView
+    	android:id = "@+id/last_search_label"
+    	android:layout_width = "fill_parent"
+    	android:layout_height = "wrap_content"
+    	
+    	android:layout_below = "@id/date_button"
+    	android:layout_marginLeft = "17dip"
+    	android:layout_marginRight = "15dip"
+    	android:layout_marginTop = "5dip"
+    	
+    	android:text = "@string/search_label_last"
+    	style = "@style/field_labels"
+    	/>
+    	
     <Button
     	android:id = "@+id/search_button"
     	android:text = "@string/search_go"
     	android:gravity = "center"
     	android:layout_height = "wrap_content"
     	android:layout_width = "fill_parent"
-    	android:layout_margin = "15dip"
-    	android:layout_marginBottom = "30dp"
+    	android:layout_marginLeft = "15dip"
+    	android:layout_marginRight = "15dip"
+    	android:layout_marginBottom = "10dip"
+    	android:layout_marginTop = "10dip"    	
     	android:background = "@drawable/button_black_rnd"
     	android:layout_alignParentBottom = "true"
     	style = "@style/button_black"
     />
+    	
+    <ScrollView
+    	android:id = "@+id/last_search_scroll"
+    	android:layout_width = "fill_parent"
+    	android:layout_height = "wrap_content"
+    	android:layout_below = "@id/last_search_label"
+    	android:layout_above = "@id/search_button"
+    	android:layout_marginLeft = "17dp"
+  		android:layout_marginRight = "17dp"
+  		android:fillViewport = "true">
+    	
+    	<ListView
+    		android:id = "@+id/search_last_list"
+    		android:layout_width = "fill_parent"
+    		android:layout_height = "fill_parent" />
+    	
+    </ScrollView>
   
 </RelativeLayout>
