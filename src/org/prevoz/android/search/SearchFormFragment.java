@@ -20,6 +20,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -99,12 +101,30 @@ public class SearchFormFragment extends Fragment
 		if (routes.size() > 0)
 		{
 			ArrayAdapter<Route> lastSearchesAdapter = new ArrayAdapter<Route>(getActivity(), R.layout.last_search_item, routes);
+			
 			lastSearches.setAdapter(lastSearchesAdapter);
+			
+			// Set click handler to populate form data
+			lastSearches.setOnItemClickListener(new OnItemClickListener() 
+			{
+				public void onItemClick(AdapterView<?> parent, 
+										View view,
+										int position, 
+										long id) 
+				{
+					Route route = (Route) parent.getItemAtPosition(position);
+					setLocationButtonText(buttonFrom, route.getFrom());
+					setLocationButtonText(buttonTo, route.getTo());
+				}
+			});
+			
 			getActivity().findViewById(R.id.last_search_label).setVisibility(View.VISIBLE);
+			lastSearches.setVisibility(View.VISIBLE);
 		}
 		else
 		{
 			getActivity().findViewById(R.id.last_search_label).setVisibility(View.INVISIBLE);
+			lastSearches.setVisibility(View.INVISIBLE);
 		}
 		
 	}
