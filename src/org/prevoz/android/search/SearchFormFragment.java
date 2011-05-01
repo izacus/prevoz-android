@@ -13,6 +13,7 @@ import org.prevoz.android.util.LocaleUtil;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -96,7 +97,7 @@ public class SearchFormFragment extends Fragment
 	
 	private void populateLastSearchList()
 	{
-		ArrayList<Route> routes = Database.getLastSearches(getActivity(), 2);
+		ArrayList<Route> routes = Database.getLastSearches(getActivity(), 3);
 		
 		if (routes.size() > 0)
 		{
@@ -113,7 +114,9 @@ public class SearchFormFragment extends Fragment
 										long id) 
 				{
 					Route route = (Route) parent.getItemAtPosition(position);
+					from = route.getFrom();
 					setLocationButtonText(buttonFrom, route.getFrom());
+					to = route.getTo();
 					setLocationButtonText(buttonTo, route.getTo());
 				}
 			});
@@ -185,10 +188,12 @@ public class SearchFormFragment extends Fragment
 	{
 		if (location == null || location.length() == 0)
 		{
-			button.setText("- -");
+			button.setTextColor(Color.LTGRAY);
+			button.setText(getString(R.string.all_locations));
 		}
 		else
 		{
+			button.setTextColor(Color.BLACK);
 			button.setText(location);
 		}
 	}
@@ -273,6 +278,8 @@ public class SearchFormFragment extends Fragment
 	
 	private void startSearch()
 	{
+		Log.i(this.toString(), "Starting search for " + from + " - " + to);
+		
 		// Record search request
 		Database.addSearchToHistory(getActivity(), from, to, Calendar.getInstance().getTime());
 		
