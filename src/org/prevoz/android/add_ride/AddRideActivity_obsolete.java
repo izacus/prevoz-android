@@ -95,7 +95,7 @@ public class AddRideActivity_obsolete extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		AddRideActivity_obsolete.instance = this;
-		setContentView(R.layout.add_ride_activity);
+//		setContentView(R.layout.add_ride_activity);
 
 		selectedDate = Calendar.getInstance();
 		// Reset time to some sane value
