@@ -96,6 +96,10 @@ public class SearchFormFragment extends Fragment
 	
 	private void populateLastSearchList()
 	{
+		// Last search list is not always displayed
+		if (lastSearches == null)
+			return;
+		
 		ArrayList<Route> routes = Database.getLastSearches(getActivity(), 2);
 		
 		if (routes.size() > 0)

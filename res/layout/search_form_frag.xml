@@ -120,21 +120,11 @@
     	style = "@style/button_black"
     />
     	
-    <ScrollView
-    	android:id = "@+id/last_search_scroll"
-    	android:layout_width = "fill_parent"
-    	android:layout_height = "wrap_content"
-    	android:layout_below = "@id/last_search_label"
-    	android:layout_above = "@id/search_button"
-    	android:layout_marginLeft = "17dp"
-  		android:layout_marginRight = "17dp"
-  		android:fillViewport = "true">
-    	
-    	<ListView
-    		android:id = "@+id/search_last_list"
-    		android:layout_width = "fill_parent"
-    		android:layout_height = "fill_parent" />
-    	
-    </ScrollView>
+	  <include layout = "@layout/last_searches"
+	  		   android:layout_width = "fill_parent"
+	    	   android:layout_height = "wrap_content"
+	  	       android:layout_below = "@id/last_search_label"
+	    	   android:layout_above = "@id/search_button"
+	    	    />
   
 </RelativeLayout>
