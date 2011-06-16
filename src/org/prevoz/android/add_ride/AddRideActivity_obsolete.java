@@ -41,11 +41,11 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-public class AddRideActivity extends Activity
+public class AddRideActivity_obsolete extends Activity
 {
-	private static AddRideActivity instance;
+	private static AddRideActivity_obsolete instance;
 
-	public static AddRideActivity getInstance()
+	public static AddRideActivity_obsolete getInstance()
 	{
 		return instance;
 	}
@@ -94,7 +94,7 @@ public class AddRideActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		AddRideActivity.instance = this;
+		AddRideActivity_obsolete.instance = this;
 		setContentView(R.layout.add_ride_activity);
 
 		selectedDate = Calendar.getInstance();
@@ -116,7 +116,7 @@ public class AddRideActivity extends Activity
 					@Override
 					public void handleMessage(Message msg)
 					{
-						updateLoginStatus(manager.getAuthenticationStatus(context, false));
+						//updateLoginStatus(manager.getAuthenticationStatus(context, false));
 					}
 				});
 			}
@@ -155,7 +155,7 @@ public class AddRideActivity extends Activity
 		}
 		else
 		{
-			updateLoginStatus(AuthenticationManager.getInstance().getAuthenticationStatus(this, false));
+			//updateLoginStatus(AuthenticationManager.getInstance().getAuthenticationStatus(this, false));
 		}
 	}
 
@@ -183,7 +183,7 @@ public class AddRideActivity extends Activity
 			}
 		};
 
-		manager.getAuthenticationStatus(this, false, callbackHandler);
+		//manager.getAuthenticationStatus(this, false, callbackHandler);
 	}
 
 	/**
@@ -641,7 +641,7 @@ public class AddRideActivity extends Activity
 		final GPSManager gpsManager = new GPSManager();
 		activeManager = gpsManager;
 
-		final AddRideActivity addActivity = this;
+		final AddRideActivity_obsolete addActivity = this;
 
 		Handler callback = new Handler()
 		{

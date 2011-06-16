@@ -2,7 +2,7 @@ package org.prevoz.android.auth;
 
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
-import org.prevoz.android.add_ride.AddRideActivity;
+import org.prevoz.android.add_ride.AddRideActivity_obsolete;
 import org.prevoz.android.util.HTTPHelper;
 
 import android.app.Activity;
@@ -60,7 +60,7 @@ public class LoginActivity extends Activity
 
 			if (url.contains("/login/success"))
 			{
-				HTTPHelper.updateSessionCookies(AddRideActivity.getInstance());
+				HTTPHelper.updateSessionCookies(AddRideActivity_obsolete.getInstance());
 
 				if (loadingDialog != null && loadingDialog.isShowing())
 				{

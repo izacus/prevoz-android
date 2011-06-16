@@ -21,6 +21,9 @@
     <string name="search_label_from">Od</string>
     <string name="search_label_to">Do</string>
     <string name="search_label_date">Datum</string>
+    
+    <string name="all_locations">Vsi kraji</string>
+    
     <string name="search_label_last">Nazadnje iskano</string>
     
     <string name="search_hint_from">Odhod iz</string>

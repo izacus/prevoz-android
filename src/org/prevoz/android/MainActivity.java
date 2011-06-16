@@ -3,6 +3,7 @@ package org.prevoz.android;
 import java.util.Calendar;
 
 import org.prevoz.android.R;
+import org.prevoz.android.auth.AuthenticationManager;
 import org.prevoz.android.search.SearchFormFragment;
 import org.prevoz.android.search.SearchResultsActivity;
 
@@ -42,6 +43,9 @@ public class MainActivity extends FragmentActivity implements OnDateSetListener
 		setContentView(R.layout.main_activity);		
 		Calendar now = Calendar.getInstance();
 		datePicker = new DatePickerDialog(this, this, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
+		
+		// Refresh login status for it to be ready for user
+		AuthenticationManager.getInstance().getAuthenticationStatus(this, null);
 	}
 
 	public void onDateSet(DatePicker picker, int year, int month, int dayOfMonth) 
