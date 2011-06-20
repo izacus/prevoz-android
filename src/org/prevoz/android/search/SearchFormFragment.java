@@ -7,6 +7,7 @@ import org.prevoz.android.CitySelectorActivity;
 import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.Route;
+import org.prevoz.android.add_ride.AddRideActivity;
 import org.prevoz.android.util.Database;
 import org.prevoz.android.util.LocaleUtil;
 
@@ -37,6 +38,8 @@ public class SearchFormFragment extends Fragment
 	
 	private Button buttonFrom;
 	private Button buttonTo;
+	
+	private Button buttonAdd;
 	
 	private ListView lastSearches;
 	
@@ -91,6 +94,16 @@ public class SearchFormFragment extends Fragment
 			public void onClick(View arg0)
 			{
 				startSearch();
+			}
+		});
+		
+		buttonAdd = (Button)getActivity().findViewById(R.id.search_add_ride);
+		buttonAdd.setOnClickListener(new OnClickListener() 
+		{	
+			public void onClick(View arg0) 
+			{
+				Intent addRideIntent = new Intent(getActivity(), AddRideActivity.class);
+				startActivity(addRideIntent);
 			}
 		});
 	}
