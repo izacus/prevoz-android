@@ -17,7 +17,7 @@
     <!-- City selector strings -->
     <string name="city_hint">Kraj</string>
     
-    <!--  Search tab strings -->
+    <!--  Search strings -->
     <string name="search_label_from">Od</string>
     <string name="search_label_to">Do</string>
     <string name="search_label_date">Datum</string>
@@ -34,6 +34,14 @@
     <string name="search_gps_error">Vaše lokacije ni bilo mogoče najti.</string>
     
     <string name="search_searching">Iščem...</string>
+    
+    <!-- Ride add strings -->
+    <string name="add_datetime">Datum in čas</string>
+    <string name="add_price">Delež stroškov</string>
+    <string name="add_price_hint">Stroški</string>
+    <string name="add_numppl">Število mest</string>
+    <string name="add_comment">Opombe</string>
+    <string name="add_button">Naprej</string>
     
     <!--  DEPRECATED DEPRECATED DEPRECATED -->
     <string name="search_tab">Iskanje</string>
@@ -75,10 +83,9 @@
     <string name="add_seek">iščem prevoz</string>
     
     <string name="add_num_ppl">Št. ljudi</string>
-    <string name="add_price">Cena</string>
     <string name="add_phone">Telefon</string>
-    <string name="add_comment">Opombe</string>
-    <string name="add_button">Naprej</string>
+    
+    
     
     <string name="preview">Predogled</string>
     <string name="add_send">Pošlji</string>
