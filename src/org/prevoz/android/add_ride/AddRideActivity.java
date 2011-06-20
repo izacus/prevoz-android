@@ -10,13 +10,21 @@ import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 public class AddRideActivity extends FragmentActivity 
 {
+	private ViewFlipper addFlipper;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.add_ride_activity);
+		
+		// Prepare UI injection
+		addFlipper = (ViewFlipper) findViewById(R.id.add_flipper);
+		addFlipper.setDisplayedChild(0);
 		
 		Handler authHandler = new Handler()
 		{
@@ -61,6 +69,7 @@ public class AddRideActivity extends FragmentActivity
 				break;
 			
 			case AUTHENTICATED:
+				addFlipper.setDisplayedChild(1);
 				break;
 		}
 	}
