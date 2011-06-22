@@ -62,6 +62,10 @@ public class AddRideActivity extends FragmentActivity
 						{
 							finish();
 						}
+						else
+						{
+							addFlipper.setDisplayedChild(1);
+						}
 					}
 				};
 				

@@ -42,6 +42,7 @@
     <string name="add_numppl">Število mest</string>
     <string name="add_comment">Opombe</string>
     <string name="add_button">Naprej</string>
+    <string name="add_phone">Telefon</string>
     
     <!--  DEPRECATED DEPRECATED DEPRECATED -->
     <string name="search_tab">Iskanje</string>
@@ -56,6 +57,7 @@
     <string name="destination">Kraj prihoda</string>
     <string name="date">Datum</string>
     <string name="time">Čas</string>
+    
     
     <!--  Ride details strings -->
     <string name="price">cena</string>
@@ -83,7 +85,7 @@
     <string name="add_seek">iščem prevoz</string>
     
     <string name="add_num_ppl">Št. ljudi</string>
-    <string name="add_phone">Telefon</string>
+
     
     
     
