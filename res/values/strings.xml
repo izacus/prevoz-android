@@ -44,6 +44,8 @@
     <string name="add_button">Naprej</string>
     <string name="add_phone">Telefon</string>
     
+    <string name="add_select_city">izberi kraj</string>
+    
     <!--  DEPRECATED DEPRECATED DEPRECATED -->
     <string name="search_tab">Iskanje</string>
     
@@ -57,7 +59,6 @@
     <string name="destination">Kraj prihoda</string>
     <string name="date">Datum</string>
     <string name="time">Čas</string>
-    
     
     <!--  Ride details strings -->
     <string name="price">cena</string>

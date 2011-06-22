@@ -10,11 +10,10 @@ import org.prevoz.android.Route;
 import org.prevoz.android.add_ride.AddRideActivity;
 import org.prevoz.android.util.Database;
 import org.prevoz.android.util.LocaleUtil;
+import org.prevoz.android.util.StringUtil;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -55,7 +54,7 @@ public class SearchFormFragment extends Fragment
 		buttonSearch = (Button)getActivity().findViewById(R.id.search_button);
 		
 		buttonFrom = (Button)getActivity().findViewById(R.id.from_button);
-		setLocationButtonText(buttonFrom, from);
+		StringUtil.setLocationButtonText(buttonFrom, from, getString(R.string.all_locations));
 		buttonFrom.setOnClickListener(new OnClickListener() 
 		{
 			public void onClick(View v) 
@@ -66,7 +65,7 @@ public class SearchFormFragment extends Fragment
 		});
 
 		buttonTo = (Button)getActivity().findViewById(R.id.to_button);
-		setLocationButtonText(buttonTo, to);
+		StringUtil.setLocationButtonText(buttonTo, to, getString(R.string.all_locations));
 		buttonTo.setOnClickListener(new OnClickListener() 
 		{
 			public void onClick(View v) 
@@ -77,7 +76,7 @@ public class SearchFormFragment extends Fragment
 		});
 		
 		// Set initial date
-		buttonDate.setText(localizeDate(selectedDate));
+		buttonDate.setText(LocaleUtil.localizeDate(getResources(), selectedDate));
 		buttonDate.setOnClickListener(new OnClickListener() 
 		{
 			
@@ -132,9 +131,9 @@ public class SearchFormFragment extends Fragment
 				{
 					Route route = (Route) parent.getItemAtPosition(position);
 					from = route.getFrom();
-					setLocationButtonText(buttonFrom, route.getFrom());
+					StringUtil.setLocationButtonText(buttonFrom, route.getFrom(), getString(R.string.all_locations));
 					to = route.getTo();
-					setLocationButtonText(buttonTo, route.getTo());
+					StringUtil.setLocationButtonText(buttonTo, route.getTo(), getString(R.string.all_locations));
 				}
 			});
 			
@@ -200,61 +199,11 @@ public class SearchFormFragment extends Fragment
 		outState.putString("from", from);
 		outState.putString("to", to);
 	}
-
-	private void setLocationButtonText(Button button, String location)
-	{
-		if (location == null || location.length() == 0)
-		{
-			button.setTextColor(Color.LTGRAY);
-			button.setText(getString(R.string.all_locations));
-		}
-		else
-		{
-			button.setTextColor(Color.BLACK);
-			button.setText(location);
-		}
-	}
-	
-	/**
-	 * Builds a localized date string with day name
-	 */
-	private String localizeDate(Calendar date)
-	{
-		Resources resources = getResources();
-		
-		Calendar now = Calendar.getInstance();
-		// Check for today and tomorrow
-		if (date.get(Calendar.ERA) == now.get(Calendar.ERA) && 
-			date.get(Calendar.YEAR) == now.get(Calendar.YEAR))
-		{
-			// Today
-			if (date.get(Calendar.DAY_OF_YEAR) == now.get(Calendar.DAY_OF_YEAR))
-			{
-				return resources.getString(R.string.today);
-			}
-			
-			// Add one day to now to get tomorrows date
-			now.roll(Calendar.DAY_OF_YEAR, 1);
-			
-			// Tomorrow, because we added one day to now
-			if (date.get(Calendar.DAY_OF_YEAR) == now.get(Calendar.DAY_OF_YEAR))
-			{
-				return resources.getString(R.string.tomorrow);
-			}
-		}
-
-		StringBuilder dateString = new StringBuilder();
-
-		dateString.append(LocaleUtil.getDayName(resources, date) + ", ");
-		dateString.append(LocaleUtil.getFormattedDate(resources, date));
-
-		return dateString.toString();
-	}
 	
 	public void setSelectedDate(Calendar date)
 	{
 		this.selectedDate = date;
-		buttonDate.setText(localizeDate(selectedDate));
+		buttonDate.setText(LocaleUtil.localizeDate(getResources(), selectedDate));
 	}
 	
 	public void onParentActivityResult(int requestCode,
@@ -267,11 +216,11 @@ public class SearchFormFragment extends Fragment
 			{
 				case FROM_CITY_REQUEST:
 					from = "";
-					setLocationButtonText(buttonFrom, from);
+					StringUtil.setLocationButtonText(buttonFrom, from, getString(R.string.all_locations));
 					return;
 				case TO_CITY_REQUEST:
 					to = "";
-					setLocationButtonText(buttonTo, to);
+					StringUtil.setLocationButtonText(buttonTo, to, getString(R.string.all_locations));
 					return;
 			}
 		}
@@ -280,11 +229,11 @@ public class SearchFormFragment extends Fragment
 		{
 			case FROM_CITY_REQUEST:
 				from = intent.getStringExtra("city");
-				setLocationButtonText(buttonFrom, from);
+				StringUtil.setLocationButtonText(buttonFrom, from, getString(R.string.all_locations));
 				break;
 			case TO_CITY_REQUEST:
 				to = intent.getStringExtra("city");
-				setLocationButtonText(buttonTo, to);
+				StringUtil.setLocationButtonText(buttonTo, to, getString(R.string.all_locations));
 				break;
 				
 			default:

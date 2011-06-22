@@ -1,5 +1,8 @@
 package org.prevoz.android.util;
 
+import android.graphics.Color;
+import android.widget.Button;
+
 public class StringUtil
 {
 	/**
@@ -22,5 +25,19 @@ public class StringUtil
 		}
 
 		return output.toString();
+	}
+	
+	public static void setLocationButtonText(Button button, String location, String defaultValue)
+	{
+		if (location == null || location.length() == 0)
+		{
+			button.setTextColor(Color.LTGRAY);
+			button.setText(defaultValue);
+		}
+		else
+		{
+			button.setTextColor(Color.BLACK);
+			button.setText(location);
+		}
 	}
 }
