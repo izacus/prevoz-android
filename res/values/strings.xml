@@ -46,6 +46,13 @@
     
     <string name="add_select_city">izberi kraj</string>
     
+    <!-- Ride add errors -->
+    <string name="add_error_timepast">Čas prevoza je že bil.</string>
+    <string name="add_error_enterphone">Vpišite telefonsko številko.</string>
+    <string name="add_error_enterprice">Vpišite delež stroškov prevoza.</string>
+    <string name="add_error_enterfrom">Izberite kraj odhoda.</string>
+    <string name="add_error_enterto">Izberite kraj prihoda.</string>
+    
     <!--  DEPRECATED DEPRECATED DEPRECATED -->
     <string name="search_tab">Iskanje</string>
     

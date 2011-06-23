@@ -1,14 +1,21 @@
 package org.prevoz.android.add_ride;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import org.prevoz.android.CitySelectorActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.auth.AuthenticationManager;
 import org.prevoz.android.auth.AuthenticationStatus;
+import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.DatePickerDialog.OnDateSetListener;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
+import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,14 +24,24 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-public class AddRideActivity extends FragmentActivity 
+public class AddRideActivity extends FragmentActivity implements OnTimeSetListener, OnDateSetListener
 {
 	private static final int FROM_CITY_REQUEST = 1;
 	private static final int TO_CITY_REQUEST = 2;
+	
+	private static final int DIALOG_DATE = 1;
+	private static final int DIALOG_TIME = 2;
+	
+	private static final SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
 	
 	private ViewFlipper addFlipper;
 	// Form buttons
@@ -32,13 +49,21 @@ public class AddRideActivity extends FragmentActivity
 	private Button toButton;
 	private Button dateButton;
 	private Button timeButton;
-	
+	private Spinner peopleSpinner;
+	// Form fields
+	private EditText priceText;
+	private EditText phoneText;
+	private EditText commentText;
 	
 	// Field data
 	private String fromCity = null;
 	private String toCity = null;
 	
 	private Calendar dateTime;
+	
+	// Dialogs
+	private DatePickerDialog datePickerDialog;
+	private TimePickerDialog timePickerDialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -48,8 +73,13 @@ public class AddRideActivity extends FragmentActivity
 		
 		// Initialize values
 		dateTime = Calendar.getInstance();
+		// Round minutes to the nearest hour
+		dateTime.set(Calendar.MINUTE, 0);
+		dateTime.set(Calendar.SECOND, 0);
+		dateTime.roll(Calendar.HOUR, 1);
 		
 		prepareFormFields();
+		updateDateTime();
 		
 		Handler authHandler = new Handler()
 		{
@@ -95,7 +125,50 @@ public class AddRideActivity extends FragmentActivity
 		
 		// Date selector
 		dateButton = (Button) findViewById(R.id.date_button);
+		dateButton.setOnClickListener(new OnClickListener()
+		{
+			public void onClick(View v)
+			{
+				showDialog(DIALOG_DATE);
+			}
+		});
 		
+		timeButton = (Button) findViewById(R.id.time_button);
+		timeButton.setOnClickListener(new OnClickListener()
+		{
+			public void onClick(View v)
+			{
+				showDialog(DIALOG_TIME);
+			}
+		});
+		
+		// Initialize dialogs for selection
+		timePickerDialog = new TimePickerDialog(this, this, 0, 0, true);
+		datePickerDialog = new DatePickerDialog(this, this, 2010, 1, 1);
+		
+		// Prepare number of people spinner
+		peopleSpinner = (Spinner) findViewById(R.id.add_ppl);
+		PeopleSpinnerObject[] peopleSpinnerObject = new PeopleSpinnerObject[6];
+		for (int i = 0; i < 6; i++)
+			peopleSpinnerObject[i] = new PeopleSpinnerObject(this, i + 1);
+		
+		ArrayAdapter<PeopleSpinnerObject> peopleAdapter = new ArrayAdapter<PeopleSpinnerObject>(this, android.R.layout.simple_spinner_item, peopleSpinnerObject);
+		peopleSpinner.setAdapter(peopleAdapter);
+		peopleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		
+		// Edit text fields
+		priceText = (EditText) findViewById(R.id.add_price);
+		phoneText = (EditText) findViewById(R.id.add_phone);
+		commentText = (EditText) findViewById(R.id.add_comment);
+	}
+	
+	private void updateDateTime()
+	{
+		String dateString = LocaleUtil.getDayName(getResources(), dateTime) + ", " + LocaleUtil.getFormattedDate(getResources(), dateTime);
+		dateButton.setText(dateString);
+		
+		String timeString = timeFormatter.format(dateTime.getTime());
+		timeButton.setText(timeString);
 	}
 	
 	private void authenticationStatusReceived(AuthenticationStatus status)
@@ -158,5 +231,92 @@ public class AddRideActivity extends FragmentActivity
 				break;
 		}
 		
+	}
+
+	private boolean validateForm()
+	{
+		// Check from city
+		if (fromCity == null)
+		{
+			showFormError(getString(R.string.add_error_enterfrom));
+			return false;
+		}
+		
+		if (toCity == null)
+		{
+			showFormError(getString(R.string.add_error_enterto));
+			return false;
+		}
+		
+		// Check date validity
+		if (dateTime.before(Calendar.getInstance()))
+		{
+			showFormError(getString(R.string.add_error_timepast));
+			return false;
+		}
+		
+		// Check price
+		double price;
+		
+		try
+		{
+			 price = Double.parseDouble(priceText.getText().toString());
+		}
+		catch (NumberFormatException e)
+		{
+			showFormError(getString(R.string.add_error_enterprice));
+			return false;
+		}
+		
+		if (price < 0.5 && price > 500)
+		{
+			// TODO: check limits
+			showFormError(getString(R.string.add_error_enterprice));
+			return false;
+		}
+		
+		if (phoneText.getText().toString().trim().length() == 0)
+		{
+			showFormError(getString(R.string.add_error_enterphone));
+			return false;
+		}
+		
+		return true;
+	}
+	
+	private void showFormError(String error)
+	{
+		Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+	}
+	
+	@Override
+	protected Dialog onCreateDialog(int id)
+	{
+		switch(id)
+		{
+			case DIALOG_TIME:
+				timePickerDialog.updateTime(dateTime.get(Calendar.HOUR_OF_DAY), dateTime.get(Calendar.MINUTE));
+				return timePickerDialog;
+			case DIALOG_DATE:
+				datePickerDialog.updateDate(dateTime.get(Calendar.YEAR), dateTime.get(Calendar.MONTH), dateTime.get(Calendar.DAY_OF_MONTH));
+				return datePickerDialog;
+			default:
+				return super.onCreateDialog(id);
+		}
+	}
+
+	public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
+	{
+		dateTime.set(Calendar.YEAR, year);
+		dateTime.set(Calendar.MONTH, monthOfYear);
+		dateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+		updateDateTime();
+	}
+
+	public void onTimeSet(TimePicker view, int hourOfDay, int minute)
+	{
+		dateTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+		dateTime.set(Calendar.MINUTE, minute);
+		updateDateTime();
 	}
 }
