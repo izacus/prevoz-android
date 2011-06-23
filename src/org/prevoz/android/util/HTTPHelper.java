@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -58,11 +59,11 @@ public class HTTPHelper
 		StringBuilder paramString = new StringBuilder();
 		paramString.append("?");
 
-		for (String key : params.keySet())
+		for (Entry<String, String> entry : params.entrySet())
 		{
-			paramString.append(URLEncoder.encode(key));
+			paramString.append(URLEncoder.encode(entry.getKey()));
 			paramString.append("=");
-			paramString.append(URLEncoder.encode(params.get(key)));
+			paramString.append(URLEncoder.encode(entry.getValue()));
 			paramString.append("&");
 		}
 
@@ -184,9 +185,9 @@ public class HTTPHelper
 		
 		if (parameters != null)
 		{
-			for (String param : parameters.keySet())
+			for (Entry<String, String> param : parameters.entrySet())
 			{
-				nameValuePairs.add(new BasicNameValuePair(param, parameters.get(param)));
+				nameValuePairs.add(new BasicNameValuePair(param.getKey(), param.getValue()));
 			}
 		}
 		

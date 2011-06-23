@@ -41,7 +41,7 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 	private static final int DIALOG_DATE = 1;
 	private static final int DIALOG_TIME = 2;
 	
-	private static final SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
+	private final SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
 	
 	private ViewFlipper addFlipper;
 	// Form buttons

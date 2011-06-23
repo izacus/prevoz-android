@@ -158,7 +158,7 @@ abstract public class SectionedAdapter extends BaseAdapter
 		return (position);
 	}
 
-	class Section
+	private static class Section
 	{
 		String caption;
 		Adapter adapter;

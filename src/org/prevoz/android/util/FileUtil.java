@@ -41,6 +41,16 @@ public class FileUtil
 			Log.e("FileUtil", "Failed to read resource with ID " + rawResId, e);
 			return new String[0];
 		}
+		finally
+		{
+			try
+			{
+				reader.close();
+			} catch (IOException e)
+			{
+				// Nothing TBD
+			}
+		}
 
 		StringTokenizer tokenizeSQL = new StringTokenizer(
 				fileContent.toString(), ";");

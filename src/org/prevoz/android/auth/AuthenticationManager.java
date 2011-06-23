@@ -22,7 +22,7 @@ import android.webkit.CookieSyncManager;
 public class AuthenticationManager
 {
 	// Singelton methods
-	private static AuthenticationManager instance = null;
+	private volatile static AuthenticationManager instance = null;
 	
 	public static AuthenticationManager getInstance()
 	{
