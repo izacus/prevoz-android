@@ -30,14 +30,19 @@ public class RideInfoUtil
 	private TextView commentText;
 	private Button callButton;
 	private Button smsButton;
-	private Button delButton;
+	private Button genButton;
 
 	private OnClickListener callAuthor;
 	private OnClickListener sendSMS;
+	private String genButtonText;
+	private OnClickListener genButtonListener;
 	
-	public RideInfoUtil(Activity context)
+	public RideInfoUtil(Activity context, String buttonText, OnClickListener buttonListener)
 	{
 		this.context = context;
+		this.genButtonText = buttonText;
+		this.genButtonListener = buttonListener;
+		prepareUIElements();
 	}
 	
 	public RideInfoUtil(Activity context, OnClickListener callAuthor, OnClickListener sendSMS)
@@ -66,7 +71,7 @@ public class RideInfoUtil
 		
 		callButton = (Button)context.findViewById(R.id.rideinfo_call);
 		smsButton = (Button)context.findViewById(R.id.rideinfo_sms);
-		delButton = (Button) context.findViewById(R.id.rideinfo_delsend);
+		genButton = (Button) context.findViewById(R.id.rideinfo_delsend);
 	}
 	
 	public void showRide(Ride ride, boolean showControls)
@@ -124,7 +129,18 @@ public class RideInfoUtil
 		else
 		{
 			callButton.setVisibility(View.INVISIBLE);
-			smsButton.setVisibility(View.VISIBLE);
+			smsButton.setVisibility(View.INVISIBLE);
+		}
+		
+		if (genButtonText != null && genButtonListener != null)
+		{
+			genButton.setText(genButtonText);
+			genButton.setOnClickListener(genButtonListener);
+			genButton.setVisibility(View.VISIBLE);
+		}
+		else
+		{
+			genButton.setVisibility(View.GONE);
 		}
 	}
 }

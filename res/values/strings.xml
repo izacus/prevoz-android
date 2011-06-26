@@ -41,8 +41,9 @@
     <string name="add_price_hint">Stroški</string>
     <string name="add_numppl">Število mest</string>
     <string name="add_comment">Opombe</string>
-    <string name="add_button">Naprej</string>
     <string name="add_phone">Telefon</string>
+    <string name="add_button">Naprej</string>
+    <string name="add_send">Pošlji</string>
     
     <string name="add_select_city">izberi kraj</string>
     
@@ -94,11 +95,7 @@
     
     <string name="add_num_ppl">Št. ljudi</string>
 
-    
-    
-    
     <string name="preview">Predogled</string>
-    <string name="add_send">Pošlji</string>
     
     <string name="add_sending">Pošiljam...</string>
     

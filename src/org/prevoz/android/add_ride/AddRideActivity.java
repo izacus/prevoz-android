@@ -5,8 +5,12 @@ import java.util.Calendar;
 
 import org.prevoz.android.CitySelectorActivity;
 import org.prevoz.android.R;
+import org.prevoz.android.RideType;
+import org.prevoz.android.add_ride.AddStateManager.Views;
 import org.prevoz.android.auth.AuthenticationManager;
 import org.prevoz.android.auth.AuthenticationStatus;
+import org.prevoz.android.rideinfo.Ride;
+import org.prevoz.android.rideinfo.RideInfoUtil;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
 
@@ -43,12 +47,14 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 	
 	private final SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
 	
-	private ViewFlipper addFlipper;
+	private AddStateManager stateManager;
+	
 	// Form buttons
 	private Button fromButton;
 	private Button toButton;
 	private Button dateButton;
 	private Button timeButton;
+	private Button nextButton;
 	private Spinner peopleSpinner;
 	// Form fields
 	private EditText priceText;
@@ -72,7 +78,8 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 		setContentView(R.layout.add_ride_activity);
 		
 		// Initialize values
-		dateTime = Calendar.getInstance();
+		dateTime = Calendar.getInstance();		
+		
 		// Round minutes to the nearest hour
 		dateTime.set(Calendar.MINUTE, 0);
 		dateTime.set(Calendar.SECOND, 0);
@@ -96,8 +103,9 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 	private void prepareFormFields()
 	{
 		// Prepare UI injection
-		addFlipper = (ViewFlipper) findViewById(R.id.add_flipper);
-		addFlipper.setDisplayedChild(0);
+		ViewFlipper addFlipper = (ViewFlipper) findViewById(R.id.add_flipper);
+		stateManager = new AddStateManager(addFlipper);
+		stateManager.showView(Views.LOADING);
 		
 		// From city selector
 		fromButton = (Button) findViewById(R.id.from_button);
@@ -160,6 +168,16 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 		priceText = (EditText) findViewById(R.id.add_price);
 		phoneText = (EditText) findViewById(R.id.add_phone);
 		commentText = (EditText) findViewById(R.id.add_comment);
+		
+		// Next button
+		nextButton = (Button)findViewById(R.id.add_button);
+		nextButton.setOnClickListener(new OnClickListener()
+		{
+			public void onClick(View v)
+			{
+				showPreview();
+			}
+		});
 	}
 	
 	private void updateDateTime()
@@ -197,7 +215,7 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 						}
 						else
 						{
-							addFlipper.setDisplayedChild(1);
+							stateManager.showView(Views.FORM);
 						}
 					}
 				};
@@ -206,7 +224,7 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 				break;
 			
 			case AUTHENTICATED:
-				addFlipper.setDisplayedChild(1);
+				stateManager.showView(Views.FORM);
 				break;
 		}
 	}
@@ -289,6 +307,44 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 		Toast.makeText(this, error, Toast.LENGTH_LONG).show();
 	}
 	
+	private void showPreview()
+	{
+		if (validateForm())
+		{
+			// Create a new ride object
+			final Ride ride = new Ride(0,							// Ride ID
+								 RideType.SHARE,					// Ride type
+								 fromCity,							// From
+								 toCity,							// To
+								 dateTime.getTime(),				// Date and time 
+								 ((PeopleSpinnerObject)peopleSpinner.getSelectedItem()).getNumber(),		// Number of people
+								 Double.parseDouble(priceText.getText().toString().trim()),					// Ride price
+								 null,																		// Ride author string
+								 StringUtil.numberOnly(phoneText.getText().toString(), false),				// Phone number
+								 commentText.getText().toString().trim(),									// Ride comment
+								 true);																		// isAuthor flag
+			
+			
+			OnClickListener sendListener = new OnClickListener()
+			{
+				public void onClick(View v)
+				{
+					postRide(ride);
+				}
+			};
+			
+			RideInfoUtil util = new RideInfoUtil(this, getString(R.string.add_send), sendListener);
+			util.showRide(ride, false);
+			
+			stateManager.showView(Views.PREVIEW);
+		}
+	}
+	
+	private void postRide(Ride ride)
+	{
+		
+	}
+	
 	@Override
 	protected Dialog onCreateDialog(int id)
 	{
@@ -318,5 +374,13 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 		dateTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
 		dateTime.set(Calendar.MINUTE, minute);
 		updateDateTime();
+	}
+
+	@Override
+	public void onBackPressed()
+	{
+		// State manager will correctly switch views or return false if the activity must finish
+		if (!stateManager.handleBackKey())
+			finish();
 	}
 }

@@ -21,6 +21,9 @@
 	  
 	  <include
 	  	layout = "@layout/add_form" />  
+	  	
+	  <include
+	    layout = "@layout/ride_info" />
 	    
 	</org.prevoz.android.FixedViewFlipper>
 
