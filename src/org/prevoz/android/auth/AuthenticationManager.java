@@ -96,6 +96,8 @@ public class AuthenticationManager
 											  final boolean apikeyLogin)
 	{
 		
+		Log.i(this.toString(), "Received authentication status " + status);
+		
 		// Retry authentication with apikey if the status is negative
 		if (status == AuthenticationStatus.NOT_AUTHENTICATED && apikeyLogin)
 		{
@@ -103,7 +105,10 @@ public class AuthenticationManager
 			
 			if (sharedPrefs.contains(PREF_API_KEY))
 			{
+				
 				String apikey = sharedPrefs.getString(PREF_API_KEY, "");
+				
+				Log.i(this.toString(), "Attempting login with apikey " + apikey);
 				
 				Handler cback = new Handler() 
 				{
@@ -206,7 +211,7 @@ public class AuthenticationManager
 	
 	private void getApiKey(Context context)
 	{
-		// Run authentication check  to retrieve the API key
+		// Run authentication check to retrieve the API key
 		AuthenticationCheckTask authCheck = new AuthenticationCheckTask();
 		authCheck.execute();
 		

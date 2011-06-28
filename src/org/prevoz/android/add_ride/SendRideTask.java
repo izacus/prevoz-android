@@ -79,6 +79,8 @@ public class SendRideTask implements Runnable
 			String response = HTTPHelper.httpGet(Globals.API_URL
 					+ "/carshare/create/", params);
 
+			Log.d(this.toString(), response);
+			
 			// Check for non-JSON authentication error response
 			if (response.equalsIgnoreCase("Forbidden\n"))
 			{
