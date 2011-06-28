@@ -83,7 +83,7 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 		// Round minutes to the nearest hour
 		dateTime.set(Calendar.MINUTE, 0);
 		dateTime.set(Calendar.SECOND, 0);
-		dateTime.roll(Calendar.HOUR, 1);
+		dateTime.roll(Calendar.HOUR_OF_DAY, 1);
 		
 		prepareFormFields();
 		updateDateTime();
@@ -342,7 +342,40 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 	
 	private void postRide(Ride ride)
 	{
+		stateManager.showView(Views.LOADING);
 		
+		final SendRideTask task = new SendRideTask(ride);
+		
+		Handler sendHandler = new Handler()
+		{
+
+			@Override
+			public void handleMessage(Message msg)
+			{
+				super.handleMessage(msg);
+				
+				switch(msg.what)
+				{
+					case SendRideTask.AUTHENTICATION_ERROR:
+						authenticationStatusReceived(AuthenticationStatus.NOT_AUTHENTICATED);
+						break;
+					case SendRideTask.SERVER_ERROR:
+						Toast.makeText(AddRideActivity.this, R.string.server_error, Toast.LENGTH_SHORT).show();
+						stateManager.showView(Views.FORM);
+						break;
+					case SendRideTask.SEND_ERROR:
+						Toast.makeText(AddRideActivity.this, task.getErrorMessage(), Toast.LENGTH_SHORT).show();
+						stateManager.showView(Views.FORM);
+						break;
+					case SendRideTask.SEND_SUCCESS:
+						finish();
+						break;
+				}
+			}
+		};
+		
+		stateManager.showView(Views.LOADING);
+		task.startTask(sendHandler);
 	}
 	
 	@Override
