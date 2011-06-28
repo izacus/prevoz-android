@@ -21,6 +21,7 @@
     <string name="search_label_from">Od</string>
     <string name="search_label_to">Do</string>
     <string name="search_label_date">Datum</string>
+    <string name="search_no_results">Prevozov za ta dan ni.</string>
     
     <string name="all_locations">Vsi kraji</string>
     
@@ -44,6 +45,8 @@
     <string name="add_phone">Telefon</string>
     <string name="add_button">Naprej</string>
     <string name="add_send">Pošlji</string>
+    <string name="add_num_ppl">Št. ljudi</string>
+    
     
     <string name="add_select_city">izberi kraj</string>
     
@@ -53,20 +56,7 @@
     <string name="add_error_enterprice">Vpišite delež stroškov prevoza.</string>
     <string name="add_error_enterfrom">Izberite kraj odhoda.</string>
     <string name="add_error_enterto">Izberite kraj prihoda.</string>
-    
-    <!--  DEPRECATED DEPRECATED DEPRECATED -->
-    <string name="search_tab">Iskanje</string>
-    
-    <string name="search_no_results">Prevozov za ta dan ni.</string>
-    
-    <string name="im_searching">Iščem</string>
-    <string name="searching_shares">ponujene prevoze</string>
-    <string name="searching_seekers">iskalce prevozov</string>
-    
-    <string name="origin">Kraj odhoda</string>
-    <string name="destination">Kraj prihoda</string>
-    <string name="date">Datum</string>
-    <string name="time">Čas</string>
+   
     
     <!--  Ride details strings -->
     <string name="price">cena</string>
@@ -77,48 +67,6 @@
       <item>osebe</item>
       <item>oseb</item>
     </string-array>
-    
-    <string name="delete">Izbriši</string>
-    
-    <!-- My rides tab strings -->
-    <string name="my_rides_tab">Moji prevozi</string>
-    <string name="favorites">Priljubljene</string>
-    <string name="no_favorites">Nimate priljubljenih poti.</string>
-    
-    <!-- Add ride strings -->
-    <string name="add_tab">Dodaj prevoz</string>
-    <string name="add_login_required">Za dodajanje prevoza se morate prijaviti.</string>
-    <string name="checking_login_status">Preverjam stanje prijave...</string>
-    
-    <string name="add_share">ponujam prevoz</string>
-    <string name="add_seek">iščem prevoz</string>
-    
-    <string name="add_num_ppl">Št. ljudi</string>
-
-    <string name="preview">Predogled</string>
-    
-    <string name="add_sending">Pošiljam...</string>
-    
-    <!--  Add ride error strings -->
-    <string name = "add_missing_loc">Kraja odhoda in prihoda morata biti izpolnjena.</string>
-    <string name = "add_missing_phone">Telefonska številka mora biti vpisana.</string>
-    
-    
-    <!-- Menu options -->
-    <string name="add_to_favorites">Dodaj med priljubljene</string>
-    <string name="added_to_favorites">Pot je bila dodana med priljubljene.</string>
-    
-    <!--  Update query -->
-    <string name="new_version">Nova različica</string>
-    <string name="ok">V redu</string>
-    <string name="cancel">Prekliči</string>
-    
-    
-    <!-- Logout -->
-    <string name="login">Prijava</string>
-    <string name="logout">Odjava</string>
-    <string name="logout_progress">Odjavljam...</string>
-    <string name="logout_success">Odjava uspešna.</string>
     
     <!--  Day and month names -->
     
@@ -149,6 +97,4 @@
         <item>november</item>
         <item>december</item>
     </string-array>
-    
-<string name="deleting">Brišem...</string>
 </resources>

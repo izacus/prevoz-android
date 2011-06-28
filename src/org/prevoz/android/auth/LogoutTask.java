@@ -41,7 +41,7 @@ public class LogoutTask extends AsyncTask<Void, Void, Integer>
 	@Override
 	protected void onPreExecute()
 	{
-		statusToast = Toast.makeText(context, context.getString(R.string.logout_progress), Toast.LENGTH_LONG);
+//		statusToast = Toast.makeText(context, context.getString(R.string.logout_progress), Toast.LENGTH_LONG);
 		statusToast.show();
 	}
 
