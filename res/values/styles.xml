@@ -133,4 +133,10 @@
         <item
           name="android:textColor">@android:color/white</item>
     </style>
+    <style name="land_field_labels" parent="@style/field_labels">
+        <item name="android:gravity">right</item>
+        <item name="android:layout_marginLeft">2dip</item>
+        <item name="android:layout_marginRight">15dip</item>
+        <item name="android:layout_marginTop">20dip</item>
+    </style>
 </resources>

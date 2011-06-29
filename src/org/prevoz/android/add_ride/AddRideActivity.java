@@ -85,6 +85,7 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 			fromCity = savedInstanceState.getString("fromCity");
 			toCity = savedInstanceState.getString("toCity");
 			dateTime.setTimeInMillis(savedInstanceState.getLong("date"));
+			prepareFormFields(savedInstanceState.getInt("numPpl"));
 		}
 		else
 		{
@@ -92,9 +93,9 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 			dateTime.set(Calendar.MINUTE, 0);
 			dateTime.set(Calendar.SECOND, 0);
 			dateTime.roll(Calendar.HOUR_OF_DAY, 1);
+			prepareFormFields(3);
 		}
 		
-		prepareFormFields();
 		updateDateTime();
 		
 		Handler authHandler = new Handler()
@@ -109,7 +110,7 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 		AuthenticationManager.getInstance().getAuthenticationStatus(this, authHandler);
 	}
 	
-	private void prepareFormFields()
+	private void prepareFormFields(int peopleSelected)
 	{
 		// Prepare UI injection
 		ViewFlipper addFlipper = (ViewFlipper) findViewById(R.id.add_flipper);
@@ -172,6 +173,7 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 		ArrayAdapter<PeopleSpinnerObject> peopleAdapter = new ArrayAdapter<PeopleSpinnerObject>(this, android.R.layout.simple_spinner_item, peopleSpinnerObject);
 		peopleSpinner.setAdapter(peopleAdapter);
 		peopleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		peopleSpinner.setSelection(peopleSelected - 1);
 		
 		// Edit text fields
 		priceText = (EditText) findViewById(R.id.add_price);
@@ -434,6 +436,7 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 		
 		outState.putString("fromCity", fromCity);
 		outState.putString("toCity", toCity);
+		outState.putInt("numPpl", ((PeopleSpinnerObject)peopleSpinner.getSelectedItem()).getNumber());
 		outState.putLong("date", dateTime.getTimeInMillis());
 	}
 }
