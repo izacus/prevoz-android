@@ -149,6 +149,6 @@
 	    	   android:layout_height = "wrap_content"
 	  	       android:layout_below = "@id/last_search_label"
 	    	   android:layout_above = "@id/search_button"
-	    	    />
+	    	    android:layout_marginLeft="13dip" android:layout_marginRight="13dip"/>
   
 </RelativeLayout>

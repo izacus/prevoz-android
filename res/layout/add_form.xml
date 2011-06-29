@@ -208,10 +208,8 @@
 	    	android:layout_height = "wrap_content"
 	    	android:layout_width = "fill_parent"
 	    	android:layout_below="@id/add_comment"
-	    	android:layout_marginBottom = "20dip"
-	    	android:layout_marginTop = "10dip"    	
+	    	android:layout_marginTop = "10dip"
 	    	android:background = "@drawable/button_black_rnd"
-	    	android:layout_alignParentBottom = "true"
 	    	style = "@style/button_black"
 	    />
 		
