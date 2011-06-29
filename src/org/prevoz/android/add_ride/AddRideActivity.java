@@ -77,13 +77,22 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_ride_activity);
 		
-		// Initialize values
-		dateTime = Calendar.getInstance();		
+		dateTime = Calendar.getInstance();
 		
-		// Round minutes to the nearest hour
-		dateTime.set(Calendar.MINUTE, 0);
-		dateTime.set(Calendar.SECOND, 0);
-		dateTime.roll(Calendar.HOUR_OF_DAY, 1);
+		// Initialize values
+		if (savedInstanceState != null)
+		{
+			fromCity = savedInstanceState.getString("fromCity");
+			toCity = savedInstanceState.getString("toCity");
+			dateTime.setTimeInMillis(savedInstanceState.getLong("date"));
+		}
+		else
+		{
+			// Round minutes to the nearest hour
+			dateTime.set(Calendar.MINUTE, 0);
+			dateTime.set(Calendar.SECOND, 0);
+			dateTime.roll(Calendar.HOUR_OF_DAY, 1);
+		}
 		
 		prepareFormFields();
 		updateDateTime();
@@ -197,7 +206,8 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 		switch(status)
 		{
 			case UNKNOWN:
-				Toast.makeText(this, R.string.network_error, Toast.LENGTH_LONG);
+				Toast.makeText(this, R.string.network_error, Toast.LENGTH_LONG).show();
+				finish();
 				break;
 				
 			case NOT_AUTHENTICATED:				
@@ -415,5 +425,15 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 		// State manager will correctly switch views or return false if the activity must finish
 		if (!stateManager.handleBackKey())
 			finish();
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState)
+	{
+		super.onSaveInstanceState(outState);
+		
+		outState.putString("fromCity", fromCity);
+		outState.putString("toCity", toCity);
+		outState.putLong("date", dateTime.getTimeInMillis());
 	}
 }

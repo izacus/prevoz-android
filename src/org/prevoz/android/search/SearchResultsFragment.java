@@ -27,6 +27,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 public class SearchResultsFragment extends Fragment implements LoaderCallbacks<SearchResults>
@@ -107,6 +108,12 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 	private void showSearchResults(SearchResults results)
 	{
 		Log.d(this.toString(), "Search results retrieved, drawing...");
+		
+		if (!results.isSuccessful())
+		{
+			Toast.makeText(getActivity(), results.getErrors().values().iterator().next(), Toast.LENGTH_LONG).show();
+			getActivity().finish();
+		}
 		
 		SectionedAdapter resultsAdapter = getSectionedAdapter();
 		
