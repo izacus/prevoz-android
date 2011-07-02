@@ -7,7 +7,7 @@ import org.prevoz.android.CitySelectorActivity;
 import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.Route;
-import org.prevoz.android.add_ride.AddRideActivity;
+import org.prevoz.android.rideinfo.RideInfoActivity;
 import org.prevoz.android.util.Database;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
@@ -101,7 +101,7 @@ public class SearchFormFragment extends Fragment
 		{	
 			public void onClick(View arg0) 
 			{
-				Intent addRideIntent = new Intent(getActivity(), AddRideActivity.class);
+				Intent addRideIntent = new Intent(getActivity(), RideInfoActivity.class);
 				startActivity(addRideIntent);
 			}
 		});

@@ -19,15 +19,21 @@
 	        android:layout_width = "fill_parent"
 	        android:layout_height = "wrap_content"
 	        android:padding = "5dp"
+	        
+	        android:text="TestLocation"
+	        
 	        style = "@style/location_title" />
 	
-	    <!-- From location -->
+	    <!-- To location -->
 	    <TextView
 	        android:id = "@+id/rideinfo_to" 
 	        android:layout_width = "fill_parent"
 	        android:layout_height = "wrap_content"
 	        android:layout_marginTop = "1dip"
 	        android:padding = "5dp"
+	        
+	        android:text="TestLocation"
+	        
 	        style = "@style/location_title" />
 	        
 	   <!-- Time and date display -->     

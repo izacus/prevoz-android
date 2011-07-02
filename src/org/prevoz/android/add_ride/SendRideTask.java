@@ -35,7 +35,6 @@ public class SendRideTask implements Runnable
 		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
 
-		HashMap<String, String> parameters = new HashMap<String, String>();
 		parameters.put("transptype", String.valueOf(ride.getType().ordinal()));
 		parameters.put("transpfrom", ride.getFrom());
 		parameters.put("transpfromcountry", "SI");

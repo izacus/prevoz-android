@@ -139,6 +139,8 @@ public class HTTPHelper
 		get.addHeader("User-Agent", "Prevoz on Android "
 				+ Build.VERSION.SDK_INT);
 
+		Log.d("HTTPHelper", "Getting " + url + params);
+		
 		// Add session cookies to request
 		if (sessionCookies != null)
 		{

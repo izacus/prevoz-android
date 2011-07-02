@@ -10,6 +10,7 @@ import org.prevoz.android.add_ride.AddStateManager.Views;
 import org.prevoz.android.auth.AuthenticationManager;
 import org.prevoz.android.auth.AuthenticationStatus;
 import org.prevoz.android.rideinfo.Ride;
+import org.prevoz.android.rideinfo.RideInfoActivity;
 import org.prevoz.android.rideinfo.RideInfoUtil;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
@@ -380,6 +381,9 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 						stateManager.showView(Views.FORM);
 						break;
 					case SendRideTask.SEND_SUCCESS:
+						Intent rideInfo = new Intent(AddRideActivity.this, RideInfoActivity.class);
+						rideInfo.putExtra(RideInfoActivity.RIDE_ID, task.getRideId());
+						startActivity(rideInfo);
 						finish();
 						break;
 				}
