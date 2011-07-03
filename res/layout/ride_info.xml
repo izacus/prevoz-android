@@ -199,7 +199,6 @@
 	    android:layout_height = "wrap_content"
 	    android:layout_margin = "8dip"
 	    android:background = "@drawable/button_black_rnd"
-	    android:text="@string/delete"
 	    android:gravity="center"
 	    style = "@style/button_black"
 	    android:visibility = "gone"

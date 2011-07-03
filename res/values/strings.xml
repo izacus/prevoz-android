@@ -41,7 +41,8 @@
     <string name="add_button">Naprej</string>
     <string name="add_send">Pošlji</string>
     <string name="add_num_ppl">Št. ljudi</string>
-    
+    <string name="logout">Odjava</string>
+    <string name="logout_success">Odjava uspešna.</string>
     
     <string name="add_select_city">izberi kraj</string>
     

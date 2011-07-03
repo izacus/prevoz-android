@@ -49,4 +49,9 @@ public class AddStateManager
 		
 		return false;
 	}
+	
+	public Views getCurrentView()
+	{
+		return currentView;
+	}
 };

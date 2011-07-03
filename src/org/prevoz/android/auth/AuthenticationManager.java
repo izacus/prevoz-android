@@ -167,7 +167,7 @@ public class AuthenticationManager
 	 */
 	public void requestLogout(Activity context)
 	{
-		LogoutTask logoutTask = new LogoutTask(context);
+		LogoutTask logoutTask = new LogoutTask();
 		logoutTask.execute();
 		
 		try
