@@ -12,7 +12,7 @@
     
     <!-- Error strings -->
     <string name="server_error">Strežnik prevoz ni na voljo. Prosimo poskusite kasneje.</string>
-    <string name="network_error">Napaka na internetni povezavi.</string>
+    <string name="network_error">Napaka na internetni povezavi, preverite če ste povezani.</string>
     
     <!-- City selector strings -->
     <string name="city_hint">Kraj</string>
@@ -22,18 +22,13 @@
     <string name="search_label_to">Do</string>
     <string name="search_label_date">Datum</string>
     <string name="search_no_results">Prevozov za ta dan ni.</string>
-    
     <string name="all_locations">Vsi kraji</string>
-    
     <string name="search_label_last">Nazadnje iskano</string>
-    
     <string name="search_hint_from">Odhod iz</string>
     <string name="search_hint_to">Prihod v</string>
-    
     <string name="search_go">Išči</string>
     <string name="search_gps_locating">Lociram...</string>
     <string name="search_gps_error">Vaše lokacije ni bilo mogoče najti.</string>
-    
     <string name="search_searching">Iščem...</string>
     
     <!-- Ride add strings -->
@@ -60,6 +55,8 @@
     
     <!--  Ride details strings -->
     <string name="price">cena</string>
+    <string name="delete">Izbriši</string>
+    <string name="ride_deleted">Prevoz je bil uspešno izbrisan.</string>
     
     <string-array name="people_tags">
       <item>oseba</item>

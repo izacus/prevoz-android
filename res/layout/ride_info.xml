@@ -48,6 +48,8 @@
 	            android:layout_height = "fill_parent"
 	            android:layout_weight = "1"
 	            style = "@style/RideInfoClock"
+	            
+	            android:text="99:99"
 	            />
 	            
 	       <LinearLayout
@@ -89,6 +91,9 @@
 		            android:id = "@+id/rideinfo_price"
 		            android:layout_width = "fill_parent"
 		            android:layout_height = "wrap_content"
+		            
+		            android:text = "99.9€"
+		            
 		            style="@style/PricePplText"
 		            />
 	             <TextView
@@ -109,6 +114,7 @@
 	                android:id = "@+id/rideinfo_people"
 	                android:layout_width = "fill_parent"
 	                android:layout_height = "wrap_content"
+	                android:text = "9"
 	                style="@style/PricePplText"
 	                />
 	             <TextView
@@ -133,6 +139,9 @@
            android:layout_width = "wrap_content"
            android:layout_height = "fill_parent"
            android:layout_alignParentTop = "true"
+           
+           android:text = "Kar en clovek tam neki"
+           
            style="@style/DriverNameText" />
            
          <TextView
@@ -141,6 +150,9 @@
            android:layout_height = "fill_parent"
            android:layout_below = "@id/rideinfo_author"
            android:layout_centerVertical = "true"
+           
+           android:text = "+386 99999 999"
+           
            style="@style/PhoneNumberText"
            />
 	     
@@ -187,6 +199,8 @@
 	    android:layout_height = "wrap_content"
 	    android:layout_margin = "8dip"
 	    android:background = "@drawable/button_black_rnd"
+	    android:text="@string/delete"
+	    android:gravity="center"
 	    style = "@style/button_black"
 	    android:visibility = "gone"
 	    />

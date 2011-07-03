@@ -1,10 +1,13 @@
 package org.prevoz.android.rideinfo;
 
+import org.prevoz.android.Globals;
 import org.prevoz.android.R;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
@@ -100,7 +103,23 @@ public class RideInfoActivity extends FragmentActivity implements LoaderCallback
 			}
 		};
 		
-		rideInfoUtil = new RideInfoUtil(this, callAuthor, sendSMS);
+		if (result.isAuthor())
+		{
+			OnClickListener deleteListener = new OnClickListener()
+			{
+				public void onClick(View v)
+				{
+					deleteRide(ride);
+				}
+			};
+			
+			rideInfoUtil = new RideInfoUtil(this, callAuthor, sendSMS, getString(R.string.delete), deleteListener);
+		}
+		else
+		{
+			rideInfoUtil = new RideInfoUtil(this, callAuthor, sendSMS, null, null);
+		}
+		
 		rideInfoUtil.showRide(ride, true);
 		rideFlipper.showNext();
 	}
@@ -111,5 +130,36 @@ public class RideInfoActivity extends FragmentActivity implements LoaderCallback
 		
 	}
 	
+	private void deleteRide(Ride ride)
+	{
+		// Show loading view
+		rideFlipper.setDisplayedChild(0);
+		
+		Handler callback = new Handler()
+		{
+			@Override
+			public void handleMessage(Message msg)
+			{
+				rideDeleted(msg.what);
+			}
+		};
+		
+		DeleteRideTask task = new DeleteRideTask();
+		task.startTask(ride.getId(), callback);
+	}
 	
+	
+	private void rideDeleted(int code)
+	{
+		if (code == Globals.REQUEST_SUCCESS)
+		{
+			Toast.makeText(this, R.string.ride_deleted, Toast.LENGTH_SHORT).show();
+			finish();
+		}
+		else if (code == Globals.REQUEST_ERROR_NETWORK)
+		{
+			Toast.makeText(this, R.string.network_error, Toast.LENGTH_SHORT).show();
+			rideFlipper.showNext();
+		}
+	}
 }

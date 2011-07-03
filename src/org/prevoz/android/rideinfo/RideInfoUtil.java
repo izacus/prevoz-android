@@ -45,11 +45,13 @@ public class RideInfoUtil
 		prepareUIElements();
 	}
 	
-	public RideInfoUtil(Activity context, OnClickListener callAuthor, OnClickListener sendSMS)
+	public RideInfoUtil(Activity context, OnClickListener callAuthor, OnClickListener sendSMS, String buttonText, OnClickListener buttonListener)
 	{
 		this.context = context;
 		this.callAuthor = callAuthor;
 		this.sendSMS = sendSMS;
+		this.genButtonText = buttonText;
+		this.genButtonListener = buttonListener;
 		
 		prepareUIElements();
 	}
