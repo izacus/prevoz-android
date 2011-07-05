@@ -179,6 +179,13 @@ public class AuthenticationManager
 				CookieManager cookieManager = CookieManager.getInstance();
 				cookieManager.removeAllCookie();
 				CookieSyncManager.getInstance().sync();
+				
+				// Clear API key and reset authentication status
+				SharedPreferences sharedPrefs = context.getSharedPreferences(PREF_API_KEY, 0);
+				SharedPreferences.Editor editor = sharedPrefs.edit();
+				editor.remove(PREF_API_KEY);
+				editor.commit();
+				currentStatus = AuthenticationStatus.NOT_AUTHENTICATED;
 			}
 		}
 		catch (Exception e)

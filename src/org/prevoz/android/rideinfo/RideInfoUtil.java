@@ -36,6 +36,9 @@ public class RideInfoUtil
 	private OnClickListener sendSMS;
 	private String genButtonText;
 	private OnClickListener genButtonListener;
+
+
+	private TextView insuranceText;
 	
 	public RideInfoUtil(Activity context, String buttonText, OnClickListener buttonListener)
 	{
@@ -70,6 +73,7 @@ public class RideInfoUtil
 		driverText = (TextView) context.findViewById(R.id.rideinfo_author);
 		contactText = (TextView) context.findViewById(R.id.rideinfo_phone);
 		commentText = (TextView) context.findViewById(R.id.rideinfo_comment);
+		insuranceText = (TextView) context.findViewById(R.id.rideinfo_insurance);
 		
 		callButton = (Button)context.findViewById(R.id.rideinfo_call);
 		smsButton = (Button)context.findViewById(R.id.rideinfo_sms);
@@ -121,7 +125,17 @@ public class RideInfoUtil
 
 		// Comment
 		commentText.setText(ride.getComment());
-
+		
+		// Insurance
+		if (ride.isInsured())
+		{
+			insuranceText.setText(R.string.driver_has_insurance);
+		}
+		else
+		{
+			insuranceText.setText(R.string.driver_hasnt_insurance);
+		}
+		
 		// Setup button callbacks
 		if (showControls)
 		{

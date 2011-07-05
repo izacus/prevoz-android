@@ -45,6 +45,7 @@ public class SendRideTask implements Runnable
 		parameters.put("transptime", timeFormatter.format(ride.getTime()));
 
 		parameters.put("transpppl", String.valueOf(ride.getPeople()));
+		parameters.put("transpinsured", String.valueOf(ride.isInsured()));
 
 		if (ride.getPrice() != null)
 		{

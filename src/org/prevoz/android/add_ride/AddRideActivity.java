@@ -33,6 +33,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -65,6 +66,7 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 	private EditText priceText;
 	private EditText phoneText;
 	private EditText commentText;
+	private CheckBox insuranceCheck;
 	
 	// Field data
 	private String fromCity = null;
@@ -184,6 +186,7 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 		priceText = (EditText) findViewById(R.id.add_price);
 		phoneText = (EditText) findViewById(R.id.add_phone);
 		commentText = (EditText) findViewById(R.id.add_comment);
+		insuranceCheck = (CheckBox) findViewById(R.id.check_insurance);
 		
 		// Next button
 		nextButton = (Button)findViewById(R.id.add_button);
@@ -339,7 +342,8 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 								 null,																		// Ride author string
 								 StringUtil.numberOnly(phoneText.getText().toString(), false),				// Phone number
 								 commentText.getText().toString().trim(),									// Ride comment
-								 true);																		// isAuthor flag
+								 true,																		// isAuthor flag
+								 insuranceCheck.isChecked());												// isInsured flag
 			
 			
 			OnClickListener sendListener = new OnClickListener()

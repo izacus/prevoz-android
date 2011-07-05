@@ -184,6 +184,16 @@
 	     
 	   </RelativeLayout>
 	  
+	   <TextView 
+	       android:id = "@+id/rideinfo_insurance"
+	       android:layout_height="wrap_content"
+	       android:layout_width="fill_parent"
+	       android:layout_margin="8dip"
+	       android:gravity="left"
+	       
+	       style="@style/PricePplTagText"
+	   />
+	  
 	   <include layout = "@layout/separator" />
 	  
 	   <TextView 

@@ -41,6 +41,7 @@
     <string name="add_button">Naprej</string>
     <string name="add_send">Pošlji</string>
     <string name="add_num_ppl">Št. ljudi</string>
+    <string name="add_insurance">imam nezgodno zavarovanje potnikov v vozilu</string>
     <string name="logout">Odjava</string>
     <string name="logout_success">Odjava uspešna.</string>
     
@@ -55,9 +56,12 @@
    
     
     <!--  Ride details strings -->
-    <string name="price">cena</string>
+    <string name="price">stroški</string>
     <string name="delete">Izbriši</string>
     <string name="ride_deleted">Prevoz je bil uspešno izbrisan.</string>
+    
+    <string name="driver_has_insurance">Voznik <b>ima</b> zavarovanje za sopotnike.</string>
+    <string name="driver_hasnt_insurance">Voznik <b>nima</b> zavarovanja za sopotnike.</string>
     
     <string-array name="people_tags">
       <item>oseba</item>
