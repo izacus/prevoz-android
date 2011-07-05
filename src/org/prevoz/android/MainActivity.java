@@ -6,6 +6,7 @@ import org.prevoz.android.R;
 import org.prevoz.android.auth.AuthenticationManager;
 import org.prevoz.android.search.SearchFormFragment;
 import org.prevoz.android.search.SearchResultsActivity;
+import org.prevoz.android.util.Database;
 
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -40,6 +41,10 @@ public class MainActivity extends FragmentActivity implements OnDateSetListener
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		
+		// Sanitize search database
+		Database.deleteHistoryEntries(this, 4);
+		
 		setContentView(R.layout.main_activity);		
 		Calendar now = Calendar.getInstance();
 		datePicker = new DatePickerDialog(this, this, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));

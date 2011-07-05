@@ -115,6 +115,37 @@ public class Database
 		return searches;
 	}
 	
+	public static void deleteHistoryEntries(Context context, int min)
+	{
+		SQLiteDatabase database = new DatabaseHelper(context).getWritableDatabase();
+		
+		Cursor results = database.query(true, "search_history", new String[] { "ID" }, null, null, null, null, "date DESC", null);
+		
+		if (results.getCount() > min)
+		{
+			Log.i("Database", "Deleting old last search entries.");
+			
+			results.move(min);
+			
+			ArrayList<Integer> ids = new ArrayList<Integer>();
+			
+			while(!results.isAfterLast())
+			{
+				ids.add(results.getInt(0));
+				results.moveToNext();
+			}
+			
+			results.close();
+			
+			for (Integer id : ids)
+			{
+				database.delete("search_history", "id = ?", new String[] { String.valueOf(id) });
+			}
+		}
+		
+		database.close();
+	}
+	
 
 	public static void addFavorite(Context context, String from, String to,
 			RideType type)
