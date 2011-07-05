@@ -159,8 +159,8 @@
            android:layout_margin = "2dip"
            android:text = "Pošlji SMS"
            
-           android:background = "@drawable/button_black_rnd"
-           style = "@style/button_black_small"
+           android:background = "@drawable/button_white"
+           style = "@style/button_white_small"
            />
 	     
 	      <Button
@@ -172,8 +172,8 @@
 	        android:layout_margin = "2dip"
 	        android:text = "Pokliči"
 	        
-	        android:background = "@drawable/button_black_rnd"
-            style = "@style/button_black_small"
+            android:background = "@drawable/button_white"
+            style = "@style/button_white_small"
 	        />
 	     
 	   </RelativeLayout>
