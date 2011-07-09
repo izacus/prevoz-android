@@ -1,15 +1,19 @@
 package org.prevoz.android.search;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import org.prevoz.android.CitySelectorActivity;
 import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
+import org.prevoz.android.Route;
+import org.prevoz.android.add_ride.AddRideActivity;
+import org.prevoz.android.util.Database;
 import org.prevoz.android.util.LocaleUtil;
+import org.prevoz.android.util.StringUtil;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -17,7 +21,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 
 public class SearchFormFragment extends Fragment 
 {
@@ -30,17 +38,23 @@ public class SearchFormFragment extends Fragment
 	private Button buttonFrom;
 	private Button buttonTo;
 	
-	private String from;
-	private String to;
+	private Button buttonAdd;
+	
+	private ListView lastSearches;
+	
+	private String from = "";
+	private String to = "";
 	private Calendar selectedDate;
 	
 	private void prepareFormFields()
 	{
+		lastSearches = (ListView)getActivity().findViewById(R.id.search_last_list);
+		
 		buttonDate = (Button)getActivity().findViewById(R.id.date_button);
 		buttonSearch = (Button)getActivity().findViewById(R.id.search_button);
 		
 		buttonFrom = (Button)getActivity().findViewById(R.id.from_button);
-		setLocationButtonText(buttonFrom, from);
+		StringUtil.setLocationButtonText(buttonFrom, from, getString(R.string.all_locations));
 		buttonFrom.setOnClickListener(new OnClickListener() 
 		{
 			public void onClick(View v) 
@@ -51,7 +65,7 @@ public class SearchFormFragment extends Fragment
 		});
 
 		buttonTo = (Button)getActivity().findViewById(R.id.to_button);
-		setLocationButtonText(buttonTo, to);
+		StringUtil.setLocationButtonText(buttonTo, to, getString(R.string.all_locations));
 		buttonTo.setOnClickListener(new OnClickListener() 
 		{
 			public void onClick(View v) 
@@ -62,7 +76,7 @@ public class SearchFormFragment extends Fragment
 		});
 		
 		// Set initial date
-		buttonDate.setText(localizeDate(selectedDate));
+		buttonDate.setText(LocaleUtil.localizeDate(getResources(), selectedDate));
 		buttonDate.setOnClickListener(new OnClickListener() 
 		{
 			
@@ -81,7 +95,59 @@ public class SearchFormFragment extends Fragment
 				startSearch();
 			}
 		});
+		
+		buttonAdd = (Button)getActivity().findViewById(R.id.search_add_ride);
+		buttonAdd.setOnClickListener(new OnClickListener() 
+		{	
+			public void onClick(View arg0) 
+			{
+				Intent addRideIntent = new Intent(getActivity(), AddRideActivity.class);
+				startActivity(addRideIntent);
+			}
+		});
 	}
+	
+	private void populateLastSearchList()
+	{
+		// Last search list is not always displayed
+		if (lastSearches == null)
+			return;
+		
+		ArrayList<Route> routes = Database.getLastSearches(getActivity(), 3);
+		
+		if (routes.size() > 0)
+		{
+			ArrayAdapter<Route> lastSearchesAdapter = new ArrayAdapter<Route>(getActivity(), R.layout.last_search_item, routes);
+			
+			lastSearches.setAdapter(lastSearchesAdapter);
+			
+			// Set click handler to populate form data
+			lastSearches.setOnItemClickListener(new OnItemClickListener() 
+			{
+				public void onItemClick(AdapterView<?> parent, 
+										View view,
+										int position, 
+										long id) 
+				{
+					Route route = (Route) parent.getItemAtPosition(position);
+					from = route.getFrom();
+					StringUtil.setLocationButtonText(buttonFrom, route.getFrom(), getString(R.string.all_locations));
+					to = route.getTo();
+					StringUtil.setLocationButtonText(buttonTo, route.getTo(), getString(R.string.all_locations));
+				}
+			});
+			
+			getActivity().findViewById(R.id.last_search_label).setVisibility(View.VISIBLE);
+			lastSearches.setVisibility(View.VISIBLE);
+		}
+		else
+		{
+			getActivity().findViewById(R.id.last_search_label).setVisibility(View.INVISIBLE);
+			lastSearches.setVisibility(View.INVISIBLE);
+		}
+		
+	}
+	
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) 
@@ -106,6 +172,15 @@ public class SearchFormFragment extends Fragment
 		prepareFormFields();
 	}
 
+	
+	
+	@Override
+	public void onResume() 
+	{
+		super.onResume();
+		populateLastSearchList();
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, 
 							 ViewGroup container,
@@ -124,59 +199,11 @@ public class SearchFormFragment extends Fragment
 		outState.putString("from", from);
 		outState.putString("to", to);
 	}
-
-	private void setLocationButtonText(Button button, String location)
-	{
-		if (location == null || location.length() == 0)
-		{
-			button.setText("- -");
-		}
-		else
-		{
-			button.setText(location);
-		}
-	}
-	
-	/**
-	 * Builds a localized date string with day name
-	 */
-	private String localizeDate(Calendar date)
-	{
-		Resources resources = getResources();
-		
-		Calendar now = Calendar.getInstance();
-		// Check for today and tomorrow
-		if (date.get(Calendar.ERA) == now.get(Calendar.ERA) && 
-			date.get(Calendar.YEAR) == now.get(Calendar.YEAR))
-		{
-			// Today
-			if (date.get(Calendar.DAY_OF_YEAR) == now.get(Calendar.DAY_OF_YEAR))
-			{
-				return resources.getString(R.string.today);
-			}
-			
-			// Add one day to now to get tomorrows date
-			now.roll(Calendar.DAY_OF_YEAR, 1);
-			
-			// Tomorrow, because we added one day to now
-			if (date.get(Calendar.DAY_OF_YEAR) == now.get(Calendar.DAY_OF_YEAR))
-			{
-				return resources.getString(R.string.tomorrow);
-			}
-		}
-
-		StringBuilder dateString = new StringBuilder();
-
-		dateString.append(LocaleUtil.getDayName(resources, date) + ", ");
-		dateString.append(LocaleUtil.getFormattedDate(resources, date));
-
-		return dateString.toString();
-	}
 	
 	public void setSelectedDate(Calendar date)
 	{
 		this.selectedDate = date;
-		buttonDate.setText(localizeDate(selectedDate));
+		buttonDate.setText(LocaleUtil.localizeDate(getResources(), selectedDate));
 	}
 	
 	public void onParentActivityResult(int requestCode,
@@ -189,11 +216,11 @@ public class SearchFormFragment extends Fragment
 			{
 				case FROM_CITY_REQUEST:
 					from = "";
-					setLocationButtonText(buttonFrom, from);
+					StringUtil.setLocationButtonText(buttonFrom, from, getString(R.string.all_locations));
 					return;
 				case TO_CITY_REQUEST:
 					to = "";
-					setLocationButtonText(buttonTo, to);
+					StringUtil.setLocationButtonText(buttonTo, to, getString(R.string.all_locations));
 					return;
 			}
 		}
@@ -202,11 +229,11 @@ public class SearchFormFragment extends Fragment
 		{
 			case FROM_CITY_REQUEST:
 				from = intent.getStringExtra("city");
-				setLocationButtonText(buttonFrom, from);
+				StringUtil.setLocationButtonText(buttonFrom, from, getString(R.string.all_locations));
 				break;
 			case TO_CITY_REQUEST:
 				to = intent.getStringExtra("city");
-				setLocationButtonText(buttonTo, to);
+				StringUtil.setLocationButtonText(buttonTo, to, getString(R.string.all_locations));
 				break;
 				
 			default:
@@ -216,7 +243,12 @@ public class SearchFormFragment extends Fragment
 	}
 	
 	private void startSearch()
-	{	
+	{
+		Log.i(this.toString(), "Starting search for " + from + " - " + to);
+		
+		// Record search request
+		Database.addSearchToHistory(getActivity(), from, to, Calendar.getInstance().getTime());
+		
 		MainActivity mainActivity = (MainActivity) getActivity();
 		mainActivity.startSearch(from, to, selectedDate);
 	}

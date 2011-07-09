@@ -38,6 +38,41 @@ public class LocaleUtil
 				+ date.get(Calendar.YEAR);
 	}
 
+	/**
+	 * Builds a localized date string with day name
+	 */
+	public static String localizeDate(Resources resources, Calendar date)
+	{	
+		Calendar now = Calendar.getInstance();
+		// Check for today and tomorrow
+		if (date.get(Calendar.ERA) == now.get(Calendar.ERA) && 
+			date.get(Calendar.YEAR) == now.get(Calendar.YEAR))
+		{
+			// Today
+			if (date.get(Calendar.DAY_OF_YEAR) == now.get(Calendar.DAY_OF_YEAR))
+			{
+				return resources.getString(R.string.today);
+			}
+			
+			// Add one day to now to get tomorrows date
+			now.roll(Calendar.DAY_OF_YEAR, 1);
+			
+			// Tomorrow, because we added one day to now
+			if (date.get(Calendar.DAY_OF_YEAR) == now.get(Calendar.DAY_OF_YEAR))
+			{
+				return resources.getString(R.string.tomorrow);
+			}
+		}
+
+		StringBuilder dateString = new StringBuilder();
+
+		dateString.append(LocaleUtil.getDayName(resources, date) + ", ");
+		dateString.append(LocaleUtil.getFormattedDate(resources, date));
+
+		return dateString.toString();
+	}
+	
+	
 	public static String getStringNumberForm(Resources res, int resourceArray,
 			int number)
 	{

@@ -13,15 +13,12 @@
 		
 		<TextView
 	    	android:id = "@+id/from_label"
-	    	android:layout_width = "fill_parent"
+	    	android:layout_width = "60dip"
 	    	android:layout_height = "wrap_content"
-	    	android:layout_alignParentTop="true"
-	    	
-	    	android:layout_marginTop = "5dip"
-	    	android:layout_marginLeft = "2dip"
+	    	android:layout_alignParentLeft="true"
 	    	
 	    	android:text = "@string/search_label_from"
-	    	style = "@style/field_labels"
+	    	style = "@style/land_field_labels"
 	    	/>
    
     	
@@ -29,8 +26,10 @@
 	    	android:id = "@+id/from_button"
 	    	android:layout_width = "fill_parent"
 	    	android:layout_height = "wrap_content"
-	    	android:layout_below = "@id/from_label"
-	    	android:layout_alignParentLeft = "true"
+	    	android:layout_toRightOf = "@id/from_label"
+	    	android:layout_alignBaseline="@id/from_label"
+	    	android:layout_alignParentTop="true"
+	    	
 	    	android:layout_marginTop = "5dip"
 	    	
 	    	android:background = "@drawable/button_white"
@@ -40,23 +39,20 @@
 	    	
 	     <TextView
 	    	android:id = "@+id/to_label"
-	    	android:layout_width = "fill_parent"
+	    	android:layout_width = "60dip"
 	    	android:layout_height = "wrap_content"
 	    	android:layout_below = "@id/from_button"
-	 		android:layout_marginTop = "5dip"   
-	 		android:layout_marginLeft = "2dip"
 	    	
 	    	android:text = "@string/search_label_to"
-	    	style = "@style/field_labels"
+	    	style = "@style/land_field_labels"
 	    	/>
     	
 	    <Button
 	    	android:id = "@+id/to_button"
 	    	android:layout_width = "fill_parent"
 	    	android:layout_height = "wrap_content"
-	    	android:layout_below = "@id/to_label"
-	    	android:layout_alignParentLeft = "true"
-	    	android:layout_marginTop = "5dip"
+	    	android:layout_toRightOf = "@id/to_label"
+	    	android:layout_alignBaseline="@id/to_label"
 	    	
 	    	android:background = "@drawable/button_white"
 	    	style = "@style/button_white"
@@ -66,44 +62,50 @@
 	    	android:id = "@+id/date_label"
 	    	android:layout_width = "fill_parent"
 	    	android:layout_height = "wrap_content"	    	
-	    	android:layout_below = "@id/to_button"
-	    	android:layout_marginLeft = "2dip"
-	    	android:layout_marginTop = "5dip"
-	    	
+	    	android:layout_below = "@id/to_label"
+	    	android:gravity="left"
 	    	android:text = "@string/add_datetime"
-	    	style = "@style/field_labels"
+	    	style = "@style/land_field_labels"
 	    	/>
-	    	
-	    <Button
-	    	android:id = "@+id/date_button"
-	    	android:layout_height = "wrap_content"
-	    	android:layout_width = "fill_parent"
-	    	
-	    	android:layout_below = "@id/date_label"
-	    	android:layout_marginTop = "5dip" 
-	   
-	    	android:background = "@drawable/button_white"
-	    	style = "@style/button_white"
-	    	/>
-	    	
-	    <Button
-	    	android:id = "@+id/time_button"
-	    	android:layout_height = "wrap_content"
-	    	android:layout_width = "fill_parent"
-	    	
-	    	android:layout_below = "@id/date_button"
-	    	android:layout_marginTop = "5dip" 
-	   
-	    	android:background = "@drawable/button_white"
-	    	style = "@style/button_white"
-	    	/>
-	    	
+	    
+	    <LinearLayout
+	       android:id = "@+id/datetime_buttons"
+	       android:layout_width="fill_parent"
+	       android:layout_height = "wrap_content"
+	       android:layout_below="@id/date_label"
+	       android:layout_marginTop="5dip"
+	       android:layout_marginLeft="2dip"
+	       android:orientation="horizontal"
+	       >	
+		    <Button
+		    	android:id = "@+id/date_button"
+		    	android:layout_height = "wrap_content"
+		    	android:layout_width = "fill_parent"
+		    	android:layout_weight="1"
+		        
+		        android:layout_marginRight="3dip"
+		   
+		    	android:background = "@drawable/button_white"
+		    	style = "@style/button_white"
+		    	/>
+		    	
+		    <Button
+		    	android:id = "@+id/time_button"
+		    	android:layout_height = "wrap_content"
+		    	android:layout_width = "fill_parent"
+		    	android:layout_weight="2"
+		    	android:layout_marginLeft="2dip"
+		   
+		    	android:background = "@drawable/button_white"
+		    	style = "@style/button_white"
+		    	/>
+	    </LinearLayout>
 	    <LinearLayout 
 	    	android:id="@+id/price_ppl"
 	    	android:layout_width="fill_parent"
 	    	android:layout_height="wrap_content"
 	    	android:orientation="horizontal"
-	    	android:layout_below="@id/time_button"
+	    	android:layout_below="@id/datetime_buttons"
 	    	android:layout_marginTop="5dip"
 	    	>
 	    	
@@ -168,26 +170,24 @@
 	    </LinearLayout>
 	    
 	    <CheckBox 
-	       android:id ="@+id/check_insurance"
-	       android:layout_height="wrap_content"
-	       android:layout_width="fill_parent"
-	       android:layout_below = "@id/price_ppl"
-	       
-	       android:paddingLeft="50dip"
-	       
-	       android:text="@string/add_insurance"
-	    />
+           android:id ="@+id/check_insurance"
+           android:layout_height="wrap_content"
+           android:layout_width="fill_parent"
+           android:layout_below = "@id/price_ppl"
+           
+           android:paddingLeft="50dip"
+           
+           android:text="@string/add_insurance"
+        />
 	    
 	    <TextView
             android:id = "@+id/phone_label"
-            android:layout_width = "fill_parent"
+            android:layout_width = "55dip"
             android:layout_height = "wrap_content"          
             android:layout_below = "@id/check_insurance"
-            android:layout_marginLeft = "2dip"
-            android:layout_marginTop = "5dip"
             
             android:text = "@string/add_phone"
-            style = "@style/field_labels"
+            style = "@style/land_field_labels"
             />
     
          <EditText 
@@ -195,7 +195,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" 
             android:inputType="phone" 
-            android:layout_below="@id/phone_label"
+            android:layout_toRightOf="@id/phone_label"
+            android:layout_alignBaseline="@id/phone_label"
             android:singleLine="true"
             android:hint="@string/add_phone">
         </EditText>
@@ -205,7 +206,9 @@
 	    	android:layout_width="fill_parent"
 	    	android:layout_height="wrap_content" 
 	    	android:inputType="textMultiLine|textCapSentences|textAutoCorrect|textAutoComplete" 
-	    	android:layout_below="@id/add_phone"
+	    	android:layout_below="@id/phone_label"
+	    	android:layout_marginTop="15dip"
+	    	android:layout_alignParentLeft="true"
 	    	android:singleLine="false"
 	    	android:lines="3"
 	    	android:hint="@string/add_comment"
@@ -219,8 +222,10 @@
 	    	android:layout_height = "wrap_content"
 	    	android:layout_width = "fill_parent"
 	    	android:layout_below="@id/add_comment"
-	    	android:layout_marginTop = "10dip"
+	    	android:layout_marginBottom = "20dip"
+	    	android:layout_marginTop = "10dip"    	
 	    	android:background = "@drawable/button_black_rnd"
+	    	android:layout_alignParentBottom = "true"
 	    	style = "@style/button_black"
 	    />
 		

@@ -27,7 +27,7 @@ public class SearchResultAdapter extends ArrayAdapter<SearchRide>
 	 * @author Jernej Virag
 	 * 
 	 */
-	public class SearchResultViewWrapper
+	public static class SearchResultViewWrapper
 	{
 		private int rideId = 0;
 

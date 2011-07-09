@@ -38,7 +38,7 @@ public class ApiKeyLoginTask extends AsyncTask<Handler, Void, AuthenticationStat
 			HashMap<String, String> paramMap = new HashMap<String, String>();
 			paramMap.put("apikey", apikey);
 			
-			String response = HTTPHelper.httpPost(Globals.API_URL + "/accounts/login/apikey", paramMap);
+			String response = HTTPHelper.httpPost(Globals.API_URL + "/accounts/login/apikey", paramMap, true);
 			Log.d(this.toString(), response);
 			
 			JSONObject jsonObj = new JSONObject(response);
@@ -47,6 +47,9 @@ public class ApiKeyLoginTask extends AsyncTask<Handler, Void, AuthenticationStat
 			if (isLoggedIn)
 			{
 				Log.i(this.toString(), "Apikey login succeeded!");
+				
+				
+				
 				return AuthenticationStatus.AUTHENTICATED;
 			}
 			else

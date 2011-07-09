@@ -3,3 +3,7 @@ syntax: regexp
 ^bin$
 syntax: regexp
 ^gen/org/prevoz/android/R\.java$
+syntax: regexp
+^gen/org/prevoz/android/R\.java$
+syntax: regexp
+^gen/org/prevoz/android/R\.java$

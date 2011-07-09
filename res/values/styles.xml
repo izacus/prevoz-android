@@ -14,6 +14,20 @@
 		<item name="android:textColor">@android:color/black</item>
 		<item name="android:textSize">@dimen/text_size_medium</item>
 	</style>
+	
+	<style
+        name = "button_white_small">      
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+	
+	<style
+        name = "button_title">      
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+    </style>
 
 	<style
 		name = "button_black">		
@@ -37,93 +51,11 @@
 		<item name="android:textSize">@dimen/text_size_medium</item>
 		<item name="android:gravity">center</item>
 	</style>
-
-<!--  OLD STYLES -->
+    
     <style
         name = "PrevozTheme"
         parent = "@android:style/Theme.Light.NoTitleBar">
     </style>
-
-    <!-- Style for activities within tabs -->
-    <style 
-        name = "PrevozTabActivity"
-        parent = "@android:style/Theme">
-    </style>
-    
-    <!-- Style for background view setting correct background color -->
-    <style
-        name = "ViewStyle">
-        <!-- <item name="android:background">@color/view_background</item> -->
-    </style>
-
-    <!-- Style for input boxes by default -->
-    <style
-      name = "PaddedBox">
-      <item name="android:layout_marginLeft">8dip</item>
-      <item name="android:layout_marginRight">8dip</item>
-      <item name="android:layout_marginTop">2dip</item>
-      <item name="android:layout_marginBottom">2dip</item>
-      <item name="android:textColor">#000</item>  
-    </style>
-     
-
-    <style 
-        name = "LargeText"
-        parent = "@android:style/TextAppearance.Large">
-        <item name="android:textStyle">bold</item>
-        <item
-            name="android:gravity">center_horizontal</item>  
-    </style>
-
-    <style 
-        name = "MediumText"
-        parent = "@android:style/TextAppearance.Medium">
-        <item name="android:textColor">#626E79</item>  
-        <item name="android:textStyle">bold</item>  
-    </style>
-    
-    <style
-        name = "SmallText"
-        parent = "@android:style/TextAppearance.Small">
-        <item 
-            name="android:textSize">14dip</item>    
-    </style>
-
-    <!--  Style keeping black background behind tabs -->
-    <style
-        name = "tabHostStyle">
-        <item name="android:background">@android:color/black</item>            
-    </style>
-    
-    <!-- Style for list headers -->
-    <style
-        name="ListHeaderStyle">
-	    <item
-	      name="android:layout_height">wrap_content</item>
-	    <item
-	      name="android:layout_width">fill_parent</item>
-	    <item
-	      name="android:paddingTop">2dip</item>
-	    <item
-	      name="android:paddingBottom">3dip</item>
-	    <item
-	      name="android:paddingLeft">5dip</item>
-	    <item
-	      name="android:background">@drawable/dark_gradient</item>
-	    <item
-	      name="android:textAppearance">@android:style/TextAppearance.Small</item>
-	    <item
-	      name="android:shadowColor">#111111</item>
-	    <item
-	      name="android:shadowRadius">1</item>
-	    <item
-	      name="android:shadowDy">1</item>
-	    <item
-	      name="android:textStyle">bold</item>
-	    <item
-	      name="android:textColor">@android:color/white</item>
-    </style>
-    
     
     <!-- Colored titlebar -->
     <style name="title_text_style">
@@ -135,8 +67,8 @@
           name="android:shadowDy">1</item>
     </style>
     
-    <!-- Ride information styles -->
-    <style name="RideInfoTitle" parent="@style/MediumText">
+     <!-- Ride information styles -->
+    <style name="RideInfoTitle" parent="@android:style/TextAppearance.Medium">
         <item
             name="android:gravity">center</item>    
     </style>
@@ -148,12 +80,12 @@
             name="android:textSize">36dip</item>
     </style>
     
-    <style name="RideInfoDay" parent="@style/SmallText">
+    <style name="RideInfoDay" parent="@android:style/TextAppearance.Small">
         <item
             name="android:gravity">bottom</item>
     </style>
 
-    <style name="RideInfoDate" parent="@style/SmallText">
+    <style name="RideInfoDate" parent="@android:style/TextAppearance.Small">
         <item
             name="android:gravity">top</item>
     </style>
@@ -167,7 +99,7 @@
             name="android:text">10.0</item>
     </style>
     
-    <style name="PricePplTagText" parent="@style/SmallText">
+    <style name="PricePplTagText" parent="@android:style/TextAppearance.Small">
         <item
             name="android:gravity">center_horizontal</item>
     </style>
@@ -180,4 +112,38 @@
     <style name="PhoneNumberText" parent="@android:style/TextAppearance.Medium">
     </style>
     
+        <!-- Style for list headers -->
+    <style
+        name="ListHeaderStyle">
+        <item
+          name="android:layout_height">wrap_content</item>
+        <item
+          name="android:layout_width">fill_parent</item>
+        <item
+          name="android:paddingTop">2dip</item>
+        <item
+          name="android:paddingBottom">3dip</item>
+        <item
+          name="android:paddingLeft">5dip</item>
+        <item
+          name="android:background">@drawable/dark_gradient</item>
+        <item
+          name="android:textAppearance">@android:style/TextAppearance.Small</item>
+        <item
+          name="android:shadowColor">#111111</item>
+        <item
+          name="android:shadowRadius">1</item>
+        <item
+          name="android:shadowDy">1</item>
+        <item
+          name="android:textStyle">bold</item>
+        <item
+          name="android:textColor">@android:color/white</item>
+    </style>
+    <style name="land_field_labels" parent="@style/field_labels">
+        <item name="android:gravity">right</item>
+        <item name="android:layout_marginLeft">2dip</item>
+        <item name="android:layout_marginRight">15dip</item>
+        <item name="android:layout_marginTop">20dip</item>
+    </style>
 </resources>

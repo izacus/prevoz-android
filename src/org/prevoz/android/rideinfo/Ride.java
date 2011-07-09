@@ -24,10 +24,11 @@ public class Ride
 	private String comment;
 
 	private boolean isAuthor;
+	private boolean isInsured;
 
 	public Ride(int id, RideType type, String from, String to, Date time,
 			int people, Double price, String author, String contact,
-			String comment, boolean isAuthor)
+			String comment, boolean isAuthor, boolean isInsured)
 	{
 		this.id = id;
 		this.type = type;
@@ -40,6 +41,7 @@ public class Ride
 		this.contact = contact;
 		this.comment = comment;
 		this.isAuthor = isAuthor;
+		this.isInsured = isInsured;
 	}
 
 	/**
@@ -124,6 +126,11 @@ public class Ride
 	public boolean isAuthor()
 	{
 		return isAuthor;
+	}
+
+	public boolean isInsured()
+	{
+		return isInsured;
 	}
 
 	public void storeToBundle(Bundle bundle)
