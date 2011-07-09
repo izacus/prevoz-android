@@ -4,27 +4,32 @@
   android:layout_width="fill_parent"
   android:layout_height="fill_parent">
     
-    <Button
+    <ImageButton
         android:id = "@+id/search_add_ride"
         android:layout_height = "@dimen/title_height"
         android:layout_width = "wrap_content"
         android:layout_alignParentRight = "true" 
         android:layout_alignParentTop = "true"
         android:scaleType = "fitCenter"
-        
-        android:text = "+"
-        
+        android:src="@drawable/add_ride"
         android:background = "@drawable/button_title"
-        style="@style/button_title"
         />
-        
+    
+   <LinearLayout 
+   		android:layout_height="@dimen/title_height"
+   		android:layout_width="1sp"
+   		android:layout_toLeftOf="@id/search_add_ride"
+   		android:id = "@+id/delimiter"
+   		android:background="#EEE"
+   ></LinearLayout>    
+    
     <include layout="@layout/title_bar" 
          android:id = "@+id/title_bar"
          
          android:layout_width = "wrap_content"
          android:layout_height = "@dimen/title_height"
           
-         android:layout_toLeftOf = "@id/search_add_ride"
+         android:layout_toLeftOf = "@id/delimiter"
          android:layout_alignParentLeft = "true"
          android:layout_alignParentTop = "true" />
     

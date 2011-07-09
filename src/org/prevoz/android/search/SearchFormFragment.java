@@ -25,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 public class SearchFormFragment extends Fragment 
@@ -38,7 +39,7 @@ public class SearchFormFragment extends Fragment
 	private Button buttonFrom;
 	private Button buttonTo;
 	
-	private Button buttonAdd;
+	private ImageButton buttonAdd;
 	
 	private ListView lastSearches;
 	
@@ -96,7 +97,7 @@ public class SearchFormFragment extends Fragment
 			}
 		});
 		
-		buttonAdd = (Button)getActivity().findViewById(R.id.search_add_ride);
+		buttonAdd = (ImageButton)getActivity().findViewById(R.id.search_add_ride);
 		buttonAdd.setOnClickListener(new OnClickListener() 
 		{	
 			public void onClick(View arg0) 
