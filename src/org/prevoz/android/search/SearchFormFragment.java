@@ -12,6 +12,8 @@ import org.prevoz.android.util.Database;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
 
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -46,6 +48,8 @@ public class SearchFormFragment extends Fragment
 	private String from = "";
 	private String to = "";
 	private Calendar selectedDate;
+	
+	private GoogleAnalyticsTracker tracker;
 	
 	private void prepareFormFields()
 	{
@@ -102,10 +106,12 @@ public class SearchFormFragment extends Fragment
 		{	
 			public void onClick(View arg0) 
 			{
+				tracker.trackEvent("SearchForm", "AddRideTap", "", 0);
 				Intent addRideIntent = new Intent(getActivity(), AddRideActivity.class);
 				startActivity(addRideIntent);
 			}
 		});
+		
 	}
 	
 	private void populateLastSearchList()
@@ -171,6 +177,9 @@ public class SearchFormFragment extends Fragment
 		}
 		
 		prepareFormFields();
+		
+		tracker = GoogleAnalyticsTracker.getInstance();
+		tracker.trackPageView("/SearchForm");
 	}
 
 	
@@ -218,10 +227,12 @@ public class SearchFormFragment extends Fragment
 				case FROM_CITY_REQUEST:
 					from = "";
 					StringUtil.setLocationButtonText(buttonFrom, from, getString(R.string.all_locations));
+					tracker.trackEvent("SearchForm", "FromCitySelect", "AllCities", 0);
 					return;
 				case TO_CITY_REQUEST:
 					to = "";
 					StringUtil.setLocationButtonText(buttonTo, to, getString(R.string.all_locations));
+					tracker.trackEvent("SearchForm", "ToCitySelect", "AllCities", 0);
 					return;
 			}
 		}
@@ -231,10 +242,12 @@ public class SearchFormFragment extends Fragment
 			case FROM_CITY_REQUEST:
 				from = intent.getStringExtra("city");
 				StringUtil.setLocationButtonText(buttonFrom, from, getString(R.string.all_locations));
+				tracker.trackEvent("SearchForm", "FromCitySelect", from, 0);
 				break;
 			case TO_CITY_REQUEST:
 				to = intent.getStringExtra("city");
 				StringUtil.setLocationButtonText(buttonTo, to, getString(R.string.all_locations));
+				tracker.trackEvent("SearchForm", "ToCitySelect", to, 0);
 				break;
 				
 			default:
@@ -249,6 +262,8 @@ public class SearchFormFragment extends Fragment
 		
 		// Record search request
 		Database.addSearchToHistory(getActivity(), from, to, Calendar.getInstance().getTime());
+		
+		tracker.trackEvent("SearchForm", "StartSearch", from + "-" + to, 0);
 		
 		MainActivity mainActivity = (MainActivity) getActivity();
 		mainActivity.startSearch(from, to, selectedDate);

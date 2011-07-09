@@ -15,6 +15,8 @@ import org.prevoz.android.rideinfo.RideInfoUtil;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
 
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
+
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -78,6 +80,9 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 	private DatePickerDialog datePickerDialog;
 	private TimePickerDialog timePickerDialog;
 	
+	// GA
+	private GoogleAnalyticsTracker tracker;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -113,6 +118,9 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 				authenticationStatusReceived(AuthenticationStatus.values()[msg.what]);
 			}
 		};
+		
+		tracker = GoogleAnalyticsTracker.getInstance();
+		tracker.trackPageView("/AddRide");
 		
 		AuthenticationManager.getInstance().getAuthenticationStatus(this, authHandler);
 	}
@@ -276,12 +284,14 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 		// Check from city
 		if (fromCity == null)
 		{
+			tracker.trackEvent("AddRide", "FormValidation", "Failed - No From", 0);
 			showFormError(getString(R.string.add_error_enterfrom));
 			return false;
 		}
 		
 		if (toCity == null)
 		{
+			tracker.trackEvent("AddRide", "FormValidation", "Failed - No To", 0);
 			showFormError(getString(R.string.add_error_enterto));
 			return false;
 		}
@@ -289,6 +299,7 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 		// Check date validity
 		if (dateTime.before(Calendar.getInstance()))
 		{
+			tracker.trackEvent("AddRide", "FormValidation", "Failed - Date/Time before present", 0);
 			showFormError(getString(R.string.add_error_timepast));
 			return false;
 		}
@@ -302,22 +313,26 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 		}
 		catch (NumberFormatException e)
 		{
+			tracker.trackEvent("AddRide", "FormValidation", "Failed - Missing/invalid price", 0);
 			showFormError(getString(R.string.add_error_enterprice));
 			return false;
 		}
 		
 		if (price < 0.5 && price > 500)
 		{
-			// TODO: check limits
+			tracker.trackEvent("AddRide", "FormValidation", "Failed - Price outside limits", 0);
 			showFormError(getString(R.string.add_error_enterprice));
 			return false;
 		}
 		
 		if (phoneText.getText().toString().trim().length() == 0)
 		{
+			tracker.trackEvent("AddRide", "FormValidation", "Failed - Missing phone no.", 0);
 			showFormError(getString(R.string.add_error_enterphone));
 			return false;
 		}
+		
+		tracker.trackEvent("AddRide", "FormValidation", "Success", 0);
 		
 		return true;
 	}
@@ -350,6 +365,7 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 			{
 				public void onClick(View v)
 				{
+					tracker.dispatch();
 					postRide(ride);
 				}
 			};
@@ -378,17 +394,21 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 				switch(msg.what)
 				{
 					case SendRideTask.AUTHENTICATION_ERROR:
+						tracker.trackEvent("AddRide", "NewRidePost", "Failed - Authentication error", 0);
 						authenticationStatusReceived(AuthenticationStatus.NOT_AUTHENTICATED);
 						break;
 					case SendRideTask.SERVER_ERROR:
+						tracker.trackEvent("AddRide", "NewRidePost", "Failed - Server error", 0);
 						Toast.makeText(AddRideActivity.this, R.string.server_error, Toast.LENGTH_SHORT).show();
 						stateManager.showView(Views.FORM);
 						break;
 					case SendRideTask.SEND_ERROR:
+						tracker.trackEvent("AddRide", "NewRidePost", "Failed - Send error", 0);
 						Toast.makeText(AddRideActivity.this, task.getErrorMessage(), Toast.LENGTH_SHORT).show();
 						stateManager.showView(Views.FORM);
 						break;
 					case SendRideTask.SEND_SUCCESS:
+						tracker.trackEvent("AddRide", "NewRidePost", "Success", 0);
 						Intent rideInfo = new Intent(AddRideActivity.this, RideInfoActivity.class);
 						rideInfo.putExtra(RideInfoActivity.RIDE_ID, task.getRideId());
 						startActivity(rideInfo);
@@ -471,6 +491,7 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 	{
 		if (item.getItemId() == MENU_LOGOUT)
 		{
+			tracker.trackEvent("AddRide", "Logout", "", 0);
 			AuthenticationManager.getInstance().requestLogout(this);
 			Toast.makeText(this, R.string.logout_success, Toast.LENGTH_SHORT).show();
 			finish();

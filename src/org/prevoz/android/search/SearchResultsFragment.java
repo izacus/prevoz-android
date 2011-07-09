@@ -12,6 +12,8 @@ import org.prevoz.android.SectionedAdapter;
 import org.prevoz.android.rideinfo.RideInfoActivity;
 import org.prevoz.android.search.SearchResultAdapter.SearchResultViewWrapper;
 
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -47,6 +49,8 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 	private ViewFlipper viewFlipper;
 	private ListView resultList;
 	
+	private GoogleAnalyticsTracker tracker;
+	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState)
 	{
@@ -60,6 +64,10 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 		showView(DisplayScreens.RESULTS_SCREEN);
 		
 		Log.d(this.toString(), "Activity created, succefully fetched data.");
+		
+		tracker = GoogleAnalyticsTracker.getInstance();
+		tracker.trackPageView("/SearchResults");
+		
 		// Get loader for search results
 		getLoaderManager().initLoader(Globals.LOADER_SEARCH_RESULTS, null, this);
 		
@@ -200,6 +208,7 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 
 	public Loader<SearchResults> onCreateLoader(int id, Bundle args) 
 	{
+		tracker.dispatch();
 		SearchRequest request = new SearchRequest(getActivity(), RideType.SHARE, from, to, when);
 		return new SearchResultsLoader(getActivity(), request);
 	}

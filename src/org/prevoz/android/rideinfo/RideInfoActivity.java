@@ -3,6 +3,8 @@ package org.prevoz.android.rideinfo;
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
 
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,6 +29,8 @@ public class RideInfoActivity extends FragmentActivity implements LoaderCallback
 	
 	public ViewFlipper rideFlipper;
 
+	private GoogleAnalyticsTracker tracker;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -41,6 +45,9 @@ public class RideInfoActivity extends FragmentActivity implements LoaderCallback
 			Log.d(this.toString(), "Requesting ride info for id " + rideID);
 			getSupportLoaderManager().initLoader(rideID, null, this);
 		}
+		
+		tracker = GoogleAnalyticsTracker.getInstance();
+		tracker.trackPageView("/RideInfo/");
 	}
 	
 	private void prepareUIElements()
@@ -56,6 +63,8 @@ public class RideInfoActivity extends FragmentActivity implements LoaderCallback
 	 */
 	private void sendSMS()
 	{
+		tracker.trackEvent("RideInfo", "SMSSend", "", 0);
+		
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + ride.getContact()));
 		intent.putExtra("address", ride.getContact());
 		intent.setType("vnd.android-dir/mms-sms");
@@ -67,6 +76,7 @@ public class RideInfoActivity extends FragmentActivity implements LoaderCallback
 	 */
 	private void callAuthor()
 	{
+		tracker.trackEvent("RideInfo", "CallDriver", "", 0);
 		Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + ride.getContact()));
 		this.startActivity(intent);
 	}
@@ -153,11 +163,13 @@ public class RideInfoActivity extends FragmentActivity implements LoaderCallback
 	{
 		if (code == Globals.REQUEST_SUCCESS)
 		{
+			tracker.trackEvent("RideInfo", "DeleteRide", "OK", 0);
 			Toast.makeText(this, R.string.ride_deleted, Toast.LENGTH_SHORT).show();
 			finish();
 		}
 		else if (code == Globals.REQUEST_ERROR_NETWORK)
 		{
+			tracker.trackEvent("RideInfo", "DeleteRide", "Fail", 0);
 			Toast.makeText(this, R.string.network_error, Toast.LENGTH_SHORT).show();
 			rideFlipper.showNext();
 		}
