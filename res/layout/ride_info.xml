@@ -19,7 +19,6 @@
 	        android:layout_width = "fill_parent"
 	        android:layout_height = "wrap_content"
 	        android:padding = "5dp"
-	        
 	        android:text="TestLocation"
 	        
 	        style = "@style/location_title" />
@@ -30,12 +29,14 @@
 	        android:layout_width = "fill_parent"
 	        android:layout_height = "wrap_content"
 	        android:layout_marginTop = "1dip"
-	        android:padding = "5dp"
-	        
+	        android:paddingLeft = "5dp"
+	        android:paddingRight = "5dp"
 	        android:text="TestLocation"
 	        
 	        style = "@style/location_title" />
-	        
+	   
+	   <include layout = "@layout/separator" />
+	   
 	   <!-- Time and date display -->     
 	   <LinearLayout
 	        android:layout_width = "fill_parent"
