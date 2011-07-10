@@ -135,13 +135,13 @@ public class Database
 				results.moveToNext();
 			}
 			
-			results.close();
-			
 			for (Integer id : ids)
 			{
 				database.delete("search_history", "id = ?", new String[] { String.valueOf(id) });
 			}
 		}
+		
+		results.close();
 		
 		database.close();
 	}
