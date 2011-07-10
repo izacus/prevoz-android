@@ -39,6 +39,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -88,6 +89,10 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_ride_activity);
+		
+		// Update application title
+		TextView appTitle = (TextView) findViewById(R.id.title_bar);
+		appTitle.setText(getString(R.string.app_name) + " - " + getString(R.string.add_title));
 		
 		dateTime = Calendar.getInstance();
 		

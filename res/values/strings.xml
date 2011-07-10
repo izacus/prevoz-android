@@ -33,6 +33,7 @@
     <string name="search_searching">Iščem...</string>
     
     <!-- Ride add strings -->
+    <string name="add_title">dodajanje</string>
     <string name="add_datetime">Datum in čas</string>
     <string name="add_price">Delež stroškov</string>
     <string name="add_price_hint">Stroški</string>
