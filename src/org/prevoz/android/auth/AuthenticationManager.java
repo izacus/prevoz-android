@@ -156,6 +156,7 @@ public class AuthenticationManager
 	 */
 	public void requestLogin(Activity context)
 	{
+		clearAuthCookies(context);
 		Intent intent = new Intent(context, LoginActivity.class);
 		context.startActivity(intent);
 		Log.d(this.toString(), "Starting authentication process...");
@@ -174,17 +175,7 @@ public class AuthenticationManager
 		{
 			if (logoutTask.get() == Globals.REQUEST_SUCCESS)
 			{
-				// Clear stored login cookies
-				CookieSyncManager.createInstance(context);
-				CookieManager cookieManager = CookieManager.getInstance();
-				cookieManager.removeAllCookie();
-				CookieSyncManager.getInstance().sync();
-				
-				// Clear API key and reset authentication status
-				SharedPreferences sharedPrefs = context.getSharedPreferences(PREF_API_KEY, 0);
-				SharedPreferences.Editor editor = sharedPrefs.edit();
-				editor.remove(PREF_API_KEY);
-				editor.commit();
+				clearAuthCookies(context);
 				currentStatus = AuthenticationStatus.NOT_AUTHENTICATED;
 			}
 		}
@@ -192,6 +183,21 @@ public class AuthenticationManager
 		{
 			Log.e(this.toString(), "Logout task failed.", e);
 		}
+	}
+	
+	protected void clearAuthCookies(Context context)
+	{
+		// Clear stored login cookies
+		CookieSyncManager.createInstance(context);
+		CookieManager cookieManager = CookieManager.getInstance();
+		cookieManager.removeAllCookie();
+		CookieSyncManager.getInstance().sync();
+		
+		// Clear API key and reset authentication status
+		SharedPreferences sharedPrefs = context.getSharedPreferences(PREF_API_KEY, 0);
+		SharedPreferences.Editor editor = sharedPrefs.edit();
+		editor.remove(PREF_API_KEY);
+		editor.commit();
 	}
 	
 	/**
