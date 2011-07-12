@@ -310,24 +310,28 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 		}
 		
 		// Check price
-		double price;
 		
-		try
+		if (priceText.getText().toString().trim().length() > 0)
 		{
-			 price = Double.parseDouble(priceText.getText().toString());
-		}
-		catch (NumberFormatException e)
-		{
-			tracker.trackEvent("AddRide", "FormValidation", "Failed - Missing/invalid price", 0);
-			showFormError(getString(R.string.add_error_enterprice));
-			return false;
-		}
-		
-		if (price < 0.5 && price > 500)
-		{
-			tracker.trackEvent("AddRide", "FormValidation", "Failed - Price outside limits", 0);
-			showFormError(getString(R.string.add_error_enterprice));
-			return false;
+			double price;
+			
+			try
+			{
+				 price = Double.parseDouble(priceText.getText().toString());
+			}
+			catch (NumberFormatException e)
+			{
+				tracker.trackEvent("AddRide", "FormValidation", "Failed - Missing/invalid price", 0);
+				showFormError(getString(R.string.add_error_enterprice));
+				return false;
+			}
+			
+			if (price < 0 && price > 500)
+			{
+				tracker.trackEvent("AddRide", "FormValidation", "Failed - Price outside limits", 0);
+				showFormError(getString(R.string.add_error_enterprice));
+				return false;
+			}
 		}
 		
 		if (phoneText.getText().toString().trim().length() == 0)
@@ -351,6 +355,17 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 	{
 		if (validateForm())
 		{
+			Double price;
+			
+			if (priceText.getText().toString().trim().length() == 0)
+			{
+				price = null;
+			}
+			else
+			{
+				price = Double.parseDouble(priceText.getText().toString().trim());
+			}
+			
 			// Create a new ride object
 			final Ride ride = new Ride(0,							// Ride ID
 								 RideType.SHARE,					// Ride type
@@ -358,7 +373,7 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 								 toCity,							// To
 								 dateTime.getTime(),				// Date and time 
 								 ((PeopleSpinnerObject)peopleSpinner.getSelectedItem()).getNumber(),		// Number of people
-								 Double.parseDouble(priceText.getText().toString().trim()),					// Ride price
+								 price,																		// Ride price
 								 null,																		// Ride author string
 								 StringUtil.numberOnly(phoneText.getText().toString(), false),				// Phone number
 								 commentText.getText().toString().trim(),									// Ride comment
