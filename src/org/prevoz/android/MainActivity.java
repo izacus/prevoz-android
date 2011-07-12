@@ -100,6 +100,7 @@ public class MainActivity extends FragmentActivity implements OnDateSetListener
 	@Override
 	protected void onDestroy() 
 	{
+		super.onDestroy();
 		tracker.stop();
 	}
 	
