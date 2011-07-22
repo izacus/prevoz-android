@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+  
+  <include layout = "@layout/title_bar"
+  		   android:id = "@+id/title_bar" />
+  
+  <RelativeLayout
+  	android:id = "@+id/city_input"
+  	android:layout_below = "@id/title_bar"
+  	android:layout_width = "fill_parent"
+  	android:layout_height = "wrap_content"
+  	android:background = "@drawable/light_gradient"
+  	>
+  
+	    <ImageButton android:id="@+id/gps_button" 
+	    		android:layout_alignParentRight="true"
+	    		android:layout_height="40dip" 
+	    		android:layout_width="46dip"
+	    		
+	    		android:layout_marginRight = "5dip"
+	    		android:layout_marginLeft = "7dip"
+	    		android:layout_marginTop = "3dip"
+	    		
+	    		android:scaleType = "fitCenter"
+	    		
+	    		android:src = "@drawable/button_gps"
+	    		android:background = "@drawable/button_black_rnd"
+			  	style = "@style/button_black_small"
+	    		 />
+	    		
+	    <EditText android:id="@+id/city_text" 
+			  android:layout_height="46dip" 
+			  android:layout_width="wrap_content" 
+			  android:layout_toLeftOf = "@id/gps_button"
+			  android:layout_alignBaseline = "@id/gps_button"
+			  
+			  android:layout_marginLeft = "5dip"
+
+			  android:textSize = "@dimen/text_size_medium"
+			  android:singleLine = "true"
+			  android:layout_alignParentLeft = "true"
+			  
+			  android:hint = "@string/city_hint"
+			  android:imeOptions = "flagNoAccessoryAction|actionDone|flagNoExtractUi"
+			  android:inputType = "textCapWords|textVisiblePassword"
+			  
+			  />
+	
+	</RelativeLayout>
+	
+    <ListView android:id="@+id/city_list" 
+    		  android:layout_below = "@id/city_input"
+    		  android:layout_height="fill_parent" 
+    		  android:layout_width="fill_parent"
+    		  android:layout_marginLeft = "10dp"
+    		  android:layout_marginRight = "10dp" 
+    		  android:layout_alignParentBottom="true"></ListView>
+</RelativeLayout>

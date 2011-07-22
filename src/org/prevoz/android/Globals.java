@@ -16,11 +16,16 @@ public class Globals
     // Used for all API calls
     public static final String API_URL = "http://prevoz.org/api";
     // URL of webpage to authenticate user
-    public static final String LOGIN_URL = "http://prevoz.org/accounts/simple/signin/"; 
+    public static final String LOGIN_URL = "http://prevoz.org/accounts/simple/signin/";
     
     public static final String PREF_FILE_NAME = "PrevozPreferences";
     
     public static final int REQUEST_SUCCESS = 0;
     public static final int REQUEST_ERROR_NETWORK = 1;
     public static final int REQUEST_ERROR_SERVER = 2;
+    
+    /**
+     * Loader IDs
+     */
+    public static final int LOADER_SEARCH_RESULTS = 1;
 }

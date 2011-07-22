@@ -1,6 +1,7 @@
 package org.prevoz.android.add_ride;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -8,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.prevoz.android.Globals;
+import org.prevoz.android.rideinfo.Ride;
 import org.prevoz.android.util.HTTPHelper;
 
 import android.os.Handler;
@@ -26,13 +28,40 @@ public class SendRideTask implements Runnable
 	private String errorMessage = "";
 	private int createdRideId = 0;
 
-	public SendRideTask()
+	public SendRideTask(Ride ride)
 	{
+		parameters = new HashMap<String, String>();
+		
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
+
+		parameters.put("transptype", String.valueOf(ride.getType().ordinal()));
+		parameters.put("transpfrom", ride.getFrom());
+		parameters.put("transpfromcountry", "SI");
+		parameters.put("transpto", ride.getTo());
+		parameters.put("transptocountry", "SI");
+
+		parameters.put("transpdate", dateFormatter.format(ride.getTime()));
+		parameters.put("transptime", timeFormatter.format(ride.getTime()));
+
+		parameters.put("transpppl", String.valueOf(ride.getPeople()));
+		parameters.put("transpinsured", String.valueOf(ride.isInsured()));
+
+		if (ride.getPrice() != null)
+		{
+			parameters.put("transpprice", String.valueOf(ride.getPrice()));
+		}
+		else
+		{
+			parameters.put("transpprice", "");
+		}
+
+		parameters.put("transpphone", ride.getContact());
+		parameters.put("transpdescr", ride.getComment());
 	}
 
-	public void startTask(HashMap<String, String> parameters, Handler callback)
+	public void startTask(Handler callback)
 	{
-		this.parameters = parameters;
 		this.callback = callback;
 
 		Thread worker = new Thread(this);
@@ -50,6 +79,8 @@ public class SendRideTask implements Runnable
 			String response = HTTPHelper.httpGet(Globals.API_URL
 					+ "/carshare/create/", params);
 
+			Log.d(this.toString(), response);
+			
 			// Check for non-JSON authentication error response
 			if (response.equalsIgnoreCase("Forbidden\n"))
 			{

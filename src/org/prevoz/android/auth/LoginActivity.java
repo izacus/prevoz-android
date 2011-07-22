@@ -2,20 +2,19 @@ package org.prevoz.android.auth;
 
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
-import org.prevoz.android.add_ride.AddRideActivity;
 import org.prevoz.android.util.HTTPHelper;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.WindowManager.BadTokenException;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-public class LoginActivity extends Activity
+public class LoginActivity extends FragmentActivity
 {
 
 	private class WebViewController extends WebViewClient
@@ -60,7 +59,7 @@ public class LoginActivity extends Activity
 
 			if (url.contains("/login/success"))
 			{
-				HTTPHelper.updateSessionCookies(AddRideActivity.getInstance());
+				HTTPHelper.updateSessionCookies(context);
 
 				if (loadingDialog != null && loadingDialog.isShowing())
 				{
@@ -101,6 +100,8 @@ public class LoginActivity extends Activity
 
 	}
 	
+	private WebView webView;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -108,22 +109,28 @@ public class LoginActivity extends Activity
 		setContentView(R.layout.login_view);
 		
 		// Load login view
-		WebView view = (WebView)findViewById(R.id.loginView);
-		view.setWebViewClient(new WebViewController(this));
-		view.loadUrl(Globals.LOGIN_URL);
+		webView = (WebView)findViewById(R.id.loginView);
+		webView.setWebViewClient(new WebViewController(this));
+		webView.loadUrl(Globals.LOGIN_URL);
+		
+		if (savedInstanceState != null)
+		{
+			webView.restoreState(savedInstanceState);
+		}
 	}
 
-	/**
-	 * Send not authenticated status if user pressed the back button to cancel login
-	 */
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	protected void onSaveInstanceState(Bundle outState)
 	{
-		super.onActivityResult(requestCode, resultCode, data);
+		super.onSaveInstanceState(outState);
 		
-		if (resultCode == Activity.RESULT_CANCELED)
-		{
-			AuthenticationManager.getInstance().notifyLoginResult(this, AuthenticationStatus.NOT_AUTHENTICATED);
-		}
+		webView.saveState(outState);
+	}
+
+	@Override
+	public void onBackPressed() 
+	{
+		AuthenticationManager.getInstance().notifyLoginResult(this, AuthenticationStatus.NOT_AUTHENTICATED);
+		super.onBackPressed();
 	}
 }

@@ -1,256 +1,61 @@
 package org.prevoz.android.rideinfo;
 
-import java.text.SimpleDateFormat;
-
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
-import org.prevoz.android.util.Database;
-import org.prevoz.android.util.HTTPHelper;
-import org.prevoz.android.util.LocaleUtil;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
+
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.Loader;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
-public class RideInfoActivity extends Activity
+public class RideInfoActivity extends FragmentActivity implements LoaderCallbacks<Ride>
 {
-	public static final String RIDE_ID = RideInfoActivity.class.toString()
-			+ ".ride_id";
-	public static final int RIDE_DELETED = Activity.RESULT_FIRST_USER;
+	public static final String RIDE_ID = RideInfoActivity.class.toString() + ".ride_id";
+	
+	private Ride ride;
+	private RideInfoUtil rideInfoUtil;
+	
+	public ViewFlipper rideFlipper;
 
-	private static final int MENU_ADD_FAVORITES = Menu.FIRST;
-
-	private static RideInfoActivity instance = null;
-
-	private int rideID;
-	private Ride ride = null;
-	private ProgressDialog loadingDialog = null;
-
+	private GoogleAnalyticsTracker tracker;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		RideInfoActivity.instance = this;
-
-		// Create an empty layout to speed up loading transition
-		LinearLayout layout = new LinearLayout(this);
-		setContentView(layout);
-
+		setContentView(R.layout.ride_info_activity);
+		prepareUIElements();
+		
 		// Get ride ID
 		if (getIntent().getExtras() != null)
 		{
-			rideID = getIntent().getExtras().getInt(RIDE_ID);
+			int rideID = getIntent().getExtras().getInt(RIDE_ID);
 			Log.d(this.toString(), "Requesting ride info for id " + rideID);
+			getSupportLoaderManager().initLoader(rideID, null, this);
 		}
-
-		if (savedInstanceState != null
-				&& savedInstanceState.containsKey("suspended")
-				&& savedInstanceState.getBoolean("suspended"))
-		{
-			ride = new Ride(savedInstanceState);
-			rideID = ride.getId();
-			showRide(ride);
-		}
-		else
-		{
-			loadRideData();
-		}
+		
+		tracker = GoogleAnalyticsTracker.getInstance();
+		tracker.trackPageView("/RideInfo/");
 	}
-
-	@Override
-	/**
-	 * Called when activity is about to be killed
-	 */
-	protected void onSaveInstanceState(Bundle outState)
+	
+	private void prepareUIElements()
 	{
-		if (ride != null)
-		{
-			outState.putBoolean("suspended", true);
-			ride.storeToBundle(outState);
-		}
-
-		super.onSaveInstanceState(outState);
-	}
-
-	private void loadRideData()
-	{
-		loadingDialog = ProgressDialog.show(this, "",
-				getString(R.string.loading));
-
-		HTTPHelper.updateSessionCookies(this);
-		final LoadInfoTask loadInfo = new LoadInfoTask();
-
-		Handler handler = new Handler()
-		{
-
-			@Override
-			public void handleMessage(Message msg)
-			{
-				switch (msg.what)
-				{
-				case Globals.REQUEST_SUCCESS:
-					showRide(loadInfo.getResult());
-					break;
-
-				case Globals.REQUEST_ERROR_SERVER:
-					Toast.makeText(RideInfoActivity.instance,
-							R.string.server_error, Toast.LENGTH_LONG).show();
-					break;
-
-				case Globals.REQUEST_ERROR_NETWORK:
-					Toast.makeText(RideInfoActivity.instance,
-							R.string.network_error, Toast.LENGTH_LONG).show();
-					break;
-				}
-
-				loadingDialog.dismiss();
-			}
-		};
-
-		loadInfo.loadInfo(rideID, handler);
-	}
-
-	private void showRide(Ride ride)
-	{
-		this.ride = ride;
-		setContentView(R.layout.ride_info_activity);
-
-		Resources res = getResources();
-
-		// From and to
-		TextView fromText = (TextView) findViewById(R.id.rideinfo_from);
-		fromText.setText(ride.getFrom());
-
-		TextView toText = (TextView) findViewById(R.id.rideinfo_to);
-		toText.setText(ride.getTo());
-
-		// Time and date
-		SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
-
-		TextView timeText = (TextView) findViewById(R.id.rideinfo_time);
-		timeText.setText(timeFormatter.format(ride.getTime()));
-
-		TextView dayText = (TextView) findViewById(R.id.rideinfo_day);
-		dayText.setText(LocaleUtil.getDayName(res, ride.getTime()) + ",");
-
-		TextView dateText = (TextView) findViewById(R.id.rideinfo_date);
-		dateText.setText(LocaleUtil.getFormattedDate(res, ride.getTime()));
-
-		// Price and number of people
-		TextView priceText = (TextView) findViewById(R.id.rideinfo_price);
-
-		if (ride.getPrice() != null)
-		{
-			priceText.setText(String.format("%1.1f €", ride.getPrice()));
-		}
-		else
-		{
-			priceText.setText("?");
-		}
-
-		TextView pplText = (TextView) findViewById(R.id.rideinfo_people);
-		pplText.setText(String.valueOf(ride.getPeople()));
-
-		TextView pplTagText = (TextView) findViewById(R.id.rideinfo_peopletag);
-		pplTagText.setText(LocaleUtil.getStringNumberForm(res,
-				R.array.people_tags, ride.getPeople()));
-
-		// Driver and contact
-
-		TextView driverText = (TextView) findViewById(R.id.rideinfo_author);
-
-		if (ride.getAuthor() == null || ride.getAuthor().trim().length() == 0)
-		{
-			driverText.setVisibility(View.GONE);
-		}
-		else
-		{
-			driverText.setVisibility(View.VISIBLE);
-			driverText.setText(ride.getAuthor());
-		}
-
-		TextView contactText = (TextView) findViewById(R.id.rideinfo_phone);
-		contactText.setText(ride.getContact());
-
-		// Comment
-		TextView commentText = (TextView) findViewById(R.id.rideinfo_comment);
-		commentText.setText(ride.getComment());
-
-		// Setup button callbacks
-		((Button) findViewById(R.id.rideinfo_call))
-				.setOnClickListener(new OnClickListener()
-				{
-					public void onClick(View v)
-					{
-						callAuthor();
-					}
-				});
-
-		((Button) findViewById(R.id.rideinfo_sms))
-				.setOnClickListener(new OnClickListener()
-				{
-					public void onClick(View v)
-					{
-						sendSMS();
-					}
-				});
-
-		// Setup delete button
-		if (ride.isAuthor())
-		{
-			Button delButton = (Button) findViewById(R.id.rideinfo_delsend);
-			delButton.setText(R.string.delete);
-			delButton.setVisibility(View.VISIBLE);
-
-			final int id = rideID;
-
-			delButton.setOnClickListener(new OnClickListener()
-			{
-				public void onClick(View v)
-				{
-					deleteRide(id);
-				}
-			});
-		}
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
-		super.onCreateOptionsMenu(menu);
-		// Do not display menu if ride is not loaded yet
-		if (ride == null)
-			return false;
-
-		// Add favorite option
-		menu.add(0, MENU_ADD_FAVORITES, 0, getString(R.string.add_to_favorites))
-				.setIcon(android.R.drawable.ic_menu_add);
-
-		return true;
-	}
-
-	/**
-	 * Adds this route to favorites
-	 */
-	private void addToFavorites()
-	{
-		Database.addFavorite(this, ride.getFrom(), ride.getTo(), ride.getType());
-		Toast.makeText(this, getString(R.string.added_to_favorites),
-				Toast.LENGTH_SHORT).show();
+		rideFlipper = (ViewFlipper) findViewById(R.id.rideinfo_flipper);
+		rideFlipper.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
+		rideFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
+		rideFlipper.setDisplayedChild(0);
 	}
 
 	/**
@@ -258,8 +63,9 @@ public class RideInfoActivity extends Activity
 	 */
 	private void sendSMS()
 	{
-		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:"
-				+ ride.getContact()));
+		tracker.trackEvent("RideInfo", "SMSSend", "", 0);
+		
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + ride.getContact()));
 		intent.putExtra("address", ride.getContact());
 		intent.setType("vnd.android-dir/mms-sms");
 		this.startActivity(intent);
@@ -270,46 +76,102 @@ public class RideInfoActivity extends Activity
 	 */
 	private void callAuthor()
 	{
-		Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"
-				+ ride.getContact()));
+		tracker.trackEvent("RideInfo", "CallDriver", "", 0);
+		Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + ride.getContact()));
 		this.startActivity(intent);
 	}
 
-	private void deleteRide(int id)
+	public Loader<Ride> onCreateLoader(int loaderID, Bundle args) 
 	{
-		final ProgressDialog deleteDialog = ProgressDialog.show(this, null,
-				getString(R.string.deleting));
+		return new RideInfoLoader(this, loaderID); 
+	}
 
-		DeleteRideTask deleteRide = new DeleteRideTask();
+	public void onLoadFinished(Loader<Ride> loader, Ride result) 
+	{
+		if (result == null)
+		{
+			Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_LONG).show();
+			return;
+		}
+		
+		this.ride = result;
+		
+		OnClickListener callAuthor = new OnClickListener()
+		{
+			
+			public void onClick(View v)
+			{
+				callAuthor();
+			}
+		};
+		
+		OnClickListener sendSMS = new OnClickListener()
+		{
+			public void onClick(View v)
+			{
+				sendSMS();
+			}
+		};
+		
+		if (result.isAuthor())
+		{
+			OnClickListener deleteListener = new OnClickListener()
+			{
+				public void onClick(View v)
+				{
+					deleteRide(ride);
+				}
+			};
+			
+			rideInfoUtil = new RideInfoUtil(this, callAuthor, sendSMS, getString(R.string.delete), deleteListener);
+		}
+		else
+		{
+			rideInfoUtil = new RideInfoUtil(this, callAuthor, sendSMS, null, null);
+		}
+		
+		rideInfoUtil.showRide(ride, true);
+		rideFlipper.showNext();
+	}
+
+	public void onLoaderReset(Loader<Ride> loader) 
+	{
+		// Nothing TBD
+		
+	}
+	
+	private void deleteRide(Ride ride)
+	{
+		// Show loading view
+		rideFlipper.setDisplayedChild(0);
+		
 		Handler callback = new Handler()
 		{
 			@Override
 			public void handleMessage(Message msg)
 			{
-				deleteDialog.dismiss();
-				setResult(RIDE_DELETED);
-				finish();
+				rideDeleted(msg.what);
 			}
 		};
-
-		deleteRide.startTask(id, callback);
+		
+		DeleteRideTask task = new DeleteRideTask();
+		task.startTask(ride.getId(), callback);
 	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
+	
+	
+	private void rideDeleted(int code)
 	{
-		switch (item.getItemId())
+		if (code == Globals.REQUEST_SUCCESS)
 		{
-		case MENU_ADD_FAVORITES:
-			addToFavorites();
-			break;
-
-		default:
-			Log.e(this.toString(), "Unknown menu option selected!");
-			break;
+			tracker.trackEvent("RideInfo", "DeleteRide", "OK", 0);
+			Toast.makeText(this, R.string.ride_deleted, Toast.LENGTH_SHORT).show();
+			finish();
 		}
-
-		return false;
+		else if (code == Globals.REQUEST_ERROR_NETWORK)
+		{
+			tracker.trackEvent("RideInfo", "DeleteRide", "Fail", 0);
+			Toast.makeText(this, R.string.network_error, Toast.LENGTH_SHORT).show();
+			rideFlipper.showNext();
+		}
 	}
-
 }

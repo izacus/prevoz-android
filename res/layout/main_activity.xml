@@ -4,27 +4,13 @@
     android:orientation="vertical"
     android:layout_width = "fill_parent"
     android:layout_height = "fill_parent"
+    android:id = "@+id/main_activity"
     >
-    
-    <include layout="@layout/title_bar" />
-    
-    <TabHost
-        android:id = "@android:id/tabhost"
-        android:layout_width = "fill_parent"
-        android:layout_height = "fill_parent"
-        >
-        <TabWidget
-            android:id = "@android:id/tabs"
-            android:layout_width = "fill_parent"
-            android:layout_height = "wrap_content"
-            style = "@style/tabHostStyle" ></TabWidget>
-        
-        <FrameLayout
-            android:id = "@android:id/tabcontent"
-            android:layout_width = "fill_parent"
-            android:layout_height = "fill_parent"
-            android:paddingTop = "65dip"
-            />
-    </TabHost>
-    
+    		 
+    <fragment class="org.prevoz.android.search.SearchFormFragment"
+    	android:id = "@+id/search_form_fragment"
+    	android:layout_width = "fill_parent"
+    	android:layout_height = "fill_parent" />
+
+
 </LinearLayout>

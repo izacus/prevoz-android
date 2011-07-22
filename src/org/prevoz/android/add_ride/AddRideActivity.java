@@ -2,675 +2,527 @@ package org.prevoz.android.add_ride;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 
-import org.prevoz.android.GPSManager;
+import org.prevoz.android.CitySelectorActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.RideType;
+import org.prevoz.android.add_ride.AddStateManager.Views;
 import org.prevoz.android.auth.AuthenticationManager;
 import org.prevoz.android.auth.AuthenticationStatus;
 import org.prevoz.android.rideinfo.Ride;
 import org.prevoz.android.rideinfo.RideInfoActivity;
-import org.prevoz.android.search.LocationAutocompleteAdapter;
+import org.prevoz.android.rideinfo.RideInfoUtil;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
+
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.KeyEvent;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-public class AddRideActivity extends Activity
+public class AddRideActivity extends FragmentActivity implements OnTimeSetListener, OnDateSetListener
 {
-	private static AddRideActivity instance;
-
-	public static AddRideActivity getInstance()
-	{
-		return instance;
-	}
-
-	private static final int DATEPICKER_DIALOG_ID = 0;
-	private static final int TIMEPICKER_DIALOG_ID = 1;
-	private static final SimpleDateFormat timeFormatter = new SimpleDateFormat(
-			"HH:mm");
-
-	private class PeopleSpinnerObject
-	{
-		public int number;
-
-		public PeopleSpinnerObject(int number)
-		{
-			this.number = number;
-		}
-
-		public int getNumber()
-		{
-			return number;
-		}
-
-		public String toString()
-		{
-			return number
-					+ " "
-					+ LocaleUtil.getStringNumberForm(getResources(),
-							R.array.people_tags, number);
-		}
-	}
-
-	private enum AddViews
-	{
-		LOGIN, FORM, PREVIEW
-	}
-
-	// Current view
-	private AddViews currentView;
-
-	// Private fields
-	private Calendar selectedDate;
-	private GPSManager activeManager = null;
-
+	private static final int FROM_CITY_REQUEST = 1;
+	private static final int TO_CITY_REQUEST = 2;
+	
+	private static final int DIALOG_DATE = 1;
+	private static final int DIALOG_TIME = 2;
+	
+	private static final int MENU_LOGOUT = 0;
+	
+	private final SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
+	
+	private AddStateManager stateManager;
+	
+	// Form buttons
+	private Button fromButton;
+	private Button toButton;
+	private Button dateButton;
+	private Button timeButton;
+	private Button nextButton;
+	private Spinner peopleSpinner;
+	// Form fields
+	private EditText priceText;
+	private EditText phoneText;
+	private EditText commentText;
+	private CheckBox insuranceCheck;
+	
+	// Field data
+	private String fromCity = null;
+	private String toCity = null;
+	
+	private Calendar dateTime;
+	
+	// Dialogs
+	private DatePickerDialog datePickerDialog;
+	private TimePickerDialog timePickerDialog;
+	
+	// GA
+	private GoogleAnalyticsTracker tracker;
+	
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
+	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
-		AddRideActivity.instance = this;
 		setContentView(R.layout.add_ride_activity);
-
-		selectedDate = Calendar.getInstance();
-		// Reset time to some sane value
-		selectedDate.add(Calendar.HOUR_OF_DAY, 1);
-		selectedDate.set(Calendar.MINUTE, 0);
-
-		// Bind login button
-		Button loginButton = (Button)findViewById(R.id.add_login_button);
 		
-		final Activity context = this;
-		loginButton.setOnClickListener(new OnClickListener()
-		{
-			public void onClick(View v)
-			{
-				final AuthenticationManager manager = AuthenticationManager.getInstance();
-				manager.requestLogin(context, new Handler() {
-
-					@Override
-					public void handleMessage(Message msg)
-					{
-						updateLoginStatus(manager.getAuthenticationStatus(context, false));
-					}
-				});
-			}
-		});
+		// Update application title
+		TextView appTitle = (TextView) findViewById(R.id.title_bar);
+		appTitle.setText(getString(R.string.app_name) + " - " + getString(R.string.add_title));
 		
+		dateTime = Calendar.getInstance();
+		
+		// Initialize values
 		if (savedInstanceState != null)
 		{
-			selectedDate.setTimeInMillis(savedInstanceState
-					.getLong("selected_date"));
-			prepareAddForm();
-
-			Ride existing = new Ride(savedInstanceState);
-
-			((Spinner) findViewById(R.id.add_type)).setSelection(existing
-					.getType().ordinal());
-
-			((AutoCompleteTextView) findViewById(R.id.add_from))
-					.setText(existing.getFrom());
-			((AutoCompleteTextView) findViewById(R.id.add_to)).setText(existing
-					.getTo());
-			((EditText) findViewById(R.id.add_phone)).setText(existing
-					.getContact());
-			((EditText) findViewById(R.id.add_comment)).setText(existing
-					.getComment());
-			((Spinner) findViewById(R.id.add_ppl)).setSelection(existing
-					.getPeople() - 1);
-
-			if (existing.getPrice() != null)
-			{
-				((EditText) findViewById(R.id.add_price)).setText(String
-						.valueOf(existing.getPrice()));
-			}
-
-			AddViews view = AddViews.values()[savedInstanceState.getInt("view")];
-			switchView(view);
+			fromCity = savedInstanceState.getString("fromCity");
+			toCity = savedInstanceState.getString("toCity");
+			dateTime.setTimeInMillis(savedInstanceState.getLong("date"));
+			prepareFormFields(savedInstanceState.getInt("numPpl"));
 		}
 		else
 		{
-			updateLoginStatus(AuthenticationManager.getInstance().getAuthenticationStatus(this, false));
+			// Round minutes to the nearest hour
+			dateTime.set(Calendar.MINUTE, 0);
+			dateTime.set(Calendar.SECOND, 0);
+			dateTime.roll(Calendar.HOUR_OF_DAY, 1);
+			prepareFormFields(3);
 		}
-	}
-
-	@Override
-	protected void onResume()
-	{
-		super.onResume();
-		checkLoginStatus();
-	}
-
-	/**
-	 * Request current user's login status
-	 */
-	private void checkLoginStatus()
-	{
-		AuthenticationManager manager = AuthenticationManager.getInstance();
 		
-		// Dispatch response to updateLoginStatus method
-		Handler callbackHandler = new Handler()
+		updateDateTime();
+		
+		Handler authHandler = new Handler()
 		{
 			@Override
-			public void handleMessage(Message msg)
+			public void handleMessage(Message msg) 
 			{
-				updateLoginStatus(AuthenticationStatus.values()[msg.what]);
+				authenticationStatusReceived(AuthenticationStatus.values()[msg.what]);
 			}
 		};
-
-		manager.getAuthenticationStatus(this, false, callbackHandler);
+		
+		tracker = GoogleAnalyticsTracker.getInstance();
+		tracker.trackPageView("/AddRide");
+		
+		AuthenticationManager.getInstance().getAuthenticationStatus(this, authHandler);
 	}
-
-	/**
-	 * Show login dialog if user is not logged in or display ride add status
-	 * 
-	 * @param status
-	 */
-	private void updateLoginStatus(AuthenticationStatus status)
+	
+	private void prepareFormFields(int peopleSelected)
 	{
-		switch (status)
+		// Prepare UI injection
+		ViewFlipper addFlipper = (ViewFlipper) findViewById(R.id.add_flipper);
+		stateManager = new AddStateManager(addFlipper);
+		stateManager.showView(Views.LOADING);
+		
+		// From city selector
+		fromButton = (Button) findViewById(R.id.from_button);
+		fromButton.setOnClickListener(new OnClickListener() 
 		{
-			case UNKNOWN:
-				Toast.makeText(this, R.string.server_error, Toast.LENGTH_LONG).show();
-				break;
-
-			case AUTHENTICATED:
-				prepareAddForm();
-				switchView(AddViews.FORM);
-				break;
-
-			case NOT_AUTHENTICATED:
-				switchView(AddViews.LOGIN);
-				break;
-		}
-	}
-
-	private void prepareAddForm()
-	{
-		updateSelectedDate(selectedDate);
-		updateSelectedTime(selectedDate);
-
-		// Prepare autocomplete
-		LocationAutocompleteAdapter places = new LocationAutocompleteAdapter(
-				this, null);
-
-		AutoCompleteTextView fromField = (AutoCompleteTextView) findViewById(R.id.add_from);
-		AutoCompleteTextView toField = (AutoCompleteTextView) findViewById(R.id.add_to);
-
-		fromField.setAdapter(places);
-		toField.setAdapter(places);
-
-		fromField.setThreshold(1);
-		toField.setThreshold(1);
-
-		// Add date callback
-		EditText addDateField = (EditText) findViewById(R.id.add_date);
-		addDateField.setOnClickListener(new View.OnClickListener()
+			public void onClick(View v) 
+			{
+				Intent cityChooser = new Intent(AddRideActivity.this, CitySelectorActivity.class);
+				startActivityForResult(cityChooser, FROM_CITY_REQUEST);
+			}
+		});
+		StringUtil.setLocationButtonText(fromButton, fromCity, getString(R.string.add_select_city));
+		
+		// To city selector
+		toButton = (Button) findViewById(R.id.to_button);
+		toButton.setOnClickListener(new OnClickListener() 
+		{
+			public void onClick(View v) 
+			{
+				Intent cityChooser = new Intent(AddRideActivity.this, CitySelectorActivity.class);
+				startActivityForResult(cityChooser, TO_CITY_REQUEST);
+			}
+		});
+		StringUtil.setLocationButtonText(toButton, toCity, getString(R.string.add_select_city));
+		
+		// Date selector
+		dateButton = (Button) findViewById(R.id.date_button);
+		dateButton.setOnClickListener(new OnClickListener()
 		{
 			public void onClick(View v)
 			{
-				showDialog(DATEPICKER_DIALOG_ID);
+				showDialog(DIALOG_DATE);
 			}
 		});
-
-		// Add clock callback
-		EditText addTimeField = (EditText) findViewById(R.id.add_time);
-		addTimeField.setOnClickListener(new View.OnClickListener()
+		
+		timeButton = (Button) findViewById(R.id.time_button);
+		timeButton.setOnClickListener(new OnClickListener()
 		{
 			public void onClick(View v)
 			{
-				showDialog(TIMEPICKER_DIALOG_ID);
+				showDialog(DIALOG_TIME);
 			}
 		});
-
-		// People list spinner popuation
-		Spinner addPpl = (Spinner) findViewById(R.id.add_ppl);
-
+		
+		// Initialize dialogs for selection
+		timePickerDialog = new TimePickerDialog(this, this, 0, 0, true);
+		datePickerDialog = new DatePickerDialog(this, this, 2010, 1, 1);
+		
+		// Prepare number of people spinner
+		peopleSpinner = (Spinner) findViewById(R.id.add_ppl);
 		PeopleSpinnerObject[] peopleSpinnerObject = new PeopleSpinnerObject[6];
 		for (int i = 0; i < 6; i++)
-			peopleSpinnerObject[i] = new PeopleSpinnerObject(i + 1);
-
-		ArrayAdapter<PeopleSpinnerObject> peopleAdapter = new ArrayAdapter<PeopleSpinnerObject>(
-				this, android.R.layout.simple_spinner_item, peopleSpinnerObject);
-		addPpl.setAdapter(peopleAdapter);
-		peopleAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-		// Search type spinner population
-		String[] types = new String[] { getString(R.string.add_share),
-				getString(R.string.add_seek) };
-		ArrayAdapter<String> typesAdapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, types);
-		typesAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		((Spinner) findViewById(R.id.add_type)).setAdapter(typesAdapter);
-
-		// Add next button callback
-		Button nextButton = (Button) findViewById(R.id.add_button);
-		nextButton.setOnClickListener(new View.OnClickListener()
+			peopleSpinnerObject[i] = new PeopleSpinnerObject(this, i + 1);
+		
+		ArrayAdapter<PeopleSpinnerObject> peopleAdapter = new ArrayAdapter<PeopleSpinnerObject>(this, android.R.layout.simple_spinner_item, peopleSpinnerObject);
+		peopleSpinner.setAdapter(peopleAdapter);
+		peopleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		peopleSpinner.setSelection(peopleSelected - 1);
+		
+		// Edit text fields
+		priceText = (EditText) findViewById(R.id.add_price);
+		phoneText = (EditText) findViewById(R.id.add_phone);
+		commentText = (EditText) findViewById(R.id.add_comment);
+		insuranceCheck = (CheckBox) findViewById(R.id.check_insurance);
+		
+		// Next button
+		nextButton = (Button)findViewById(R.id.add_button);
+		nextButton.setOnClickListener(new OnClickListener()
 		{
-
 			public void onClick(View v)
 			{
 				showPreview();
 			}
 		});
-
-		// Prepare GPS button callbacks
-		((ImageButton) findViewById(R.id.add_gps_from))
-				.setOnClickListener(new OnClickListener()
+	}
+	
+	private void updateDateTime()
+	{
+		String dateString = LocaleUtil.getDayName(getResources(), dateTime) + ", " + LocaleUtil.getFormattedDate(getResources(), dateTime);
+		dateButton.setText(dateString);
+		
+		String timeString = timeFormatter.format(dateTime.getTime());
+		timeButton.setText(timeString);
+	}
+	
+	private void authenticationStatusReceived(AuthenticationStatus status)
+	{
+		Log.i(this.toString(), "Received authentication status: " + status);
+		
+		
+		switch(status)
+		{
+			case UNKNOWN:
+				Toast.makeText(this, R.string.network_error, Toast.LENGTH_LONG).show();
+				finish();
+				break;
+				
+			case NOT_AUTHENTICATED:				
+				Log.i(this.toString(), "Opening user login request...");
+				
+				Handler loginHandler = new Handler()
 				{
-					public void onClick(View v)
+					@Override
+					public void handleMessage(Message msg) 
 					{
-						fillInGPS(R.id.add_from);
+						AuthenticationStatus status = AuthenticationStatus.values()[msg.what];
+						if (status != AuthenticationStatus.AUTHENTICATED)
+						{
+							finish();
+						}
+						else
+						{
+							stateManager.showView(Views.FORM);
+						}
 					}
-				});
-
-		((ImageButton) findViewById(R.id.add_gps_to))
-				.setOnClickListener(new OnClickListener()
-				{
-					public void onClick(View v)
-					{
-						fillInGPS(R.id.add_to);
-					}
-				});
+				};
+				
+				AuthenticationManager.getInstance().requestLogin(this, loginHandler);
+				break;
+			
+			case AUTHENTICATED:
+				stateManager.showView(Views.FORM);
+				break;
+		}
 	}
 
-	/**
-	 * Validates ride information
-	 * 
-	 * @return true if the ride is valid, false otherwise
-	 */
-	private boolean validateRide(Ride ride)
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{
-		// Check origin and destination
-		if (ride.getFrom().trim().length() == 0
-				|| ride.getTo().trim().length() == 0)
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		boolean successful = (resultCode == Activity.RESULT_OK);
+
+		switch(requestCode)
 		{
-			Toast.makeText(this, R.string.add_missing_loc, Toast.LENGTH_LONG)
-					.show();
+			case FROM_CITY_REQUEST:
+				fromCity = successful ? data.getStringExtra("city") : null;
+				StringUtil.setLocationButtonText(fromButton, fromCity, getString(R.string.add_select_city));
+				break;
+				
+			case TO_CITY_REQUEST:
+				toCity = successful ? data.getStringExtra("city") : null;
+				StringUtil.setLocationButtonText(toButton, toCity, getString(R.string.add_select_city));
+				break;
+		}
+		
+	}
+
+	private boolean validateForm()
+	{
+		// Check from city
+		if (fromCity == null)
+		{
+			tracker.trackEvent("AddRide", "FormValidation", "Failed - No From", 0);
+			showFormError(getString(R.string.add_error_enterfrom));
 			return false;
 		}
-
-		// Check phone number
-		if (ride.getContact().trim().length() == 0)
+		
+		if (toCity == null)
 		{
-			Toast.makeText(this, R.string.add_missing_phone, Toast.LENGTH_LONG)
-					.show();
+			tracker.trackEvent("AddRide", "FormValidation", "Failed - No To", 0);
+			showFormError(getString(R.string.add_error_enterto));
 			return false;
 		}
-
+		
+		// Check date validity
+		if (dateTime.before(Calendar.getInstance()))
+		{
+			tracker.trackEvent("AddRide", "FormValidation", "Failed - Date/Time before present", 0);
+			showFormError(getString(R.string.add_error_timepast));
+			return false;
+		}
+		
+		// Check price
+		
+		if (priceText.getText().toString().trim().length() > 0)
+		{
+			double price;
+			
+			try
+			{
+				 price = Double.parseDouble(priceText.getText().toString());
+			}
+			catch (NumberFormatException e)
+			{
+				tracker.trackEvent("AddRide", "FormValidation", "Failed - Missing/invalid price", 0);
+				showFormError(getString(R.string.add_error_enterprice));
+				return false;
+			}
+			
+			if (price < 0 && price > 500)
+			{
+				tracker.trackEvent("AddRide", "FormValidation", "Failed - Price outside limits", 0);
+				showFormError(getString(R.string.add_error_enterprice));
+				return false;
+			}
+		}
+		
+		if (phoneText.getText().toString().trim().length() == 0)
+		{
+			tracker.trackEvent("AddRide", "FormValidation", "Failed - Missing phone no.", 0);
+			showFormError(getString(R.string.add_error_enterphone));
+			return false;
+		}
+		
+		tracker.trackEvent("AddRide", "FormValidation", "Success", 0);
+		
 		return true;
 	}
-
+	
+	private void showFormError(String error)
+	{
+		Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+	}
+	
 	private void showPreview()
 	{
-		// Get entered data
-		final Ride ride = getEnteredRide();
-
-		if (!validateRide(ride))
-			return;
-
-		// Hide call and SMS buttons
-		((Button) findViewById(R.id.rideinfo_call))
-				.setVisibility(View.INVISIBLE);
-		((Button) findViewById(R.id.rideinfo_sms))
-				.setVisibility(View.INVISIBLE);
-
-		// Populate preview view
-		((TextView) findViewById(R.id.rideinfo_from)).setText(ride.getFrom());
-		((TextView) findViewById(R.id.rideinfo_to)).setText(ride.getTo());
-		((TextView) findViewById(R.id.rideinfo_time)).setText(timeFormatter
-				.format(ride.getTime()));
-		((TextView) findViewById(R.id.rideinfo_day)).setText(LocaleUtil
-				.getDayName(getResources(), ride.getTime()) + ",");
-		((TextView) findViewById(R.id.rideinfo_date)).setText(LocaleUtil
-				.getFormattedDate(getResources(), ride.getTime()));
-
-		if (ride.getPrice() == null)
+		if (validateForm())
 		{
-			((TextView) findViewById(R.id.rideinfo_price)).setText("?");
-		}
-		else
-		{
-			((TextView) findViewById(R.id.rideinfo_price)).setText(String
-					.format("%1.1f €", ride.getPrice()));
-		}
-		((TextView) findViewById(R.id.rideinfo_people)).setText(String
-				.valueOf(ride.getPeople()));
-		((TextView) findViewById(R.id.rideinfo_peopletag)).setText(LocaleUtil
-				.getStringNumberForm(getResources(), R.array.people_tags,
-						ride.getPeople()));
-
-		((TextView) findViewById(R.id.rideinfo_comment)).setText(ride
-				.getComment());
-		((TextView) findViewById(R.id.rideinfo_phone)).setText(ride
-				.getContact());
-
-		// Show post button
-		Button postButton = (Button) findViewById(R.id.rideinfo_delsend);
-		postButton.setText(getString(R.string.add_send));
-		postButton.setVisibility(View.VISIBLE);
-
-		postButton.setOnClickListener(new OnClickListener()
-		{
-			public void onClick(View v)
+			Double price;
+			
+			if (priceText.getText().toString().trim().length() == 0)
 			{
-				postRide(ride);
+				price = null;
 			}
-		});
-
-		switchView(AddViews.PREVIEW);
+			else
+			{
+				price = Double.parseDouble(priceText.getText().toString().trim());
+			}
+			
+			// Create a new ride object
+			final Ride ride = new Ride(0,							// Ride ID
+								 RideType.SHARE,					// Ride type
+								 fromCity,							// From
+								 toCity,							// To
+								 dateTime.getTime(),				// Date and time 
+								 ((PeopleSpinnerObject)peopleSpinner.getSelectedItem()).getNumber(),		// Number of people
+								 price,																		// Ride price
+								 null,																		// Ride author string
+								 StringUtil.numberOnly(phoneText.getText().toString(), false),				// Phone number
+								 commentText.getText().toString().trim(),									// Ride comment
+								 true,																		// isAuthor flag
+								 insuranceCheck.isChecked());												// isInsured flag
+			
+			
+			OnClickListener sendListener = new OnClickListener()
+			{
+				public void onClick(View v)
+				{
+					tracker.dispatch();
+					postRide(ride);
+				}
+			};
+			
+			RideInfoUtil util = new RideInfoUtil(this, getString(R.string.add_send), sendListener);
+			util.showRide(ride, false);
+			
+			stateManager.showView(Views.PREVIEW);
+		}
 	}
-
+	
 	private void postRide(Ride ride)
 	{
-		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
-
-		HashMap<String, String> parameters = new HashMap<String, String>();
-		parameters.put("transptype", String.valueOf(ride.getType().ordinal()));
-		parameters.put("transpfrom", ride.getFrom());
-		parameters.put("transpfromcountry", "SI");
-		parameters.put("transpto", ride.getTo());
-		parameters.put("transptocountry", "SI");
-
-		parameters.put("transpdate", dateFormatter.format(ride.getTime()));
-		parameters.put("transptime", timeFormatter.format(ride.getTime()));
-
-		parameters.put("transpppl", String.valueOf(ride.getPeople()));
-
-		if (ride.getPrice() != null)
+		stateManager.showView(Views.LOADING);
+		
+		final SendRideTask task = new SendRideTask(ride);
+		
+		Handler sendHandler = new Handler()
 		{
-			parameters.put("transpprice", String.valueOf(ride.getPrice()));
-		}
-		else
-		{
-			parameters.put("transpprice", "");
-		}
 
-		parameters.put("transpphone", ride.getContact());
-		parameters.put("transpdescr", ride.getComment());
-
-		final ProgressDialog sendProgress = ProgressDialog.show(this, null,
-				getString(R.string.add_sending));
-		final SendRideTask task = new SendRideTask();
-
-		Handler sendCallback = new Handler()
-		{
 			@Override
 			public void handleMessage(Message msg)
 			{
-				sendProgress.dismiss();
-				rideSent(msg.what, task);
+				super.handleMessage(msg);
+				
+				switch(msg.what)
+				{
+					case SendRideTask.AUTHENTICATION_ERROR:
+						tracker.trackEvent("AddRide", "NewRidePost", "Failed - Authentication error", 0);
+						authenticationStatusReceived(AuthenticationStatus.NOT_AUTHENTICATED);
+						break;
+					case SendRideTask.SERVER_ERROR:
+						tracker.trackEvent("AddRide", "NewRidePost", "Failed - Server error", 0);
+						Toast.makeText(AddRideActivity.this, R.string.server_error, Toast.LENGTH_SHORT).show();
+						stateManager.showView(Views.FORM);
+						break;
+					case SendRideTask.SEND_ERROR:
+						tracker.trackEvent("AddRide", "NewRidePost", "Failed - Send error", 0);
+						Toast.makeText(AddRideActivity.this, task.getErrorMessage(), Toast.LENGTH_SHORT).show();
+						stateManager.showView(Views.FORM);
+						break;
+					case SendRideTask.SEND_SUCCESS:
+						tracker.trackEvent("AddRide", "NewRidePost", "Success", 0);
+						Intent rideInfo = new Intent(AddRideActivity.this, RideInfoActivity.class);
+						rideInfo.putExtra(RideInfoActivity.RIDE_ID, task.getRideId());
+						startActivity(rideInfo);
+						finish();
+						break;
+				}
 			}
 		};
-
-		sendProgress.show();
-		task.startTask(parameters, sendCallback);
+		
+		stateManager.showView(Views.LOADING);
+		task.startTask(sendHandler);
 	}
-
-	private void rideSent(int status, SendRideTask doneTask)
-	{
-		switch (status)
-		{
-		case SendRideTask.SERVER_ERROR:
-			Toast.makeText(this, R.string.server_error, Toast.LENGTH_LONG)
-					.show();
-			break;
-
-		case SendRideTask.SEND_ERROR:
-			Toast.makeText(this, doneTask.getErrorMessage(), Toast.LENGTH_LONG)
-					.show();
-			switchView(AddViews.FORM);
-			break;
-
-		case SendRideTask.SEND_SUCCESS:
-			switchView(AddViews.FORM);
-			Intent intent = new Intent(this, RideInfoActivity.class);
-			intent.putExtra(RideInfoActivity.RIDE_ID, doneTask.getRideId());
-			startActivity(intent);
-			break;
-			
-		case SendRideTask.AUTHENTICATION_ERROR:
-			switchView(AddViews.LOGIN);
-			Toast.makeText(this, R.string.add_login_required, Toast.LENGTH_LONG).show();
-		}
-	}
-
+	
 	@Override
 	protected Dialog onCreateDialog(int id)
 	{
-
-		switch (id)
+		switch(id)
 		{
-		case DATEPICKER_DIALOG_ID:
-
-			OnDateSetListener datePicked = new OnDateSetListener()
-			{
-				public void onDateSet(DatePicker view, int year,
-						int monthOfYear, int dayOfMonth)
-				{
-					Calendar selectedDate = Calendar.getInstance();
-					selectedDate.set(Calendar.YEAR, year);
-					selectedDate.set(Calendar.MONTH, monthOfYear);
-					selectedDate.set(Calendar.DATE, dayOfMonth);
-					updateSelectedDate(selectedDate);
-				}
-			};
-
-			return new DatePickerDialog(this, datePicked,
-					selectedDate.get(Calendar.YEAR),
-					selectedDate.get(Calendar.MONTH),
-					selectedDate.get(Calendar.DATE));
-		case TIMEPICKER_DIALOG_ID:
-			OnTimeSetListener timePicked = new OnTimeSetListener()
-			{
-				public void onTimeSet(TimePicker view, int hourOfDay, int minute)
-				{
-					Calendar selectedTime = Calendar.getInstance();
-					selectedTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
-					selectedTime.set(Calendar.MINUTE, minute);
-					updateSelectedTime(selectedTime);
-				}
-			};
-
-			return new TimePickerDialog(this, timePicked,
-					selectedDate.get(Calendar.HOUR_OF_DAY),
-					selectedDate.get(Calendar.MINUTE), true);
+			case DIALOG_TIME:
+				timePickerDialog.updateTime(dateTime.get(Calendar.HOUR_OF_DAY), dateTime.get(Calendar.MINUTE));
+				return timePickerDialog;
+			case DIALOG_DATE:
+				datePickerDialog.updateDate(dateTime.get(Calendar.YEAR), dateTime.get(Calendar.MONTH), dateTime.get(Calendar.DAY_OF_MONTH));
+				return datePickerDialog;
+			default:
+				return super.onCreateDialog(id);
 		}
-
-		return super.onCreateDialog(id);
 	}
 
-	private void updateSelectedDate(Calendar newDate)
+	public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
 	{
-		EditText addDateField = (EditText) findViewById(R.id.add_date);
-		selectedDate.set(newDate.get(Calendar.YEAR),
-				newDate.get(Calendar.MONTH), newDate.get(Calendar.DATE));
-		addDateField.setText(LocaleUtil
-				.getDayName(getResources(), selectedDate)
-				+ ", "
-				+ LocaleUtil.getFormattedDate(getResources(), selectedDate));
+		dateTime.set(Calendar.YEAR, year);
+		dateTime.set(Calendar.MONTH, monthOfYear);
+		dateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+		updateDateTime();
 	}
 
-	private void updateSelectedTime(Calendar newTime)
+	public void onTimeSet(TimePicker view, int hourOfDay, int minute)
 	{
-		EditText addTimeField = (EditText) findViewById(R.id.add_time);
-		selectedDate.set(Calendar.HOUR_OF_DAY,
-				newTime.get(Calendar.HOUR_OF_DAY));
-		selectedDate.set(Calendar.MINUTE, newTime.get(Calendar.MINUTE));
-
-		addTimeField.setText(timeFormatter.format(newTime.getTime()));
-	}
-
-	/**
-	 * Extracts ride form fields
-	 * 
-	 * @return Ride object with populated data
-	 */
-	private Ride getEnteredRide()
-	{
-		RideType type;
-
-		if (((Spinner) findViewById(R.id.add_type)).getSelectedItemPosition() == 0)
-		{
-			type = RideType.SHARE;
-		}
-		else
-		{
-			type = RideType.SEEK;
-		}
-
-		String from = ((AutoCompleteTextView) findViewById(R.id.add_from))
-				.getText().toString();
-		String to = ((AutoCompleteTextView) findViewById(R.id.add_to))
-				.getText().toString();
-
-		// Get price and check if it's empty
-		Double price;
-		EditText priceText = (EditText) findViewById(R.id.add_price);
-
-		String priceString = StringUtil.numberOnly(priceText.getText()
-				.toString().trim(), true);
-
-		if (priceString.length() == 0)
-		{
-			price = null;
-		}
-		else
-		{
-			price = Double.parseDouble(priceString);
-		}
-
-		// Get number of people count
-		Spinner numPeopleSpinner = (Spinner) findViewById(R.id.add_ppl);
-		PeopleSpinnerObject psObject = (PeopleSpinnerObject) numPeopleSpinner
-				.getSelectedItem();
-
-		int numPeople = (psObject == null ? 0 : psObject.getNumber());
-
-		Ride ride = new Ride(-1, type, from, to, selectedDate.getTime(),
-				numPeople, price, null, StringUtil.numberOnly(
-						((EditText) findViewById(R.id.add_phone)).getText()
-								.toString(), false),
-				((EditText) findViewById(R.id.add_comment)).getText()
-						.toString(), true);
-
-		return ride;
-	}
-
-	private void switchView(AddViews view)
-	{
-		if (currentView == view)
-			return;
-
-		ViewFlipper addFlipper = (ViewFlipper) findViewById(R.id.add_flipper);
-		addFlipper.setDisplayedChild(view.ordinal());
-		currentView = view;
+		dateTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+		dateTime.set(Calendar.MINUTE, minute);
+		updateDateTime();
 	}
 
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event)
+	public void onBackPressed()
 	{
-		if (keyCode == KeyEvent.KEYCODE_BACK && currentView == AddViews.PREVIEW)
-		{
-			switchView(AddViews.FORM);
-			return true;
-		}
-
-		return super.onKeyUp(keyCode, event);
+		// State manager will correctly switch views or return false if the activity must finish
+		if (!stateManager.handleBackKey())
+			finish();
 	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState)
 	{
-		// Store current instance state
-		outState.putLong("selected_date", selectedDate.getTimeInMillis());
-
-		Ride ride = getEnteredRide();
-		ride.storeToBundle(outState);
-
-		// Store current view
-		outState.putInt("view", currentView.ordinal());
-
-		if (activeManager != null)
-			activeManager.cancelSearch();
+		super.onSaveInstanceState(outState);
+		
+		outState.putString("fromCity", fromCity);
+		outState.putString("toCity", toCity);
+		outState.putInt("numPpl", ((PeopleSpinnerObject)peopleSpinner.getSelectedItem()).getNumber());
+		outState.putLong("date", dateTime.getTimeInMillis());
 	}
 
-	private void fillInGPS(int field)
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		final AutoCompleteTextView fillField = (AutoCompleteTextView) findViewById(field);
-
-		// Disable GPS buttons
-		((ImageButton) findViewById(R.id.add_gps_to)).setEnabled(false);
-		((ImageButton) findViewById(R.id.add_gps_from)).setEnabled(false);
-		fillField.setEnabled(false);
-
-		final String oldHint = fillField.getHint().toString();
-		final String oldText = fillField.getText().toString();
-
-		fillField.setHint(R.string.searching);
-		fillField.setText("");
-
-		final GPSManager gpsManager = new GPSManager();
-		activeManager = gpsManager;
-
-		final AddRideActivity addActivity = this;
-
-		Handler callback = new Handler()
+		menu.add(Menu.NONE, MENU_LOGOUT, Menu.NONE, getString(R.string.logout)).setIcon(android.R.drawable.ic_delete);
+		
+		if (stateManager.getCurrentView() != Views.LOADING)
 		{
-			@Override
-			public void handleMessage(Message msg)
-			{
-				fillField.setHint(oldHint);
+			return true;
+		}
+		
+		
+		return false;
+	}
 
-				// Re-enable fields
-				((ImageButton) findViewById(R.id.add_gps_to)).setEnabled(true);
-				((ImageButton) findViewById(R.id.add_gps_from))
-						.setEnabled(true);
-				fillField.setEnabled(true);
-
-				if (msg.what == GPSManager.GPS_PROVIDER_UNAVALABLE)
-				{
-					Toast.makeText(addActivity, R.string.gps_error,
-							Toast.LENGTH_LONG).show();
-					fillField.setText(oldText);
-				}
-				else if (msg.what == GPSManager.GPS_LOCATION_OK)
-				{
-					fillField.setText(gpsManager.getCurrentCity());
-				}
-
-				activeManager = null;
-			}
-		};
-
-		gpsManager.findCurrentCity(this, callback);
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		if (item.getItemId() == MENU_LOGOUT)
+		{
+			tracker.trackEvent("AddRide", "Logout", "", 0);
+			AuthenticationManager.getInstance().requestLogout(this);
+			Toast.makeText(this, R.string.logout_success, Toast.LENGTH_SHORT).show();
+			finish();
+			
+			return true;
+		}
+		else
+		{
+			Log.e(this.toString(), "Tried to open non-existed menu item.");
+		}
+		
+		return false;
 	}
 }

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+    
+    <ImageButton
+        android:id = "@+id/search_add_ride"
+        android:layout_height = "@dimen/title_height"
+        android:layout_width = "wrap_content"
+        android:layout_alignParentRight = "true" 
+        android:layout_alignParentTop = "true"
+        android:scaleType = "fitCenter"
+        android:src="@drawable/add_ride"
+        android:background = "@drawable/button_title"
+        />
+   <LinearLayout 
+   		android:layout_height="@dimen/title_height"
+   		android:layout_width="1sp"
+   		android:layout_toLeftOf="@id/search_add_ride"
+   		android:id = "@+id/delimiter"
+   		android:background="#EEE"
+   ></LinearLayout>
+      
+   <include layout="@layout/title_bar" 
+       android:id = "@+id/title_bar"
+       
+       android:layout_width = "wrap_content"
+       android:layout_height = "@dimen/title_height"
+        
+       android:layout_toLeftOf = "@id/delimiter"
+       android:layout_alignParentLeft = "true"
+       android:layout_alignParentTop = "true" />
+    
+    <TextView
+    	android:id = "@+id/from_label"
+    	android:layout_width = "50dip"
+    	android:layout_height = "wrap_content"
+    	android:gravity =  "right"
+    	android:layout_below = "@id/title_bar"
+    	android:layout_marginTop = "25dip"
+    	android:layout_marginLeft = "17dip"
+    	android:layout_marginRight = "15dip"
+    	
+    	android:text = "@string/search_label_from"
+    	style = "@style/field_labels"
+    	/>
+    
+    <Button
+    	android:id = "@+id/from_button"
+    	android:layout_width = "fill_parent"
+    	android:layout_height = "wrap_content"
+    	
+    	android:layout_alignBaseline = "@id/from_label"
+    	android:layout_toRightOf = "@id/from_label"
+    	android:layout_marginLeft = "5dip"
+    	android:layout_marginRight = "15dip"
+    	
+    	android:background = "@drawable/button_white"
+    	style = "@style/button_white"
+    	/>
+
+    <TextView
+    	android:id = "@+id/to_label"
+    	android:layout_width = "50dip"
+    	android:layout_height = "wrap_content"
+    	android:gravity =  "right"
+    	android:layout_below = "@id/from_label"
+    	android:layout_marginLeft = "17dip"
+    	android:layout_marginRight = "15dip"
+    	android:layout_marginTop = "35dip"
+    	
+    	android:text = "@string/search_label_to"
+    	style = "@style/field_labels"
+    	/>
+    	
+    <Button
+    	android:id = "@+id/to_button"
+    	android:layout_width = "fill_parent"
+    	android:layout_height = "wrap_content"
+    	
+    	android:layout_alignBaseline = "@id/to_label"
+    	android:layout_toRightOf = "@id/to_label"
+    	android:layout_marginLeft = "5dip"
+    	android:layout_marginRight = "15dip"
+    	
+    	android:background = "@drawable/button_white"
+    	style = "@style/button_white"
+    	/>	
+    
+     <TextView
+    	android:id = "@+id/date_label"
+    	android:layout_width = "50dip"
+    	android:layout_height = "wrap_content"
+    	android:gravity =  "right"
+    	android:layout_below = "@id/to_label"
+    	android:layout_marginLeft = "17dip"
+    	android:layout_marginRight = "15dip"
+    	android:layout_marginTop = "45dip"
+    	
+    	android:text = "@string/search_label_date"
+    	style = "@style/field_labels"
+    	/>
+    	
+    <Button
+    	android:id = "@+id/date_button"
+    	android:layout_height = "wrap_content"
+    	android:layout_width = "fill_parent"
+    	
+    	android:layout_alignBaseline = "@id/date_label"
+    	android:layout_toRightOf = "@id/date_label"
+    	android:layout_marginLeft = "5dip"
+    	android:layout_marginRight = "15dip"
+    	
+    	android:background = "@drawable/button_white"
+    	style = "@style/button_white"
+    	/>
+    
+    
+    <Button
+    	android:id = "@+id/search_button"
+    	android:text = "@string/search_go"
+    	android:gravity = "center"
+    	android:layout_height = "wrap_content"
+    	android:layout_width = "fill_parent"
+    	android:layout_margin = "15dip"
+    	android:layout_marginBottom = "30dp"
+    	android:background = "@drawable/button_black_rnd"
+    	android:layout_alignParentBottom = "true"
+    	style = "@style/button_black"
+    />
+    
+    <TextView
+        android:id = "@+id/last_search_label"
+        android:layout_width = "fill_parent"
+        android:layout_height = "wrap_content"
+        
+        android:layout_below = "@id/search_button"
+        android:layout_marginLeft = "17dip"
+        android:layout_marginRight = "15dip"
+        android:layout_marginTop = "5dip"
+        
+        android:text = "@string/search_label_last"
+        style = "@style/field_labels"
+        />
+        
+       <ListView
+           android:id = "@+id/search_last_list"
+           android:layout_below = "@id/last_search_label"
+           android:layout_marginTop = "10dp"
+           android:layout_marginLeft = "17dp"
+           android:layout_marginRight = "17dp"
+           android:layout_width = "fill_parent"
+           android:layout_height = "wrap_content" />
+
+</RelativeLayout>

@@ -11,13 +11,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.CookieStore;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.prevoz.android.Globals;
@@ -58,11 +61,11 @@ public class HTTPHelper
 		StringBuilder paramString = new StringBuilder();
 		paramString.append("?");
 
-		for (String key : params.keySet())
+		for (Entry<String, String> entry : params.entrySet())
 		{
-			paramString.append(URLEncoder.encode(key));
+			paramString.append(URLEncoder.encode(entry.getKey()));
 			paramString.append("=");
-			paramString.append(URLEncoder.encode(params.get(key)));
+			paramString.append(URLEncoder.encode(entry.getValue()));
 			paramString.append("&");
 		}
 
@@ -136,6 +139,8 @@ public class HTTPHelper
 		get.addHeader("User-Agent", "Prevoz on Android "
 				+ Build.VERSION.SDK_INT);
 
+		Log.d("HTTPHelper", "Getting " + url + params);
+		
 		// Add session cookies to request
 		if (sessionCookies != null)
 		{
@@ -160,10 +165,10 @@ public class HTTPHelper
 
 	public static String httpPost(String url) throws IOException
 	{
-		return httpPost(url, null);
+		return httpPost(url, null, false);
 	}
 	
-	public static String httpPost(String url, Map<String, String> parameters) throws IOException
+	public static String httpPost(String url, Map<String, String> parameters, boolean storeCookies) throws IOException
 	{
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpPost post = new HttpPost(url);
@@ -184,9 +189,9 @@ public class HTTPHelper
 		
 		if (parameters != null)
 		{
-			for (String param : parameters.keySet())
+			for (Entry<String, String> param : parameters.entrySet())
 			{
-				nameValuePairs.add(new BasicNameValuePair(param, parameters.get(param)));
+				nameValuePairs.add(new BasicNameValuePair(param.getKey(), param.getValue()));
 			}
 		}
 		
@@ -202,6 +207,22 @@ public class HTTPHelper
 			String responseString = HTTPHelper.convertStreamToString(instream);
 			instream.close();
 
+			if (storeCookies)
+			{
+				StringBuilder builder = new StringBuilder(50);
+				
+				CookieStore store = client.getCookieStore();
+				
+				for (Cookie cookie : store.getCookies())
+				{
+					builder.append(cookie.getName() + "=" + cookie.getValue() + ";");
+				}
+				
+				sessionCookies = builder.toString();
+				
+				Log.d("HTTPHelper", "Storing session cookies " + sessionCookies);
+			}
+			
 			return responseString;
 		}
 
@@ -213,6 +234,7 @@ public class HTTPHelper
 		// Restore session cookies
 		CookieSyncManager.createInstance(context);
 		CookieManager cookieManager = CookieManager.getInstance();
+		
 		sessionCookies = cookieManager.getCookie(Globals.API_DOMAIN);
 		
 		Log.d("HTTPHelper", "Storing session cookies " + sessionCookies);

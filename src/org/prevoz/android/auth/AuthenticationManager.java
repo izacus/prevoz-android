@@ -22,7 +22,7 @@ import android.webkit.CookieSyncManager;
 public class AuthenticationManager
 {
 	// Singelton methods
-	private static AuthenticationManager instance = null;
+	private volatile static AuthenticationManager instance = null;
 	
 	public static AuthenticationManager getInstance()
 	{
@@ -37,30 +37,23 @@ public class AuthenticationManager
 	private static final String PREF_API_KEY = "org.prevoz.apikey";
 	
 	private AuthenticationStatus currentStatus = AuthenticationStatus.UNKNOWN;
+	private LinkedList<Handler> loginStatusQueue = new LinkedList<Handler>();
 	private LinkedList<Handler> callbackQueue = new LinkedList<Handler>();
+	
+	private volatile boolean loginCheckInProgress = false;
 	
 	private AuthenticationManager()
 	{
 		// Nothing TBD
 	};
 	
-	/**
-	 * @param forceLogin	Forces authentication check and user to login with credentials
-	 * @return 			    Status of current user authentication
-	 */
-	public AuthenticationStatus getAuthenticationStatus(Activity context, boolean forceLogin)
-	{
-		return getAuthenticationStatus(context, forceLogin, null);
-	};
 	
 	/**
-	 * @param forceLogin	Forces authentication check and user to login with credentials
 	 * @param authCallback 	Callback which is called after full authentication status is determined
 	 * @return 				Status of current user authentication
 	 */
-	public synchronized AuthenticationStatus getAuthenticationStatus(final Activity context, 
-																	 final boolean forceLogin, 
-																	 final Handler authCallback)
+	public synchronized void getAuthenticationStatus(final Activity context, 
+													 final Handler authCallback)
 	{
 		if (currentStatus != AuthenticationStatus.UNKNOWN)
 		{
@@ -69,31 +62,41 @@ public class AuthenticationManager
 				authCallback.sendEmptyMessage(currentStatus.ordinal());
 			}
 			
-			return currentStatus;
+			return;
 		}
 		
-		Handler callback = new Handler()
+		// Add callback to waiting authentication queue
+		if (authCallback != null)
 		{
-			@Override
-			public void handleMessage(Message msg)
-			{
-				
-				AuthenticationStatus status = AuthenticationStatus.values()[msg.what];
-				authenticationStatusReceived(context, status, authCallback, forceLogin, true);
-			}
-		};
+			loginStatusQueue.add(authCallback);
+		}
 		
-		// Request new authenticated status
-		new AuthenticationCheckTask().execute(callback);
-		return AuthenticationStatus.UNKNOWN;
+		if (!loginCheckInProgress)
+		{
+			loginCheckInProgress = true;
+			
+			Handler callback = new Handler()
+			{
+				@Override
+				public void handleMessage(Message msg)
+				{
+					
+					AuthenticationStatus status = AuthenticationStatus.values()[msg.what];
+					authenticationStatusReceived(context, status, true);
+				}
+			};
+			
+			// Request new authenticated status
+			new AuthenticationCheckTask().execute(callback);
+		}
 	};
 	
 	private void authenticationStatusReceived(final Activity context, 
 											  final AuthenticationStatus status, 
-											  final Handler callback, 
-											  final boolean forceLogin,
 											  final boolean apikeyLogin)
 	{
+		
+		Log.i(this.toString(), "Received authentication status " + status);
 		
 		// Retry authentication with apikey if the status is negative
 		if (status == AuthenticationStatus.NOT_AUTHENTICATED && apikeyLogin)
@@ -102,14 +105,17 @@ public class AuthenticationManager
 			
 			if (sharedPrefs.contains(PREF_API_KEY))
 			{
+				
 				String apikey = sharedPrefs.getString(PREF_API_KEY, "");
+				
+				Log.i(this.toString(), "Attempting login with apikey " + apikey);
 				
 				Handler cback = new Handler() 
 				{
 					@Override
 					public void handleMessage(Message msg)
 					{
-						authenticationStatusReceived(context, AuthenticationStatus.values()[msg.what], callback, forceLogin, false);
+						authenticationStatusReceived(context, AuthenticationStatus.values()[msg.what], false);
 					}
 				};
 				
@@ -121,20 +127,14 @@ public class AuthenticationManager
 		}
 		
 		CookieSyncManager.createInstance(context).sync();
-		
-		// Force userlogin if he's not authenticated
-		if (currentStatus == AuthenticationStatus.NOT_AUTHENTICATED && forceLogin)
-		{
-			requestLogin(context, callback);
-			return;
-		}
-		
 		currentStatus = status;
 		
 		Log.i(this.toString(), "Setting authentication status to " + currentStatus);
+		loginCheckInProgress = false;
 		
-		if (callback != null)
+		while(!loginStatusQueue.isEmpty())
 		{
+			Handler callback = loginStatusQueue.poll();
 			callback.sendEmptyMessage(status.ordinal());
 		}
 	}
@@ -156,6 +156,7 @@ public class AuthenticationManager
 	 */
 	public void requestLogin(Activity context)
 	{
+		clearAuthCookies(context);
 		Intent intent = new Intent(context, LoginActivity.class);
 		context.startActivity(intent);
 		Log.d(this.toString(), "Starting authentication process...");
@@ -167,24 +168,36 @@ public class AuthenticationManager
 	 */
 	public void requestLogout(Activity context)
 	{
-		LogoutTask logoutTask = new LogoutTask(context);
+		LogoutTask logoutTask = new LogoutTask();
 		logoutTask.execute();
 		
 		try
 		{
 			if (logoutTask.get() == Globals.REQUEST_SUCCESS)
 			{
-				// Clear stored login cookies
-				CookieSyncManager.createInstance(context);
-				CookieManager cookieManager = CookieManager.getInstance();
-				cookieManager.removeAllCookie();
-				CookieSyncManager.getInstance().sync();
+				clearAuthCookies(context);
+				currentStatus = AuthenticationStatus.NOT_AUTHENTICATED;
 			}
 		}
 		catch (Exception e)
 		{
 			Log.e(this.toString(), "Logout task failed.", e);
 		}
+	}
+	
+	protected void clearAuthCookies(Context context)
+	{
+		// Clear stored login cookies
+		CookieSyncManager.createInstance(context);
+		CookieManager cookieManager = CookieManager.getInstance();
+		cookieManager.removeAllCookie();
+		CookieSyncManager.getInstance().sync();
+		
+		// Clear API key and reset authentication status
+		SharedPreferences sharedPrefs = context.getSharedPreferences(PREF_API_KEY, 0);
+		SharedPreferences.Editor editor = sharedPrefs.edit();
+		editor.remove(PREF_API_KEY);
+		editor.commit();
 	}
 	
 	/**
@@ -211,7 +224,7 @@ public class AuthenticationManager
 	
 	private void getApiKey(Context context)
 	{
-		// Run authentication check  to retrieve the API key
+		// Run authentication check to retrieve the API key
 		AuthenticationCheckTask authCheck = new AuthenticationCheckTask();
 		authCheck.execute();
 		

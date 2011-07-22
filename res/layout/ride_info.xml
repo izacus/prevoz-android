@@ -6,31 +6,37 @@
   <ScrollView
       android:layout_width = "fill_parent"
       android:layout_height = "wrap_content"
-      android:fillViewport = "true"
-      android:layout_margin = "3dp" >
+      android:fillViewport = "true">
 
     <LinearLayout
         android:layout_width = "fill_parent"
         android:layout_height = "fill_parent"
-        android:orientation = "vertical"
-        style="@style/ViewStyle">
+        android:orientation = "vertical">
         
 	    <!-- From location -->
 	    <TextView
 	        android:id = "@+id/rideinfo_from" 
 	        android:layout_width = "fill_parent"
 	        android:layout_height = "wrap_content"
-	        style = "@style/RideInfoTitle" />
+	        android:padding = "5dp"
+	        android:text="TestLocation"
+	        
+	        style = "@style/location_title" />
 	
-	    <!-- From location -->
+	    <!-- To location -->
 	    <TextView
 	        android:id = "@+id/rideinfo_to" 
 	        android:layout_width = "fill_parent"
 	        android:layout_height = "wrap_content"
-	        style = "@style/RideInfoTitle" />
+	        android:layout_marginTop = "1dip"
+	        android:paddingLeft = "5dp"
+	        android:paddingRight = "5dp"
+	        android:text="TestLocation"
 	        
-	   <include layout = "@layout/separator" />     
-	        
+	        style = "@style/location_title" />
+	   
+	   <include layout = "@layout/separator" />
+	   
 	   <!-- Time and date display -->     
 	   <LinearLayout
 	        android:layout_width = "fill_parent"
@@ -43,6 +49,8 @@
 	            android:layout_height = "fill_parent"
 	            android:layout_weight = "1"
 	            style = "@style/RideInfoClock"
+	            
+	            android:text="99:99"
 	            />
 	            
 	       <LinearLayout
@@ -84,6 +92,9 @@
 		            android:id = "@+id/rideinfo_price"
 		            android:layout_width = "fill_parent"
 		            android:layout_height = "wrap_content"
+		            
+		            android:text = "99.9€"
+		            
 		            style="@style/PricePplText"
 		            />
 	             <TextView
@@ -104,6 +115,7 @@
 	                android:id = "@+id/rideinfo_people"
 	                android:layout_width = "fill_parent"
 	                android:layout_height = "wrap_content"
+	                android:text = "9"
 	                style="@style/PricePplText"
 	                />
 	             <TextView
@@ -128,6 +140,9 @@
            android:layout_width = "wrap_content"
            android:layout_height = "fill_parent"
            android:layout_alignParentTop = "true"
+           
+           android:text = "Kar en clovek tam neki"
+           
            style="@style/DriverNameText" />
            
          <TextView
@@ -136,6 +151,9 @@
            android:layout_height = "fill_parent"
            android:layout_below = "@id/rideinfo_author"
            android:layout_centerVertical = "true"
+           
+           android:text = "+386 99999 999"
+           
            style="@style/PhoneNumberText"
            />
 	     
@@ -145,7 +163,11 @@
            android:layout_height = "fill_parent"
            android:layout_alignParentRight = "true"
            android:layout_alignParentTop = "true"
+           android:layout_margin = "2dip"
            android:text = "Pošlji SMS"
+           
+           android:background = "@drawable/button_white"
+           style = "@style/button_white_small"
            />
 	     
 	      <Button
@@ -154,10 +176,24 @@
 	        android:layout_height = "fill_parent"
 	        android:layout_toLeftOf = "@id/rideinfo_sms"
 	        android:layout_alignParentTop = "true"
+	        android:layout_margin = "2dip"
 	        android:text = "Pokliči"
+	        
+	        android:background = "@drawable/button_white"
+            style = "@style/button_white_small"
 	        />
 	     
 	   </RelativeLayout>
+	  
+	   <TextView 
+	       android:id = "@+id/rideinfo_insurance"
+	       android:layout_height="wrap_content"
+	       android:layout_width="fill_parent"
+	       android:layout_margin="8dip"
+	       android:gravity="left"
+	       
+	       style="@style/PricePplTagText"
+	   />
 	  
 	   <include layout = "@layout/separator" />
 	  
@@ -173,6 +209,9 @@
 	    android:layout_width = "fill_parent"
 	    android:layout_height = "wrap_content"
 	    android:layout_margin = "8dip"
+	    android:background = "@drawable/button_black_rnd"
+	    android:gravity="center"
+	    style = "@style/button_black"
 	    android:visibility = "gone"
 	    />
 	   

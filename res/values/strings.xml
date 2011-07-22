@@ -1,34 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<!-- General application data -->
     <string name="app_name">Prevoz</string>
-    <string name="app_version">1.0.3</string>
+    <string name="app_version">2.0.0</string>
+    <string name="ga_identity">UA-306569-17</string>
     
     <string name="about">O aplikaciji</string>
     <string name="about_text">Pripombe na info@prevoz.org</string>
     
+    <!-- General strings -->
+    <string name="loading">Nalagam...</string>
+    
     <!-- Error strings -->
     <string name="server_error">Strežnik prevoz ni na voljo. Prosimo poskusite kasneje.</string>
-    <string name="network_error">Napaka na internetni povezavi.</string>
+    <string name="network_error">Napaka na internetni povezavi, preverite če ste povezani.</string>
     
-    <!--  Search tab strings -->
-    <string name="search_tab">Iskanje</string>
-    <string name="searching">Iščem...</string>
+    <!-- City selector strings -->
+    <string name="city_hint">Kraj</string>
+    
+    <!--  Search strings -->
+    <string name="search_label_from">Od</string>
+    <string name="search_label_to">Do</string>
+    <string name="search_label_date">Datum</string>
     <string name="search_no_results">Prevozov za ta dan ni.</string>
+    <string name="all_locations">Vsi kraji</string>
+    <string name="search_label_last">Nazadnje iskano</string>
+    <string name="search_hint_from">Odhod iz</string>
+    <string name="search_hint_to">Prihod v</string>
+    <string name="search_go">Išči</string>
+    <string name="search_gps_locating">Lociram...</string>
+    <string name="search_gps_error">Vaše lokacije ni bilo mogoče najti.</string>
+    <string name="search_searching">Iščem...</string>
     
-    <string name="im_searching">Iščem</string>
-    <string name="searching_shares">ponujene prevoze</string>
-    <string name="searching_seekers">iskalce prevozov</string>
+    <!-- Ride add strings -->
+    <string name="add_title">dodajanje</string>
+    <string name="add_datetime">Datum in čas</string>
+    <string name="add_price">Delež stroškov</string>
+    <string name="add_price_hint">Stroški</string>
+    <string name="add_numppl">Število mest</string>
+    <string name="add_comment">Opombe</string>
+    <string name="add_phone">Telefon</string>
+    <string name="add_button">Predogled</string>
+    <string name="add_send">Pošlji</string>
+    <string name="add_num_ppl">Št. ljudi</string>
+    <string name="add_insurance">imam nezgodno zavarovanje potnikov v vozilu</string>
+    <string name="logout">Odjava</string>
+    <string name="logout_success">Odjava uspešna.</string>
     
-    <string name="origin">Kraj odhoda</string>
-    <string name="destination">Kraj prihoda</string>
-    <string name="date">Datum</string>
-    <string name="time">Čas</string>
+    <string name="add_select_city">izberi kraj</string>
     
-    <string name="gps_error">Vaše lokacije ni bilo mogoče najti.</string>
+    <!-- Ride add errors -->
+    <string name="add_error_timepast">Čas prevoza je že bil.</string>
+    <string name="add_error_enterphone">Vpišite telefonsko številko.</string>
+    <string name="add_error_enterprice">Vpišite delež stroškov prevoza.</string>
+    <string name="add_error_enterfrom">Izberite kraj odhoda.</string>
+    <string name="add_error_enterto">Izberite kraj prihoda.</string>
+   
     
     <!--  Ride details strings -->
-    <string name="loading">Nalagam...</string>
-    <string name="price">cena</string>
+    <string name="price">stroški</string>
+    <string name="delete">Izbriši</string>
+    <string name="ride_deleted">Prevoz je bil uspešno izbrisan.</string>
+    
+    <string name="driver_has_insurance">Voznik <b>ima</b> zavarovanje za sopotnike.</string>
+    <string name="driver_hasnt_insurance">Voznik <b>nima</b> zavarovanja za sopotnike.</string>
     
     <string-array name="people_tags">
       <item>oseba</item>
@@ -37,54 +72,10 @@
       <item>oseb</item>
     </string-array>
     
-    <string name="delete">Izbriši</string>
-    
-    <!-- My rides tab strings -->
-    <string name="my_rides_tab">Moji prevozi</string>
-    <string name="favorites">Priljubljene</string>
-    <string name="no_favorites">Nimate priljubljenih poti.</string>
-    
-    <!-- Add ride strings -->
-    <string name="add_tab">Dodaj prevoz</string>
-    <string name="add_login_required">Za dodajanje prevoza se morate prijaviti.</string>
-    <string name="checking_login_status">Preverjam stanje prijave...</string>
-    
-    <string name="add_share">ponujam prevoz</string>
-    <string name="add_seek">iščem prevoz</string>
-    
-    <string name="add_num_ppl">Št. ljudi</string>
-    <string name="add_price">Cena</string>
-    <string name="add_phone">Telefon</string>
-    <string name="add_comment">Opombe</string>
-    <string name="add_button">Naprej</string>
-    
-    <string name="preview">Predogled</string>
-    <string name="add_send">Pošlji</string>
-    
-    <string name="add_sending">Pošiljam...</string>
-    
-    <!--  Add ride error strings -->
-    <string name = "add_missing_loc">Kraja odhoda in prihoda morata biti izpolnjena.</string>
-    <string name = "add_missing_phone">Telefonska številka mora biti vpisana.</string>
-    
-    
-    <!-- Menu options -->
-    <string name="add_to_favorites">Dodaj med priljubljene</string>
-    <string name="added_to_favorites">Pot je bila dodana med priljubljene.</string>
-    
-    <!--  Update query -->
-    <string name="new_version">Nova različica</string>
-    <string name="ok">V redu</string>
-    <string name="cancel">Prekliči</string>
-    
-    
-    <!-- Logout -->
-    <string name="login">Prijava</string>
-    <string name="logout">Odjava</string>
-    <string name="logout_progress">Odjavljam...</string>
-    <string name="logout_success">Odjava uspešna.</string>
-    
     <!--  Day and month names -->
+    
+    <string name="today">danes</string>
+    <string name="tomorrow">jutri</string>
     
     <string-array name="day_names">
         <item>Nedelja</item>
@@ -110,6 +101,4 @@
         <item>november</item>
         <item>december</item>
     </string-array>
-    
-<string name="deleting">Brišem...</string>
 </resources>

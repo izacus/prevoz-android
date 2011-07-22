@@ -38,6 +38,7 @@ public class DeleteRideTask implements Runnable
 		}
 		catch (IOException e)
 		{
+			callback.sendEmptyMessage(Globals.REQUEST_ERROR_NETWORK);
 		}
 
 		callback.sendEmptyMessage(Globals.REQUEST_SUCCESS);

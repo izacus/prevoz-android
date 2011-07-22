@@ -53,7 +53,7 @@ public class UpdateCheckTask implements Runnable
 		
 		Thread checkThread = new Thread(this);
 		checkThread.setDaemon(true);
-		checkThread.run();
+		checkThread.start();
 	}
 
 	public void run()

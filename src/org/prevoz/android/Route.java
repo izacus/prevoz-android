@@ -33,7 +33,30 @@ public class Route
 	@Override
 	public String toString()
 	{
-		return from + " - " + to;
+		String fromText;
+		String toText;
+		
+		if (from == null || from.length() == 0)
+		{
+			// TODO: Add resource
+			fromText = "Vsi kraji";
+		}
+		else
+		{
+			fromText = from;
+		}
+		
+		if (to == null || to.length() == 0)
+		{
+			// TODO: Add resource
+			toText = "Vsi kraji";
+		}
+		else
+		{
+			toText = to;
+		}
+		
+		return fromText + " - " + toText;
 	}
 
 	public RideType getType()
