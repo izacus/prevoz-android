@@ -161,13 +161,13 @@ public class CitySelectorActivity extends FragmentActivity implements TextWatche
 								  int actionId, 
 								  KeyEvent event) 
 	{
-		if (cityList.getCount() > 1)
+		if ((cityList.getCount() > 1) || (cityList.getCount() == 0))
 		{
 			tracker.trackEvent("CitySelector", "SelectionCanceled", "", 0);
 			setResult(RESULT_CANCELED);
 			finish();
 		}
-		else
+		else 
 		{
 			String name = ((TextView)cityList.getChildAt(0)).getText().toString();
 			tracker.trackEvent("CitySelector", "CitySelected", name, 0);
