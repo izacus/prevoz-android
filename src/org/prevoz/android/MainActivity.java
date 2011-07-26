@@ -51,7 +51,7 @@ public class MainActivity extends FragmentActivity implements OnDateSetListener
 		tracker.trackEvent("Application", "Start", getString(R.string.app_version), 0);
 		
 		// Sanitize search database
-		Database.deleteHistoryEntries(this, 4);
+		Database.deleteHistoryEntries(this, 10);
 		
 		setContentView(R.layout.main_activity);		
 		Calendar now = Calendar.getInstance();
