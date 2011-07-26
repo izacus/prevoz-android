@@ -164,7 +164,7 @@ public class SearchFormFragment extends Fragment
 		selectedDate = Calendar.getInstance();
 		if (savedInstanceState != null)
 		{
-			if (savedInstanceState.containsKey("selected_date"))
+			if (savedInstanceState.containsKey("selected_date") && savedInstanceState.getLong("selected_date") > selectedDate.getTimeInMillis())
 			{
 				selectedDate.setTimeInMillis(savedInstanceState.getLong("selected_date"));
 			}
