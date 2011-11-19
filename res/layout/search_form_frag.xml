@@ -19,9 +19,28 @@
    		android:layout_height="@dimen/title_height"
    		android:layout_width="1sp"
    		android:layout_toLeftOf="@id/search_add_ride"
-   		android:id = "@+id/delimiter"
+   		android:id = "@+id/delimiter1"
    		android:background="#EEE"
-   ></LinearLayout>    
+   ></LinearLayout>
+   
+    <ImageButton
+        android:id = "@+id/show_active_notifications"
+        android:layout_height = "@dimen/title_height"
+        android:layout_width = "wrap_content"
+        android:layout_toLeftOf="@id/delimiter1"
+        android:layout_alignParentTop = "true"
+        android:scaleType = "fitCenter"
+        android:src="@drawable/add_ride"
+        android:background = "@drawable/button_title"
+        />
+    
+    <LinearLayout 
+   		android:layout_height="@dimen/title_height"
+   		android:layout_width="1sp"
+   		android:layout_toLeftOf="@id/show_active_notifications"
+   		android:id = "@+id/delimiter2"
+   		android:background="#EEE"
+   ></LinearLayout>
     
     <include layout="@layout/title_bar" 
          android:id = "@+id/title_bar"
@@ -29,7 +48,7 @@
          android:layout_width = "wrap_content"
          android:layout_height = "@dimen/title_height"
           
-         android:layout_toLeftOf = "@id/delimiter"
+         android:layout_toLeftOf = "@id/delimiter2"
          android:layout_alignParentLeft = "true"
          android:layout_alignParentTop = "true" />
     
