@@ -42,11 +42,6 @@ public class Database
 					   "to_loc TEXT NOT NULL, " +
 					   "date DATE NOT NULL)");
 			
-			db.execSQL("CREATE TABLE favorites (ID INTEGER PRIMARY KEY AUTOINCREMENT,"
-					+ "from_loc TEXT NOT NULL,"
-					+ "to_loc TEXT NOT NULL,"
-					+ "type INTEGER NOT NULL)");
-			
 			db.execSQL("CREATE TABLE notify_subscriptions (ID INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ "from_loc TEXT NOT NULL," 
 					+ "to_loc TEXT NOT NULL,"
@@ -72,11 +67,19 @@ public class Database
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 		{
-			db.execSQL("DROP TABLE favorites");
-			
 			if (oldVersion > 3)
 			{
 				db.execSQL("DROP TABLE locations");
+			}
+			
+			if (oldVersion < 7)
+			{
+				db.execSQL("DROP TABLE favorites");
+			}
+			
+			if (oldVersion > 5)
+			{
+				db.execSQL("DROP TABLE search_history");
 			}
 
 			onCreate(db);
