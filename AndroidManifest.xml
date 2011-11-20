@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="org.prevoz.android"
-      android:versionName="@string/app_version" android:versionCode="7">
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+      android:versionName="@string/app_version" android:versionCode="8">
     <application android:icon="@drawable/icon" android:label="@string/app_name">
         <activity android:name="MainActivity"
                   android:label="@string/app_name"
@@ -15,8 +14,7 @@
 
 	<activity android:name=".CitySelectorActivity" 
 			  android:theme="@style/PrevozTheme"
-			  android:windowSoftInputMode = "stateVisible|adjustResize"
-			  ></activity>
+			  android:windowSoftInputMode = "stateVisible|adjustResize"></activity>
     <activity android:name=".rideinfo.RideInfoActivity" android:theme="@style/PrevozTheme"></activity>
     <activity android:name=".auth.LoginActivity" android:theme="@style/PrevozTheme"></activity>
     <activity android:name=".search.SearchResultsActivity" android:theme = "@style/PrevozTheme"></activity>
@@ -27,6 +25,6 @@
 <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
-
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
 </manifest> 
