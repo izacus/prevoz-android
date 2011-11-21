@@ -1,15 +1,15 @@
 package org.prevoz.android.c2dm;
 
-import java.util.Date;
+import java.util.Calendar;
 
 public class NotifySubscription 
 {
 	private Integer id;
 	private String from;
 	private String to;
-	private Date date;
+	private Calendar date;
 	
-	public NotifySubscription(String from, String to, Date date)
+	public NotifySubscription(String from, String to, Calendar date)
 	{
 		this.from = from;
 		this.to = to;
@@ -17,7 +17,7 @@ public class NotifySubscription
 		this.id = null;
 	}
 	
-	public NotifySubscription(int id, String from, String to, Date date) 
+	public NotifySubscription(int id, String from, String to, Calendar date) 
 	{
 		this(from, to, date);
 		this.id = id;
@@ -35,7 +35,7 @@ public class NotifySubscription
 		return to;
 	}
 
-	public Date getDate() {
+	public Calendar getDate() {
 		return date;
 	}
 }
