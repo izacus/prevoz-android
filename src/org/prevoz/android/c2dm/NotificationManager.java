@@ -1,6 +1,7 @@
 package org.prevoz.android.c2dm;
 
 import java.util.Calendar;
+import java.util.List;
 
 import org.prevoz.android.util.Database;
 
@@ -35,6 +36,12 @@ public class NotificationManager
 	public boolean isNotified(Context context, String from, String to, Calendar when) 
 	{
 		return Database.getNotificationSubscription(context, from, to, when) != null;
+	}
+	
+	public List<NotifySubscription> getNotificationSubscriptions(Context context)
+	{
+		List<NotifySubscription> subscriptons = Database.getNotificationSubscriptions(context);
+		return subscriptons;
 	}
 
 	public void disableNotification(Context context, String from, String to, Calendar when) 

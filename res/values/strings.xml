@@ -33,6 +33,9 @@
     <string name="search_gps_error">Vaše lokacije ni bilo mogoče najti.</string>
     <string name="search_searching">Iščem...</string>
     
+    <!-- Notification strings -->
+    <string name="notification_list_empty">Niste prijavljeni za obveščanje.\nČe se želite prijaviti za obveščanje pritisnite ikono zvočka ob rezultatih iskanja.</string>
+        
     <!-- Ride add strings -->
     <string name="add_title">dodajanje</string>
     <string name="add_datetime">Datum in čas</string>
