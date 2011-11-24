@@ -56,7 +56,11 @@ public class NotificationListAdapter extends ArrayAdapter<NotifySubscription>
 		
 		NotifySubscription item = getItem(position);
 		NotificationWrapper wrapper = (NotificationWrapper) view.getTag();
-		wrapper.relation.setText(item.getFrom() + " - " + item.getTo());
+		
+		String from = item.getFrom().trim().length() == 0 ? context.getResources().getString(R.string.all_locations) : item.getFrom();
+		String to = item.getTo().trim().length() == 0 ? context.getResources().getString(R.string.all_locations) : item.getTo();
+		
+		wrapper.relation.setText(from + " - " + to);
 		wrapper.date.setText(LocaleUtil.getDayName(context.getResources(), item.getDate()) + ", " +
 							 LocaleUtil.getFormattedDate(context.getResources(), item.getDate()));
 		
