@@ -20,12 +20,34 @@
     <activity android:name=".search.SearchResultsActivity" android:theme = "@style/PrevozTheme"></activity>
     <activity android:name=".add_ride.AddRideActivity" android:theme="@style/PrevozTheme" android:windowSoftInputMode="stateHidden"></activity>
     <activity android:name=".c2dm.NotificationsActivity" android:theme="@style/PrevozTheme"></activity>
+    
+    <receiver android:name="com.google.android.c2dm.C2DMBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND">
+		<!-- Receive the actual message -->
+        <intent-filter>
+            <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            <category android:name="org.prevoz.android" />
+        </intent-filter>
+          <!-- Receive the registration id -->
+        <intent-filter>
+            <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+            <category android:name="org.prevoz.android" />
+        </intent-filter>
+    </receiver>
 </application>
 
-<uses-sdk android:targetSdkVersion="5" android:minSdkVersion="4"></uses-sdk>
+<permission android:name="org.prevoz.android.permission.C2D_MESSAGE" android:protectionLevel="signature" />        
+        
+<uses-sdk android:targetSdkVersion="10" android:minSdkVersion="4"></uses-sdk>
+
+<!-- This app has permission to register and receive message -->
+<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />    
 <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+<uses-permission android:name="org.prevoz.android.permission.C2D_MESSAGE" ></uses-permission>
 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+<uses-permission android:name="android.permission.WAKE_LOCK"></uses-permission>
+<uses-permission android:name="android.permission.GET_ACCOUNTS" />
+<uses-permission android:name="android.permission.USE_CREDENTIALS" />
 </manifest> 
