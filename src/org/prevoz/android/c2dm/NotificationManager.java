@@ -58,7 +58,7 @@ public class NotificationManager
 			}
 		}
 		
-		return registrationId != null && !registrationId.trim().isEmpty();
+		return registrationId != null && registrationId.trim().length() > 0;
 	}
 	
 	public boolean isNotified(Context context, String from, String to, Calendar when) 

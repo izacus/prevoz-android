@@ -1,4 +1,4 @@
-package org.prevoz.android.c2dm;
+package org.prevoz.android;
 
 import java.io.IOException;
 
@@ -8,9 +8,9 @@ import android.util.Log;
 
 import com.google.android.c2dm.C2DMBaseReceiver;
 
-public class MessageReceiver extends C2DMBaseReceiver  
+public class C2DMReceiver extends C2DMBaseReceiver  
 {
-	public MessageReceiver()
+	public C2DMReceiver()
 	{
 		super("gandalfar@gmail.com");
 	}
