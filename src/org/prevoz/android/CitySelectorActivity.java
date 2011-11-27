@@ -1,6 +1,7 @@
 package org.prevoz.android;
 
 import org.prevoz.android.util.Database;
+import org.prevoz.android.util.GPSManager;
 
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 

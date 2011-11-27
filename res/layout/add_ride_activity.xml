@@ -10,7 +10,7 @@
 	<include layout="@layout/title_bar" 
 	   		 android:id = "@+id/title_bar" />
 	
-	<org.prevoz.android.FixedViewFlipper
+	<org.prevoz.android.util.FixedViewFlipper
 	  android:layout_width="fill_parent"
 	  android:layout_height="fill_parent"
 	  android:id = "@+id/add_flipper"
@@ -25,6 +25,6 @@
 	  <include
 	    layout = "@layout/ride_info" />
 	    
-	</org.prevoz.android.FixedViewFlipper>
+	</org.prevoz.android.util.FixedViewFlipper>
 
 </LinearLayout>

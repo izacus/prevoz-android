@@ -8,10 +8,10 @@ import java.util.HashMap;
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
 import org.prevoz.android.RideType;
-import org.prevoz.android.SectionedAdapter;
 import org.prevoz.android.c2dm.NotificationManager;
 import org.prevoz.android.rideinfo.RideInfoActivity;
 import org.prevoz.android.search.SearchResultAdapter.SearchResultViewWrapper;
+import org.prevoz.android.util.SectionedAdapter;
 
 import android.content.Intent;
 import android.os.Bundle;

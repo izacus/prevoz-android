@@ -1,4 +1,4 @@
-package org.prevoz.android;
+package org.prevoz.android.util;
 
 /*
  * Copyright (C) 2011 Alexander Blom
