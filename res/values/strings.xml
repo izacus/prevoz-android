@@ -35,6 +35,8 @@
     
     <!-- Notification strings -->
     <string name="notification_list_empty">Niste prijavljeni za obveščanje.\nČe se želite prijaviti za obveščanje pritisnite ikono zvočka ob rezultatih iskanja.</string>
+    <string name="notify_reg_success">Prijavljeni ste na obveščanje.</string>
+    <string name="notify_reg_fail">Ni vas bilo mogoče prijaviti na obveščanje.</string>
         
     <!-- Ride add strings -->
     <string name="add_title">dodajanje</string>

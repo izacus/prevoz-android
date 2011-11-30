@@ -6,13 +6,12 @@ import java.util.List;
 import org.prevoz.android.R;
 import org.prevoz.android.util.Database;
 
-import com.google.android.c2dm.C2DMessaging;
-
 import android.content.Context;
 import android.util.Log;
 
+import com.google.android.c2dm.C2DMessaging;
 
-public class NotificationManager 
+public class NotificationManager
 {
 	private static NotificationManager instance;
 	private static Context applicationContext;
