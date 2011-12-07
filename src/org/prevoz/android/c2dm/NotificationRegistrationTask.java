@@ -7,30 +7,32 @@ import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.prevoz.android.util.AsyncLoader;
 import org.prevoz.android.util.HTTPHelper;
 
-import android.content.Context;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 
-public class NotificationRegistrationLoader extends AsyncLoader<Boolean> 
+public class NotificationRegistrationTask extends AsyncTask<Void, Void, Boolean> 
 {
 	private static final String REGISTER_URL = "http://prevoz.org/api/c2dm/register/";
-	
+
 	private NotificationRegistrationRequest request;
+	private Handler callback;
 	
-	public NotificationRegistrationLoader(Context context, NotificationRegistrationRequest request)
+	public NotificationRegistrationTask(NotificationRegistrationRequest request)
 	{
-		super(context);
 		this.request = request;
 	}
 	
+	public NotificationRegistrationRequest getRequest() {
+		return request;
+	}
 
 	@Override
-	public Boolean loadInBackground() 
+	protected Boolean doInBackground(Void... params) 
 	{
-		String responseString;
-		
+		String responseString = null;
 		try
 		{
 			Map<String, String> postParams = new HashMap<String, String>();
@@ -46,20 +48,11 @@ public class NotificationRegistrationLoader extends AsyncLoader<Boolean>
 			
 			
 			responseString = HTTPHelper.httpPost(REGISTER_URL, postParams, false);
-		}
-		catch (IOException e)
-		{
-			Log.e(this.toString(), "Failed to (un)register for C2DM: " + e.getMessage(), e);
-			return false;
-		}
-		
-		if (responseString == null)
-			return false;
-		
-		try
-		{
-			JSONObject root = new JSONObject(responseString);
 			
+			if (responseString == null)
+				return false;
+			
+			JSONObject root = new JSONObject(responseString);
 			if (root.has("status") && root.getString("status").equalsIgnoreCase("success"))
 			{
 				return true;
@@ -67,16 +60,27 @@ public class NotificationRegistrationLoader extends AsyncLoader<Boolean>
 			
 			return false;
 		}
+		catch (IOException e)
+		{
+			Log.e(this.toString(), "Failed to (un)register for C2DM: " + e.getMessage(), e);
+			return false;
+		}
 		catch (JSONException e)
 		{
 			Log.e(this.toString(), "Corrupted response from register server: " + responseString, e);
 			return false;
 		}
+		finally
+		{
+			if (callback != null)
+			{
+				callback.sendEmptyMessage(0);
+			}
+		}
 	}
-
-
-	public NotificationRegistrationRequest getRequest() {
-		return request;
+	
+	public void setCallback(Handler callback)
+	{
+		this.callback = callback;
 	}
-
 }

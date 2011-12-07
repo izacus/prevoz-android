@@ -2,12 +2,16 @@ package org.prevoz.android.c2dm;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import org.prevoz.android.R;
 import org.prevoz.android.util.Database;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.c2dm.C2DMessaging;
 
@@ -75,6 +79,7 @@ public class NotificationManager
 	{
 		Log.d(this.toString(), "Disabling " + from + " - " + to  + ", " + when.toString());
 		
+		
 		NotifySubscription subscription = Database.getNotificationSubscription(context, from, to, when);
 		
 		if (subscription == null)
@@ -86,9 +91,46 @@ public class NotificationManager
 		Log.d(this.toString(), "OK");
 	}
 
-	public void enableNotification(Context context, String from, String to, Calendar when) 
+	public void enableNotification(final Context context, final String from, final String to, final Calendar when) 
 	{
 		Log.d(this.toString(), "Enabling " + from + " - " + to  + ", " + when.toString());
-		Database.addNotificationSubscription(context, from, to, when);
+		
+		if (Database.getNotificationSubscription(context, from, to, when) != null)
+		{
+			// TODO: notify
+			return;
+		}
+		
+		
+		NotificationRegistrationRequest request = new NotificationRegistrationRequest(this.registrationId,
+																					  from,
+																					  to,
+																					  when,
+																					  true);
+		
+		final NotificationRegistrationTask task = new NotificationRegistrationTask(request);
+		Handler handler = new Handler() {
+
+			@Override
+			public void handleMessage(Message msg) 
+			{
+				try
+				{
+					if (!task.get())
+					{
+						Toast.makeText(context, context.getString(R.string.notify_reg_fail), Toast.LENGTH_SHORT).show();
+						return;
+					}
+				}
+				catch (ExecutionException e) { return; }
+				catch (InterruptedException e) { return; }
+				
+				Toast.makeText(context, context.getString(R.string.notify_reg_success), Toast.LENGTH_SHORT).show();
+				Database.addNotificationSubscription(context, from, to, when);
+			}
+			
+		};
+		task.setCallback(handler);
+		task.execute((Void)null);
 	}
 }
