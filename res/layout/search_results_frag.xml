@@ -23,6 +23,14 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
+ 	<include layout="@layout/title_bar" 
+  		 	 android:id = "@+id/title_bar"
+  		 	 android:layout_alignParentTop="true"
+  		 	 android:layout_alignParentLeft="true"
+  		 	 android:layout_alignParentRight="true"
+  		 	 android:layout_width="fill_parent"
+  		 	 android:layout_height = "@dimen/title_height" />
+
   <ImageButton
         android:id = "@+id/send_notifications"
         android:layout_height = "@dimen/title_height"
@@ -41,15 +49,6 @@
    		android:id = "@+id/delimiter"
    		android:background="#EEE"
    ></LinearLayout>
-      
-      
- 	<include layout="@layout/title_bar" 
-  		 	 android:id = "@+id/title_bar"
-  		 	 android:layout_alignParentTop="true"
-  		 	 android:layout_alignParentLeft="true"
-  		 	 android:layout_toLeftOf="@id/delimiter"
-  		 	 android:layout_width="wrap_content"
-  		 	 android:layout_height = "@dimen/title_height" />
 
       
 	  <ListView

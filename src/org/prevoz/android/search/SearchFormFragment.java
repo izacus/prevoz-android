@@ -8,6 +8,7 @@ import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.Route;
 import org.prevoz.android.add_ride.AddRideActivity;
+import org.prevoz.android.c2dm.NotificationManager;
 import org.prevoz.android.c2dm.NotificationsActivity;
 import org.prevoz.android.util.Database;
 import org.prevoz.android.util.LocaleUtil;
@@ -199,6 +200,16 @@ public class SearchFormFragment extends Fragment
 	{
 		super.onResume();
 		populateLastSearchList();
+		
+		if (NotificationManager.getInstance().notificationsAvailable())
+		{
+			notifications.setVisibility(View.VISIBLE);
+		}
+		else
+		{
+			notifications.setVisibility(View.GONE);
+		}
+			
 	}
 
 	@Override

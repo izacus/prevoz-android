@@ -76,6 +76,19 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 			}
 		});
 		
+		View delimiter = getActivity().findViewById(R.id.delimiter);
+		
+		if (NotificationManager.getInstance().notificationsAvailable())
+		{
+			delimiter.setVisibility(View.VISIBLE);
+			notifyButton.setVisibility(View.VISIBLE);
+		}
+		else
+		{
+			delimiter.setVisibility(View.GONE);
+			notifyButton.setVisibility(View.GONE);
+		}
+		
 		if (NotificationManager.getInstance().isNotified(getActivity(), from, to, when))
 		{
 			notificationEnabled = true;
@@ -93,6 +106,14 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 	public void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
+	}
+	
+	
+
+	@Override
+	public void onResume() 
+	{
+		super.onResume();
 	}
 
 	@Override
