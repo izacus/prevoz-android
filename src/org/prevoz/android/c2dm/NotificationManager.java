@@ -17,6 +17,9 @@ import com.google.android.c2dm.C2DMessaging;
 
 public class NotificationManager
 {
+	public static final int REGISTRATION_SUCCESS = 0;
+	public static final int REGISTRATION_FAILURE = 1;
+	
 	private static NotificationManager instance;
 	private static Context applicationContext;
 	
@@ -75,23 +78,56 @@ public class NotificationManager
 		return subscriptons;
 	}
 
-	public void disableNotification(Context context, String from, String to, Calendar when) 
+	public void disableNotification(final Context context, final String from, final String to, final Calendar when, final Handler callback) 
 	{
 		Log.d(this.toString(), "Disabling " + from + " - " + to  + ", " + when.toString());
 		
-		
-		NotifySubscription subscription = Database.getNotificationSubscription(context, from, to, when);
+		final NotifySubscription subscription = Database.getNotificationSubscription(context, from, to, when);
 		
 		if (subscription == null)
 		{
 			Log.e(this.toString(), "Requested subscription for disabling not found!");
+			return;
 		}
 		
-		Database.deleteNotificationSubscription(context, subscription.getId());
-		Log.d(this.toString(), "OK");
+		NotificationRegistrationRequest request = new NotificationRegistrationRequest(this.registrationId,
+																					  from,
+																					  to,
+																					  when,
+																					  false);
+		
+		final NotificationRegistrationTask task = new NotificationRegistrationTask(request);
+		Handler handler = new Handler() {
+
+			@Override
+			public void handleMessage(Message msg) 
+			{
+				try
+				{
+					if (!task.get())
+					{
+						Toast.makeText(context, context.getString(R.string.notify_dereg_fail), Toast.LENGTH_SHORT).show();
+						
+						if (callback != null)
+							callback.sendEmptyMessage(REGISTRATION_SUCCESS);
+						return;
+					}
+				}
+				catch (ExecutionException e) { return; }
+				catch (InterruptedException e) { return; }
+				
+				Toast.makeText(context, context.getString(R.string.notify_dereg_success), Toast.LENGTH_SHORT).show();
+				Database.deleteNotificationSubscription(context, subscription.getId());
+				if (callback != null)
+					callback.sendEmptyMessage(REGISTRATION_FAILURE);
+			}
+			
+		};
+		task.setCallback(handler);
+		task.execute((Void)null);
 	}
 
-	public void enableNotification(final Context context, final String from, final String to, final Calendar when) 
+	public void enableNotification(final Context context, final String from, final String to, final Calendar when, final Handler callback) 
 	{
 		Log.d(this.toString(), "Enabling " + from + " - " + to  + ", " + when.toString());
 		
@@ -119,6 +155,9 @@ public class NotificationManager
 					if (!task.get())
 					{
 						Toast.makeText(context, context.getString(R.string.notify_reg_fail), Toast.LENGTH_SHORT).show();
+						
+						if (callback != null)
+							callback.sendEmptyMessage(REGISTRATION_SUCCESS);
 						return;
 					}
 				}
@@ -127,6 +166,8 @@ public class NotificationManager
 				
 				Toast.makeText(context, context.getString(R.string.notify_reg_success), Toast.LENGTH_SHORT).show();
 				Database.addNotificationSubscription(context, from, to, when);
+				if (callback != null)
+					callback.sendEmptyMessage(REGISTRATION_FAILURE);
 			}
 			
 		};

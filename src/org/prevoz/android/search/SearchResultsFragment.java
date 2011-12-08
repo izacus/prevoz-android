@@ -243,12 +243,12 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 	{
 		if (notificationEnabled)
 		{
-			NotificationManager.getInstance().disableNotification(getActivity(), from, to, when);
+			NotificationManager.getInstance().disableNotification(getActivity(), from, to, when, null);
 			notificationEnabled = false;
 		}
 		else
 		{
-			NotificationManager.getInstance().enableNotification(getActivity(), from, to, when);
+			NotificationManager.getInstance().enableNotification(getActivity(), from, to, when, null);
 			notificationEnabled = true;
 		}
 	}

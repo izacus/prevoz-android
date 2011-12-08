@@ -43,7 +43,7 @@ public class NotificationRegistrationTask extends AsyncTask<Void, Void, Boolean>
 			postParams.put("tocountry", "SI");
 			
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-			postParams.put("date", formatter.format(request.getWhen()));
+			postParams.put("date", formatter.format(request.getWhen().getTime()));
 			postParams.put("action", request.isRegister() ? "subscribe" : "unsubscribe");
 			
 			
