@@ -30,7 +30,7 @@
         android:layout_toLeftOf="@id/delimiter1"
         android:layout_alignParentTop = "true"
         android:scaleType = "fitCenter"
-        android:src="@drawable/add_ride"
+        android:src="@drawable/bells"
         android:background = "@drawable/button_title"
         />
     
