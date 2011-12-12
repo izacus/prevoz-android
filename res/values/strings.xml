@@ -39,6 +39,7 @@
     <string name="notify_reg_fail">Ni vas bilo mogoče prijaviti na obveščanje.</string>
     <string name="notify_dereg_success">Obveščanje na relaciji je bilo preklicano.</string>
     <string name="notify_dereg_fail">Ni bilo mogoče preklicati obveščanja na tej relaciji.</string>
+    <string name="notify_statusbar">Novi prevozi na relaciji</string>
         
     <!-- Ride add strings -->
     <string name="add_title">dodajanje</string>
@@ -78,6 +79,13 @@
       <item>osebi</item>
       <item>osebe</item>
       <item>oseb</item>
+    </string-array>
+    
+    <string-array name="ride_forms">
+    	<item>nov prevoz</item>
+    	<item>nova prevoza</item>
+    	<item>novi prevozi</item>
+    	<item>novih prevozov</item>
     </string-array>
     
     <!--  Day and month names -->
