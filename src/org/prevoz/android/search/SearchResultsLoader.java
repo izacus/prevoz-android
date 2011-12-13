@@ -15,6 +15,7 @@ import org.prevoz.android.Globals;
 import org.prevoz.android.R;
 import org.prevoz.android.RideType;
 import org.prevoz.android.util.HTTPHelper;
+import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
 
 import android.content.Context;
@@ -140,7 +141,7 @@ public class SearchResultsLoader extends AsyncLoader<SearchResults>
 		parameters.put("client", "android" + StringUtil.numberOnly(request.getContext().getString(R.string.app_version), false));
 
 		// Build date
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat formatter = LocaleUtil.getSimpleDateFormat("yyyy-MM-dd");
 		parameters.put("d", formatter.format(request.getWhen().getTime()));
 
 		int search_type = request.getSearchType().ordinal();

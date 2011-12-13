@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import org.prevoz.android.Globals;
 import org.prevoz.android.rideinfo.Ride;
 import org.prevoz.android.util.HTTPHelper;
+import org.prevoz.android.util.LocaleUtil;
 
 import android.os.Handler;
 import android.util.Log;
@@ -32,9 +33,10 @@ public class SendRideTask implements Runnable
 	{
 		parameters = new HashMap<String, String>();
 		
-		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
-
+		SimpleDateFormat dateFormatter = LocaleUtil.getSimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat timeFormatter = LocaleUtil.getSimpleDateFormat("HH:mm");
+		timeFormatter.setTimeZone(LocaleUtil.getLocalTimezone());
+		
 		parameters.put("transptype", String.valueOf(ride.getType().ordinal()));
 		parameters.put("transpfrom", ride.getFrom());
 		parameters.put("transpfromcountry", "SI");

@@ -1,7 +1,9 @@
 package org.prevoz.android.util;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import org.prevoz.android.R;
 
@@ -92,5 +94,24 @@ public class LocaleUtil
 		default:
 			return wordArray[3];
 		}
+	}
+	
+	public static SimpleDateFormat getSimpleDateFormat(String format)
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		sdf.setTimeZone(getLocalTimezone());
+		return sdf;
+	}
+	
+	public static TimeZone getLocalTimezone()
+	{
+		TimeZone tz = TimeZone.getTimeZone("Europe/Ljubljana");
+		
+		if (tz.getID().equals(TimeZone.getTimeZone("GMT")))
+		{
+			return TimeZone.getDefault();
+		}
+		
+		return tz;
 	}
 }
