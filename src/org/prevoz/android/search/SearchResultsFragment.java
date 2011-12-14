@@ -7,12 +7,9 @@ import java.util.HashMap;
 
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
-import org.prevoz.android.RideType;
 import org.prevoz.android.SectionedAdapter;
 import org.prevoz.android.rideinfo.RideInfoActivity;
 import org.prevoz.android.search.SearchResultAdapter.SearchResultViewWrapper;
-
-import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,6 +28,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 public class SearchResultsFragment extends Fragment implements LoaderCallbacks<SearchResults>
 {
@@ -209,7 +208,7 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 	public Loader<SearchResults> onCreateLoader(int id, Bundle args) 
 	{
 		tracker.dispatch();
-		SearchRequest request = new SearchRequest(getActivity(), RideType.SHARE, from, to, when);
+		SearchRequest request = new SearchRequest(getActivity(), from, to, when);
 		return new SearchResultsLoader(getActivity(), request);
 	}
 

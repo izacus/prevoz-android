@@ -7,12 +7,10 @@ import org.prevoz.android.CitySelectorActivity;
 import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.Route;
-import org.prevoz.android.add_ride.AddRideActivity;
+import org.prevoz.android.my_rides.MyRidesActivity;
 import org.prevoz.android.util.Database;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
-
-import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -29,6 +27,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 public class SearchFormFragment extends Fragment 
 {
@@ -106,8 +106,8 @@ public class SearchFormFragment extends Fragment
 		{	
 			public void onClick(View arg0) 
 			{
-				tracker.trackEvent("SearchForm", "AddRideTap", "", 0);
-				Intent addRideIntent = new Intent(getActivity(), AddRideActivity.class);
+				tracker.trackEvent("SearchForm", "MyRidesTap", "", 0);
+				Intent addRideIntent = new Intent(getActivity(), MyRidesActivity.class);
 				startActivity(addRideIntent);
 			}
 		});
