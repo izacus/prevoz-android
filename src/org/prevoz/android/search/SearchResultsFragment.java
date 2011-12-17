@@ -88,6 +88,7 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 		// Populate fields
 		viewFlipper = (ViewFlipper) view.findViewById(R.id.search_results_flipper);
 		resultList = (ListView) view.findViewById(R.id.search_results_list);
+		resultList.setEmptyView(view.findViewById(R.id.search_no_results));
 		
 		// Prepare click callback for resultlist
 		resultList.setOnItemClickListener(new OnItemClickListener() 
@@ -125,7 +126,7 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 		SectionedAdapter resultsAdapter = getSectionedAdapter();
 		
 		// Build categories of results
-		if (results.getRides() != null && results.getRides().size() > 0)
+		if (results.getRides() != null)
 		{
 			// Put rides into buckets by paths
 			HashMap<String, ArrayList<SearchRide>> ridesByPath = new HashMap<String, ArrayList<SearchRide>>();
@@ -146,22 +147,10 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 			{
 				resultsAdapter.addSection(path, new SearchResultAdapter(getActivity(), ridesByPath.get(path)));
 			}
-			
-			// Show results
-			resultList.setAdapter(resultsAdapter);
-			
-			
 		}
-		else
-		{
-			// There are no search results, create a simple list with no results text
-			String[] noResults = new String[1];
-			noResults[0] = getString(R.string.search_no_results);
-			ArrayAdapter<String> noResultsAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, noResults);
-			resultList.setAdapter(noResultsAdapter);
-			resultList.setOnItemClickListener(null);
-		}
-		
+
+		// Show results
+		resultList.setAdapter(resultsAdapter);
 		viewFlipper.showNext();
 	}
 	
