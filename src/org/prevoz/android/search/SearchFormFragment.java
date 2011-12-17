@@ -107,8 +107,8 @@ public class SearchFormFragment extends Fragment
 			public void onClick(View arg0) 
 			{
 				tracker.trackEvent("SearchForm", "MyRidesTap", "", 0);
-				Intent addRideIntent = new Intent(getActivity(), MyRidesActivity.class);
-				startActivity(addRideIntent);
+				Intent myRidesIntent = new Intent(getActivity(), MyRidesActivity.class);
+				startActivity(myRidesIntent);
 			}
 		});
 		

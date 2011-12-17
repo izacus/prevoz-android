@@ -1,15 +1,13 @@
 package org.prevoz.android.search;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.HashMap;
 
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
 import org.prevoz.android.SectionedAdapter;
 import org.prevoz.android.rideinfo.RideInfoActivity;
 import org.prevoz.android.search.SearchResultAdapter.SearchResultViewWrapper;
+import org.prevoz.android.util.SectionedAdapterUtil;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,9 +21,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -123,62 +119,10 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 			getActivity().finish();
 		}
 		
-		SectionedAdapter resultsAdapter = getSectionedAdapter();
-		
-		// Build categories of results
-		if (results.getRides() != null)
-		{
-			// Put rides into buckets by paths
-			HashMap<String, ArrayList<SearchRide>> ridesByPath = new HashMap<String, ArrayList<SearchRide>>();
-			for (SearchRide ride : results.getRides())
-			{
-				String path = ride.getFrom() + " - " + ride.getTo();
-
-				if (ridesByPath.get(path) == null)
-					ridesByPath.put(path, new ArrayList<SearchRide>());
-
-				ridesByPath.get(path).add(ride);
-			}
-			
-			ArrayList<String> ridePaths = new ArrayList<String>(ridesByPath.keySet());
-			Collections.sort(ridePaths);
-
-			for (String path : ridePaths)
-			{
-				resultsAdapter.addSection(path, new SearchResultAdapter(getActivity(), ridesByPath.get(path)));
-			}
-		}
-
+		SectionedAdapter resultsAdapter = SectionedAdapterUtil.buildAdapterWithResults(getActivity(), results);
 		// Show results
 		resultList.setAdapter(resultsAdapter);
 		viewFlipper.showNext();
-	}
-	
-	private SectionedAdapter getSectionedAdapter()
-	{
-		SectionedAdapter adapter = new SectionedAdapter()
-		{
-
-			@Override
-			protected View getHeaderView(String caption, 
-										 int index,
-										 View convertView, 
-										 ViewGroup parent)
-			{
-				TextView result = (TextView) convertView;
-
-				if (convertView == null)
-				{
-					result = (TextView) getActivity().getLayoutInflater().inflate(R.layout.list_header, null);
-				}
-
-				result.setText(caption);
-
-				return result;
-			}
-		};
-		
-		return adapter;
 	}
 	
 	private void showView(DisplayScreens screen)

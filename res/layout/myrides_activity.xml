@@ -15,10 +15,18 @@
             android:layout_margin="10dp"
             android:layout_marginBottom="15dp"
             style="@style/button_black" />
+   
+    <TextView android:id="@+id/myrides_norides"
+          android:layout_width="fill_parent"
+          android:layout_height="fill_parent"
+          android:gravity="center"
+          android:text="@string/myrides_norides"
+          android:textSize="@dimen/text_size_medium"/>
     
     <ListView  android:id="@+id/myrides_list"
                android:layout_height="fill_parent"
                android:layout_width="fill_parent"
                android:layout_above="@id/addride_button"
                android:layout_below="@id/title_bar" />
+   
 </RelativeLayout>

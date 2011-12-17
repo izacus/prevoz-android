@@ -34,6 +34,7 @@
     
     <!-- My rides strings -->
     <string name="myrides_addride">Dodaj prevoz</string>
+    <string name="myrides_norides">Nimate objavljenega nobenega prevoza.</string>
     
     <!-- Ride add strings -->
     <string name="add_title">dodajanje</string>
