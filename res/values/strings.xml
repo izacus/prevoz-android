@@ -32,6 +32,9 @@
     <string name="search_gps_error">Vaše lokacije ni bilo mogoče najti.</string>
     <string name="search_searching">Iščem...</string>
     
+    <!-- My rides strings -->
+    <string name="myrides_addride">Dodaj prevoz</string>
+    
     <!-- Ride add strings -->
     <string name="add_title">dodajanje</string>
     <string name="add_datetime">Datum in čas</string>
@@ -46,7 +49,6 @@
     <string name="add_insurance">imam nezgodno zavarovanje potnikov v vozilu</string>
     <string name="logout">Odjava</string>
     <string name="logout_success">Odjava uspešna.</string>
-    
     <string name="add_select_city">izberi kraj</string>
     
     <!-- Ride add errors -->
@@ -61,7 +63,6 @@
     <string name="price">stroški</string>
     <string name="delete">Izbriši</string>
     <string name="ride_deleted">Prevoz je bil uspešno izbrisan.</string>
-    
     <string name="driver_has_insurance">Voznik <b>ima</b> zavarovanje za sopotnike.</string>
     <string name="driver_hasnt_insurance">Voznik <b>nima</b> zavarovanja za sopotnike.</string>
     
