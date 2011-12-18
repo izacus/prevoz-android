@@ -28,4 +28,5 @@ public class Globals
      * Loader IDs
      */
     public static final int LOADER_SEARCH_RESULTS = 1;
+    public static final int LOADER_MYRIDES = 2;
 }

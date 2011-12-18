@@ -72,7 +72,6 @@ public abstract class AsyncLoader<D> extends AsyncTaskLoader<D> {
 		
 		// Ensure the loader is stopped
         onStopLoading();
-        
         data = null;
 	}
 

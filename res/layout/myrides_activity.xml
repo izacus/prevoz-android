@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+    <include layout="@layout/title_bar"
+             android:id="@+id/title_bar" />
+    
+    <Button android:id="@+id/addride_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="@string/myrides_addride"
+            android:background="@drawable/button_black_rnd"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="15dp"
+            style="@style/button_black" />
+   
+    <TextView android:id="@+id/myrides_norides"
+          android:layout_width="fill_parent"
+          android:layout_height="fill_parent"
+          android:gravity="center"
+          android:text="@string/myrides_norides"
+          android:textSize="@dimen/text_size_medium"/>
+    
+    <org.prevoz.android.FixedViewFlipper
+          android:id = "@+id/myrides_flipper"
+          android:layout_height="fill_parent"
+          android:layout_width="fill_parent"
+          android:layout_above="@id/addride_button"
+          android:layout_below="@id/title_bar">
+    
+        <include layout="@layout/loading_screen" />
+        
+	    <ListView android:id="@+id/myrides_list"
+	              android:layout_width="fill_parent"
+	              android:layout_height="fill_parent" />
+    
+    </org.prevoz.android.FixedViewFlipper>
+   
+</RelativeLayout>
