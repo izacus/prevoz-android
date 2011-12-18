@@ -20,6 +20,7 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -41,6 +42,8 @@ public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks
 		setContentView(R.layout.myrides_activity);
 		
 		loadingFlipper = (ViewFlipper)findViewById(R.id.myrides_flipper);
+		loadingFlipper.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
+		loadingFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
 		ridesList = (ListView) findViewById(R.id.myrides_list);
 		ridesList.setEmptyView(findViewById(R.id.myrides_norides));
 		ridesList.setOnItemClickListener(new OnItemClickListener() 
