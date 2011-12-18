@@ -45,7 +45,7 @@ public class SearchFormFragment extends Fragment
 	private Button buttonFrom;
 	private Button buttonTo;
 	
-	private ImageButton buttonAdd;
+	private ImageButton buttonMyRides;
 	
 	private ListView lastSearches;
 	
@@ -105,8 +105,8 @@ public class SearchFormFragment extends Fragment
 			}
 		});
 		
-		buttonAdd = (ImageButton)getActivity().findViewById(R.id.search_add_ride);
-		buttonAdd.setOnClickListener(new OnClickListener() 
+		buttonMyRides = (ImageButton)getActivity().findViewById(R.id.search_my_rides);
+		buttonMyRides.setOnClickListener(new OnClickListener() 
 		{	
 			public void onClick(View arg0) 
 			{

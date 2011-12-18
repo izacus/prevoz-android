@@ -19,8 +19,6 @@
 	        android:layout_width = "fill_parent"
 	        android:layout_height = "wrap_content"
 	        android:padding = "5dp"
-	        android:text="TestLocation"
-	        
 	        style = "@style/location_title" />
 	
 	    <!-- To location -->
@@ -31,8 +29,6 @@
 	        android:layout_marginTop = "1dip"
 	        android:paddingLeft = "5dp"
 	        android:paddingRight = "5dp"
-	        android:text="TestLocation"
-	        
 	        style = "@style/location_title" />
 	   
 	   <include layout = "@layout/separator" />
@@ -49,8 +45,6 @@
 	            android:layout_height = "fill_parent"
 	            android:layout_weight = "1"
 	            style = "@style/RideInfoClock"
-	            
-	            android:text="99:99"
 	            />
 	            
 	       <LinearLayout
@@ -92,9 +86,6 @@
 		            android:id = "@+id/rideinfo_price"
 		            android:layout_width = "fill_parent"
 		            android:layout_height = "wrap_content"
-		            
-		            android:text = "99.9€"
-		            
 		            style="@style/PricePplText"
 		            />
 	             <TextView
@@ -115,7 +106,6 @@
 	                android:id = "@+id/rideinfo_people"
 	                android:layout_width = "fill_parent"
 	                android:layout_height = "wrap_content"
-	                android:text = "9"
 	                style="@style/PricePplText"
 	                />
 	             <TextView
@@ -140,9 +130,6 @@
            android:layout_width = "wrap_content"
            android:layout_height = "fill_parent"
            android:layout_alignParentTop = "true"
-           
-           android:text = "Kar en clovek tam neki"
-           
            style="@style/DriverNameText" />
            
          <TextView
@@ -151,9 +138,6 @@
            android:layout_height = "fill_parent"
            android:layout_below = "@id/rideinfo_author"
            android:layout_centerVertical = "true"
-           
-           android:text = "+386 99999 999"
-           
            style="@style/PhoneNumberText"
            />
 	     
@@ -164,8 +148,7 @@
            android:layout_alignParentRight = "true"
            android:layout_alignParentTop = "true"
            android:layout_margin = "2dip"
-           android:text = "Pošlji SMS"
-           
+           android:text = "@string/send_sms"
            android:background = "@drawable/button_white"
            style = "@style/button_white_small"
            />
@@ -177,7 +160,7 @@
 	        android:layout_toLeftOf = "@id/rideinfo_sms"
 	        android:layout_alignParentTop = "true"
 	        android:layout_margin = "2dip"
-	        android:text = "Pokliči"
+	        android:text = "@string/call"
 	        
 	        android:background = "@drawable/button_white"
             style = "@style/button_white_small"

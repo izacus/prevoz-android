@@ -10,7 +10,7 @@
     <string name="about_text">Pripombe na info@prevoz.org</string>
     
     <!-- General strings -->
-    <string name="loading">Nalagam...</string>
+    <string name="loading">Nalagam&#8230;</string>
     
     <!-- Error strings -->
     <string name="server_error">Strežnik prevoz ni na voljo. Prosimo poskusite kasneje.</string>
@@ -29,9 +29,9 @@
     <string name="search_hint_from">Odhod iz</string>
     <string name="search_hint_to">Prihod v</string>
     <string name="search_go">Išči</string>
-    <string name="search_gps_locating">Lociram...</string>
+    <string name="search_gps_locating">Lociram&#8230;</string>
     <string name="search_gps_error">Vaše lokacije ni bilo mogoče najti.</string>
-    <string name="search_searching">Iščem...</string>
+    <string name="search_searching">Iščem&#8230;</string>
     
     <!-- My rides strings -->
     <string name="myrides_addride">Dodaj prevoz</string>
@@ -119,4 +119,10 @@
         <item>november</item>
         <item>december</item>
     </string-array>
+        <string name="send_sms">Pošlji SMS</string>
+        <string name="call">Pokliči</string>
+        <string name="cd_my_rides">Moji prevozi</string>
+        <string name="cd_show_active_notifications">Pokaži aktivna obvestila</string>
+        <string name="cd_notify">Obveščaj o novih prevozih</string>
+        <string name="cd_gps_location">Izberi trenutno lokacijo</string>
 </resources>

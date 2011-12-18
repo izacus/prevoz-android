@@ -28,6 +28,7 @@
 	    		
 	    		android:src = "@drawable/button_gps"
 	    		android:background = "@drawable/button_black_rnd"
+	    		android:contentDescription="@string/cd_gps_location"
 			  	style = "@style/button_black_small"
 	    		 />
 	    		
