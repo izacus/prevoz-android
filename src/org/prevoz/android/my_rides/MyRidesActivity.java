@@ -1,5 +1,6 @@
 package org.prevoz.android.my_rides;
 
+import org.prevoz.android.Globals;
 import org.prevoz.android.R;
 import org.prevoz.android.SectionedAdapter;
 import org.prevoz.android.add_ride.AddRideActivity;
@@ -24,12 +25,14 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ViewFlipper;
 
 public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks<SearchResults> 
 {
-
+	private ViewFlipper loadingFlipper;
 	private ListView ridesList;
 	private Button addRideButton;
+	private Boolean authenticated = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -37,6 +40,7 @@ public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.myrides_activity);
 		
+		loadingFlipper = (ViewFlipper)findViewById(R.id.myrides_flipper);
 		ridesList = (ListView) findViewById(R.id.myrides_list);
 		ridesList.setEmptyView(findViewById(R.id.myrides_norides));
 		ridesList.setOnItemClickListener(new OnItemClickListener() 
@@ -50,7 +54,6 @@ public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks
 				Intent intent = new Intent(MyRidesActivity.this, RideInfoActivity.class);
 				intent.putExtra(RideInfoActivity.RIDE_ID, viewWrapper.getRideId());
 				startActivityForResult(intent, 1);
-				getSupportLoaderManager().initLoader(1, null, MyRidesActivity.this).forceLoad();
 			};
 		});
 		
@@ -62,7 +65,6 @@ public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks
 			{
 				Intent intent = new Intent(MyRidesActivity.this, AddRideActivity.class);
 				startActivity(intent);
-				getSupportLoaderManager().initLoader(1, null, MyRidesActivity.this).forceLoad();
 			}
 		});
 		
@@ -104,7 +106,8 @@ public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks
 						}
 						else
 						{
-							showView();
+							authenticated = true;
+							reload();
 						}
 					}
 				};
@@ -113,15 +116,30 @@ public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks
 				break;
 			
 			case AUTHENTICATED:
-				showView();
+				authenticated = true;
+				reload();
 				break;
 		}
 	}
+	
+	
 
-	private void showView()
+	@Override
+	protected void onResume() 
 	{
-		// TODO: fix
-		getSupportLoaderManager().initLoader(1, null, this).forceLoad();
+		super.onResume();
+		if (authenticated)
+		{
+			reload();
+		}
+	}
+
+	private void reload()
+	{
+		Log.d(this.toString(), "Reloading....");
+		loadingFlipper.setDisplayedChild(0);
+		Loader<SearchResults> loader = getSupportLoaderManager().initLoader(Globals.LOADER_MYRIDES, null, this);
+		loader.forceLoad();
 	}
 	
 	public Loader<SearchResults> onCreateLoader(int id, Bundle args) 
@@ -133,6 +151,7 @@ public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks
 	{
 		SectionedAdapter adapter = SectionedAdapterUtil.buildAdapterWithResults(this, results);
 		ridesList.setAdapter(adapter);
+		loadingFlipper.setDisplayedChild(1);
 	}
 
 	public void onLoaderReset(Loader<SearchResults> arg0) 

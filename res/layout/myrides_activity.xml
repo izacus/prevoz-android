@@ -23,10 +23,19 @@
           android:text="@string/myrides_norides"
           android:textSize="@dimen/text_size_medium"/>
     
-    <ListView  android:id="@+id/myrides_list"
-               android:layout_height="fill_parent"
-               android:layout_width="fill_parent"
-               android:layout_above="@id/addride_button"
-               android:layout_below="@id/title_bar" />
+    <org.prevoz.android.FixedViewFlipper
+          android:id = "@+id/myrides_flipper"
+          android:layout_height="fill_parent"
+          android:layout_width="fill_parent"
+          android:layout_above="@id/addride_button"
+          android:layout_below="@id/title_bar">
+    
+        <include layout="@layout/loading_screen" />
+        
+	    <ListView android:id="@+id/myrides_list"
+	              android:layout_width="fill_parent"
+	              android:layout_height="fill_parent" />
+    
+    </org.prevoz.android.FixedViewFlipper>
    
 </RelativeLayout>
