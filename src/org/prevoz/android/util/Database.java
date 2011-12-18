@@ -156,7 +156,7 @@ public class Database
 	{
 		Log.i("Database","Adding search to history " + from + " - " + to);
 		
-		SimpleDateFormat sqlDateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat sqlDateFormatter = LocaleUtil.getSimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		SQLiteDatabase database = new DatabaseHelper(context).getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put("from_loc", from);

@@ -54,7 +54,7 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 	
 	private static final int MENU_LOGOUT = 0;
 	
-	private final SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
+	private final SimpleDateFormat timeFormatter = LocaleUtil.getSimpleDateFormat("HH:mm");
 	
 	private AddStateManager stateManager;
 	

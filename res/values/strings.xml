@@ -23,7 +23,7 @@
     <string name="search_label_from">Od</string>
     <string name="search_label_to">Do</string>
     <string name="search_label_date">Datum</string>
-    <string name="search_no_results">Prevozov za ta dan ni.</string>
+    <string name="search_no_results">Ta dan ni prevozov na izbrani relaciji.</string>
     <string name="all_locations">Vsi kraji</string>
     <string name="search_label_last">Nazadnje iskano</string>
     <string name="search_hint_from">Odhod iz</string>
@@ -32,6 +32,10 @@
     <string name="search_gps_locating">Lociram...</string>
     <string name="search_gps_error">Vaše lokacije ni bilo mogoče najti.</string>
     <string name="search_searching">Iščem...</string>
+    
+    <!-- My rides strings -->
+    <string name="myrides_addride">Dodaj prevoz</string>
+    <string name="myrides_norides">Nimate objavljenega nobenega prevoza.</string>
     
     <!-- Notification strings -->
     <string name="notification_list_empty">Niste prijavljeni za obveščanje.\nČe se želite prijaviti za obveščanje pritisnite ikono zvočka ob rezultatih iskanja.</string>
@@ -55,7 +59,6 @@
     <string name="add_insurance">imam nezgodno zavarovanje potnikov v vozilu</string>
     <string name="logout">Odjava</string>
     <string name="logout_success">Odjava uspešna.</string>
-    
     <string name="add_select_city">izberi kraj</string>
     
     <!-- Ride add errors -->
@@ -70,7 +73,6 @@
     <string name="price">stroški</string>
     <string name="delete">Izbriši</string>
     <string name="ride_deleted">Prevoz je bil uspešno izbrisan.</string>
-    
     <string name="driver_has_insurance">Voznik <b>ima</b> zavarovanje za sopotnike.</string>
     <string name="driver_hasnt_insurance">Voznik <b>nima</b> zavarovanja za sopotnike.</string>
     

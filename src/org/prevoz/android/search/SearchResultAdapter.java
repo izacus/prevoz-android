@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import org.prevoz.android.R;
+import org.prevoz.android.util.LocaleUtil;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -92,7 +93,7 @@ public class SearchResultAdapter extends ArrayAdapter<SearchRide>
 		this.context = context;
 		this.rides = rides;
 
-		timeFormatter = new SimpleDateFormat("HH:mm");
+		timeFormatter = LocaleUtil.getSimpleDateFormat("HH:mm");
 	}
 
 	@Override

@@ -19,6 +19,7 @@
     <activity android:name=".auth.LoginActivity" android:theme="@style/PrevozTheme" />
     <activity android:name=".search.SearchResultsActivity" android:theme = "@style/PrevozTheme" />
     <activity android:name=".add_ride.AddRideActivity" android:theme="@style/PrevozTheme" android:windowSoftInputMode="stateHidden" />
+    <activity android:name=".my_rides.MyRidesActivity" android:theme="@style/PrevozTheme"></activity>
     <activity android:name=".c2dm.NotificationsActivity" android:theme="@style/PrevozTheme" />
     
     <service android:name=".C2DMReceiver" />

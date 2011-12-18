@@ -30,6 +30,11 @@ public class SearchResultsLoader extends AsyncLoader<SearchResults>
 		this.searchRequest = request;
 	}
 
+	protected String getResponse() throws IOException
+	{
+		return HTTPHelper.httpGet(Globals.API_URL + "/search/shares/" + HTTPHelper.buildGetParams(prepareParameters(searchRequest)));
+	}
+	
 	@Override
 	public SearchResults loadInBackground() 
 	{
@@ -40,29 +45,23 @@ public class SearchResultsLoader extends AsyncLoader<SearchResults>
 		// Get data from HTTP server
 		try
 		{
-			responseString = HTTPHelper.httpGet(Globals.API_URL + "/search/" + 
-					                            (searchRequest.getSearchType() == RideType.SHARE ? "shares/": "seekers/"),
-					                            HTTPHelper.buildGetParams(prepareParameters(searchRequest)));
+			responseString = getResponse();
 		}
 		catch (IOException e)
 		{
 			Log.e(this.toString(), "Error while requesting search data!", e);
-			return new SearchResults(searchRequest.getSearchType(), prepareError(searchRequest.getContext().getString(R.string.network_error)));
+			return new SearchResults(prepareError(searchRequest.getContext().getString(R.string.network_error)));
 		}
 
 		if (responseString == null)
 		{
-			return new SearchResults(searchRequest.getSearchType(), prepareError(searchRequest.getContext().getString(R.string.server_error)));
+			return new SearchResults(prepareError(searchRequest.getContext().getString(R.string.server_error)));
 		}
 
 		// Parse into a response object
 		try
 		{
 			JSONObject root = new JSONObject(responseString);
-
-			RideType rideType = root.getString("search_type") == "shares" ? RideType.SHARE
-					: RideType.SEEK;
-
 			// Request was successful
 			if (root.has("carshare_list"))
 			{
@@ -92,7 +91,7 @@ public class SearchResultsLoader extends AsyncLoader<SearchResults>
 					}
 				}
 
-				results = new SearchResults(rideType, rides);
+				results = new SearchResults(rides);
 			}
 			else
 			{
@@ -110,13 +109,13 @@ public class SearchResultsLoader extends AsyncLoader<SearchResults>
 					errors.put(key, value);
 				}
 
-				results = new SearchResults(rideType, errors);
+				results = new SearchResults(errors);
 			}
 		}
 		catch (JSONException e)
 		{
 			Log.e(this.toString(), "Error while parsing JSON response!", e);
-			results = new SearchResults(searchRequest.getSearchType(), prepareError(searchRequest.getContext().getString(R.string.server_error)));
+			results = new SearchResults(prepareError(searchRequest.getContext().getString(R.string.server_error)));
 		}
 		
 		return results;
@@ -143,7 +142,7 @@ public class SearchResultsLoader extends AsyncLoader<SearchResults>
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		parameters.put("d", formatter.format(request.getWhen().getTime()));
 
-		int search_type = request.getSearchType().ordinal();
+		int search_type = RideType.SHARE.ordinal();
 		parameters.put("search_type", String.valueOf(search_type));
 		
 		return parameters;
