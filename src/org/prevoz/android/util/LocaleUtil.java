@@ -3,6 +3,7 @@ package org.prevoz.android.util;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import org.prevoz.android.R;
@@ -113,5 +114,10 @@ public class LocaleUtil
 		}
 		
 		return tz;
+	}
+	
+	public static Locale getLocale()
+	{
+		return new Locale("sl-SI");
 	}
 }

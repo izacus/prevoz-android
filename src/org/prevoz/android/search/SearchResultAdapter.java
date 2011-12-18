@@ -121,7 +121,7 @@ public class SearchResultAdapter extends ArrayAdapter<SearchRide>
 
 		if (rides.get(position).getPrice() != null)
 		{
-			wrapper.getPrice().setText(rides.get(position).getPrice() + " €");
+			wrapper.getPrice().setText(String.format(LocaleUtil.getLocale(), "%1.1f €", rides.get(position).getPrice()));
 		}
 		else
 		{

@@ -97,7 +97,7 @@ public class RideInfoUtil
 		// Price and number of people
 		if (ride.getPrice() != null)
 		{
-			priceText.setText(String.format("%1.1f €", ride.getPrice()));
+			priceText.setText(String.format(LocaleUtil.getLocale(), "%1.1f €", ride.getPrice()));
 		}
 		else
 		{
