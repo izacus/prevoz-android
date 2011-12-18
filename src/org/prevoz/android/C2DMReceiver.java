@@ -87,7 +87,7 @@ public class C2DMReceiver extends C2DMBaseReceiver
 										from + " - " + to, 
 										pIntent);
 		
-		notification.flags |= (Notification.FLAG_AUTO_CANCEL | Notification.DEFAULT_ALL);
+		notification.flags = (Notification.FLAG_AUTO_CANCEL | Notification.DEFAULT_ALL);
 		notification.number = rideIds.size();
 		notifyManager.notify(1, notification);
 	}
