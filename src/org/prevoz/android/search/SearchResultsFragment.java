@@ -4,9 +4,10 @@ import java.util.Calendar;
 
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
-import org.prevoz.android.SectionedAdapter;
+import org.prevoz.android.c2dm.NotificationManager;
 import org.prevoz.android.rideinfo.RideInfoActivity;
 import org.prevoz.android.search.SearchResultAdapter.SearchResultViewWrapper;
+import org.prevoz.android.util.SectionedAdapter;
 import org.prevoz.android.util.SectionedAdapterUtil;
 
 import android.content.Intent;
@@ -17,10 +18,12 @@ import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -35,6 +38,8 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 		RESULTS_SCREEN
 	};
 	
+	private ImageButton notifyButton;
+	
 	// Status
 	private String from;
 	private String to;
@@ -46,6 +51,8 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 	
 	private GoogleAnalyticsTracker tracker;
 	
+	private boolean notificationEnabled = false;
+	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState)
 	{
@@ -55,14 +62,36 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 		this.from = activity.getFrom();
 		this.to = activity.getTo();
 		this.when = activity.getWhen();
-		
 		showView(DisplayScreens.RESULTS_SCREEN);
 		
-		Log.d(this.toString(), "Activity created, succefully fetched data.");
+		notifyButton = (ImageButton) activity.findViewById(R.id.send_notifications);
+		notifyButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View arg0) {
+				notifyClicked();
+			}
+		});
 		
+		View delimiter = getActivity().findViewById(R.id.delimiter);
+		
+		if (NotificationManager.getInstance().notificationsAvailable())
+		{
+			delimiter.setVisibility(View.VISIBLE);
+			notifyButton.setVisibility(View.VISIBLE);
+		}
+		else
+		{
+			delimiter.setVisibility(View.GONE);
+			notifyButton.setVisibility(View.GONE);
+		}
+		
+		if (NotificationManager.getInstance().isNotified(getActivity(), from, to, when))
+		{
+			notificationEnabled = true;
+		}
+		
+		Log.d(this.toString(), "Activity created, succefully fetched data.");
 		tracker = GoogleAnalyticsTracker.getInstance();
 		tracker.trackPageView("/SearchResults");
-		
 		// Get loader for search results
 		getLoaderManager().initLoader(Globals.LOADER_SEARCH_RESULTS, null, this);
 		
@@ -72,6 +101,14 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 	public void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
+	}
+	
+	
+
+	@Override
+	public void onResume() 
+	{
+		super.onResume();
 	}
 
 	@Override
@@ -153,5 +190,19 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 	public void onLoaderReset(Loader<SearchResults> arg0) 
 	{
 		// Nothing TBD
+	}
+	
+	private void notifyClicked()
+	{
+		if (notificationEnabled)
+		{
+			NotificationManager.getInstance().disableNotification(getActivity(), from, to, when, null);
+			notificationEnabled = false;
+		}
+		else
+		{
+			NotificationManager.getInstance().enableNotification(getActivity(), from, to, when, null);
+			notificationEnabled = true;
+		}
 	}
 }

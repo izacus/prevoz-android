@@ -6,9 +6,9 @@ import java.util.Date;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.prevoz.android.AsyncLoader;
 import org.prevoz.android.Globals;
 import org.prevoz.android.RideType;
+import org.prevoz.android.util.AsyncLoader;
 import org.prevoz.android.util.HTTPHelper;
 
 import android.content.Context;

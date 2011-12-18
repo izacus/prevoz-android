@@ -23,7 +23,7 @@
           android:text="@string/myrides_norides"
           android:textSize="@dimen/text_size_medium"/>
     
-    <org.prevoz.android.FixedViewFlipper
+    <org.prevoz.android.util.FixedViewFlipper
           android:id = "@+id/myrides_flipper"
           android:layout_height="fill_parent"
           android:layout_width="fill_parent"
@@ -36,6 +36,6 @@
 	              android:layout_width="fill_parent"
 	              android:layout_height="fill_parent" />
     
-    </org.prevoz.android.FixedViewFlipper>
+    </org.prevoz.android.util.FixedViewFlipper>
    
 </RelativeLayout>

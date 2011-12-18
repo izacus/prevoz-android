@@ -2,8 +2,9 @@
 <resources>
 	<!-- General application data -->
     <string name="app_name">Prevoz</string>
-    <string name="app_version">2.0.1</string>
+    <string name="app_version">2.1.0</string>
     <string name="ga_identity">UA-306569-17</string>
+    <string name="c2dm_sender">gandalfar@gmail.com</string>
     
     <string name="about">O aplikaciji</string>
     <string name="about_text">Pripombe na info@prevoz.org</string>
@@ -36,6 +37,14 @@
     <string name="myrides_addride">Dodaj prevoz</string>
     <string name="myrides_norides">Nimate objavljenega nobenega prevoza.</string>
     
+    <!-- Notification strings -->
+    <string name="notification_list_empty">Niste prijavljeni za obveščanje.\nČe se želite prijaviti za obveščanje pritisnite ikono zvočka ob rezultatih iskanja.</string>
+    <string name="notify_reg_success">Prijavljeni ste na obveščanje.</string>
+    <string name="notify_reg_fail">Ni vas bilo mogoče prijaviti na obveščanje.</string>
+    <string name="notify_dereg_success">Obveščanje na relaciji je bilo preklicano.</string>
+    <string name="notify_dereg_fail">Ni bilo mogoče preklicati obveščanja na tej relaciji.</string>
+    <string name="notify_statusbar">Novi prevozi na relaciji</string>
+        
     <!-- Ride add strings -->
     <string name="add_title">dodajanje</string>
     <string name="add_datetime">Datum in čas</string>
@@ -72,6 +81,13 @@
       <item>osebi</item>
       <item>osebe</item>
       <item>oseb</item>
+    </string-array>
+    
+    <string-array name="ride_forms">
+    	<item>nov prevoz</item>
+    	<item>nova prevoza</item>
+    	<item>novi prevozi</item>
+    	<item>novih prevozov</item>
     </string-array>
     
     <!--  Day and month names -->

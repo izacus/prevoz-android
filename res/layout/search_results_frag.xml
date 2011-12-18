@@ -1,17 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.prevoz.android.FixedViewFlipper
+<org.prevoz.android.util.FixedViewFlipper
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent"
   android:id = "@+id/search_results_flipper"
   android:background = "@color/white">
   
-  <include
-  	layout = "@layout/loading_screen" />
+  <LinearLayout
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:orientation="vertical">
+      
+	  <include layout="@layout/title_bar" 
+	   		 android:id = "@+id/title_bar" />
+	  
+	  <include
+  			layout = "@layout/loading_screen" />
+      
+  </LinearLayout>
   
+  <RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+ 	<include layout="@layout/title_bar" 
+  		 	 android:id = "@+id/title_bar"
+  		 	 android:layout_alignParentTop="true"
+  		 	 android:layout_alignParentLeft="true"
+  		 	 android:layout_alignParentRight="true"
+  		 	 android:layout_width="fill_parent"
+  		 	 android:layout_height = "@dimen/title_height" />
+
+  <ImageButton
+        android:id = "@+id/send_notifications"
+        android:layout_height = "@dimen/title_height"
+        android:layout_width = "wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop = "true"
+        android:scaleType = "fitCenter"
+        android:src="@drawable/bell"
+        android:background = "@drawable/button_title"
+        />
+    
+    <LinearLayout 
+   		android:layout_height="@dimen/title_height"
+   		android:layout_width="1sp"
+   		android:layout_toLeftOf="@id/send_notifications"
+   		android:id = "@+id/delimiter"
+   		android:background="#EEE"
+   ></LinearLayout>
+
+      
   <LinearLayout 
       android:layout_width="fill_parent"
       android:layout_height="fill_parent"
+      android:layout_below="@id/title_bar"
       android:orientation="vertical">
 	 <ListView
 	 	android:id = "@+id/search_results_list"
@@ -28,6 +71,6 @@
 	    android:textSize="@dimen/text_size_medium"
 	    android:gravity="center" />
    </LinearLayout>
-    
+  </RelativeLayout>
   
-</org.prevoz.android.FixedViewFlipper>
+</org.prevoz.android.util.FixedViewFlipper>

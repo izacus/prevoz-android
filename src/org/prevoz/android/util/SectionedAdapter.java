@@ -1,4 +1,4 @@
-package org.prevoz.android;
+package org.prevoz.android.util;
 
 /***
  Copyright (c) 2008-2010 CommonsWare, LLC

@@ -1,4 +1,4 @@
-package org.prevoz.android;
+package org.prevoz.android.util;
 
 import android.content.Context;
 import android.os.Build;

@@ -10,19 +10,18 @@ import java.util.Iterator;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.prevoz.android.AsyncLoader;
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
 import org.prevoz.android.RideType;
+import org.prevoz.android.util.AsyncLoader;
 import org.prevoz.android.util.HTTPHelper;
-import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
 
 import android.content.Context;
 import android.util.Log;
 
 public class SearchResultsLoader extends AsyncLoader<SearchResults> 
-{	
+{
 	private SearchRequest searchRequest;
 	
 	public SearchResultsLoader(Context context, SearchRequest request) 
@@ -30,11 +29,10 @@ public class SearchResultsLoader extends AsyncLoader<SearchResults>
 		super(context);
 		this.searchRequest = request;
 	}
-	
+
 	protected String getResponse() throws IOException
 	{
-		return HTTPHelper.httpGet(Globals.API_URL + "/search/shares/",
-                	  	  HTTPHelper.buildGetParams(prepareParameters(searchRequest)));
+		return HTTPHelper.httpGet(Globals.API_URL + "/search/shares/" + HTTPHelper.buildGetParams(prepareParameters(searchRequest)));
 	}
 	
 	@Override
@@ -64,7 +62,6 @@ public class SearchResultsLoader extends AsyncLoader<SearchResults>
 		try
 		{
 			JSONObject root = new JSONObject(responseString);
-
 			// Request was successful
 			if (root.has("carshare_list"))
 			{
@@ -142,9 +139,11 @@ public class SearchResultsLoader extends AsyncLoader<SearchResults>
 		parameters.put("client", "android" + StringUtil.numberOnly(request.getContext().getString(R.string.app_version), false));
 
 		// Build date
-		SimpleDateFormat formatter = LocaleUtil.getSimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		parameters.put("d", formatter.format(request.getWhen().getTime()));
-		parameters.put("search_type", String.valueOf(RideType.SHARE));
+
+		int search_type = RideType.SHARE.ordinal();
+		parameters.put("search_type", String.valueOf(search_type));
 		
 		return parameters;
 	}

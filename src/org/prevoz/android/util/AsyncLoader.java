@@ -1,4 +1,4 @@
-package org.prevoz.android;
+package org.prevoz.android.util;
 
 /*
  * Copyright (C) 2011 Alexander Blom
@@ -72,6 +72,7 @@ public abstract class AsyncLoader<D> extends AsyncTaskLoader<D> {
 		
 		// Ensure the loader is stopped
         onStopLoading();
+        
         data = null;
 	}
 

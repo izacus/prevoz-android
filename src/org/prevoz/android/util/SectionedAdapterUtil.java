@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import org.prevoz.android.R;
-import org.prevoz.android.SectionedAdapter;
 import org.prevoz.android.search.SearchResultAdapter;
 import org.prevoz.android.search.SearchResults;
 import org.prevoz.android.search.SearchRide;

@@ -2,14 +2,16 @@ package org.prevoz.android.my_rides;
 
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
-import org.prevoz.android.SectionedAdapter;
 import org.prevoz.android.add_ride.AddRideActivity;
 import org.prevoz.android.auth.AuthenticationManager;
 import org.prevoz.android.auth.AuthenticationStatus;
 import org.prevoz.android.rideinfo.RideInfoActivity;
-import org.prevoz.android.search.SearchResults;
 import org.prevoz.android.search.SearchResultAdapter.SearchResultViewWrapper;
+import org.prevoz.android.search.SearchResults;
+import org.prevoz.android.util.SectionedAdapter;
 import org.prevoz.android.util.SectionedAdapterUtil;
+
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,10 +24,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ViewFlipper;
 
 public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks<SearchResults> 
@@ -34,6 +36,7 @@ public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks
 	private ListView ridesList;
 	private Button addRideButton;
 	private Boolean authenticated = false;
+	private GoogleAnalyticsTracker tracker;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -53,6 +56,7 @@ public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks
 									int position, 
 									long id) 
 			{
+				tracker.trackEvent("MyRides", "MyRideItemTap", "", 0);
 				SearchResultViewWrapper viewWrapper = (SearchResultViewWrapper)view.getTag();
 				Intent intent = new Intent(MyRidesActivity.this, RideInfoActivity.class);
 				intent.putExtra(RideInfoActivity.RIDE_ID, viewWrapper.getRideId());
@@ -66,6 +70,7 @@ public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks
 		{
 			public void onClick(View v) 
 			{
+				tracker.trackEvent("MyRides", "AddRideTap", "", 0);
 				Intent intent = new Intent(MyRidesActivity.this, AddRideActivity.class);
 				startActivity(intent);
 			}
@@ -78,6 +83,10 @@ public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks
 				authenticationStatusReceived(AuthenticationStatus.values()[msg.what]);
 			}
 		};
+		
+		// Page display tracking
+		tracker = GoogleAnalyticsTracker.getInstance();
+		tracker.trackPageView("/AddRide");
 		
 		AuthenticationManager.getInstance().getAuthenticationStatus(this, authHandler);
 	}

@@ -2,10 +2,12 @@ package org.prevoz.android.util;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.prevoz.android.R;
 import org.prevoz.android.Route;
+import org.prevoz.android.c2dm.NotifySubscription;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -29,7 +31,7 @@ public class Database
 
 		public DatabaseHelper(Context context)
 		{
-			super(context, "settings.db", null, 6);
+			super(context, "settings.db", null, 7);
 			this.storedContext = context;
 		}
 
@@ -41,10 +43,11 @@ public class Database
 					   "to_loc TEXT NOT NULL, " +
 					   "date DATE NOT NULL)");
 			
-			db.execSQL("CREATE TABLE favorites (ID INTEGER PRIMARY KEY AUTOINCREMENT,"
-					+ "from_loc TEXT NOT NULL,"
+			db.execSQL("CREATE TABLE notify_subscriptions (ID INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ "from_loc TEXT NOT NULL," 
 					+ "to_loc TEXT NOT NULL,"
-					+ "type INTEGER NOT NULL)");
+					+ "date INTEGER NOT NULL, "
+					+ "registered_date INTEGER NOT NULL)");
 
 			// Load SQL location script from raw folder and insert all relevant
 			// data into database
@@ -65,15 +68,88 @@ public class Database
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 		{
-			db.execSQL("DROP TABLE favorites");
-
 			if (oldVersion > 3)
 			{
 				db.execSQL("DROP TABLE locations");
 			}
+			
+			if (oldVersion < 7)
+			{
+				db.execSQL("DROP TABLE favorites");
+			}
+			
+			if (oldVersion > 5)
+			{
+				db.execSQL("DROP TABLE search_history");
+			}
 
 			onCreate(db);
 		}
+	}
+	
+	public static NotifySubscription getNotificationSubscription(Context context, String from, String to, Calendar date)
+	{
+		ArrayList<NotifySubscription> subscriptions = Database.getNotificationSubscriptions(context);
+		
+		for (NotifySubscription subscription : subscriptions)
+		{
+			if (subscription.getFrom().equalsIgnoreCase(from) && 
+			    subscription.getTo().equalsIgnoreCase(to) &&
+			    subscription.getDate().get(Calendar.DATE) == date.get(Calendar.DATE) &&
+			    subscription.getDate().get(Calendar.MONTH) == date.get(Calendar.MONTH) &&
+			    subscription.getDate().get(Calendar.YEAR) == date.get(Calendar.YEAR))
+			{
+				return subscription;
+			}
+		}
+		
+		return null;
+	}
+	
+	public static ArrayList<NotifySubscription> getNotificationSubscriptions(Context context)
+	{
+		SQLiteDatabase database = new DatabaseHelper(context).getReadableDatabase();
+		Cursor results = database.query("notify_subscriptions", new String[] { "id", "from_loc", "to_loc", "date" }, null, null, null, null, "registered_date");
+		int idIndex = results.getColumnIndex("ID");
+		int fromIndex = results.getColumnIndex("from_loc");
+		int toIndex = results.getColumnIndex("to_loc");
+		int dateIndex = results.getColumnIndex("date");
+		
+		
+		ArrayList<NotifySubscription> subscriptions = new ArrayList<NotifySubscription>();
+		while (results.moveToNext())
+		{
+			Calendar date = Calendar.getInstance();
+			date.setTimeInMillis(results.getLong(dateIndex));
+			NotifySubscription subscription = new NotifySubscription(results.getInt(idIndex),
+																	 results.getString(fromIndex),
+																	 results.getString(toIndex),
+																	 date);
+			subscriptions.add(subscription);
+		}
+		
+		results.close();
+		database.close();
+		return subscriptions;
+	}
+	
+	public static void addNotificationSubscription(Context context, String from, String to, Calendar date)
+	{
+		SQLiteDatabase database = new DatabaseHelper(context).getWritableDatabase();
+		ContentValues values  = new ContentValues();
+		values.put("from_loc", from);
+		values.put("to_loc", to);
+		values.put("date", date.getTimeInMillis());
+		values.put("registered_date", System.currentTimeMillis());
+		database.insert("notify_subscriptions", null, values);
+		database.close();
+	}
+	
+	public static void deleteNotificationSubscription(Context context, int id)
+	{
+		SQLiteDatabase database = new DatabaseHelper(context).getWritableDatabase();
+		database.delete("notify_subscriptions", "id = ?", new String[] { String.valueOf(id) });
+		database.close();
 	}
 	
 	public static void addSearchToHistory(Context context, String from, String to, Date date)

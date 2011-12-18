@@ -8,6 +8,8 @@ import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.Route;
 import org.prevoz.android.my_rides.MyRidesActivity;
+import org.prevoz.android.c2dm.NotificationManager;
+import org.prevoz.android.c2dm.NotificationsActivity;
 import org.prevoz.android.util.Database;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
@@ -34,6 +36,8 @@ public class SearchFormFragment extends Fragment
 {
 	private static final int FROM_CITY_REQUEST = 1;
 	private static final int TO_CITY_REQUEST = 2;
+	
+	private ImageButton notifications;
 	
 	private Button buttonDate;
 	private Button buttonSearch;
@@ -112,6 +116,13 @@ public class SearchFormFragment extends Fragment
 			}
 		});
 		
+		
+		notifications = (ImageButton)getActivity().findViewById(R.id.show_active_notifications);
+		notifications.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				startActivity(new Intent(getActivity(), NotificationsActivity.class));
+			}
+		});
 	}
 	
 	private void populateLastSearchList()
@@ -189,6 +200,16 @@ public class SearchFormFragment extends Fragment
 	{
 		super.onResume();
 		populateLastSearchList();
+		
+		if (NotificationManager.getInstance().notificationsAvailable())
+		{
+			notifications.setVisibility(View.VISIBLE);
+		}
+		else
+		{
+			notifications.setVisibility(View.GONE);
+		}
+			
 	}
 
 	@Override

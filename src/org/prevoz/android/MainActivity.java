@@ -4,6 +4,7 @@ import java.util.Calendar;
 
 import org.prevoz.android.R;
 import org.prevoz.android.auth.AuthenticationManager;
+import org.prevoz.android.c2dm.NotificationManager;
 import org.prevoz.android.search.SearchFormFragment;
 import org.prevoz.android.search.SearchResultsActivity;
 import org.prevoz.android.util.Database;
@@ -49,6 +50,9 @@ public class MainActivity extends FragmentActivity implements OnDateSetListener
 		tracker = GoogleAnalyticsTracker.getInstance();
 		tracker.start(getString(R.string.ga_identity), this);
 		tracker.trackEvent("Application", "Start", getString(R.string.app_version), 0);
+		
+		// Attempt C2DM services registration
+		NotificationManager.getInstance(getApplicationContext());
 		
 		// Sanitize search database
 		Database.deleteHistoryEntries(this, 10);
