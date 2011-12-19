@@ -56,7 +56,6 @@ public class MainActivity extends FragmentActivity implements OnDateSetListener
 		
 		// Sanitize search database
 		Database.deleteHistoryEntries(this, 10);
-		
 		setContentView(R.layout.main_activity);		
 		Calendar now = Calendar.getInstance();
 		datePicker = new DatePickerDialog(this, this, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
@@ -77,7 +76,13 @@ public class MainActivity extends FragmentActivity implements OnDateSetListener
 	}
 	
 	
-	
+	@Override
+	protected void onResume() 
+	{
+		super.onResume();
+		Database.pruneOldNotifications(this);
+	}
+
 	@Override
 	protected void onActivityResult(int requestCode, 
 									int resultCode, 

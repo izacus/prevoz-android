@@ -152,6 +152,17 @@ public class Database
 		database.close();
 	}
 	
+	public static void pruneOldNotifications(Context context)
+	{
+		SQLiteDatabase database = new DatabaseHelper(context).getWritableDatabase();
+		Calendar time = Calendar.getInstance();
+		time.set(Calendar.HOUR_OF_DAY, 0);
+		time.set(Calendar.MINUTE, 0);
+		time.set(Calendar.SECOND, 0);
+		database.delete("notify_subscriptions", "date < ?", new String[] { String.valueOf(time.getTimeInMillis()) });
+		database.close();
+	}
+	
 	public static void addSearchToHistory(Context context, String from, String to, Date date)
 	{
 		Log.i("Database","Adding search to history " + from + " - " + to);
