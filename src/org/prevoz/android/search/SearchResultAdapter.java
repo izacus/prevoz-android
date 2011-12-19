@@ -2,6 +2,7 @@ package org.prevoz.android.search;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.prevoz.android.R;
 import org.prevoz.android.util.LocaleUtil;
@@ -83,16 +84,26 @@ public class SearchResultAdapter extends ArrayAdapter<SearchRide>
 		}
 	}
 
-	Activity context;
-	ArrayList<SearchRide> rides;
-	SimpleDateFormat timeFormatter;
-
-	public SearchResultAdapter(Activity context, ArrayList<SearchRide> rides)
+	private Activity context;
+	private ArrayList<SearchRide> rides;
+	private SimpleDateFormat timeFormatter;
+	private HashSet<Integer> highlights;
+	
+	public SearchResultAdapter(Activity context, ArrayList<SearchRide> rides, int[] highlights)
 	{
 		super(context, R.layout.search_result, R.id.price, rides);
 		this.context = context;
 		this.rides = rides;
-
+		this.highlights = new HashSet<Integer>();
+		
+		if (highlights != null)
+		{
+			for (int highlight : highlights)
+			{
+				this.highlights.add(highlight);
+			}
+		}
+		
 		timeFormatter = LocaleUtil.getSimpleDateFormat("HH:mm");
 	}
 
@@ -116,8 +127,7 @@ public class SearchResultAdapter extends ArrayAdapter<SearchRide>
 			wrapper = (SearchResultViewWrapper) row.getTag();
 		}
 
-		wrapper.getTime().setText(
-				timeFormatter.format(rides.get(position).getTime()));
+		wrapper.getTime().setText(timeFormatter.format(rides.get(position).getTime()));
 
 		if (rides.get(position).getPrice() != null)
 		{
@@ -131,6 +141,15 @@ public class SearchResultAdapter extends ArrayAdapter<SearchRide>
 		wrapper.getDriver().setText(rides.get(position).getAuthor());
 		wrapper.setId(rides.get(position).getId());
 
+		if (highlights.contains(rides.get(position).getId()))
+		{
+			row.setBackgroundColor(context.getResources().getColor(R.color.list_highlight));
+		}
+		else
+		{
+			row.setBackgroundColor(context.getResources().getColor(R.color.white));
+		}
+		
 		return row;
 	}
 }

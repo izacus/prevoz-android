@@ -74,25 +74,27 @@ public class C2DMReceiver extends C2DMBaseReceiver
 			Log.e(this.toString(), "Failed to parse passed date.", e);
 		}
 		
-		ArrayList<Integer> rideIds = parseRideIds(intent.getExtras().getString("rides"));
+		int[] rideIds = parseRideIds(intent.getExtras().getString("rides"));
 		Intent notificationIntent = new Intent(context, SearchResultsActivity.class);
 		notificationIntent.putExtra("from", from);
 		notificationIntent.putExtra("to", to);
 		notificationIntent.putExtra("when", when.getTimeInMillis());
-		notificationIntent.putExtra("highlights", rideIds.toArray());
+		notificationIntent.putExtra("highlights", rideIds);
 		
-		PendingIntent pIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+		PendingIntent pIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		notification.setLatestEventInfo(context, 
-										rideIds.size() + " " + LocaleUtil.getStringNumberForm(getResources(), R.array.ride_forms, rideIds.size()) + " v " + LocaleUtil.getDayName(getResources(), when).toLowerCase(),
+										rideIds.length + " " + LocaleUtil.getStringNumberForm(getResources(), R.array.ride_forms, rideIds.length) + " v " + LocaleUtil.getNotificationDayName(getResources(), when).toLowerCase(),
 										from + " - " + to, 
 										pIntent);
 		
-		notification.flags = (Notification.FLAG_AUTO_CANCEL | Notification.DEFAULT_ALL);
-		notification.number = rideIds.size();
+		notification.flags |= (Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
+		notification.flags &= ~Notification.FLAG_ONGOING_EVENT;	// Clear ongoing flag
+		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+		notification.number = rideIds.length;
 		notifyManager.notify(1, notification);
 	}
 	
-	private static ArrayList<Integer> parseRideIds(String rideIds)
+	private static int[] parseRideIds(String rideIds)
 	{
 		ArrayList<Integer> ids = new ArrayList<Integer>();
 		String stripped = rideIds.replaceAll("[^0-9,]", "");
@@ -105,6 +107,10 @@ public class C2DMReceiver extends C2DMBaseReceiver
 			ids.add(id);
 		}
 		
-		return ids;
+		int[] iIds = new int[ids.size()];
+		for (int i = 0; i < ids.size(); i++)
+			iIds[i] = ids.get(i);
+		
+		return iIds;
 	}
 }

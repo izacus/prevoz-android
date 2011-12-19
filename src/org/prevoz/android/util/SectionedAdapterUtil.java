@@ -45,6 +45,10 @@ public class SectionedAdapterUtil {
 
 	public static SectionedAdapter buildAdapterWithResults(Activity activity, SearchResults results) 
 	{
+		return buildAdapterWithResults(activity, results, null);
+	}
+
+	public static SectionedAdapter buildAdapterWithResults(Activity activity, SearchResults results, int[] highlights) {
 		SectionedAdapter resultsAdapter = getSectionedAdapter(activity);
 		
 		// Build categories of results
@@ -67,7 +71,7 @@ public class SectionedAdapterUtil {
 
 			for (String path : ridePaths)
 			{
-				resultsAdapter.addSection(path, new SearchResultAdapter(activity, ridesByPath.get(path)));
+				resultsAdapter.addSection(path, new SearchResultAdapter(activity, ridesByPath.get(path), highlights));
 			}
 		}
 		

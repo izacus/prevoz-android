@@ -156,7 +156,7 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 			getActivity().finish();
 		}
 		
-		SectionedAdapter resultsAdapter = SectionedAdapterUtil.buildAdapterWithResults(getActivity(), results);
+		SectionedAdapter resultsAdapter = SectionedAdapterUtil.buildAdapterWithResults(getActivity(), results, ((SearchResultsActivity)getActivity()).getHighlights());
 		// Show results
 		resultList.setAdapter(resultsAdapter);
 		viewFlipper.showNext();

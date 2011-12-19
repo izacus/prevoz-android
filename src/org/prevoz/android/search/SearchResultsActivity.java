@@ -12,7 +12,7 @@ public class SearchResultsActivity extends FragmentActivity
 	private String from;
 	private String to;
 	private Calendar when;
-	
+	private int[] highlightIds;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -25,6 +25,7 @@ public class SearchResultsActivity extends FragmentActivity
 		to = data.getString("to");
 		when = Calendar.getInstance();
 		when.setTimeInMillis(data.getLong("when"));
+		highlightIds = data.getIntArray("highlights");
 	}
 	
 	public String getFrom()
@@ -40,6 +41,11 @@ public class SearchResultsActivity extends FragmentActivity
 	public Calendar getWhen()
 	{
 		return when;
+	}
+	
+	public int[] getHighlights()
+	{
+		return highlightIds;
 	}
 
 }

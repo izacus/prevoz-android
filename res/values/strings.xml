@@ -105,6 +105,16 @@
         <item>Sobota</item>
     </string-array>
     
+    <string-array name="notify_day_names">
+        <item>nedeljo</item>
+        <item>ponedeljek</item>
+        <item>torek</item>
+        <item>sredo</item>
+        <item>četrtek</item>
+        <item>petek</item>
+        <item>soboto</item>
+    </string-array>
+    
     <string-array name="month_names">
         <item>januar</item>
         <item>februar</item>
