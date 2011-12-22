@@ -15,6 +15,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.c2dm.C2DMBaseReceiver;
@@ -54,6 +55,12 @@ public class C2DMReceiver extends C2DMBaseReceiver
 	protected void onMessage(Context context, Intent intent) 
 	{
 		Log.i(this.toString(), "C2DM Message received.");
+		
+		Bundle extras = intent.getExtras();
+		for (String key : extras.keySet())
+		{
+			Log.d(this.toString(), key + ":" + extras.get(key));
+		}
 		
 		String from = intent.getExtras().getString("fromcity");
 		String to = intent.getExtras().getString("tocity");

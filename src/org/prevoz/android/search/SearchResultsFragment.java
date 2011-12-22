@@ -91,7 +91,14 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 		
 		Log.d(this.toString(), "Activity created, succefully fetched data.");
 		tracker = GoogleAnalyticsTracker.getInstance();
-		tracker.trackPageView("/SearchResults");
+		try
+		{
+			tracker.trackPageView("/SearchResults");
+		}
+		catch (Exception e)
+		{
+			Log.e(this.toString(), "GA failed!", e);
+		}
 		// Get loader for search results
 		getLoaderManager().initLoader(Globals.LOADER_SEARCH_RESULTS, null, this);
 		
@@ -177,7 +184,11 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 
 	public Loader<SearchResults> onCreateLoader(int id, Bundle args) 
 	{
-		tracker.dispatch();
+		if (tracker != null)
+		{
+			tracker.dispatch();
+		}
+		
 		SearchRequest request = new SearchRequest(getActivity(), from, to, when);
 		return new SearchResultsLoader(getActivity(), request);
 	}
