@@ -105,9 +105,10 @@ public class RideInfoUtil
 		}
 
 		
-		pplText.setText(String.valueOf(ride.getPeople()));
-		pplTagText.setText(LocaleUtil.getStringNumberForm(res,
-				R.array.people_tags, ride.getPeople()));
+		int people = ride.isFull() ? 0 : ride.getPeople();
+		
+		pplText.setText(people);
+		pplTagText.setText(LocaleUtil.getStringNumberForm(res, R.array.people_tags, people));
 
 		// Driver and contact		
 		if (ride.getAuthor() == null || ride.getAuthor().trim().length() == 0)
