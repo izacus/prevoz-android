@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AnimationUtils;
+import android.widget.CheckBox;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -113,8 +114,13 @@ public class RideInfoActivity extends FragmentActivity implements LoaderCallback
 			}
 		};
 		
+		View separator = findViewById(R.id.ride_full_separator);
+		CheckBox fullBox = (CheckBox) findViewById(R.id.ride_full);
 		if (result.isAuthor())
 		{
+			separator.setVisibility(View.VISIBLE);
+			fullBox.setVisibility(View.VISIBLE);
+			
 			OnClickListener deleteListener = new OnClickListener()
 			{
 				public void onClick(View v)
@@ -127,6 +133,8 @@ public class RideInfoActivity extends FragmentActivity implements LoaderCallback
 		}
 		else
 		{
+			separator.setVisibility(View.GONE);
+			fullBox.setVisibility(View.GONE);
 			rideInfoUtil = new RideInfoUtil(this, callAuthor, sendSMS, null, null);
 		}
 		
