@@ -378,7 +378,8 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 								 StringUtil.numberOnly(phoneText.getText().toString(), false),				// Phone number
 								 commentText.getText().toString().trim(),									// Ride comment
 								 true,																		// isAuthor flag
-								 insuranceCheck.isChecked());												// isInsured flag
+								 insuranceCheck.isChecked(),												// isInsured flag
+								 false);																	// isFull flag
 			
 			
 			OnClickListener sendListener = new OnClickListener()

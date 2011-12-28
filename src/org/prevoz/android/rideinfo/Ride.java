@@ -25,10 +25,11 @@ public class Ride
 
 	private boolean isAuthor;
 	private boolean isInsured;
+	private boolean isFull;
 
 	public Ride(int id, RideType type, String from, String to, Date time,
 			int people, Double price, String author, String contact,
-			String comment, boolean isAuthor, boolean isInsured)
+			String comment, boolean isAuthor, boolean isInsured, boolean isFull)
 	{
 		this.id = id;
 		this.type = type;
@@ -42,6 +43,7 @@ public class Ride
 		this.comment = comment;
 		this.isAuthor = isAuthor;
 		this.isInsured = isInsured;
+		this.isFull = isFull;
 	}
 
 	/**
@@ -151,5 +153,13 @@ public class Ride
 		bundle.putString("rideinfo_contact", contact);
 		bundle.putString("rideinfo_comment", comment);
 		bundle.putBoolean("rideinfo_isauthor", isAuthor);
+	}
+	
+	public boolean isFull() {
+		return isFull;
+	}
+
+	public void setFull(boolean isFull) {
+		this.isFull = isFull;
 	}
 }

@@ -3,8 +3,6 @@ package org.prevoz.android.rideinfo;
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
 
-import com.google.android.apps.analytics.GoogleAnalyticsTracker;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,8 +16,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 public class RideInfoActivity extends FragmentActivity implements LoaderCallbacks<Ride>
 {
@@ -29,7 +31,6 @@ public class RideInfoActivity extends FragmentActivity implements LoaderCallback
 	private RideInfoUtil rideInfoUtil;
 	
 	public ViewFlipper rideFlipper;
-
 	private GoogleAnalyticsTracker tracker;
 	
 	@Override
@@ -115,7 +116,43 @@ public class RideInfoActivity extends FragmentActivity implements LoaderCallback
 		};
 		
 		View separator = findViewById(R.id.ride_full_separator);
-		CheckBox fullBox = (CheckBox) findViewById(R.id.ride_full);
+		final CheckBox fullBox = (CheckBox) findViewById(R.id.ride_full);
+		fullBox.setChecked(ride.isFull());
+		
+		// Setup callbacks for ride full checkbox
+		fullBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			
+			public void onCheckedChanged(final CompoundButton parent, final boolean checked) 
+			{
+				parent.setEnabled(false);
+				final OnCheckedChangeListener _this = this;
+				RideFullTask task = new RideFullTask(ride.getId(), new Handler() 
+				{
+					@Override
+					public void handleMessage(Message msg) 
+					{
+						if (msg.what == Globals.REQUEST_SUCCESS)
+						{
+							int res = checked ? R.string.ride_set_full_success : R.string.ride_set_empty_success;
+							Toast.makeText(RideInfoActivity.this, res, Toast.LENGTH_SHORT).show();
+						}
+						else
+						{
+							fullBox.setOnCheckedChangeListener(null);	// Ugly hack
+							fullBox.setChecked(!checked);
+							fullBox.setOnCheckedChangeListener(_this);
+							Toast.makeText(RideInfoActivity.this, R.string.network_error, Toast.LENGTH_SHORT).show();
+						}
+						
+						ride.setFull(parent.isChecked());
+						parent.setEnabled(true);
+					}
+				});
+				
+				task.doInBackground(checked);
+			}
+		});
+		
 		if (result.isAuthor())
 		{
 			separator.setVisibility(View.VISIBLE);

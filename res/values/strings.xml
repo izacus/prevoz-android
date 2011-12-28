@@ -78,7 +78,8 @@
    	<string name="send_sms">Pošlji SMS</string>
     <string name="call">Pokliči</string>
     <string name="ride_is_full">Ni več prostih mest</string>
-        
+    <string name="ride_set_full_success">Prevoz je bil označen kot poln.</string>
+    <string name="ride_set_empty_success">Prevoz je bil označen kot prazen.</string>
         
     <string name="cd_my_rides">Moji prevozi</string>
     <string name="cd_show_active_notifications">Pokaži aktivna obvestila</string>

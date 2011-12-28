@@ -70,10 +70,11 @@ public class RideInfoLoader extends AsyncLoader<Ride>
 
 			boolean isAuthor = root.getBoolean("is_author");
 			boolean isInsured = root.getBoolean("insured");
+			boolean isFull = root.getBoolean("full");
 			
 			Log.i(this.toString(), "Succesfully parsed response for ride id " + rideID);
 			
-			return new Ride(id, type, from, to, time, people, price, author, contact, comment, isAuthor, isInsured);
+			return new Ride(id, type, from, to, time, people, price, author, contact, comment, isAuthor, isInsured, isFull);
 		}
 		catch (JSONException e)
 		{
