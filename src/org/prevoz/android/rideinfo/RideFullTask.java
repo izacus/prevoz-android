@@ -14,6 +14,9 @@ import android.util.Log;
 
 public class RideFullTask extends AsyncTask<Boolean, Void, Integer>
 {
+	public static final int REQUEST_RIDE_FULL = 4;
+	public static final int REQUEST_RIDE_NOT_FULL = 5;
+	
 	private int rideId;
 	private Handler callback;
 	
@@ -38,10 +41,20 @@ public class RideFullTask extends AsyncTask<Boolean, Void, Integer>
 			{
 				JSONObject responseObject = new JSONObject(response);
 				
-				if (responseObject.getString("status").equalsIgnoreCase("success"))
+				if (responseObject.has("full"))
 				{
-					callback.sendEmptyMessage(Globals.REQUEST_SUCCESS);
-					return Globals.REQUEST_SUCCESS;
+					int msg;
+					if (responseObject.getBoolean("full"))
+					{
+						msg = REQUEST_RIDE_FULL;
+					}
+					else
+					{
+						msg = REQUEST_RIDE_NOT_FULL;
+					}
+					
+					callback.sendEmptyMessage(msg);
+					return msg;
 				}
 			}
 			catch (JSONException e)

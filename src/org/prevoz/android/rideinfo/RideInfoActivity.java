@@ -131,20 +131,28 @@ public class RideInfoActivity extends FragmentActivity implements LoaderCallback
 					@Override
 					public void handleMessage(Message msg) 
 					{
-						if (msg.what == Globals.REQUEST_SUCCESS)
+						fullBox.setOnCheckedChangeListener(null);	// Ugly hack
+						if (msg.what == RideFullTask.REQUEST_RIDE_FULL)
 						{
-							int res = checked ? R.string.ride_set_full_success : R.string.ride_set_empty_success;
+							int res = R.string.ride_set_full_success;
 							Toast.makeText(RideInfoActivity.this, res, Toast.LENGTH_SHORT).show();
+							fullBox.setChecked(true);
+						}
+						else if (msg.what == RideFullTask.REQUEST_RIDE_NOT_FULL)
+						{
+							int res = R.string.ride_set_empty_success;
+							Toast.makeText(RideInfoActivity.this, res, Toast.LENGTH_SHORT).show();
+							fullBox.setChecked(false);
 						}
 						else
 						{
-							fullBox.setOnCheckedChangeListener(null);	// Ugly hack
 							fullBox.setChecked(!checked);
-							fullBox.setOnCheckedChangeListener(_this);
 							Toast.makeText(RideInfoActivity.this, R.string.network_error, Toast.LENGTH_SHORT).show();
 						}
 						
+						fullBox.setOnCheckedChangeListener(_this);
 						ride.setFull(parent.isChecked());
+						rideInfoUtil.showPeople(getResources(), ride);
 						parent.setEnabled(true);
 					}
 				});
