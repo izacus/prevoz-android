@@ -46,8 +46,7 @@
 	   <LinearLayout
 	        android:layout_width = "fill_parent"
 	        android:layout_height = "wrap_content"
-	        android:orientation = "horizontal"
-	        android:layout_marginTop = "5dip">
+	        android:orientation = "horizontal">
 	        
 	        <TextView
 	            android:id = "@+id/rideinfo_time"
@@ -69,6 +68,8 @@
 		           android:id = "@+id/rideinfo_day"
 		           android:layout_width = "fill_parent"
 		           android:layout_height = "fill_parent"
+		           android:layout_weight="1"
+		           android:singleLine="true"
 		           style="@style/RideInfoDay"
 		           />
 	           <TextView
@@ -76,6 +77,8 @@
 	               android:layout_width = "fill_parent"
 	               android:layout_height = "fill_parent"
 	               android:layout_weight = "1"
+	               android:ellipsize="end"
+	               android:singleLine="true"
 	               style="@style/RideInfoDate"
 	               />	       
 	        </LinearLayout>
@@ -183,6 +186,17 @@
            style="@style/PricePplTagText"
        />
 	  
+       <include layout = "@layout/separator"
+       	    	android:id="@+id/ride_full_separator" />
+	   
+	   <CheckBox android:id = "@+id/ride_full"
+	       		 android:layout_height="wrap_content"
+	       		 android:layout_width = "fill_parent"
+	       		 android:layout_margin="8dip"
+	       		 android:paddingLeft="45dip"
+	       		 android:text="@string/ride_is_full"
+	       		 />
+	   
 	   <include layout = "@layout/separator" />
 	  
 	   <TextView 

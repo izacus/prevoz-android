@@ -49,7 +49,7 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 	private ViewFlipper viewFlipper;
 	private ListView resultList;
 	
-	private GoogleAnalyticsTracker tracker;
+	private GoogleAnalyticsTracker tracker = GoogleAnalyticsTracker.getInstance();
 	
 	private boolean notificationEnabled = false;
 	
@@ -90,7 +90,6 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 		}
 		
 		Log.d(this.toString(), "Activity created, succefully fetched data.");
-		tracker = GoogleAnalyticsTracker.getInstance();
 		try
 		{
 			tracker.trackPageView("/SearchResults");
@@ -184,10 +183,12 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 
 	public Loader<SearchResults> onCreateLoader(int id, Bundle args) 
 	{
-		if (tracker != null)
+		try
 		{
 			tracker.dispatch();
 		}
+		catch (Exception e)
+		{}
 		
 		SearchRequest request = new SearchRequest(getActivity(), from, to, when);
 		return new SearchResultsLoader(getActivity(), request);

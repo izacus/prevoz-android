@@ -80,6 +80,13 @@ public class RideInfoUtil
 		genButton = (Button) context.findViewById(R.id.rideinfo_delsend);
 	}
 	
+	public void showPeople(Resources res, Ride ride)
+	{
+		int people = ride.isFull() ? 0 : ride.getPeople();
+		pplText.setText(String.valueOf(people));
+		pplTagText.setText(LocaleUtil.getStringNumberForm(res, R.array.people_tags, people));
+	}
+	
 	public void showRide(Ride ride, boolean showControls)
 	{
 		Resources res = context.getResources();
@@ -104,10 +111,7 @@ public class RideInfoUtil
 			priceText.setText("?");
 		}
 
-		
-		pplText.setText(String.valueOf(ride.getPeople()));
-		pplTagText.setText(LocaleUtil.getStringNumberForm(res,
-				R.array.people_tags, ride.getPeople()));
+		showPeople(res, ride);
 
 		// Driver and contact		
 		if (ride.getAuthor() == null || ride.getAuthor().trim().length() == 0)

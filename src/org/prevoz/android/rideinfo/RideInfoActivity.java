@@ -3,8 +3,6 @@ package org.prevoz.android.rideinfo;
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
 
-import com.google.android.apps.analytics.GoogleAnalyticsTracker;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,8 +15,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AnimationUtils;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 public class RideInfoActivity extends FragmentActivity implements LoaderCallbacks<Ride>
 {
@@ -28,7 +31,6 @@ public class RideInfoActivity extends FragmentActivity implements LoaderCallback
 	private RideInfoUtil rideInfoUtil;
 	
 	public ViewFlipper rideFlipper;
-
 	private GoogleAnalyticsTracker tracker;
 	
 	@Override
@@ -113,8 +115,57 @@ public class RideInfoActivity extends FragmentActivity implements LoaderCallback
 			}
 		};
 		
+		View separator = findViewById(R.id.ride_full_separator);
+		final CheckBox fullBox = (CheckBox) findViewById(R.id.ride_full);
+		fullBox.setChecked(ride.isFull());
+		
+		// Setup callbacks for ride full checkbox
+		fullBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			
+			public void onCheckedChanged(final CompoundButton parent, final boolean checked) 
+			{
+				parent.setEnabled(false);
+				final OnCheckedChangeListener _this = this;
+				RideFullTask task = new RideFullTask(ride.getId(), new Handler() 
+				{
+					@Override
+					public void handleMessage(Message msg) 
+					{
+						fullBox.setOnCheckedChangeListener(null);	// Ugly hack
+						if (msg.what == RideFullTask.REQUEST_RIDE_FULL)
+						{
+							int res = R.string.ride_set_full_success;
+							Toast.makeText(RideInfoActivity.this, res, Toast.LENGTH_SHORT).show();
+							fullBox.setChecked(true);
+						}
+						else if (msg.what == RideFullTask.REQUEST_RIDE_NOT_FULL)
+						{
+							int res = R.string.ride_set_empty_success;
+							Toast.makeText(RideInfoActivity.this, res, Toast.LENGTH_SHORT).show();
+							fullBox.setChecked(false);
+						}
+						else
+						{
+							fullBox.setChecked(!checked);
+							Toast.makeText(RideInfoActivity.this, R.string.network_error, Toast.LENGTH_SHORT).show();
+						}
+						
+						fullBox.setOnCheckedChangeListener(_this);
+						ride.setFull(parent.isChecked());
+						rideInfoUtil.showPeople(getResources(), ride);
+						parent.setEnabled(true);
+					}
+				});
+				
+				task.doInBackground(checked);
+			}
+		});
+		
 		if (result.isAuthor())
 		{
+			separator.setVisibility(View.VISIBLE);
+			fullBox.setVisibility(View.VISIBLE);
+			
 			OnClickListener deleteListener = new OnClickListener()
 			{
 				public void onClick(View v)
@@ -127,6 +178,8 @@ public class RideInfoActivity extends FragmentActivity implements LoaderCallback
 		}
 		else
 		{
+			separator.setVisibility(View.GONE);
+			fullBox.setVisibility(View.GONE);
 			rideInfoUtil = new RideInfoUtil(this, callAuthor, sendSMS, null, null);
 		}
 		
