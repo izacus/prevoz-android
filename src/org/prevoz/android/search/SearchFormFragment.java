@@ -197,7 +197,7 @@ public class SearchFormFragment extends Fragment
 		super.onResume();
 		populateLastSearchList();
 		
-		if (NotificationManager.getInstance().notificationsAvailable())
+		if (NotificationManager.getInstance(getActivity().getApplicationContext()).notificationsAvailable())
 		{
 			notifications.setVisibility(View.VISIBLE);
 		}

@@ -29,7 +29,7 @@ public class NotificationManager
 		return getInstance();
 	}
 	
-	public static synchronized NotificationManager getInstance()
+	private static synchronized NotificationManager getInstance()
 	{
 		if (instance == null)
 		{

@@ -69,7 +69,7 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 		
 		View delimiter = getActivity().findViewById(R.id.delimiter);
 		
-		if (NotificationManager.getInstance().notificationsAvailable())
+		if (NotificationManager.getInstance(getActivity().getApplicationContext()).notificationsAvailable())
 		{
 			delimiter.setVisibility(View.VISIBLE);
 			notifyButton.setVisibility(View.VISIBLE);
@@ -80,7 +80,7 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 			notifyButton.setVisibility(View.GONE);
 		}
 		
-		if (NotificationManager.getInstance().isNotified(getActivity(), from, to, when))
+		if (NotificationManager.getInstance(getActivity().getApplicationContext()).isNotified(getActivity(), from, to, when))
 		{
 			notificationEnabled = true;
 		}
@@ -192,12 +192,12 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 	{
 		if (notificationEnabled)
 		{
-			NotificationManager.getInstance().disableNotification(getActivity(), from, to, when, null);
+			NotificationManager.getInstance(getActivity().getApplicationContext()).disableNotification(getActivity(), from, to, when, null);
 			notificationEnabled = false;
 		}
 		else
 		{
-			NotificationManager.getInstance().enableNotification(getActivity(), from, to, when, null);
+			NotificationManager.getInstance(getActivity().getApplicationContext()).enableNotification(getActivity(), from, to, when, null);
 			notificationEnabled = true;
 		}
 	}

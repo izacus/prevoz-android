@@ -26,7 +26,7 @@ public class NotificationsActivity extends Activity implements OnItemClickListen
 		list = (ListView) findViewById(R.id.notifications_list);
 		list.setEmptyView(findViewById(R.id.empty_list));
 		
-		List<NotifySubscription> subscriptions = NotificationManager.getInstance().getNotificationSubscriptions(this);
+		List<NotifySubscription> subscriptions = NotificationManager.getInstance(getApplicationContext()).getNotificationSubscriptions(this);
 		NotificationListAdapter adapter = new NotificationListAdapter(this, subscriptions);
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(this);
