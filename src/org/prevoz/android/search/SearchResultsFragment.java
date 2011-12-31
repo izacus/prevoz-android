@@ -7,6 +7,7 @@ import org.prevoz.android.R;
 import org.prevoz.android.c2dm.NotificationManager;
 import org.prevoz.android.rideinfo.RideInfoActivity;
 import org.prevoz.android.search.SearchResultAdapter.SearchResultViewWrapper;
+import org.prevoz.android.util.GAUtils;
 import org.prevoz.android.util.SectionedAdapter;
 import org.prevoz.android.util.SectionedAdapterUtil;
 
@@ -28,8 +29,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import com.google.android.apps.analytics.GoogleAnalyticsTracker;
-
 public class SearchResultsFragment extends Fragment implements LoaderCallbacks<SearchResults>
 {
 	private enum DisplayScreens
@@ -48,9 +47,6 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 	// Views
 	private ViewFlipper viewFlipper;
 	private ListView resultList;
-	
-	private GoogleAnalyticsTracker tracker = GoogleAnalyticsTracker.getInstance();
-	
 	private boolean notificationEnabled = false;
 	
 	@Override
@@ -90,14 +86,8 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 		}
 		
 		Log.d(this.toString(), "Activity created, succefully fetched data.");
-		try
-		{
-			tracker.trackPageView("/SearchResults");
-		}
-		catch (Exception e)
-		{
-			Log.e(this.toString(), "GA failed!", e);
-		}
+		GAUtils.trackPageView(getActivity().getApplicationContext(), "/SearchResults");
+		
 		// Get loader for search results
 		getLoaderManager().initLoader(Globals.LOADER_SEARCH_RESULTS, null, this);
 		
@@ -183,13 +173,7 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 
 	public Loader<SearchResults> onCreateLoader(int id, Bundle args) 
 	{
-		try
-		{
-			tracker.dispatch();
-		}
-		catch (Exception e)
-		{}
-		
+		GAUtils.dispatch(getActivity().getApplicationContext());
 		SearchRequest request = new SearchRequest(getActivity(), from, to, when);
 		return new SearchResultsLoader(getActivity(), request);
 	}

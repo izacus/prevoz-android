@@ -2,14 +2,12 @@ package org.prevoz.android;
 
 import java.util.Calendar;
 
-import org.prevoz.android.R;
 import org.prevoz.android.auth.AuthenticationManager;
 import org.prevoz.android.c2dm.NotificationManager;
 import org.prevoz.android.search.SearchFormFragment;
 import org.prevoz.android.search.SearchResultsActivity;
 import org.prevoz.android.util.Database;
-
-import com.google.android.apps.analytics.GoogleAnalyticsTracker;
+import org.prevoz.android.util.GAUtils;
 
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -25,7 +23,6 @@ public class MainActivity extends FragmentActivity implements OnDateSetListener
 	
 	// For picking search date
 	private DatePickerDialog datePicker;
-	private GoogleAnalyticsTracker tracker;
 	
 	public void startSearch(String from, String to, Calendar when)
 	{
@@ -46,10 +43,7 @@ public class MainActivity extends FragmentActivity implements OnDateSetListener
 	{
 		super.onCreate(savedInstanceState);
 		
-		// Start GA
-		tracker = GoogleAnalyticsTracker.getInstance();
-		tracker.start(getString(R.string.ga_identity), this);
-		tracker.trackEvent("Application", "Start", getString(R.string.app_version), 0);
+		GAUtils.trackEvent(getApplicationContext(), "Application", "Start", getString(R.string.app_version), 0);
 		
 		// Attempt C2DM services registration
 		NotificationManager.getInstance(getApplicationContext());
@@ -110,7 +104,6 @@ public class MainActivity extends FragmentActivity implements OnDateSetListener
 	protected void onDestroy() 
 	{
 		super.onDestroy();
-		tracker.stop();
 	}
 	
 }

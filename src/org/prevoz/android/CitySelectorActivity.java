@@ -1,9 +1,8 @@
 package org.prevoz.android;
 
 import org.prevoz.android.util.Database;
+import org.prevoz.android.util.GAUtils;
 import org.prevoz.android.util.GPSManager;
-
-import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -37,8 +36,6 @@ public class CitySelectorActivity extends FragmentActivity implements TextWatche
 	private EditText cityText;
 	private ImageButton gpsButton;
 	
-	private GoogleAnalyticsTracker tracker;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -71,8 +68,6 @@ public class CitySelectorActivity extends FragmentActivity implements TextWatche
 		// Prepare database connection
 		database = Database.getSettingsDatabase(this);
 		populateCityList("");
-		
-		tracker = GoogleAnalyticsTracker.getInstance();
 	}
 	
 	
@@ -96,7 +91,7 @@ public class CitySelectorActivity extends FragmentActivity implements TextWatche
 
 	private void fillInCurrentLocation(final TextView view)
 	{
-		tracker.trackEvent("CitySelector", "GPSLocate", "", 0);
+		GAUtils.trackEvent(getApplicationContext(), "CitySelector", "GPSLocate", "", 0);
 		view.setEnabled(false);
 		
 		final String currentText = view.getText().toString();
@@ -164,14 +159,14 @@ public class CitySelectorActivity extends FragmentActivity implements TextWatche
 	{
 		if ((cityList.getCount() > 1) || (cityList.getCount() == 0))
 		{
-			tracker.trackEvent("CitySelector", "SelectionCanceled", "", 0);
+			GAUtils.trackEvent(getApplicationContext(), "CitySelector", "SelectionCanceled", "", 0);
 			setResult(RESULT_CANCELED);
 			finish();
 		}
 		else 
 		{
 			String name = ((TextView)cityList.getChildAt(0)).getText().toString();
-			tracker.trackEvent("CitySelector", "CitySelected", name, 0);
+			GAUtils.trackEvent(getApplicationContext(), "CitySelector", "CitySelected", name, 0);
 			returnCity(name);
 		}
 		
