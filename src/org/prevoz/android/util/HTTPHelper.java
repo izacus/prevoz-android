@@ -1,9 +1,12 @@
 package org.prevoz.android.util;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,11 +21,11 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.prevoz.android.Globals;
 
 import android.content.Context;
@@ -33,6 +36,14 @@ import android.webkit.CookieSyncManager;
 
 public class HTTPHelper
 {
+	static
+	{
+	    // HTTP connection reuse which was buggy pre-froyo
+	    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO) {
+	        System.setProperty("http.keepAlive", "false");
+	    }
+	}
+	
 	private static String sessionCookies = "";
 
 	public static Date parseISO8601(String date) throws ParseException
@@ -119,7 +130,7 @@ public class HTTPHelper
 	{
 		return httpGet(url, null);
 	}
-
+	
 	/**
 	 * Makes a GET request to a server and reads response
 	 * 
@@ -130,13 +141,11 @@ public class HTTPHelper
 	 * @return Server response or <b>null</b> if the request failed
 	 * @throws IOException
 	 */
-	public static String httpGet(String url, String params) throws IOException
+	public static String httpGet(String urlString, String params) throws IOException
 	{
-		DefaultHttpClient client = new DefaultHttpClient();
-		HttpGet get = new HttpGet(url + (params != null ? params : ""));
-
-		get.addHeader("User-Agent", "Prevoz on Android "
-				+ Build.VERSION.SDK_INT);
+		URL url = new URL(urlString + (params != null ? params : ""));
+		HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+		connection.addRequestProperty("User-Agent", "Prevoz on Android " + Build.VERSION.SDK_INT);
 
 		Log.d("HTTPHelper", "Getting " + url + params);
 		
@@ -144,22 +153,21 @@ public class HTTPHelper
 		if (sessionCookies != null)
 		{
 			Log.d("HTTPHelper", "Getting with session cookies " + sessionCookies);
-			get.addHeader("Cookie", sessionCookies);
+			connection.addRequestProperty("Cookie", sessionCookies);
 		}
 
-		HttpResponse response = client.execute(get);
-		HttpEntity entity = response.getEntity();
-
-		if (entity != null)
+		try
 		{
-			InputStream instream = entity.getContent();
+			InputStream instream = new BufferedInputStream(connection.getInputStream());
 			String responseString = HTTPHelper.convertStreamToString(instream);
 			instream.close();
 
 			return responseString;
 		}
-
-		return null;
+		finally
+		{
+			connection.disconnect();
+		}
 	}
 
 	public static String httpPost(String url) throws IOException
@@ -202,10 +210,7 @@ public class HTTPHelper
 
 		if (entity != null)
 		{
-			InputStream instream = entity.getContent();
-			String responseString = HTTPHelper.convertStreamToString(instream);
-			instream.close();
-
+			String responseString = EntityUtils.toString(entity);
 			if (storeCookies)
 			{
 				StringBuilder builder = new StringBuilder(50);
