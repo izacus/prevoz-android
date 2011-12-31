@@ -67,7 +67,7 @@ public class C2DMReceiver extends C2DMBaseReceiver
 		
 		// Create notification message:
 		NotificationManager notifyManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-		Notification notification = new Notification(R.drawable.status, getString(R.string.notify_statusbar) + " " + from + " - " + to, System.currentTimeMillis());
+		Notification notification = new Notification(R.drawable.notify_icon, getString(R.string.notify_statusbar) + " " + from + " - " + to, System.currentTimeMillis());
 		
 		// Prepare search results launch intent
 		Calendar when = Calendar.getInstance();
