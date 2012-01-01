@@ -114,7 +114,7 @@ public class LocaleUtil
 	{
 		TimeZone tz = TimeZone.getTimeZone("Europe/Ljubljana");
 		
-		if (tz.getID().equals(TimeZone.getTimeZone("GMT")))
+		if (tz.getID().equals(TimeZone.getTimeZone("GMT").getID()))
 		{
 			return TimeZone.getDefault();
 		}

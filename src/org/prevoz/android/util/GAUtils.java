@@ -81,6 +81,8 @@ public class GAUtils {
 				Log.d("GAUtils - finalize", "Stopping tracking.");
 			}
 		}
-		catch (Exception e) {};
+		catch (Exception e) {
+			Log.e("GAUtils", "Failed to finalize!", e);
+		};
 	}
 }
