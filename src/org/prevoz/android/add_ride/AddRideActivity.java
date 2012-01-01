@@ -28,8 +28,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -50,8 +48,6 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 	
 	private static final int DIALOG_DATE = 1;
 	private static final int DIALOG_TIME = 2;
-	
-	private static final int MENU_LOGOUT = 0;
 	
 	private final SimpleDateFormat timeFormatter = LocaleUtil.getSimpleDateFormat("HH:mm");
 	
@@ -484,39 +480,5 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 		outState.putString("toCity", toCity);
 		outState.putInt("numPpl", ((PeopleSpinnerObject)peopleSpinner.getSelectedItem()).getNumber());
 		outState.putLong("date", dateTime.getTimeInMillis());
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
-		menu.add(Menu.NONE, MENU_LOGOUT, Menu.NONE, getString(R.string.logout)).setIcon(android.R.drawable.ic_delete);
-		
-		if (stateManager.getCurrentView() != Views.LOADING)
-		{
-			return true;
-		}
-		
-		
-		return false;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
-		if (item.getItemId() == MENU_LOGOUT)
-		{
-			GAUtils.trackEvent(getApplicationContext(), "AddRide", "Logout", "", 0);
-			AuthenticationManager.getInstance().requestLogout(this);
-			Toast.makeText(this, R.string.logout_success, Toast.LENGTH_SHORT).show();
-			finish();
-			
-			return true;
-		}
-		else
-		{
-			Log.e(this.toString(), "Tried to open non-existed menu item.");
-		}
-		
-		return false;
 	}
 }
