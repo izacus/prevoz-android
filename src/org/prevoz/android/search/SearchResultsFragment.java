@@ -13,6 +13,8 @@ import org.prevoz.android.util.SectionedAdapterUtil;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
@@ -80,10 +82,9 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 			notifyButton.setVisibility(View.GONE);
 		}
 		
-		if (NotificationManager.getInstance(getActivity().getApplicationContext()).isNotified(getActivity(), from, to, when))
-		{
-			notificationEnabled = true;
-		}
+		notificationEnabled = NotificationManager.getInstance(getActivity().getApplicationContext()).isNotified(getActivity(), from, to, when);
+		updateNotifyGraphic();
+		
 		
 		Log.d(this.toString(), "Activity created, succefully fetched data.");
 		GAUtils.trackPageView(getActivity().getApplicationContext(), "/SearchResults");
@@ -93,6 +94,18 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 		
 	}
 
+	public void updateNotifyGraphic()
+	{
+		if (notificationEnabled)
+		{
+			notifyButton.setImageResource(R.drawable.bell_cross);
+		}
+		else
+		{
+			notifyButton.setImageResource(R.drawable.bell);
+		}
+	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
 	{
@@ -190,15 +203,47 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 	
 	private void notifyClicked()
 	{
+		notifyButton.setEnabled(false);
+		
 		if (notificationEnabled)
 		{
-			NotificationManager.getInstance(getActivity().getApplicationContext()).disableNotification(getActivity(), from, to, when, null);
-			notificationEnabled = false;
+			Handler handler = new Handler() 
+			{
+				@Override
+				public void handleMessage(Message msg) 
+				{
+					super.handleMessage(msg);
+					if (msg.what == NotificationManager.REGISTRATION_SUCCESS)
+					{
+						notificationEnabled = false;
+						updateNotifyGraphic();
+					}
+					
+					notifyButton.setEnabled(true);
+				}
+			};
+			
+			NotificationManager.getInstance(getActivity().getApplicationContext()).disableNotification(getActivity(), from, to, when, handler);
 		}
 		else
 		{
-			NotificationManager.getInstance(getActivity().getApplicationContext()).enableNotification(getActivity(), from, to, when, null);
-			notificationEnabled = true;
+			Handler handler = new Handler() 
+			{
+				@Override
+				public void handleMessage(Message msg) 
+				{
+					super.handleMessage(msg);
+					if (msg.what == NotificationManager.REGISTRATION_SUCCESS)
+					{
+						notificationEnabled = true;
+						updateNotifyGraphic();
+					}
+					
+					notifyButton.setEnabled(true);
+				}
+			};
+			
+			NotificationManager.getInstance(getActivity().getApplicationContext()).enableNotification(getActivity(), from, to, when, handler);
 		}
 	}
 }
