@@ -76,6 +76,11 @@ public class CitySelectorActivity extends FragmentActivity implements TextWatche
 		final String[] column = { "name" };
 		final int[] ids = { android.R.id.text1 };
 		
+		if (database == null || !database.isOpen())
+		{
+			database = Database.getSettingsDatabase(this);
+		}
+		
 		Cursor cities = Database.getCitiesStartingWith(database, pattern);
 		startManagingCursor(cities);
 		

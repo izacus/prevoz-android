@@ -13,7 +13,6 @@ import org.prevoz.android.util.SectionedAdapterUtil;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;

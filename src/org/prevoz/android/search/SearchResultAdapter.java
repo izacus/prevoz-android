@@ -117,16 +117,22 @@ public class SearchResultAdapter extends ArrayAdapter<SearchRide>
 		{
 			LayoutInflater inflater = context.getLayoutInflater();
 			row = inflater.inflate(R.layout.search_result, null);
-			wrapper = new SearchResultViewWrapper(row, rides.get(position)
-					.getId());
-			row.setTag(wrapper);
 		}
 		else
 		{
 			row = convertView;
-			wrapper = (SearchResultViewWrapper) row.getTag();
 		}
 
+		if (row.getTag() == null)
+		{
+			wrapper = new SearchResultViewWrapper(row, rides.get(position).getId());
+			row.setTag(wrapper);
+		}
+		else
+		{
+			wrapper = (SearchResultViewWrapper) row.getTag();
+		}
+		
 		wrapper.getTime().setText(timeFormatter.format(rides.get(position).getTime()));
 
 		if (rides.get(position).getPrice() != null)
