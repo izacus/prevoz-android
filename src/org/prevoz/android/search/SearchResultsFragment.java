@@ -12,6 +12,8 @@ import org.prevoz.android.util.SectionedAdapter;
 import org.prevoz.android.util.SectionedAdapterUtil;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -40,6 +42,9 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 	};
 	
 	private ImageButton notifyButton;
+	private Drawable bellImg;
+	private Drawable bellCrossImg;
+	
 	
 	// Status
 	private String from;
@@ -55,6 +60,8 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 	public void onActivityCreated(Bundle savedInstanceState)
 	{
 		super.onActivityCreated(savedInstanceState);
+		bellImg = getResources().getDrawable(R.drawable.bell);
+		bellCrossImg = getResources().getDrawable(R.drawable.bell_cross);
 		
 		SearchResultsActivity activity = (SearchResultsActivity) getActivity();
 		this.from = activity.getFrom();
@@ -98,12 +105,14 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 	{
 		if (notificationEnabled)
 		{
-			notifyButton.setImageResource(R.drawable.bell_cross);
+			notifyButton.setImageDrawable(bellCrossImg);
 		}
 		else
 		{
-			notifyButton.setImageResource(R.drawable.bell);
+			notifyButton.setImageDrawable(bellImg);
 		}
+		
+		notifyButton.invalidate();
 	}
 	
 	@Override

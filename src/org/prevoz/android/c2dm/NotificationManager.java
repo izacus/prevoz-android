@@ -109,7 +109,7 @@ public class NotificationManager
 						Toast.makeText(context, context.getString(R.string.notify_dereg_fail), Toast.LENGTH_SHORT).show();
 						
 						if (callback != null)
-							callback.sendEmptyMessage(REGISTRATION_SUCCESS);
+							callback.sendEmptyMessage(REGISTRATION_FAILURE);
 						return;
 					}
 				}
@@ -119,7 +119,7 @@ public class NotificationManager
 				Toast.makeText(context, context.getString(R.string.notify_dereg_success), Toast.LENGTH_SHORT).show();
 				Database.deleteNotificationSubscription(context, subscription.getId());
 				if (callback != null)
-					callback.sendEmptyMessage(REGISTRATION_FAILURE);
+					callback.sendEmptyMessage(REGISTRATION_SUCCESS);
 			}
 			
 		};
@@ -157,7 +157,7 @@ public class NotificationManager
 						Toast.makeText(context, context.getString(R.string.notify_reg_fail), Toast.LENGTH_SHORT).show();
 						
 						if (callback != null)
-							callback.sendEmptyMessage(REGISTRATION_SUCCESS);
+							callback.sendEmptyMessage(REGISTRATION_FAILURE);
 						return;
 					}
 				}
@@ -167,7 +167,7 @@ public class NotificationManager
 				Toast.makeText(context, context.getString(R.string.notify_reg_success), Toast.LENGTH_SHORT).show();
 				Database.addNotificationSubscription(context, from, to, when);
 				if (callback != null)
-					callback.sendEmptyMessage(REGISTRATION_FAILURE);
+					callback.sendEmptyMessage(REGISTRATION_SUCCESS);
 			}
 			
 		};
