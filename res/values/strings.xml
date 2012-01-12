@@ -43,6 +43,7 @@
     <string name="notify_reg_fail">Ni vas bilo mogoče prijaviti na obveščanje.</string>
     <string name="notify_dereg_success">Obveščanje na relaciji je bilo preklicano.</string>
     <string name="notify_dereg_fail">Ni bilo mogoče preklicati obveščanja na tej relaciji.</string>
+    <string name="notify_missing_loc">Za obveščanje morate pri iskanju izbrati začetek in cilj poti!</string>
     <string name="notify_statusbar">Novi prevozi na relaciji</string>
         
     <!-- Ride add strings -->

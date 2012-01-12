@@ -213,6 +213,13 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 	{
 		notifyButton.setEnabled(false);
 		
+		if (from == null || to == null || from.length() < 1 || to.length() < 1)
+		{
+			Toast.makeText(getActivity(), R.string.notify_missing_loc, Toast.LENGTH_SHORT).show();
+			notifyButton.setEnabled(true);
+			return;
+		}
+		
 		if (notificationEnabled)
 		{
 			Handler handler = new Handler() 
