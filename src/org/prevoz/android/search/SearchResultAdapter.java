@@ -8,6 +8,7 @@ import org.prevoz.android.R;
 import org.prevoz.android.util.LocaleUtil;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,6 +108,10 @@ public class SearchResultAdapter extends ArrayAdapter<SearchRide>
 		timeFormatter = LocaleUtil.getSimpleDateFormat("HH:mm");
 	}
 
+	private Typeface defaultDriverTypeface = null;
+	private Typeface defaultPriceTypeface = null;
+	private Typeface defaultTimeTypeface = null;
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
@@ -117,22 +122,24 @@ public class SearchResultAdapter extends ArrayAdapter<SearchRide>
 		{
 			LayoutInflater inflater = context.getLayoutInflater();
 			row = inflater.inflate(R.layout.search_result, null);
-		}
-		else
-		{
-			row = convertView;
-		}
-
-		if (row.getTag() == null)
-		{
 			wrapper = new SearchResultViewWrapper(row, rides.get(position).getId());
 			row.setTag(wrapper);
 		}
 		else
 		{
+			row = convertView;
 			wrapper = (SearchResultViewWrapper) row.getTag();
 		}
 		
+		if (defaultDriverTypeface == null)
+			defaultDriverTypeface = wrapper.getDriver().getTypeface();
+		
+		if (defaultPriceTypeface == null)
+			defaultPriceTypeface = wrapper.getPrice().getTypeface();
+		
+		if (defaultTimeTypeface == null)
+			defaultTimeTypeface = wrapper.getTime().getTypeface();
+
 		wrapper.getTime().setText(timeFormatter.format(rides.get(position).getTime()));
 
 		if (rides.get(position).getPrice() != null)
@@ -146,15 +153,19 @@ public class SearchResultAdapter extends ArrayAdapter<SearchRide>
 
 		wrapper.getDriver().setText(rides.get(position).getAuthor());
 		wrapper.setId(rides.get(position).getId());
-
+		
 		if (highlights.contains(rides.get(position).getId()))
 		{
-			row.setBackgroundColor(context.getResources().getColor(R.color.list_highlight));
+			wrapper.getDriver().setTypeface(defaultDriverTypeface, Typeface.BOLD);
+			wrapper.getPrice().setTypeface(defaultPriceTypeface, Typeface.BOLD);
+			wrapper.getTime().setTypeface(defaultTimeTypeface, Typeface.BOLD);
 		}
 		else
 		{
-			row.setBackgroundColor(context.getResources().getColor(R.color.white));
-		}
+			wrapper.getDriver().setTypeface(defaultDriverTypeface, Typeface.NORMAL);
+			wrapper.getPrice().setTypeface(defaultPriceTypeface, Typeface.NORMAL);
+			wrapper.getTime().setTypeface(defaultTimeTypeface, Typeface.NORMAL);
+		} 
 		
 		return row;
 	}
