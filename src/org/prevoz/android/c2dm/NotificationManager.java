@@ -133,7 +133,7 @@ public class NotificationManager
 		
 		if (Database.getNotificationSubscription(context, from, to, when) != null)
 		{
-			// TODO: notify
+			callback.sendEmptyMessage(REGISTRATION_FAILURE);
 			return;
 		}
 		
