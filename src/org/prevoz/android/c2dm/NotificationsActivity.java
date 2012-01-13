@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class NotificationsActivity extends Activity implements OnItemClickListener {
 
@@ -22,6 +23,7 @@ public class NotificationsActivity extends Activity implements OnItemClickListen
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.notifications_activity);
+		((TextView)findViewById(R.id.title_bar)).setText(R.string.notify_title);
 		
 		list = (ListView) findViewById(R.id.notifications_list);
 		list.setEmptyView(findViewById(R.id.empty_list));

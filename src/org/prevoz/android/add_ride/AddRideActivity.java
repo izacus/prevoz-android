@@ -84,7 +84,7 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 		
 		// Update application title
 		TextView appTitle = (TextView) findViewById(R.id.title_bar);
-		appTitle.setText(getString(R.string.app_name) + " - " + getString(R.string.add_title));
+		appTitle.setText(R.string.add_title);
 		
 		dateTime = Calendar.getInstance();
 		

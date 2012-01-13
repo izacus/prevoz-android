@@ -45,9 +45,10 @@
     <string name="notify_dereg_fail">Ni bilo mogoče preklicati obveščanja na tej relaciji.</string>
     <string name="notify_missing_loc">Za obveščanje morate pri iskanju izbrati začetek in cilj poti!</string>
     <string name="notify_statusbar">Novi prevozi na relaciji</string>
+    <string name="notify_title">Obvestila</string>
         
     <!-- Ride add strings -->
-    <string name="add_title">dodajanje</string>
+    <string name="add_title">Dodajanje prevoza</string>
     <string name="add_datetime">Datum in čas</string>
     <string name="add_price">Delež stroškov</string>
     <string name="add_price_hint">Stroški</string>

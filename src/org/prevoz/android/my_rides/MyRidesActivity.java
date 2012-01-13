@@ -28,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -45,6 +46,9 @@ public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.myrides_activity);
+		
+		// Set ride title
+		((TextView)findViewById(R.id.title_bar)).setText(R.string.cd_my_rides);
 		
 		loadingFlipper = (ViewFlipper)findViewById(R.id.myrides_flipper);
 		loadingFlipper.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
