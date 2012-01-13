@@ -25,6 +25,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.prevoz.android.Globals;
 
@@ -202,7 +203,7 @@ public class HTTPHelper
 			}
 		}
 		
-		post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+		post.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
 		
 		// Do call
 		HttpResponse response = client.execute(post);
