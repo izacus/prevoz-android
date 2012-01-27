@@ -27,10 +27,6 @@ public class NotificationsActivity extends Activity implements OnItemClickListen
 		
 		list = (ListView) findViewById(R.id.notifications_list);
 		list.setEmptyView(findViewById(R.id.empty_list));
-		
-		List<NotifySubscription> subscriptions = NotificationManager.getInstance(getApplicationContext()).getNotificationSubscriptions(this);
-		NotificationListAdapter adapter = new NotificationListAdapter(this, subscriptions);
-		list.setAdapter(adapter);
 		list.setOnItemClickListener(this);
 	}
 
@@ -48,4 +44,13 @@ public class NotificationsActivity extends Activity implements OnItemClickListen
 		this.startActivity(intent);
 	}
 
+	@Override
+	protected void onResume() 
+	{
+		super.onResume();
+		// Reload notifications list on resume
+		List<NotifySubscription> subscriptions = NotificationManager.getInstance(getApplicationContext()).getNotificationSubscriptions(this);
+		NotificationListAdapter adapter = new NotificationListAdapter(this, subscriptions);
+		list.setAdapter(adapter);
+	}
 }
