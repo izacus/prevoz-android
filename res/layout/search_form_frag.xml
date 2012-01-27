@@ -141,19 +141,7 @@
     	style = "@style/button_white"
     	/>
     	
-	<TextView
-    	android:id = "@+id/last_search_label"
-    	android:layout_width = "fill_parent"
-    	android:layout_height = "wrap_content"
-    	
-    	android:layout_below = "@id/date_button"
-    	android:layout_marginLeft = "17dip"
-    	android:layout_marginRight = "15dip"
-    	android:layout_marginTop = "5dip"
-    	
-    	android:text = "@string/search_label_last"
-    	style = "@style/field_labels"
-    	/>
+
     	
     <Button
     	android:id = "@+id/search_button"
@@ -172,9 +160,8 @@
     	
 	  <include layout = "@layout/last_searches"
 	  		   android:layout_width = "fill_parent"
-	    	   android:layout_height = "wrap_content"
-	  	       android:layout_below = "@id/last_search_label"
-	    	   android:layout_above = "@id/search_button"
-	    	    android:layout_marginLeft="13dip" android:layout_marginRight="13dip"/>
+	    	   android:layout_height = "fill_parent"
+	  	       android:layout_below = "@id/date_button"
+	    	   android:layout_above = "@id/search_button" />
   
 </RelativeLayout>
