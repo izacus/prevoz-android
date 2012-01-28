@@ -380,6 +380,12 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 				}
 			};
 			
+			// Hide the "ride full" checkbox
+			View separator = findViewById(R.id.ride_full_separator);
+			final CheckBox fullBox = (CheckBox) findViewById(R.id.ride_full);
+			separator.setVisibility(View.GONE);
+			fullBox.setVisibility(View.GONE);
+			
 			RideInfoUtil util = new RideInfoUtil(this, getString(R.string.add_send), sendListener);
 			util.showRide(ride, false);
 			

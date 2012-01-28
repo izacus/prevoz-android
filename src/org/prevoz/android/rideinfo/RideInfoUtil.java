@@ -7,6 +7,7 @@ import org.prevoz.android.util.LocaleUtil;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.graphics.Paint;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -82,9 +83,17 @@ public class RideInfoUtil
 	
 	public void showPeople(Resources res, Ride ride)
 	{
-		int people = ride.isFull() ? 0 : ride.getPeople();
-		pplText.setText(String.valueOf(people));
-		pplTagText.setText(LocaleUtil.getStringNumberForm(res, R.array.people_tags, people));
+		pplText.setText(String.valueOf(ride.getPeople()));
+		if (ride.isFull())
+		{
+			pplText.setPaintFlags(pplText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+		}
+		else
+		{
+			pplText.setPaintFlags(pplText.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+		}
+			
+		pplTagText.setText(LocaleUtil.getStringNumberForm(res, R.array.people_tags, ride.getPeople()));
 	}
 	
 	public void showRide(Ride ride, boolean showControls)
