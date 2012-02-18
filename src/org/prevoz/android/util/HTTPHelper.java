@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,6 +16,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -145,7 +148,17 @@ public class HTTPHelper
 	public static String httpGet(String urlString, String params) throws IOException
 	{
 		URL url = new URL(urlString + (params != null ? params : ""));
-		HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+		
+		URLConnection connection;
+		if (urlString.startsWith("https"))
+		{
+			connection = (HttpsURLConnection)url.openConnection();
+		}
+		else
+		{
+			connection = (HttpURLConnection)url.openConnection();
+		}
+		
 		connection.addRequestProperty("User-Agent", "Prevoz on Android " + Build.VERSION.SDK_INT);
 
 		Log.d("HTTPHelper", "Getting " + url + params);
@@ -167,7 +180,14 @@ public class HTTPHelper
 		}
 		finally
 		{
-			connection.disconnect();
+			if (connection instanceof HttpURLConnection)
+			{
+				((HttpURLConnection)connection).disconnect();
+			}
+			else
+			{
+				((HttpsURLConnection)connection).disconnect();
+			}
 		}
 	}
 
