@@ -38,7 +38,7 @@ public class SearchResultsLoader extends AsyncLoader<SearchResults>
 	}
 	
 	@Override
-	public SearchResults loadInBackground() 
+	public SearchResults loadInBackground()
 	{
 		
 		SearchResults results = null;

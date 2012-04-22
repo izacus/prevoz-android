@@ -2,7 +2,6 @@ package org.prevoz.android.rideinfo;
 
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
-import org.prevoz.android.util.GAUtils;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -21,6 +20,8 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+
+import com.flurry.android.FlurryAgent;
 
 public class RideInfoActivity extends FragmentActivity implements LoaderCallbacks<Ride>
 {
@@ -45,7 +46,7 @@ public class RideInfoActivity extends FragmentActivity implements LoaderCallback
 			getSupportLoaderManager().initLoader(rideID, null, this);
 		}
 		
-		GAUtils.trackPageView(getApplicationContext(), "/RideInfo/");
+		FlurryAgent.onPageView();
 	}
 	
 	private void prepareUIElements()
@@ -61,7 +62,7 @@ public class RideInfoActivity extends FragmentActivity implements LoaderCallback
 	 */
 	private void sendSMS()
 	{
-		GAUtils.trackEvent(getApplicationContext(), "RideInfo", "SMSSend", "", 0);
+		FlurryAgent.logEvent("RideInfo - Send SMS");
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + ride.getContact()));
 		intent.putExtra("address", ride.getContact());
 		intent.setType("vnd.android-dir/mms-sms");
@@ -73,7 +74,7 @@ public class RideInfoActivity extends FragmentActivity implements LoaderCallback
 	 */
 	private void callAuthor()
 	{
-		GAUtils.trackEvent(getApplicationContext(), "RideInfo", "CallDriver", "", 0);
+		FlurryAgent.logEvent("RideInfo - Call driver");
 		Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + ride.getContact()));
 		this.startActivity(intent);
 	}
@@ -211,15 +212,29 @@ public class RideInfoActivity extends FragmentActivity implements LoaderCallback
 	{
 		if (code == Globals.REQUEST_SUCCESS)
 		{
-			GAUtils.trackEvent(getApplicationContext(), "RideInfo", "DeleteRide", "OK", 0);
+			FlurryAgent.logEvent("RideInfo - Delete Ride");
 			Toast.makeText(this, R.string.ride_deleted, Toast.LENGTH_SHORT).show();
 			finish();
 		}
 		else if (code == Globals.REQUEST_ERROR_NETWORK)
 		{
-			GAUtils.trackEvent(getApplicationContext(), "RideInfo", "DeleteRide", "Fail", 0);
+			FlurryAgent.logEvent("RideInfo - Delete Ride Fail");
 			Toast.makeText(this, R.string.network_error, Toast.LENGTH_SHORT).show();
 			rideFlipper.showNext();
 		}
+	}
+	
+	@Override
+	protected void onStart() 
+	{
+		super.onStart();
+		FlurryAgent.setReportLocation(false);
+		FlurryAgent.onStartSession(this, getString(R.string.flurry_apikey));
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		FlurryAgent.onEndSession(this);
 	}
 }

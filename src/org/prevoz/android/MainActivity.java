@@ -7,7 +7,6 @@ import org.prevoz.android.c2dm.NotificationManager;
 import org.prevoz.android.search.SearchFormFragment;
 import org.prevoz.android.search.SearchResultsActivity;
 import org.prevoz.android.util.Database;
-import org.prevoz.android.util.GAUtils;
 
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -16,6 +15,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.widget.DatePicker;
+
+import com.flurry.android.FlurryAgent;
 
 public class MainActivity extends FragmentActivity implements OnDateSetListener
 {
@@ -42,8 +43,6 @@ public class MainActivity extends FragmentActivity implements OnDateSetListener
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		
-		GAUtils.trackEvent(getApplicationContext(), "Application", "Start", getString(R.string.app_version), 0);
 		
 		// Attempt C2DM services registration
 		NotificationManager.getInstance(getApplicationContext());
@@ -105,5 +104,19 @@ public class MainActivity extends FragmentActivity implements OnDateSetListener
 	{
 		super.onDestroy();
 	}
-	
+
+	@Override
+	protected void onStart() 
+	{
+		super.onStart();
+		FlurryAgent.setUseHttps(true);
+		FlurryAgent.setReportLocation(false);
+		FlurryAgent.onStartSession(this, getString(R.string.flurry_apikey));
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		FlurryAgent.onEndSession(this);
+	}
 }

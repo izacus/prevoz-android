@@ -3,7 +3,7 @@
 	<!-- General application data -->
     <string name="app_name">Prevoz</string>
     <string name="app_version">2.1.1</string>
-    <string name="ga_identity">UA-306569-17</string>
+    <string name="flurry_apikey">YU4UUAB4JW592B4LFML8</string>
     <string name="c2dm_sender">gandalfar@gmail.com</string>
     
     <string name="about">O aplikaciji</string>

@@ -1,7 +1,8 @@
 package org.prevoz.android;
 
+import java.util.HashMap;
+
 import org.prevoz.android.util.Database;
-import org.prevoz.android.util.GAUtils;
 import org.prevoz.android.util.GPSManager;
 
 import android.content.Intent;
@@ -28,6 +29,8 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
+
+import com.flurry.android.FlurryAgent;
 
 public class CitySelectorActivity extends FragmentActivity implements TextWatcher, OnItemClickListener, OnEditorActionListener
 {
@@ -96,7 +99,7 @@ public class CitySelectorActivity extends FragmentActivity implements TextWatche
 
 	private void fillInCurrentLocation(final TextView view)
 	{
-		GAUtils.trackEvent(getApplicationContext(), "CitySelector", "GPSLocate", "", 0);
+		FlurryAgent.logEvent("CitySelector - GPS");
 		view.setEnabled(false);
 		
 		final String currentText = view.getText().toString();
@@ -164,26 +167,38 @@ public class CitySelectorActivity extends FragmentActivity implements TextWatche
 	{
 		if ((cityList.getCount() > 1) || (cityList.getCount() == 0))
 		{
-			GAUtils.trackEvent(getApplicationContext(), "CitySelector", "SelectionCanceled", "", 0);
+			FlurryAgent.logEvent("CitySelector - Selection Canceled");
 			setResult(RESULT_CANCELED);
 			finish();
 		}
 		else 
 		{
 			String name = ((TextView)cityList.getChildAt(0)).getText().toString();
-			GAUtils.trackEvent(getApplicationContext(), "CitySelector", "CitySelected", name, 0);
+			HashMap<String, String> params = new HashMap<String, String>();
+			params.put("city", name);
+			FlurryAgent.logEvent("CitySelector - City Selected", params);
 			returnCity(name);
 		}
 		
 		return false;
 	}
 	
-
+	
+	@Override
+	protected void onStart() 
+	{
+		super.onStart();
+		FlurryAgent.setReportLocation(false);
+		FlurryAgent.onStartSession(this, getString(R.string.flurry_apikey));
+	}
+	
+	
 	@Override
 	protected void onStop() 
 	{
 		super.onStop();
 		database.close();
+		FlurryAgent.onEndSession(this);
 	}
 
 

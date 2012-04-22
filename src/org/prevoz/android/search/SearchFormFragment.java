@@ -2,6 +2,7 @@ package org.prevoz.android.search;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import org.prevoz.android.CitySelectorActivity;
 import org.prevoz.android.MainActivity;
@@ -11,7 +12,6 @@ import org.prevoz.android.c2dm.NotificationManager;
 import org.prevoz.android.c2dm.NotificationsActivity;
 import org.prevoz.android.my_rides.MyRidesActivity;
 import org.prevoz.android.util.Database;
-import org.prevoz.android.util.GAUtils;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
 
@@ -30,6 +30,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+
+import com.flurry.android.FlurryAgent;
 
 public class SearchFormFragment extends Fragment 
 {
@@ -107,7 +109,7 @@ public class SearchFormFragment extends Fragment
 		{	
 			public void onClick(View arg0) 
 			{
-				GAUtils.trackEvent(getActivity().getApplicationContext(), "SearchForm", "MyRidesTap", "", 0);
+				FlurryAgent.logEvent("SearchForm - My Rides");
 				Intent myRidesIntent = new Intent(getActivity(), MyRidesActivity.class);
 				startActivity(myRidesIntent);
 			}
@@ -186,7 +188,7 @@ public class SearchFormFragment extends Fragment
 		
 		prepareFormFields();
 		
-		GAUtils.trackPageView(getActivity().getApplicationContext(), "/SearchForm");
+		FlurryAgent.onPageView();
 	}
 
 	
@@ -244,12 +246,10 @@ public class SearchFormFragment extends Fragment
 				case FROM_CITY_REQUEST:
 					from = "";
 					StringUtil.setLocationButtonText(buttonFrom, from, getString(R.string.all_locations));
-					GAUtils.trackEvent(getActivity().getApplicationContext(), "SearchForm", "FromCitySelect", "AllCities", 0);
 					return;
 				case TO_CITY_REQUEST:
 					to = "";
 					StringUtil.setLocationButtonText(buttonTo, to, getString(R.string.all_locations));
-					GAUtils.trackEvent(getActivity().getApplicationContext(), "SearchForm", "ToCitySelect", "AllCities", 0);
 					return;
 			}
 		}
@@ -259,12 +259,10 @@ public class SearchFormFragment extends Fragment
 			case FROM_CITY_REQUEST:
 				from = intent.getStringExtra("city");
 				StringUtil.setLocationButtonText(buttonFrom, from, getString(R.string.all_locations));
-				GAUtils.trackEvent(getActivity().getApplicationContext(), "SearchForm", "FromCitySelect", from, 0);
 				break;
 			case TO_CITY_REQUEST:
 				to = intent.getStringExtra("city");
 				StringUtil.setLocationButtonText(buttonTo, to, getString(R.string.all_locations));
-				GAUtils.trackEvent(getActivity().getApplicationContext(), "SearchForm", "ToCitySelect", to, 0);
 				break;
 				
 			default:
@@ -279,7 +277,10 @@ public class SearchFormFragment extends Fragment
 		
 		// Record search request
 		Database.addSearchToHistory(getActivity(), from, to, Calendar.getInstance().getTime());
-		GAUtils.trackEvent(getActivity().getApplicationContext(), "SearchForm", "StartSearch", from + "-" + to, 0);
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("from", from);
+		params.put("to", to);
+		FlurryAgent.logEvent("SearchForm - Search", params);
 		
 		MainActivity mainActivity = (MainActivity) getActivity();
 		mainActivity.startSearch(from, to, selectedDate);

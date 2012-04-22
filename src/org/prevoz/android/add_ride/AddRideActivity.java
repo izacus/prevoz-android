@@ -2,6 +2,7 @@ package org.prevoz.android.add_ride;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import org.prevoz.android.CitySelectorActivity;
 import org.prevoz.android.R;
@@ -12,7 +13,6 @@ import org.prevoz.android.auth.AuthenticationStatus;
 import org.prevoz.android.rideinfo.Ride;
 import org.prevoz.android.rideinfo.RideInfoActivity;
 import org.prevoz.android.rideinfo.RideInfoUtil;
-import org.prevoz.android.util.GAUtils;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
 
@@ -40,6 +40,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+
+import com.flurry.android.FlurryAgent;
 
 public class AddRideActivity extends FragmentActivity implements OnTimeSetListener, OnDateSetListener
 {
@@ -116,7 +118,7 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 			}
 		};
 		
-		GAUtils.trackPageView(getApplicationContext(), "/AddRide");
+		FlurryAgent.onPageView();
 		AuthenticationManager.getInstance().getAuthenticationStatus(this, authHandler);
 	}
 	
@@ -276,17 +278,22 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 
 	private boolean validateForm()
 	{
+		
 		// Check from city
 		if (fromCity == null)
 		{
-			GAUtils.trackEvent(getApplicationContext(), "AddRide", "FormValidation", "Failed - No From", 0);
+			HashMap<String, String> params = new HashMap<String, String>();
+			params.put("error", "No From");
+			FlurryAgent.logEvent("Add - ValidationError", params);
 			showFormError(getString(R.string.add_error_enterfrom));
 			return false;
 		}
 		
 		if (toCity == null)
 		{
-			GAUtils.trackEvent(getApplicationContext(),"AddRide", "FormValidation", "Failed - No To", 0);
+			HashMap<String, String> params = new HashMap<String, String>();
+			params.put("error", "No To");
+			FlurryAgent.logEvent("Add - ValidationError", params);
 			showFormError(getString(R.string.add_error_enterto));
 			return false;
 		}
@@ -294,7 +301,9 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 		// Check date validity
 		if (dateTime.before(Calendar.getInstance()))
 		{
-			GAUtils.trackEvent(getApplicationContext(),"AddRide", "FormValidation", "Failed - Date/Time before present", 0);
+			HashMap<String, String> params = new HashMap<String, String>();
+			params.put("error", "Date too early");
+			FlurryAgent.logEvent("Add - ValidationError", params);
 			showFormError(getString(R.string.add_error_timepast));
 			return false;
 		}
@@ -311,14 +320,18 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 			}
 			catch (NumberFormatException e)
 			{
-				GAUtils.trackEvent(getApplicationContext(),"AddRide", "FormValidation", "Failed - Missing/invalid price", 0);
+				HashMap<String, String> params = new HashMap<String, String>();
+				params.put("error", "Missing / Invalid price");
+				FlurryAgent.logEvent("Add - ValidationError", params);
 				showFormError(getString(R.string.add_error_enterprice));
 				return false;
 			}
 			
 			if (price < 0 && price > 500)
 			{
-				GAUtils.trackEvent(getApplicationContext(),"AddRide", "FormValidation", "Failed - Price outside limits", 0);
+				HashMap<String, String> params = new HashMap<String, String>();
+				params.put("error", "Price outside limits");
+				FlurryAgent.logEvent("Add - ValidationError", params);
 				showFormError(getString(R.string.add_error_enterprice));
 				return false;
 			}
@@ -326,12 +339,13 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 		
 		if (phoneText.getText().toString().trim().length() == 0)
 		{
-			GAUtils.trackEvent(getApplicationContext(), "AddRide", "FormValidation", "Failed - Missing phone no.", 0);
+			HashMap<String, String> params = new HashMap<String, String>();
+			params.put("error", "Missing phone no.");
+			FlurryAgent.logEvent("Add - ValidationError", params);
 			showFormError(getString(R.string.add_error_enterphone));
 			return false;
 		}
 		
-		GAUtils.trackEvent(getApplicationContext(), "AddRide", "FormValidation", "Success", 0);
 		return true;
 	}
 	
@@ -375,7 +389,6 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 			{
 				public void onClick(View v)
 				{
-					GAUtils.dispatch(getApplicationContext());
 					postRide(ride);
 				}
 			};
@@ -407,24 +420,29 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 			{
 				super.handleMessage(msg);
 				
+				HashMap<String, String> params = new HashMap<String, String>();
 				switch(msg.what)
 				{
 					case SendRideTask.AUTHENTICATION_ERROR:
-						GAUtils.trackEvent(getApplicationContext(), "AddRide", "NewRidePost", "Failed - Authentication error", 0);
+						
+						params.put("error", "Authentication error");
+						FlurryAgent.logEvent("Add - PostError", params);
 						authenticationStatusReceived(AuthenticationStatus.NOT_AUTHENTICATED);
 						break;
 					case SendRideTask.SERVER_ERROR:
-						GAUtils.trackEvent(getApplicationContext(), "AddRide", "NewRidePost", "Failed - Server error", 0);
+						params.put("error", "Server error");
+						FlurryAgent.logEvent("Add - PostError", params);
 						Toast.makeText(AddRideActivity.this, R.string.server_error, Toast.LENGTH_SHORT).show();
 						stateManager.showView(Views.FORM);
 						break;
 					case SendRideTask.SEND_ERROR:
-						GAUtils.trackEvent(getApplicationContext(), "AddRide", "NewRidePost", "Failed - Send error", 0);
+						params.put("error", "Send error");
+						FlurryAgent.logEvent("Add - PostError", params);
 						Toast.makeText(AddRideActivity.this, task.getErrorMessage(), Toast.LENGTH_SHORT).show();
 						stateManager.showView(Views.FORM);
 						break;
 					case SendRideTask.SEND_SUCCESS:
-						GAUtils.trackEvent(getApplicationContext(), "AddRide", "NewRidePost", "Success", 0);
+						FlurryAgent.logEvent("Add - PostOK", params);
 						Intent rideInfo = new Intent(AddRideActivity.this, RideInfoActivity.class);
 						rideInfo.putExtra(RideInfoActivity.RIDE_ID, task.getRideId());
 						startActivity(rideInfo);
@@ -486,5 +504,19 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 		outState.putString("toCity", toCity);
 		outState.putInt("numPpl", ((PeopleSpinnerObject)peopleSpinner.getSelectedItem()).getNumber());
 		outState.putLong("date", dateTime.getTimeInMillis());
+	}
+	
+	@Override
+	protected void onStart() 
+	{
+		super.onStart();
+		FlurryAgent.setReportLocation(false);
+		FlurryAgent.onStartSession(this, getString(R.string.flurry_apikey));
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		FlurryAgent.onEndSession(this);
 	}
 }

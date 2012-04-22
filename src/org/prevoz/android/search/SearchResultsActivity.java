@@ -4,6 +4,8 @@ import java.util.Calendar;
 
 import org.prevoz.android.R;
 
+import com.flurry.android.FlurryAgent;
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
@@ -46,6 +48,20 @@ public class SearchResultsActivity extends FragmentActivity
 	public int[] getHighlights()
 	{
 		return highlightIds;
+	}
+	
+	@Override
+	protected void onStart() 
+	{
+		super.onStart();
+		FlurryAgent.setReportLocation(false);
+		FlurryAgent.onStartSession(this, getString(R.string.flurry_apikey));
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		FlurryAgent.onEndSession(this);
 	}
 
 }

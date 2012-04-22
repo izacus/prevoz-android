@@ -5,6 +5,8 @@ import java.util.List;
 import org.prevoz.android.R;
 import org.prevoz.android.search.SearchResultsActivity;
 
+import com.flurry.android.FlurryAgent;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -52,5 +54,19 @@ public class NotificationsActivity extends Activity implements OnItemClickListen
 		List<NotifySubscription> subscriptions = NotificationManager.getInstance(getApplicationContext()).getNotificationSubscriptions(this);
 		NotificationListAdapter adapter = new NotificationListAdapter(this, subscriptions);
 		list.setAdapter(adapter);
+	}
+	
+	@Override
+	protected void onStart() 
+	{
+		super.onStart();
+		FlurryAgent.setReportLocation(false);
+		FlurryAgent.onStartSession(this, getString(R.string.flurry_apikey));
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		FlurryAgent.onEndSession(this);
 	}
 }

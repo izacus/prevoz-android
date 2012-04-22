@@ -4,6 +4,8 @@ import org.prevoz.android.Globals;
 import org.prevoz.android.R;
 import org.prevoz.android.util.HTTPHelper;
 
+import com.flurry.android.FlurryAgent;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
@@ -132,5 +134,19 @@ public class LoginActivity extends FragmentActivity
 	{
 		AuthenticationManager.getInstance().notifyLoginResult(this, AuthenticationStatus.NOT_AUTHENTICATED);
 		super.onBackPressed();
+	}
+	
+	@Override
+	protected void onStart() 
+	{
+		super.onStart();
+		FlurryAgent.setReportLocation(false);
+		FlurryAgent.onStartSession(this, getString(R.string.flurry_apikey));
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		FlurryAgent.onEndSession(this);
 	}
 }

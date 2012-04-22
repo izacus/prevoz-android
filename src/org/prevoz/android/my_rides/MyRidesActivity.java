@@ -8,7 +8,6 @@ import org.prevoz.android.auth.AuthenticationStatus;
 import org.prevoz.android.rideinfo.RideInfoActivity;
 import org.prevoz.android.search.SearchResultAdapter.SearchResultViewWrapper;
 import org.prevoz.android.search.SearchResults;
-import org.prevoz.android.util.GAUtils;
 import org.prevoz.android.util.SectionedAdapter;
 import org.prevoz.android.util.SectionedAdapterUtil;
 
@@ -31,6 +30,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+
+import com.flurry.android.FlurryAgent;
 
 public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks<SearchResults> 
 {
@@ -62,7 +63,7 @@ public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks
 									int position, 
 									long id) 
 			{
-				GAUtils.trackEvent(getApplicationContext(), "MyRides", "MyRideItemTap", "", 0);
+				FlurryAgent.logEvent("MyRides - Show Ride");
 				SearchResultViewWrapper viewWrapper = (SearchResultViewWrapper)view.getTag();
 				Intent intent = new Intent(MyRidesActivity.this, RideInfoActivity.class);
 				intent.putExtra(RideInfoActivity.RIDE_ID, viewWrapper.getRideId());
@@ -76,7 +77,7 @@ public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks
 		{
 			public void onClick(View v) 
 			{
-				GAUtils.trackEvent(getApplicationContext(), "MyRides", "AddRideTap", "", 0);
+				FlurryAgent.logEvent("MyRides - Add ride");
 				Intent intent = new Intent(MyRidesActivity.this, AddRideActivity.class);
 				startActivity(intent);
 			}
@@ -91,7 +92,7 @@ public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks
 		};
 		
 		// Page display tracking
-		GAUtils.trackPageView(getApplicationContext(), "/AddRide");
+		FlurryAgent.onPageView();
 		AuthenticationManager.getInstance().getAuthenticationStatus(this, authHandler);
 	}
 	
@@ -187,7 +188,7 @@ public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks
 	{
 		if (item.getItemId() == MENU_LOGOUT)
 		{
-			GAUtils.trackEvent(getApplicationContext(), "AddRide", "Logout", "", 0);
+			FlurryAgent.logEvent("MyRides - Logout");
 			AuthenticationManager.getInstance().requestLogout(this);
 			Toast.makeText(this, R.string.logout_success, Toast.LENGTH_SHORT).show();
 			finish();
@@ -200,5 +201,19 @@ public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks
 		}
 		
 		return false;
+	}
+	
+	@Override
+	protected void onStart() 
+	{
+		super.onStart();
+		FlurryAgent.setReportLocation(false);
+		FlurryAgent.onStartSession(this, getString(R.string.flurry_apikey));
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		FlurryAgent.onEndSession(this);
 	}
 }
