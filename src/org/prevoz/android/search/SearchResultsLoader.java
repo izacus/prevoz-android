@@ -22,11 +22,13 @@ import android.util.Log;
 
 public class SearchResultsLoader extends AsyncLoader<SearchResults> 
 {
+	private Context context;
 	private SearchRequest searchRequest;
 	
 	public SearchResultsLoader(Context context, SearchRequest request) 
 	{
 		super(context);
+		this.context = context;
 		this.searchRequest = request;
 	}
 
@@ -50,12 +52,12 @@ public class SearchResultsLoader extends AsyncLoader<SearchResults>
 		catch (IOException e)
 		{
 			Log.e(this.toString(), "Error while requesting search data!", e);
-			return new SearchResults(prepareError(searchRequest.getContext().getString(R.string.network_error)));
+			return new SearchResults(prepareError(context.getString(R.string.network_error)));
 		}
 
 		if (responseString == null)
 		{
-			return new SearchResults(prepareError(searchRequest.getContext().getString(R.string.server_error)));
+			return new SearchResults(prepareError(context.getString(R.string.server_error)));
 		}
 
 		// Parse into a response object
@@ -115,7 +117,7 @@ public class SearchResultsLoader extends AsyncLoader<SearchResults>
 		catch (JSONException e)
 		{
 			Log.e(this.toString(), "Error while parsing JSON response!", e);
-			results = new SearchResults(prepareError(searchRequest.getContext().getString(R.string.server_error)));
+			results = new SearchResults(prepareError(context.getString(R.string.server_error)));
 		}
 		
 		return results;
@@ -136,7 +138,7 @@ public class SearchResultsLoader extends AsyncLoader<SearchResults>
 		parameters.put("fc", "SI");
 		parameters.put("t", request.getTo());
 		parameters.put("tc", "SI");
-		parameters.put("client", "android" + StringUtil.numberOnly(request.getContext().getString(R.string.app_version), false));
+		parameters.put("client", "android" + StringUtil.numberOnly(context.getString(R.string.app_version), false));
 
 		// Build date
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
