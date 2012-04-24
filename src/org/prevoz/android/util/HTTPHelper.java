@@ -147,10 +147,15 @@ public class HTTPHelper
 	 */
 	public static String httpGet(String urlString, String params) throws IOException
 	{
-		URL url = new URL(urlString + (params != null ? params : ""));
+		boolean useHttps = false;
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ECLAIR_MR1) {
+			useHttps = true;
+		}
+		
+		URL url = new URL(useHttps ? "https://" : "http://" + urlString + (params != null ? params : ""));
 		
 		URLConnection connection;
-		if (urlString.startsWith("https"))
+		if (useHttps)
 		{
 			connection = (HttpsURLConnection)url.openConnection();
 		}
@@ -199,7 +204,13 @@ public class HTTPHelper
 	public static String httpPost(String url, Map<String, String> parameters, boolean storeCookies) throws IOException
 	{
 		DefaultHttpClient client = new DefaultHttpClient();
-		HttpPost post = new HttpPost(url);
+		
+		boolean useHttps = false;
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ECLAIR_MR1) {
+			useHttps = true;
+		}
+		
+		HttpPost post = new HttpPost(useHttps ? "https://" : "http://" + url);
 
 		// Set user agent for sending
 		post.addHeader("User-Agent", "Prevoz on Android "
@@ -253,7 +264,7 @@ public class HTTPHelper
 
 		return null;
 	}
-
+	
 	public static void updateSessionCookies(Context context)
 	{
 		// Restore session cookies

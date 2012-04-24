@@ -14,9 +14,9 @@ public class Globals
     // Cookie domain for authentication cookies
     public static final String API_DOMAIN = "prevoz.org";
     // Used for all API calls
-    public static final String API_URL = "http://prevoz.org/api";
+    public static final String API_URL = "prevoz.org/api";
     // URL of webpage to authenticate user
-    public static final String LOGIN_URL = "http://prevoz.org/accounts/simple/signin/";
+    public static final String LOGIN_URL = "prevoz.org/accounts/simple/signin/";
     
     public static final String PREF_FILE_NAME = "PrevozPreferences";
     
