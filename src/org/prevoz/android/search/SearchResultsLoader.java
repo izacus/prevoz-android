@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
 import org.prevoz.android.RideType;
+import org.prevoz.android.auth.AuthenticationManager;
 import org.prevoz.android.util.AsyncLoader;
 import org.prevoz.android.util.HTTPHelper;
 import org.prevoz.android.util.StringUtil;
@@ -54,7 +55,8 @@ public class SearchResultsLoader extends AsyncLoader<SearchResults>
 		catch (IOException e)
 		{
 			Log.e(this.toString(), "Error while requesting search data!", e);
-			FlurryAgent.onError("SearchInvalid", responseString, "SearchResultsLoader");
+			FlurryAgent.onError("SearchInvalid", e.getMessage(), "SearchResultsLoader");
+			AuthenticationManager.getInstance().clearAuthCookies(this.context);
 			return new SearchResults(prepareError(context.getString(R.string.network_error)));
 		}
 
