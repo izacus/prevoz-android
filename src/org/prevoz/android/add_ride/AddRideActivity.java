@@ -390,7 +390,7 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 								 insuranceCheck.isChecked(),												// isInsured flag
 								 false);																	// isFull flag
 			
-			
+			storePhoneNo();
 			OnClickListener sendListener = new OnClickListener()
 			{
 				public void onClick(View v)
@@ -408,7 +408,6 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 			RideInfoUtil util = new RideInfoUtil(this, getString(R.string.add_send), sendListener);
 			util.showRide(ride, false);
 			
-			storePhoneNo();
 			stateManager.showView(Views.PREVIEW);
 		}
 	}
