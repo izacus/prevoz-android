@@ -23,6 +23,7 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -50,6 +51,8 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 	
 	private static final int DIALOG_DATE = 1;
 	private static final int DIALOG_TIME = 2;
+	
+	private static final String PREF_PHONE_NO = "org.prevoz.phoneno";
 	
 	private final SimpleDateFormat timeFormatter = LocaleUtil.getSimpleDateFormat("HH:mm");
 	
@@ -108,6 +111,9 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 		}
 		
 		updateDateTime();
+		
+		SharedPreferences preferences = this.getSharedPreferences(PREF_PHONE_NO, 0);
+		phoneText.setText(preferences.getString(PREF_PHONE_NO, ""));
 		
 		Handler authHandler = new Handler()
 		{
@@ -402,8 +408,16 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 			RideInfoUtil util = new RideInfoUtil(this, getString(R.string.add_send), sendListener);
 			util.showRide(ride, false);
 			
+			storePhoneNo();
 			stateManager.showView(Views.PREVIEW);
 		}
+	}
+	
+	private void storePhoneNo() {
+		SharedPreferences preferences = this.getSharedPreferences(PREF_PHONE_NO, 0);
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.remove(PREF_PHONE_NO).putString(PREF_PHONE_NO, phoneText.getText().toString());
+		editor.commit();
 	}
 	
 	private void postRide(Ride ride)
