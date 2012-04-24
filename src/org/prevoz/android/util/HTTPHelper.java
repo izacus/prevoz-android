@@ -147,15 +147,10 @@ public class HTTPHelper
 	 */
 	public static String httpGet(String urlString, String params) throws IOException
 	{
-		boolean useHttps = false;
-		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ECLAIR_MR1) {
-			useHttps = true;
-		}
-		
-		URL url = new URL(useHttps ? "https://" : "http://" + urlString + (params != null ? params : ""));
+		URL url = new URL(getUrlPrefix() + urlString + (params != null ? params : ""));
 		
 		URLConnection connection;
-		if (useHttps)
+		if (getUrlPrefix().startsWith("https"))
 		{
 			connection = (HttpsURLConnection)url.openConnection();
 		}
@@ -205,12 +200,7 @@ public class HTTPHelper
 	{
 		DefaultHttpClient client = new DefaultHttpClient();
 		
-		boolean useHttps = false;
-		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ECLAIR_MR1) {
-			useHttps = true;
-		}
-		
-		HttpPost post = new HttpPost(useHttps ? "https://" : "http://" + url);
+		HttpPost post = new HttpPost(getUrlPrefix() + url);
 
 		// Set user agent for sending
 		post.addHeader("User-Agent", "Prevoz on Android "
@@ -268,11 +258,22 @@ public class HTTPHelper
 	public static void updateSessionCookies(Context context)
 	{
 		// Restore session cookies
-		CookieSyncManager.createInstance(context);
+		CookieSyncManager.createInstance(context).sync();
 		CookieManager cookieManager = CookieManager.getInstance();
-		
 		sessionCookies = cookieManager.getCookie(Globals.API_DOMAIN);
 		
 		Log.d("HTTPHelper", "Storing session cookies " + sessionCookies);
+	}
+	
+	/**
+	 * Returns http:// on <FROYO and https:// >=FROYO to workaround CA problem
+	 * @return
+	 */
+	public static String getUrlPrefix() {
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ECLAIR_MR1) {
+			return "https://";
+		}
+		
+		return "http://";
 	}
 }

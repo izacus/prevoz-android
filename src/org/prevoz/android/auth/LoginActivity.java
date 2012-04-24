@@ -4,8 +4,6 @@ import org.prevoz.android.Globals;
 import org.prevoz.android.R;
 import org.prevoz.android.util.HTTPHelper;
 
-import com.flurry.android.FlurryAgent;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
@@ -15,6 +13,8 @@ import android.util.Log;
 import android.view.WindowManager.BadTokenException;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.flurry.android.FlurryAgent;
 
 public class LoginActivity extends FragmentActivity
 {
@@ -99,7 +99,6 @@ public class LoginActivity extends FragmentActivity
 				loadingDialog = null;
 			};
 		}
-
 	}
 	
 	private WebView webView;
@@ -113,7 +112,7 @@ public class LoginActivity extends FragmentActivity
 		// Load login view
 		webView = (WebView)findViewById(R.id.loginView);
 		webView.setWebViewClient(new WebViewController(this));
-		webView.loadUrl(Globals.LOGIN_URL);
+		webView.loadUrl(HTTPHelper.getUrlPrefix() + Globals.LOGIN_URL);
 		
 		if (savedInstanceState != null)
 		{
