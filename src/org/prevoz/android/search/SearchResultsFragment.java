@@ -15,13 +15,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -31,10 +29,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.flurry.android.FlurryAgent;
 
-public class SearchResultsFragment extends Fragment implements LoaderCallbacks<SearchResults>
+public class SearchResultsFragment extends SherlockFragment implements LoaderCallbacks<SearchResults>
 {
+	// TODO TODO TODO TODO TODO
+	// re-implement notification button
+	
 	private enum DisplayScreens
 	{
 		LOADING_SCREEN,
@@ -69,14 +71,15 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 		this.when = activity.getWhen();
 		showView(DisplayScreens.RESULTS_SCREEN);
 		
-		notifyButton = (ImageButton) activity.findViewById(R.id.send_notifications);
+		// TODO TODO TODO notification button!
+		
+		/*notifyButton = (ImageButton) activity.findViewById(R.id.send_notifications);
 		notifyButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
 				notifyClicked();
 			}
-		});
+		}); 
 		
-		View delimiter = getActivity().findViewById(R.id.delimiter);
 		
 		if (NotificationManager.getInstance(getActivity().getApplicationContext()).notificationsAvailable())
 		{
@@ -89,8 +92,9 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 			notifyButton.setVisibility(View.GONE);
 		}
 		
+		
 		notificationEnabled = NotificationManager.getInstance(getActivity().getApplicationContext()).isNotified(getActivity(), from, to, when);
-		updateNotifyGraphic();
+		updateNotifyGraphic(); */
 		
 		
 		Log.d(this.toString(), "Activity created, succefully fetched data.");

@@ -11,51 +11,15 @@
       android:layout_height="fill_parent"
       android:orientation="vertical">
       
-	  <include layout="@layout/title_bar" 
-	   		 android:id = "@+id/title_bar" />
-	  
 	  <include
   			layout = "@layout/loading_screen" />
       
   </LinearLayout>
-  
-  <RelativeLayout
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-
- 	<include layout="@layout/title_bar" 
-  		 	 android:id = "@+id/title_bar"
-  		 	 android:layout_alignParentTop="true"
-  		 	 android:layout_alignParentLeft="true"
-  		 	 android:layout_alignParentRight="true"
-  		 	 android:layout_width="fill_parent"
-  		 	 android:layout_height = "@dimen/title_height" />
-
-  <ImageButton
-        android:id = "@+id/send_notifications"
-        android:layout_height = "@dimen/title_height"
-        android:layout_width = "wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop = "true"
-        android:scaleType = "fitCenter"
-        android:background = "@drawable/button_title"
-        android:contentDescription="@string/cd_notify"
-        />
-    
-    <LinearLayout 
-   		android:layout_height="@dimen/title_height"
-   		android:layout_width="1sp"
-   		android:layout_toLeftOf="@id/send_notifications"
-   		android:id = "@+id/delimiter"
-   		android:background="#EEE"
-   ></LinearLayout>
-
       
-  <LinearLayout 
-      android:layout_width="fill_parent"
-      android:layout_height="fill_parent"
-      android:layout_below="@id/title_bar"
-      android:orientation="vertical">
+ <LinearLayout 
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:orientation="vertical">
 	 <ListView
 	 	android:id = "@+id/search_results_list"
 	 	android:layout_width = "fill_parent"
@@ -66,11 +30,10 @@
 	  <TextView
 	    android:id = "@+id/search_no_results"
 	    android:text="@string/search_no_results"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
 	    android:textSize="@dimen/text_size_medium"
 	    android:gravity="center" />
-   </LinearLayout>
-  </RelativeLayout>
+  </LinearLayout>
   
 </org.prevoz.android.util.FixedViewFlipper>

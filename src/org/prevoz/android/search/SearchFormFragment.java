@@ -18,7 +18,6 @@ import org.prevoz.android.util.StringUtil;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,9 +30,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.flurry.android.FlurryAgent;
 
-public class SearchFormFragment extends Fragment 
+public class SearchFormFragment extends SherlockFragment 
 {
 	private static final int FROM_CITY_REQUEST = 1;
 	private static final int TO_CITY_REQUEST = 2;

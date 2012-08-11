@@ -4,12 +4,12 @@ import java.util.Calendar;
 
 import org.prevoz.android.R;
 
+import android.os.Bundle;
+
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.flurry.android.FlurryAgent;
 
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-
-public class SearchResultsActivity extends FragmentActivity
+public class SearchResultsActivity extends SherlockFragmentActivity
 {
 	private String from;
 	private String to;
