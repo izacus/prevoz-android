@@ -46,7 +46,7 @@
     
     <style
         name = "PrevozTheme"
-        parent = "@style/Theme.Sherlock.Light">
+        parent = "@style/Theme.Sherlock.Light.DarkActionBar">
     </style>
     
     <!-- Colored titlebar -->
