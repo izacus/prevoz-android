@@ -5,18 +5,17 @@ import java.util.List;
 import org.prevoz.android.R;
 import org.prevoz.android.search.SearchResultsActivity;
 
-import com.flurry.android.FlurryAgent;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.TextView;
 
-public class NotificationsActivity extends Activity implements OnItemClickListener {
+import com.actionbarsherlock.app.SherlockActivity;
+import com.flurry.android.FlurryAgent;
+
+public class NotificationsActivity extends SherlockActivity implements OnItemClickListener {
 
 	private ListView list;
 	
@@ -25,7 +24,7 @@ public class NotificationsActivity extends Activity implements OnItemClickListen
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.notifications_activity);
-		((TextView)findViewById(R.id.title_bar)).setText(R.string.notify_title);
+		getSupportActionBar().setTitle(R.string.notify_title);
 		
 		list = (ListView) findViewById(R.id.notifications_list);
 		list.setEmptyView(findViewById(R.id.empty_list));
