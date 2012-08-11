@@ -46,7 +46,7 @@
     
     <style
         name = "PrevozTheme"
-        parent = "@android:style/Theme.Light.NoTitleBar">
+        parent = "@style/Theme.Sherlock.Light">
     </style>
     
     <!-- Colored titlebar -->
