@@ -29,13 +29,12 @@ import android.widget.ViewFlipper;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.flurry.android.FlurryAgent;
 
 public class MyRidesActivity extends SherlockFragmentActivity implements LoaderCallbacks<SearchResults> 
 {
-	private static final int MENU_LOGOUT = 0;
-	
 	private ViewFlipper loadingFlipper;
 	private ListView ridesList;
 	private Button addRideButton;
@@ -170,19 +169,19 @@ public class MyRidesActivity extends SherlockFragmentActivity implements LoaderC
 	{
 		// Nothing TBD
 	}
-	
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
+	public boolean onCreateOptionsMenu(Menu menu) 
 	{
-		menu.add(Menu.NONE, MENU_LOGOUT, Menu.NONE, getString(R.string.logout)).setIcon(android.R.drawable.ic_delete);
+		MenuInflater inflater = getSupportMenuInflater();
+		inflater.inflate(R.menu.menu_myrides, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
-		if (item.getItemId() == MENU_LOGOUT)
+		if (item.getItemId() == R.id.menu_myrides_logout)
 		{
 			FlurryAgent.logEvent("MyRides - Logout");
 			AuthenticationManager.getInstance().requestLogout(this);

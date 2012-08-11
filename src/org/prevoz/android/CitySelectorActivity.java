@@ -12,7 +12,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -30,9 +29,10 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.flurry.android.FlurryAgent;
 
-public class CitySelectorActivity extends FragmentActivity implements TextWatcher, OnItemClickListener, OnEditorActionListener
+public class CitySelectorActivity extends SherlockFragmentActivity implements TextWatcher, OnItemClickListener, OnEditorActionListener
 {
 	private SQLiteDatabase database = null;	
 	private ListView cityList;
