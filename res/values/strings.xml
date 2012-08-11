@@ -141,4 +141,7 @@
         <item>november</item>
         <item>december</item>
     </string-array>
+    
+    <string name="menu_my_rides">Moji prevozi</string>
+    <string name="menu_notifications">Obvestila</string>
 </resources>
