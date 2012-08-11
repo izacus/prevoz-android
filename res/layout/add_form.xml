@@ -2,8 +2,8 @@
 
 <ScrollView
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent">
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
     
 	<RelativeLayout 
 		android:layout_width="fill_parent" 
@@ -97,7 +97,7 @@
 	    	style = "@style/button_white"
 	    	/>
 	    	
-	    <LinearLayout 
+	    <RelativeLayout 
 	    	android:id="@+id/price_ppl"
 	    	android:layout_width="fill_parent"
 	    	android:layout_height="wrap_content"
@@ -106,62 +106,60 @@
 	    	android:layout_marginTop="5dip"
 	    	>
 	    	
-	    	<LinearLayout 
-	    		android:layout_width="fill_parent"
-	    		android:layout_height="fill_parent"
-	    		android:orientation="vertical"
-	    		android:layout_weight="1"
-	    	>
-	    		<TextView
-			    	android:id = "@+id/price_label"
-			    	android:layout_width = "fill_parent"
-			    	android:layout_height = "wrap_content"
-			    	android:layout_marginTop = "5dip"
-			    	android:layout_marginLeft = "2dip"
-			    	
-			    	android:text = "@string/add_price"
-			    	style = "@style/field_labels"
-			    	/>
-			    	
-			    <EditText
-		            android:id = "@+id/add_price"
-		            android:layout_width = "fill_parent"
-		            android:layout_height = "fill_parent"
-		            android:inputType = "numberDecimal"
-		            android:imeOptions="flagNoEnterAction"
-		            android:singleLine="true"
-		            android:hint = "@string/add_price_hint"
-		            android:layout_marginTop="5dip"
-		           />     
+	        <View 
+	            android:id = "@+id/price_ppl_align_helper"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_centerHorizontal="true" />
 	    	
-	    	</LinearLayout>	
+    		<TextView
+		    	android:id = "@+id/price_label"
+		    	android:layout_width = "match_parent"
+		    	android:layout_height = "wrap_content"
+		    	android:layout_toLeftOf="@id/price_ppl_align_helper"
+		    	android:layout_alignParentTop="true"
+		    	android:layout_marginTop = "5dip"
+		    	android:layout_marginLeft = "2dip"
+		    	
+		    	android:text = "@string/add_price"
+		    	style = "@style/field_labels"
+		    	/>
+		    	
+		    <EditText
+	            android:id = "@+id/add_price"
+	            android:layout_width = "match_parent"
+	            android:layout_height = "wrap_content"
+	            android:layout_below="@id/price_label"
+	            android:layout_toLeftOf="@id/price_ppl_align_helper"
+	            android:inputType = "numberDecimal"
+	            android:imeOptions="flagNoEnterAction"
+	            android:singleLine="true"
+	            android:hint = "@string/add_price_hint"
+	            android:layout_marginTop="5dip"
+	           />     
 	    	
-	    	<LinearLayout 
-	    		android:layout_width="fill_parent"
-	    		android:layout_height="fill_parent"
-	    		android:orientation="vertical"
-	    		android:layout_weight="1"
-	    	>
-	    		<TextView
-			    	android:id = "@+id/ppl_label"
-			    	android:layout_width = "fill_parent"
-			    	android:layout_height = "wrap_content"
-			    	android:layout_marginTop = "5dip"
-			    	android:layout_marginLeft = "2dip"
-			    	
-			    	android:text = "@string/add_num_ppl"
-			    	style = "@style/field_labels"
-			    	/>
+    		<TextView
+		    	android:id = "@+id/ppl_label"
+		    	android:layout_width = "match_parent"
+		    	android:layout_height = "wrap_content"
+		    	android:layout_toRightOf="@id/price_ppl_align_helper"
+		    	android:layout_marginTop = "5dip"
+		    	android:layout_marginLeft = "2dip"
+		    	
+		    	android:text = "@string/add_num_ppl"
+		    	style = "@style/field_labels"
+		    	/>
+    	
+    	    <Spinner
+		        android:id = "@+id/add_ppl"
+		        android:layout_width = "match_parent"
+		        android:layout_height = "wrap_content"
+		        android:layout_toRightOf="@id/price_ppl_align_helper"
+		        android:layout_alignBaseline="@id/add_price"
+		        android:prompt = "@string/add_num_ppl"
+		        android:layout_marginTop="4dip"/>
 	    	
-	    	    <Spinner
-			        android:id = "@+id/add_ppl"
-			        android:layout_width = "fill_parent"
-			        android:layout_height = "wrap_content"
-			        android:prompt = "@string/add_num_ppl"
-			        android:layout_marginTop="4dip"/>
-	    	
-	    	</LinearLayout>	
-	    </LinearLayout>
+	    </RelativeLayout>
 	    
 	    <CheckBox 
 	       android:id ="@+id/check_insurance"
@@ -216,7 +214,7 @@
 	    	android:layout_width = "fill_parent"
 	    	android:layout_below="@id/add_comment"
 	    	android:layout_marginTop = "10dp"
-	    	android:layout_marginBottom = "10dp"
+	    	android:paddingBottom = "10dp"
 	    	android:background = "@drawable/button_black_rnd"
 	    	style = "@style/button_black"
 	    />
