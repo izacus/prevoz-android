@@ -24,12 +24,14 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.flurry.android.FlurryAgent;
 
 public class SearchResultsFragment extends SherlockFragment implements LoaderCallbacks<SearchResults>
@@ -43,7 +45,7 @@ public class SearchResultsFragment extends SherlockFragment implements LoaderCal
 		RESULTS_SCREEN
 	};
 	
-	private ImageButton notifyButton;
+	private MenuItem notifyButton;
 	private Drawable bellImg;
 	private Drawable bellCrossImg;
 	
@@ -69,33 +71,8 @@ public class SearchResultsFragment extends SherlockFragment implements LoaderCal
 		this.from = activity.getFrom();
 		this.to = activity.getTo();
 		this.when = activity.getWhen();
-		showView(DisplayScreens.RESULTS_SCREEN);
-		
-		// TODO TODO TODO notification button!
-		
-		/*notifyButton = (ImageButton) activity.findViewById(R.id.send_notifications);
-		notifyButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View arg0) {
-				notifyClicked();
-			}
-		}); 
-		
-		
-		if (NotificationManager.getInstance(getActivity().getApplicationContext()).notificationsAvailable())
-		{
-			delimiter.setVisibility(View.VISIBLE);
-			notifyButton.setVisibility(View.VISIBLE);
-		}
-		else
-		{
-			delimiter.setVisibility(View.GONE);
-			notifyButton.setVisibility(View.GONE);
-		}
-		
-		
+		showView(DisplayScreens.RESULTS_SCREEN);	
 		notificationEnabled = NotificationManager.getInstance(getActivity().getApplicationContext()).isNotified(getActivity(), from, to, when);
-		updateNotifyGraphic(); */
-		
 		
 		Log.d(this.toString(), "Activity created, succefully fetched data.");
 		FlurryAgent.onPageView();
@@ -105,24 +82,55 @@ public class SearchResultsFragment extends SherlockFragment implements LoaderCal
 		
 	}
 
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) 
+	{
+		inflater.inflate(R.menu.menu_search_results, menu);
+		
+		notifyButton = menu.findItem(R.id.menu_results_notify);
+		if (NotificationManager.getInstance(getActivity().getApplicationContext()).notificationsAvailable())
+		{
+			notifyButton.setVisible(true);
+		}
+		else
+		{
+			notifyButton.setVisible(false);
+		}
+		
+		updateNotifyGraphic();
+	}
+
+	
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId())
+		{
+			case R.id.menu_results_notify:
+				notifyClicked();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
+
 	public void updateNotifyGraphic()
 	{
 		if (notificationEnabled)
 		{
-			notifyButton.setImageDrawable(bellCrossImg);
+			notifyButton.setIcon(bellCrossImg);
 		}
 		else
 		{
-			notifyButton.setImageDrawable(bellImg);
+			notifyButton.setIcon(bellImg);
 		}
-		
-		notifyButton.invalidate();
 	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
 	}
 	
 	
