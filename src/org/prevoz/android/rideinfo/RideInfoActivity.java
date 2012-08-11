@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
@@ -21,9 +20,10 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.flurry.android.FlurryAgent;
 
-public class RideInfoActivity extends FragmentActivity implements LoaderCallbacks<Ride>
+public class RideInfoActivity extends SherlockFragmentActivity implements LoaderCallbacks<Ride>
 {
 	public static final String RIDE_ID = RideInfoActivity.class.toString() + ".ride_id";
 	
