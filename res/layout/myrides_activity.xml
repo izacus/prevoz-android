@@ -3,8 +3,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical">
-    <include layout="@layout/title_bar"
-             android:id="@+id/title_bar" />
     
     <Button android:id="@+id/addride_button"
             android:layout_width="fill_parent"
@@ -28,7 +26,7 @@
           android:layout_height="fill_parent"
           android:layout_width="fill_parent"
           android:layout_above="@id/addride_button"
-          android:layout_below="@id/title_bar">
+          android:layout_alignParentTop="true">
     
         <include layout="@layout/loading_screen" />
         

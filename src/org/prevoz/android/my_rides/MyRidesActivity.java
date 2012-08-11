@@ -15,25 +15,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.flurry.android.FlurryAgent;
 
-public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks<SearchResults> 
+public class MyRidesActivity extends SherlockFragmentActivity implements LoaderCallbacks<SearchResults> 
 {
 	private static final int MENU_LOGOUT = 0;
 	
@@ -47,9 +46,7 @@ public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.myrides_activity);
-		
-		// Set ride title
-		((TextView)findViewById(R.id.title_bar)).setText(R.string.cd_my_rides);
+		getSupportActionBar().setTitle(R.string.cd_my_rides);
 		
 		loadingFlipper = (ViewFlipper)findViewById(R.id.myrides_flipper);
 		loadingFlipper.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
@@ -138,8 +135,6 @@ public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks
 				break;
 		}
 	}
-	
-	
 
 	@Override
 	protected void onResume() 
@@ -176,6 +171,7 @@ public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks
 		// Nothing TBD
 	}
 	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{

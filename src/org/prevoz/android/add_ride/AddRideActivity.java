@@ -27,7 +27,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,14 +36,14 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.flurry.android.FlurryAgent;
 
-public class AddRideActivity extends FragmentActivity implements OnTimeSetListener, OnDateSetListener
+public class AddRideActivity extends SherlockFragmentActivity implements OnTimeSetListener, OnDateSetListener
 {
 	private static final int FROM_CITY_REQUEST = 1;
 	private static final int TO_CITY_REQUEST = 2;
@@ -88,8 +87,7 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 		setContentView(R.layout.add_ride_activity);
 		
 		// Update application title
-		TextView appTitle = (TextView) findViewById(R.id.title_bar);
-		appTitle.setText(R.string.add_title);
+		getSupportActionBar().setTitle(R.string.add_title);
 		
 		dateTime = Calendar.getInstance();
 		
