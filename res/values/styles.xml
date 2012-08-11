@@ -121,7 +121,7 @@
      	<item
      	  name="android:textColor">@color/list_separator_color</item>
      	<item
-     	  name="android:textSize">14sp</item>
+     	  name="android:textSize">18sp</item>
     </style>
     <style name="land_field_labels" parent="@style/field_labels">
         <item name="android:gravity">right</item>
