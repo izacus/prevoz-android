@@ -43,6 +43,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnDateSetL
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		getSupportActionBar().setHomeButtonEnabled(false);
 		
 		// Attempt C2DM services registration
 		NotificationManager.getInstance(getApplicationContext());

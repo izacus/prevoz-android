@@ -1,6 +1,7 @@
 package org.prevoz.android.my_rides;
 
 import org.prevoz.android.Globals;
+import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.add_ride.AddRideActivity;
 import org.prevoz.android.auth.AuthenticationManager;
@@ -46,6 +47,8 @@ public class MyRidesActivity extends SherlockFragmentActivity implements LoaderC
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.myrides_activity);
 		getSupportActionBar().setTitle(R.string.cd_my_rides);
+		getSupportActionBar().setHomeButtonEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		loadingFlipper = (ViewFlipper)findViewById(R.id.myrides_flipper);
 		loadingFlipper.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
@@ -181,21 +184,22 @@ public class MyRidesActivity extends SherlockFragmentActivity implements LoaderC
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
-		if (item.getItemId() == R.id.menu_myrides_logout)
+		switch(item.getItemId())
 		{
-			FlurryAgent.logEvent("MyRides - Logout");
-			AuthenticationManager.getInstance().requestLogout(this);
-			Toast.makeText(this, R.string.logout_success, Toast.LENGTH_SHORT).show();
-			finish();
-			
-			return true;
+			case R.id.menu_myrides_logout:
+				FlurryAgent.logEvent("MyRides - Logout");
+				AuthenticationManager.getInstance().requestLogout(this);
+				Toast.makeText(this, R.string.logout_success, Toast.LENGTH_SHORT).show();
+				finish();
+				return true;
+			case android.R.id.home:
+				Intent intent = new Intent(this, MainActivity.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+				return true;
+			default:
+				return false;
 		}
-		else
-		{
-			Log.e(this.toString(), "Tried to open non-existed menu item.");
-		}
-		
-		return false;
 	}
 	
 	@Override

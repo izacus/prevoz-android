@@ -21,6 +21,7 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.flurry.android.FlurryAgent;
 
 public class RideInfoActivity extends SherlockFragmentActivity implements LoaderCallbacks<Ride>
@@ -36,6 +37,8 @@ public class RideInfoActivity extends SherlockFragmentActivity implements Loader
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ride_info_activity);
+		getSupportActionBar().setHomeButtonEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		prepareUIElements();
 		
 		// Get ride ID
@@ -224,6 +227,18 @@ public class RideInfoActivity extends SherlockFragmentActivity implements Loader
 		}
 	}
 	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) 
+	{
+		if (item.getItemId() == android.R.id.home)
+		{
+			finish();
+			return true;
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}
+
 	@Override
 	protected void onStart() 
 	{

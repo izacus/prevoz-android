@@ -30,6 +30,7 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.flurry.android.FlurryAgent;
 
 public class CitySelectorActivity extends SherlockFragmentActivity implements TextWatcher, OnItemClickListener, OnEditorActionListener
@@ -44,6 +45,8 @@ public class CitySelectorActivity extends SherlockFragmentActivity implements Te
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.city_selector_activity);
+		getSupportActionBar().setHomeButtonEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		// Disable status bar in landscape layout
 		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
@@ -74,6 +77,18 @@ public class CitySelectorActivity extends SherlockFragmentActivity implements Te
 	}
 	
 	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home)
+		{
+			setResult(RESULT_CANCELED);
+			finish();
+			return true;
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}
+
 	private void populateCityList(String pattern)
 	{
 		final String[] column = { "name" };
