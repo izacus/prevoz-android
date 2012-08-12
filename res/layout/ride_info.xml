@@ -10,7 +10,7 @@
 
     <LinearLayout
         android:layout_width = "fill_parent"
-        android:layout_height = "fill_parent"
+        android:layout_height = "wrap_content"
         android:orientation = "vertical">
         
 	    <!-- From location -->
@@ -19,6 +19,7 @@
 	        android:layout_width = "fill_parent"
 	        android:layout_height = "wrap_content"
 	        android:padding = "5dp"
+	        android:text = "Ljubljana"
 	        style = "@style/location_title" />
 	
 	    <!-- To location -->
@@ -29,6 +30,7 @@
 	        android:layout_marginTop = "1dip"
 	        android:paddingLeft = "5dp"
 	        android:paddingRight = "5dp"
+	        android:text = "Murska Sobota"
 	        style = "@style/location_title" />
 	   
 	   <include layout = "@layout/separator" />
@@ -75,6 +77,7 @@
 	    android:layout_width = "fill_parent"
 	    android:layout_height = "wrap_content"
 	    android:orientation = "horizontal"
+	    android:baselineAligned = "false"
 	    >
 	        <LinearLayout
 	            android:layout_width = "fill_parent"
@@ -120,9 +123,11 @@
 	   <include layout = "@layout/separator" />
 	   
 	   <RelativeLayout
-	     android:layout_width = "fill_parent"
+	     android:layout_width = "match_parent"
 	     android:layout_height = "wrap_content"
 	     android:layout_margin = "8dip"
+	     android:paddingLeft = "8dip"
+	     android:paddingRight = "8dip"
 	     >
 	   
 	     <TextView
@@ -172,7 +177,10 @@
 	       android:id = "@+id/rideinfo_insurance"
 	       android:layout_height="wrap_content"
 	       android:layout_width="fill_parent"
-	       android:layout_margin="8dip"
+	       android:layout_marginTop="8dp"
+	       android:layout_marginBottom="8dp"
+	       android:layout_marginLeft="16dp"
+	       android:layout_marginRight="16dp"
 	       android:gravity="left"
 	       
 	       style="@style/PricePplTagText"
@@ -195,7 +203,10 @@
 	    android:id = "@+id/rideinfo_comment"
 	    android:layout_width = "fill_parent"
 	    android:layout_height = "wrap_content"
-	    android:layout_margin = "8dip"
+	    android:layout_marginTop = "8dp"
+	    android:layout_marginBottom = "8dp"
+	    android:layout_marginLeft = "16dp"
+	    android:layout_marginRight = "16dp"
 	    />
 	     
 	   <Button
