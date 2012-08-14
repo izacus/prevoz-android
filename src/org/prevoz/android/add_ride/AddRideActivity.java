@@ -497,7 +497,8 @@ public class AddRideActivity extends SherlockFragmentActivity implements OnTimeS
 				datePickerDialog.updateDate(dateTime.get(Calendar.YEAR), dateTime.get(Calendar.MONTH), dateTime.get(Calendar.DAY_OF_MONTH));
 				return datePickerDialog;
 			default:
-				return super.onCreateDialog(id);
+				Log.e(this.toString(), "Tried to create unknown dialog!");
+				return null;
 		}
 	}
 

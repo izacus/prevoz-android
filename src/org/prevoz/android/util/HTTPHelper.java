@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -77,10 +78,18 @@ public class HTTPHelper
 
 		for (Entry<String, String> entry : params.entrySet())
 		{
-			paramString.append(URLEncoder.encode(entry.getKey()));
-			paramString.append("=");
-			paramString.append(URLEncoder.encode(entry.getValue()));
-			paramString.append("&");
+			try
+			{
+				paramString.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
+				paramString.append("=");
+				paramString.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
+				paramString.append("&");
+			}
+			catch (UnsupportedEncodingException e)
+			{
+				Log.e("HTTPHelper", "Something went really wrong with encodings!", e);
+				throw new RuntimeException("Unsupported encoding!");
+			}
 		}
 
 		// Delete the last amperstand

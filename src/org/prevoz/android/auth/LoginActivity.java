@@ -4,7 +4,6 @@ import org.prevoz.android.Globals;
 import org.prevoz.android.R;
 import org.prevoz.android.util.HTTPHelper;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
