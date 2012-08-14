@@ -19,7 +19,6 @@
 	        android:layout_width = "fill_parent"
 	        android:layout_height = "wrap_content"
 	        android:padding = "5dp"
-	        android:text = "Ljubljana"
 	        style = "@style/location_title" />
 	
 	    <!-- To location -->
@@ -30,7 +29,6 @@
 	        android:layout_marginTop = "1dip"
 	        android:paddingLeft = "5dp"
 	        android:paddingRight = "5dp"
-	        android:text = "Murska Sobota"
 	        style = "@style/location_title" />
 	   
 	   <include layout = "@layout/separator" />

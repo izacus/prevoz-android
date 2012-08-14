@@ -15,6 +15,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gcm.GCMBaseIntentService;
@@ -46,7 +47,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		
 		// Create notification message:
 		NotificationManager notifyManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-		Notification notification = new Notification(R.drawable.notify_icon, getString(R.string.notify_statusbar) + " " + from + " - " + to, System.currentTimeMillis());
+		String title = getString(R.string.notify_statusbar) + " " + from + " - " + to;
 		
 		// Prepare search results launch intent
 		Calendar when = Calendar.getInstance();
@@ -68,10 +69,13 @@ public class GCMIntentService extends GCMBaseIntentService {
 		notificationIntent.putExtra("highlights", rideIds);
 		
 		PendingIntent pIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		notification.setLatestEventInfo(context, 
-										rideIds.length + " " + LocaleUtil.getStringNumberForm(getResources(), R.array.ride_forms, rideIds.length) + " v " + LocaleUtil.getNotificationDayName(getResources(), when).toLowerCase(),
-										from + " - " + to, 
-										pIntent);
+		
+		Notification notification = new NotificationCompat.Builder(context)
+										 .setSmallIcon(R.drawable.notify_icon)
+										 .setContentTitle(title)
+										 .setContentText(rideIds.length + " " + LocaleUtil.getStringNumberForm(getResources(), R.array.ride_forms, rideIds.length) + " v " + LocaleUtil.getNotificationDayName(getResources(), when).toLowerCase())
+										 .setContentIntent(pIntent)
+										 .getNotification();
 		
 		notification.flags |= (Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
 		notification.flags &= ~Notification.FLAG_ONGOING_EVENT;	// Clear ongoing flag
