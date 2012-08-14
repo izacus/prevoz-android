@@ -140,8 +140,7 @@ public class CitySelectorActivity extends SherlockFragmentActivity implements Te
 					return;
 				}
 				
-				view.setText(gpsManager.getCurrentCity());
-				view.requestFocus();
+				returnCity(gpsManager.getCurrentCity());
 			}
 		};
 		
