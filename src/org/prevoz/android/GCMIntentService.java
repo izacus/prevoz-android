@@ -1,6 +1,5 @@
 package org.prevoz.android;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,43 +17,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.google.android.c2dm.C2DMBaseReceiver;
+import com.google.android.gcm.GCMBaseIntentService;
 
-public class C2DMReceiver extends C2DMBaseReceiver  
-{
-	public C2DMReceiver()
-	{
-		super("gandalfar@gmail.com");
-	}
-
-	
-	
-	@Override
-	public void onRegistered(Context context, String registrationId)
-			throws IOException {
-		super.onRegistered(context, registrationId);
-	}
-
-
+public class GCMIntentService extends GCMBaseIntentService {
 
 	@Override
-	public void onUnregistered(Context context) 
-	{
-		super.onUnregistered(context);
-	}
-
-
+	protected void onError(Context context, String regId) {}
 
 	@Override
-	public void onError(Context context, String error) 
-	{
-		Log.e(this.toString(), "C2DM error: " + error);
-	}
+	protected void onRegistered(Context context, String regId) {}
+
+	@Override
+	protected void onUnregistered(Context context, String regId) {}
 
 	@Override
 	protected void onMessage(Context context, Intent intent) 
 	{
-		Log.i(this.toString(), "C2DM Message received.");
+		Log.i(this.toString(), "GCM Message received.");
 		
 		Bundle extras = intent.getExtras();
 		for (String key : extras.keySet())
@@ -120,4 +99,5 @@ public class C2DMReceiver extends C2DMBaseReceiver
 		
 		return iIds;
 	}
+	
 }

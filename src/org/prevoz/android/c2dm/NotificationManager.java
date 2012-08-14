@@ -14,11 +14,15 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.c2dm.C2DMessaging;
+import com.google.android.gcm.GCMRegistrar;
 
 public class NotificationManager
 {
+	private static final String GCM_PROJECT_ID = "121500391433";
+	
 	public static final int REGISTRATION_SUCCESS = 0;
 	public static final int REGISTRATION_FAILURE = 1;
+	
 	
 	private static NotificationManager instance;
 	private static Context applicationContext;
@@ -45,11 +49,24 @@ public class NotificationManager
 	{
 		if (applicationContext != null)
 		{
-			registrationId = C2DMessaging.getRegistrationId(applicationContext);
+			try
+			{
+				GCMRegistrar.checkDevice(applicationContext);
+				GCMRegistrar.checkManifest(applicationContext);
+			}
+			catch(Exception e)
+			{
+				this.registrationId = null;
+				return;
+			}
+			
+			registrationId = GCMRegistrar.getRegistrationId(applicationContext);
 			Log.i(this.toString(), "Device C2DM registration string is " + registrationId);
 			
 			if (registrationId == null || registrationId.trim().length() == 0)
-				C2DMessaging.register(applicationContext, applicationContext.getResources().getString(R.string.c2dm_sender));
+			{
+				GCMRegistrar.register(applicationContext, GCM_PROJECT_ID);
+			}
 		}
 	}
 
