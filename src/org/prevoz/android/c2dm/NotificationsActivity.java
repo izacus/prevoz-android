@@ -2,6 +2,7 @@ package org.prevoz.android.c2dm;
 
 import java.util.List;
 
+import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.search.SearchResultsActivity;
 
@@ -13,6 +14,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.flurry.android.FlurryAgent;
 
 public class NotificationsActivity extends SherlockActivity implements OnItemClickListener {
@@ -29,6 +31,9 @@ public class NotificationsActivity extends SherlockActivity implements OnItemCli
 		list = (ListView) findViewById(R.id.notifications_list);
 		list.setEmptyView(findViewById(R.id.empty_list));
 		list.setOnItemClickListener(this);
+		
+		getSupportActionBar().setHomeButtonEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
@@ -67,5 +72,19 @@ public class NotificationsActivity extends SherlockActivity implements OnItemCli
 	protected void onStop() {
 		super.onStop();
 		FlurryAgent.onEndSession(this);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) 
+	{
+		if (item.getItemId() == android.R.id.home)
+		{
+			Intent intent = new Intent(this, MainActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			return true;
+		}
+		
+		return super.onOptionsItemSelected(item);
 	}
 }

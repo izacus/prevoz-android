@@ -36,9 +36,6 @@ import com.flurry.android.FlurryAgent;
 
 public class SearchResultsFragment extends SherlockFragment implements LoaderCallbacks<SearchResults>
 {
-	// TODO TODO TODO TODO TODO
-	// re-implement notification button
-	
 	private enum DisplayScreens
 	{
 		LOADING_SCREEN,
@@ -73,6 +70,7 @@ public class SearchResultsFragment extends SherlockFragment implements LoaderCal
 		this.when = activity.getWhen();
 		showView(DisplayScreens.RESULTS_SCREEN);	
 		notificationEnabled = NotificationManager.getInstance(getActivity().getApplicationContext()).isNotified(getActivity(), from, to, when);
+		getSherlockActivity().supportInvalidateOptionsMenu();
 		
 		Log.d(this.toString(), "Activity created, succefully fetched data.");
 		FlurryAgent.onPageView();
@@ -244,6 +242,7 @@ public class SearchResultsFragment extends SherlockFragment implements LoaderCal
 					{
 						notificationEnabled = false;
 						updateNotifyGraphic();
+						getSherlockActivity().supportInvalidateOptionsMenu();
 					}
 					
 					notifyButton.setEnabled(true);
