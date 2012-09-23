@@ -32,7 +32,11 @@
         
 	    <ListView android:id="@+id/myrides_list"
 	              android:layout_width="fill_parent"
-	              android:layout_height="fill_parent" />
+	              android:layout_height="fill_parent"
+	              android:paddingLeft="16dp"
+	              android:paddingRight="16dp"
+	              android:scrollbarStyle="outsideOverlay"
+	               />
     
     </org.prevoz.android.util.FixedViewFlipper>
    
