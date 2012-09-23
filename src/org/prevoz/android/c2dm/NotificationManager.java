@@ -13,7 +13,6 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.c2dm.C2DMessaging;
 import com.google.android.gcm.GCMRegistrar;
 
 public class NotificationManager
@@ -77,7 +76,7 @@ public class NotificationManager
 		{
 			if (applicationContext != null)
 			{
-				registrationId = C2DMessaging.getRegistrationId(applicationContext);
+				registrationId = GCMRegistrar.getRegistrationId(applicationContext);
 			}
 		}
 		
