@@ -4,61 +4,11 @@
   android:layout_width="fill_parent"
   android:layout_height="fill_parent">
     
-    <ImageButton
-        android:id = "@+id/search_my_rides"
-        android:layout_height = "@dimen/title_height"
-        android:layout_width = "wrap_content"
-        android:layout_alignParentRight = "true" 
-        android:layout_alignParentTop = "true"
-        android:scaleType = "fitCenter"
-        android:src="@drawable/add_ride"
-        android:background = "@drawable/button_title"
-        android:contentDescription="@string/cd_my_rides"
-        />
-    
-   <LinearLayout 
-   		android:layout_height="@dimen/title_height"
-   		android:layout_width="1sp"
-   		android:layout_toLeftOf="@id/search_my_rides"
-   		android:id = "@+id/delimiter1"
-   		android:background="#EEE"
-   ></LinearLayout>
-   
-    <ImageButton
-        android:id = "@+id/show_active_notifications"
-        android:layout_height = "@dimen/title_height"
-        android:layout_width = "wrap_content"
-        android:layout_toLeftOf="@id/delimiter1"
-        android:layout_alignParentTop = "true"
-        android:scaleType = "fitCenter"
-        android:src="@drawable/bells"
-        android:background = "@drawable/button_title"
-        android:contentDescription="@string/cd_show_active_notifications"
-        />
-    
-    <LinearLayout 
-   		android:layout_height="@dimen/title_height"
-   		android:layout_width="1sp"
-   		android:layout_toLeftOf="@id/show_active_notifications"
-   		android:id = "@+id/delimiter2"
-   		android:background="#EEE"
-   ></LinearLayout>
-    
-    <include layout="@layout/title_bar" 
-         android:id = "@+id/title_bar"
-         
-         android:layout_width = "wrap_content"
-         android:layout_height = "@dimen/title_height"
-          
-         android:layout_toLeftOf = "@id/delimiter2"
-         android:layout_alignParentLeft = "true"
-         android:layout_alignParentTop = "true" />
-    
     <TextView
     	android:id = "@+id/from_label"
     	android:layout_width = "fill_parent"
     	android:layout_height = "wrap_content"
-    	android:layout_below = "@id/title_bar"
+    	android:layout_alignParentTop="true"
     	
     	android:layout_marginTop = "5dip"
     	android:layout_marginLeft = "17dip"

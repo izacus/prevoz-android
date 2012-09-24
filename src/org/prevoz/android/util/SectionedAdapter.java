@@ -28,8 +28,7 @@ import android.widget.BaseAdapter;
 
 abstract public class SectionedAdapter extends BaseAdapter
 {
-	abstract protected View getHeaderView(String caption, int index,
-			View convertView, ViewGroup parent);
+	abstract protected View getHeaderView(String caption, int index, View convertView, ViewGroup parent);
 
 	private List<Section> sections = new ArrayList<Section>();
 	private static int TYPE_SECTION_HEADER = 0;

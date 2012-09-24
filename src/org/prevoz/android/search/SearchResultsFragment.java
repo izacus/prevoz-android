@@ -15,25 +15,26 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.flurry.android.FlurryAgent;
 
-public class SearchResultsFragment extends Fragment implements LoaderCallbacks<SearchResults>
+public class SearchResultsFragment extends SherlockFragment implements LoaderCallbacks<SearchResults>
 {
 	private enum DisplayScreens
 	{
@@ -41,7 +42,7 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 		RESULTS_SCREEN
 	};
 	
-	private ImageButton notifyButton;
+	private MenuItem notifyButton;
 	private Drawable bellImg;
 	private Drawable bellCrossImg;
 	
@@ -67,31 +68,9 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 		this.from = activity.getFrom();
 		this.to = activity.getTo();
 		this.when = activity.getWhen();
-		showView(DisplayScreens.RESULTS_SCREEN);
-		
-		notifyButton = (ImageButton) activity.findViewById(R.id.send_notifications);
-		notifyButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View arg0) {
-				notifyClicked();
-			}
-		});
-		
-		View delimiter = getActivity().findViewById(R.id.delimiter);
-		
-		if (NotificationManager.getInstance(getActivity().getApplicationContext()).notificationsAvailable())
-		{
-			delimiter.setVisibility(View.VISIBLE);
-			notifyButton.setVisibility(View.VISIBLE);
-		}
-		else
-		{
-			delimiter.setVisibility(View.GONE);
-			notifyButton.setVisibility(View.GONE);
-		}
-		
+		showView(DisplayScreens.RESULTS_SCREEN);	
 		notificationEnabled = NotificationManager.getInstance(getActivity().getApplicationContext()).isNotified(getActivity(), from, to, when);
-		updateNotifyGraphic();
-		
+		getSherlockActivity().supportInvalidateOptionsMenu();
 		
 		Log.d(this.toString(), "Activity created, succefully fetched data.");
 		FlurryAgent.onPageView();
@@ -101,24 +80,55 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 		
 	}
 
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) 
+	{
+		inflater.inflate(R.menu.menu_search_results, menu);
+		
+		notifyButton = menu.findItem(R.id.menu_results_notify);
+		if (NotificationManager.getInstance(getActivity().getApplicationContext()).notificationsAvailable())
+		{
+			notifyButton.setVisible(true);
+		}
+		else
+		{
+			notifyButton.setVisible(false);
+		}
+		
+		updateNotifyGraphic();
+	}
+
+	
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId())
+		{
+			case R.id.menu_results_notify:
+				notifyClicked();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
+
 	public void updateNotifyGraphic()
 	{
 		if (notificationEnabled)
 		{
-			notifyButton.setImageDrawable(bellCrossImg);
+			notifyButton.setIcon(bellCrossImg);
 		}
 		else
 		{
-			notifyButton.setImageDrawable(bellImg);
+			notifyButton.setIcon(bellImg);
 		}
-		
-		notifyButton.invalidate();
 	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
 	}
 	
 	
@@ -232,6 +242,7 @@ public class SearchResultsFragment extends Fragment implements LoaderCallbacks<S
 					{
 						notificationEnabled = false;
 						updateNotifyGraphic();
+						getSherlockActivity().supportInvalidateOptionsMenu();
 					}
 					
 					notifyButton.setEnabled(true);

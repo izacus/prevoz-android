@@ -31,7 +31,7 @@ public class SectionedAdapterUtil {
 
 				if (convertView == null)
 				{
-					result = (TextView) activity.getLayoutInflater().inflate(R.layout.list_header, null);
+					result = (TextView) activity.getLayoutInflater().inflate(R.layout.list_header, parent, false);
 				}
 
 				result.setText(caption);
@@ -71,7 +71,7 @@ public class SectionedAdapterUtil {
 
 			for (String path : ridePaths)
 			{
-				resultsAdapter.addSection(path, new SearchResultAdapter(activity, ridesByPath.get(path), highlights));
+				resultsAdapter.addSection(path.toUpperCase(), new SearchResultAdapter(activity, ridesByPath.get(path), highlights));
 			}
 		}
 		

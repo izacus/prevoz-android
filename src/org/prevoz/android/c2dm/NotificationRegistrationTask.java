@@ -15,7 +15,7 @@ import android.util.Log;
 
 public class NotificationRegistrationTask extends AsyncTask<Void, Void, Boolean> 
 {
-	private static final String REGISTER_URL = "http://prevoz.org/api/c2dm/register/";
+	private static final String REGISTER_URL = "prevoz.org/api/c2dm/register/";
 
 	private NotificationRegistrationRequest request;
 	private Handler callback;

@@ -11,6 +11,8 @@
         
     <!-- Orange gradient colors -->
     <color
+        name="list_separator_color">#FF8800</color>
+    <color
         name="title_gradient_start">#EC7100</color>
     <color
         name="title_gradient_end">#FF9029</color>

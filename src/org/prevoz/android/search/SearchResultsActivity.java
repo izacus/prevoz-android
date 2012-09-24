@@ -2,14 +2,17 @@ package org.prevoz.android.search;
 
 import java.util.Calendar;
 
+import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
 
+import android.content.Intent;
+import android.os.Bundle;
+
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.flurry.android.FlurryAgent;
 
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-
-public class SearchResultsActivity extends FragmentActivity
+public class SearchResultsActivity extends SherlockFragmentActivity
 {
 	private String from;
 	private String to;
@@ -21,6 +24,9 @@ public class SearchResultsActivity extends FragmentActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.search_results);
+		getSupportActionBar().setHomeButtonEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
 		// Extract passed intent data
 		Bundle data = getIntent().getExtras();
 		from = data.getString("from");
@@ -64,4 +70,17 @@ public class SearchResultsActivity extends FragmentActivity
 		FlurryAgent.onEndSession(this);
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) 
+	{
+		if (item.getItemId() == android.R.id.home)
+		{
+			Intent intent = new Intent(this, MainActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			return true;
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}
 }

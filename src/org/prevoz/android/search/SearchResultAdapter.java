@@ -121,7 +121,7 @@ public class SearchResultAdapter extends ArrayAdapter<SearchRide>
 		if (convertView == null)
 		{
 			LayoutInflater inflater = context.getLayoutInflater();
-			row = inflater.inflate(R.layout.search_result, null);
+			row = inflater.inflate(R.layout.search_result, parent, false);
 			wrapper = new SearchResultViewWrapper(row, rides.get(position).getId());
 			row.setTag(wrapper);
 		}
@@ -148,7 +148,7 @@ public class SearchResultAdapter extends ArrayAdapter<SearchRide>
 		}
 		else
 		{
-			wrapper.getPrice().setText("");
+			wrapper.getPrice().setText("? €");
 		}
 
 		wrapper.getDriver().setText(rides.get(position).getAuthor());

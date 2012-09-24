@@ -4,27 +4,24 @@ import org.prevoz.android.Globals;
 import org.prevoz.android.R;
 import org.prevoz.android.util.HTTPHelper;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.WindowManager.BadTokenException;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Window;
 import com.flurry.android.FlurryAgent;
 
-public class LoginActivity extends FragmentActivity
+public class LoginActivity extends SherlockFragmentActivity
 {
 
 	private class WebViewController extends WebViewClient
 	{
-		private ProgressDialog loadingDialog;
-		private Activity context;
+		private SherlockFragmentActivity context;
 
-		public WebViewController(Activity context)
+		public WebViewController(SherlockFragmentActivity context)
 		{
 			this.context = context;
 		}
@@ -42,39 +39,15 @@ public class LoginActivity extends FragmentActivity
 		@Override
 		public void onPageStarted(WebView view, String url, Bitmap favicon)
 		{
-			if (loadingDialog == null || !loadingDialog.isShowing())
-			{
-				try
-				{
-					loadingDialog = ProgressDialog.show(context, null,
-							context.getString(R.string.loading));
-				}
-				// Is thrown if this activity finishes and this event is triggered
-				catch (BadTokenException e)
-				{
-					// Ignore the action
-					return;
-				}
-			}
+			context.setSupportProgressBarIndeterminateVisibility(true);
+			view.setEnabled(false);
 
 			Log.i(this.toString(), "Page started " + url);
-
 			if (url.contains("/login/success"))
 			{
 				HTTPHelper.updateSessionCookies(context);
-
-				if (loadingDialog != null && loadingDialog.isShowing())
-				{
-					try
-					{
-						loadingDialog.dismiss();
-					}
-					catch (IllegalArgumentException e)
-					{
-						loadingDialog = null;
-					}
-				}
-				
+				context.setSupportProgressBarIndeterminateVisibility(false);
+				view.setEnabled(true);
 				// Notify all threads of successful login
 				AuthenticationManager.getInstance().notifyLoginResult(LoginActivity.this, AuthenticationStatus.AUTHENTICATED);
 				// Close this activity
@@ -87,17 +60,8 @@ public class LoginActivity extends FragmentActivity
 		@Override
 		public void onPageFinished(WebView view, String url)
 		{
-			try
-			{
-				if (loadingDialog != null && loadingDialog.isShowing())
-				{
-					loadingDialog.dismiss();
-				}
-			}
-			catch (IllegalArgumentException e)
-			{
-				loadingDialog = null;
-			};
+			context.setSupportProgressBarIndeterminateVisibility(false);
+			view.setEnabled(true);
 		}
 	}
 	
@@ -107,8 +71,10 @@ public class LoginActivity extends FragmentActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.login_view);
 		
+		this.setSupportProgressBarIndeterminateVisibility(false);
 		// Load login view
 		webView = (WebView)findViewById(R.id.loginView);
 		webView.setWebViewClient(new WebViewController(this));

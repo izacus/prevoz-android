@@ -12,7 +12,8 @@
 	    android:layout_alignParentBottom = "true"
 	    android:gravity = "center"
 	    android:padding = "10dp"
-	    style="@android:style/TextAppearance.Large"
+	    android:textSize="20sp"
+	    android:textStyle="bold"
 	     />
 	    
 	  <TextView 
@@ -23,8 +24,8 @@
         android:layout_alignParentTop = "true"
         android:gravity = "bottom"
         android:paddingLeft = "5dp"
-        android:paddingTop = "3dp"
-        style="@android:style/TextAppearance.Medium" 
+        android:paddingTop = "4dp"
+        android:textSize="15sp"
         />
         
       <TextView 
@@ -37,7 +38,8 @@
         android:layout_alignParentBottom = "true"
         android:gravity = "top"
         android:paddingLeft = "5dp"
-        android:paddingBottom = "3dp"
+        android:paddingBottom = "4dp"
+        android:textSize="14sp"
         />
 		  	  
 </RelativeLayout>

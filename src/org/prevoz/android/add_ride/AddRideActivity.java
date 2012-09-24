@@ -10,6 +10,7 @@ import org.prevoz.android.RideType;
 import org.prevoz.android.add_ride.AddStateManager.Views;
 import org.prevoz.android.auth.AuthenticationManager;
 import org.prevoz.android.auth.AuthenticationStatus;
+import org.prevoz.android.my_rides.MyRidesActivity;
 import org.prevoz.android.rideinfo.Ride;
 import org.prevoz.android.rideinfo.RideInfoActivity;
 import org.prevoz.android.rideinfo.RideInfoUtil;
@@ -27,7 +28,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,14 +37,15 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.flurry.android.FlurryAgent;
 
-public class AddRideActivity extends FragmentActivity implements OnTimeSetListener, OnDateSetListener
+public class AddRideActivity extends SherlockFragmentActivity implements OnTimeSetListener, OnDateSetListener
 {
 	private static final int FROM_CITY_REQUEST = 1;
 	private static final int TO_CITY_REQUEST = 2;
@@ -88,8 +89,9 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 		setContentView(R.layout.add_ride_activity);
 		
 		// Update application title
-		TextView appTitle = (TextView) findViewById(R.id.title_bar);
-		appTitle.setText(R.string.add_title);
+		getSupportActionBar().setTitle(R.string.add_title);
+		getSupportActionBar().setHomeButtonEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		dateTime = Calendar.getInstance();
 		
@@ -470,6 +472,20 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 	}
 	
 	@Override
+	public boolean onOptionsItemSelected(MenuItem item) 
+	{
+		if (item.getItemId() == android.R.id.home)
+		{
+			Intent intent = new Intent(this, MyRidesActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			return true;
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
 	protected Dialog onCreateDialog(int id)
 	{
 		switch(id)
@@ -481,7 +497,8 @@ public class AddRideActivity extends FragmentActivity implements OnTimeSetListen
 				datePickerDialog.updateDate(dateTime.get(Calendar.YEAR), dateTime.get(Calendar.MONTH), dateTime.get(Calendar.DAY_OF_MONTH));
 				return datePickerDialog;
 			default:
-				return super.onCreateDialog(id);
+				Log.e(this.toString(), "Tried to create unknown dialog!");
+				return null;
 		}
 	}
 

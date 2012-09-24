@@ -12,7 +12,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -30,9 +29,11 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.flurry.android.FlurryAgent;
 
-public class CitySelectorActivity extends FragmentActivity implements TextWatcher, OnItemClickListener, OnEditorActionListener
+public class CitySelectorActivity extends SherlockFragmentActivity implements TextWatcher, OnItemClickListener, OnEditorActionListener
 {
 	private SQLiteDatabase database = null;	
 	private ListView cityList;
@@ -44,6 +45,8 @@ public class CitySelectorActivity extends FragmentActivity implements TextWatche
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.city_selector_activity);
+		getSupportActionBar().setHomeButtonEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		// Disable status bar in landscape layout
 		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
@@ -74,6 +77,18 @@ public class CitySelectorActivity extends FragmentActivity implements TextWatche
 	}
 	
 	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home)
+		{
+			setResult(RESULT_CANCELED);
+			finish();
+			return true;
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}
+
 	private void populateCityList(String pattern)
 	{
 		final String[] column = { "name" };
@@ -125,8 +140,7 @@ public class CitySelectorActivity extends FragmentActivity implements TextWatche
 					return;
 				}
 				
-				view.setText(gpsManager.getCurrentCity());
-				view.requestFocus();
+				returnCity(gpsManager.getCurrentCity());
 			}
 		};
 		

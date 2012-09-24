@@ -13,12 +13,12 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.widget.DatePicker;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.flurry.android.FlurryAgent;
 
-public class MainActivity extends FragmentActivity implements OnDateSetListener
+public class MainActivity extends SherlockFragmentActivity implements OnDateSetListener
 {
 	public static final int DIALOG_SEARCH_DATE = 0;
 	
@@ -43,6 +43,7 @@ public class MainActivity extends FragmentActivity implements OnDateSetListener
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		getSupportActionBar().setHomeButtonEnabled(false);
 		
 		// Attempt C2DM services registration
 		NotificationManager.getInstance(getApplicationContext());

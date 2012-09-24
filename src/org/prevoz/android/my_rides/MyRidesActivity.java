@@ -1,6 +1,7 @@
 package org.prevoz.android.my_rides;
 
 import org.prevoz.android.Globals;
+import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.add_ride.AddRideActivity;
 import org.prevoz.android.auth.AuthenticationManager;
@@ -15,28 +16,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.flurry.android.FlurryAgent;
 
-public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks<SearchResults> 
+public class MyRidesActivity extends SherlockFragmentActivity implements LoaderCallbacks<SearchResults> 
 {
-	private static final int MENU_LOGOUT = 0;
-	
 	private ViewFlipper loadingFlipper;
 	private ListView ridesList;
 	private Button addRideButton;
@@ -47,9 +46,9 @@ public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.myrides_activity);
-		
-		// Set ride title
-		((TextView)findViewById(R.id.title_bar)).setText(R.string.cd_my_rides);
+		getSupportActionBar().setTitle(R.string.cd_my_rides);
+		getSupportActionBar().setHomeButtonEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		loadingFlipper = (ViewFlipper)findViewById(R.id.myrides_flipper);
 		loadingFlipper.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
@@ -138,8 +137,6 @@ public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks
 				break;
 		}
 	}
-	
-	
 
 	@Override
 	protected void onResume() 
@@ -175,32 +172,34 @@ public class MyRidesActivity extends FragmentActivity implements LoaderCallbacks
 	{
 		// Nothing TBD
 	}
-	
+
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
+	public boolean onCreateOptionsMenu(Menu menu) 
 	{
-		menu.add(Menu.NONE, MENU_LOGOUT, Menu.NONE, getString(R.string.logout)).setIcon(android.R.drawable.ic_delete);
+		MenuInflater inflater = getSupportMenuInflater();
+		inflater.inflate(R.menu.menu_myrides, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
-		if (item.getItemId() == MENU_LOGOUT)
+		switch(item.getItemId())
 		{
-			FlurryAgent.logEvent("MyRides - Logout");
-			AuthenticationManager.getInstance().requestLogout(this);
-			Toast.makeText(this, R.string.logout_success, Toast.LENGTH_SHORT).show();
-			finish();
-			
-			return true;
+			case R.id.menu_myrides_logout:
+				FlurryAgent.logEvent("MyRides - Logout");
+				AuthenticationManager.getInstance().requestLogout(this);
+				Toast.makeText(this, R.string.logout_success, Toast.LENGTH_SHORT).show();
+				finish();
+				return true;
+			case android.R.id.home:
+				Intent intent = new Intent(this, MainActivity.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+				return true;
+			default:
+				return false;
 		}
-		else
-		{
-			Log.e(this.toString(), "Tried to open non-existed menu item.");
-		}
-		
-		return false;
 	}
 	
 	@Override

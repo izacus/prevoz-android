@@ -22,7 +22,7 @@ public class FixedViewFlipper extends ViewFlipper
 	@Override
 	protected void onDetachedFromWindow()
 	{
-		if (Integer.parseInt(Build.VERSION.SDK) >= 7)
+		if (Build.VERSION.SDK_INT >= 7)
 		{
 			try
 			{

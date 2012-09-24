@@ -2,9 +2,8 @@
 <resources>
 	<!-- General application data -->
     <string name="app_name">Prevoz</string>
-    <string name="app_version">2.1.2</string>
+    <string name="app_version">2.2</string>
     <string name="flurry_apikey">YU4UUAB4JW592B4LFML8</string>
-    <string name="c2dm_sender">gandalfar@gmail.com</string>
     
     <string name="about">O aplikaciji</string>
     <string name="about_text">Pripombe na info@prevoz.org</string>
@@ -141,4 +140,7 @@
         <item>november</item>
         <item>december</item>
     </string-array>
+    
+    <string name="menu_my_rides">Moji prevozi</string>
+    <string name="menu_notifications">Obvestila</string>
 </resources>

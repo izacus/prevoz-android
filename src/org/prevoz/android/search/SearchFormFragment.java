@@ -18,7 +18,6 @@ import org.prevoz.android.util.StringUtil;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,17 +27,18 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
 
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.flurry.android.FlurryAgent;
 
-public class SearchFormFragment extends Fragment 
+public class SearchFormFragment extends SherlockFragment 
 {
 	private static final int FROM_CITY_REQUEST = 1;
 	private static final int TO_CITY_REQUEST = 2;
-	
-	private ImageButton notifications;
 	
 	private Button buttonDate;
 	private Button buttonSearch;
@@ -46,7 +46,7 @@ public class SearchFormFragment extends Fragment
 	private Button buttonFrom;
 	private Button buttonTo;
 	
-	private ImageButton buttonMyRides;
+	private MenuItem buttonNotifications;
 	
 	private ListView lastSearches;
 	
@@ -103,25 +103,6 @@ public class SearchFormFragment extends Fragment
 				startSearch();
 			}
 		});
-		
-		buttonMyRides = (ImageButton)getActivity().findViewById(R.id.search_my_rides);
-		buttonMyRides.setOnClickListener(new OnClickListener() 
-		{	
-			public void onClick(View arg0) 
-			{
-				FlurryAgent.logEvent("SearchForm - My Rides");
-				Intent myRidesIntent = new Intent(getActivity(), MyRidesActivity.class);
-				startActivity(myRidesIntent);
-			}
-		});
-		
-		
-		notifications = (ImageButton)getActivity().findViewById(R.id.show_active_notifications);
-		notifications.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				startActivity(new Intent(getActivity(), NotificationsActivity.class));
-			}
-		});
 	}
 	
 	private void populateLastSearchList()
@@ -165,7 +146,40 @@ public class SearchFormFragment extends Fragment
 		
 	}
 	
-	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) 
+	{
+		inflater.inflate(R.menu.menu_search_form, menu);
+		buttonNotifications = menu.findItem(R.id.menu_search_notifications);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) 
+	{
+		switch (item.getItemId())
+		{
+			case R.id.menu_search_myrides:
+				FlurryAgent.logEvent("SearchForm - My Rides");
+				Intent myRidesIntent = new Intent(getActivity(), MyRidesActivity.class);
+				startActivity(myRidesIntent);
+				return true;
+				
+			case R.id.menu_search_notifications:
+				startActivity(new Intent(getActivity(), NotificationsActivity.class));
+				return true;
+		
+			default: 
+				return super.onOptionsItemSelected(item);
+		}
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) 
+	{
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) 
 	{
@@ -201,11 +215,11 @@ public class SearchFormFragment extends Fragment
 		
 		if (NotificationManager.getInstance(getActivity().getApplicationContext()).notificationsAvailable())
 		{
-			notifications.setVisibility(View.VISIBLE);
+			buttonNotifications.setVisible(true);
 		}
 		else
 		{
-			notifications.setVisibility(View.GONE);
+			buttonNotifications.setVisible(false);
 		}
 			
 	}
