@@ -190,4 +190,10 @@ public class NotificationManager
 		task.setCallback(handler);
 		task.execute((Void)null);
 	}
+	
+	public void setRegistrationId(String regId)
+	{
+		registrationId = regId;
+	}
+	
 }

@@ -23,13 +23,24 @@ import com.google.android.gcm.GCMBaseIntentService;
 public class GCMIntentService extends GCMBaseIntentService {
 
 	@Override
-	protected void onError(Context context, String regId) {}
+	protected void onError(Context context, String regId) 
+	{
+		Log.e("GCMIntentService", "Error while registering with GCM!");
+	}
 
 	@Override
-	protected void onRegistered(Context context, String regId) {}
+	protected void onRegistered(Context context, String regId) 
+	{
+		org.prevoz.android.c2dm.NotificationManager nm = org.prevoz.android.c2dm.NotificationManager.getInstance(context);
+		nm.setRegistrationId(regId);
+	}
 
 	@Override
-	protected void onUnregistered(Context context, String regId) {}
+	protected void onUnregistered(Context context, String regId) 
+	{
+		org.prevoz.android.c2dm.NotificationManager nm = org.prevoz.android.c2dm.NotificationManager.getInstance(context);
+		nm.setRegistrationId(null);
+	}
 
 	@Override
 	protected void onMessage(Context context, Intent intent) 
