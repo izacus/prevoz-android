@@ -122,6 +122,16 @@
      	  name="android:textColor">@color/list_separator_color</item>
      	<item
      	  name="android:textSize">18sp</item>
+     	<item 
+     	  name="android:textStyle">bold</item>
+     	<item 
+     	  name="android:shadowColor">#DDDDDD</item>
+    	<item 
+    	  name="android:shadowDx">1</item>
+    	<item 
+    	  name="android:shadowDy">1</item>
+    	<item 
+    	  name="android:shadowRadius">1</item>
     </style>
     <style name="land_field_labels" parent="@style/field_labels">
         <item name="android:gravity">right</item>
