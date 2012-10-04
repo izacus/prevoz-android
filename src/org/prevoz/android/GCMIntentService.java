@@ -20,7 +20,12 @@ import android.util.Log;
 
 import com.google.android.gcm.GCMBaseIntentService;
 
-public class GCMIntentService extends GCMBaseIntentService {
+public class GCMIntentService extends GCMBaseIntentService 
+{
+	public GCMIntentService()
+	{
+		super(org.prevoz.android.c2dm.NotificationManager.GCM_PROJECT_ID);
+	}
 
 	@Override
 	protected void onError(Context context, String regId) 
@@ -116,5 +121,4 @@ public class GCMIntentService extends GCMBaseIntentService {
 		
 		return iIds;
 	}
-	
 }

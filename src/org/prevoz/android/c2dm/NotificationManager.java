@@ -17,7 +17,7 @@ import com.google.android.gcm.GCMRegistrar;
 
 public class NotificationManager
 {
-	private static final String GCM_PROJECT_ID = "121500391433";
+	public static final String GCM_PROJECT_ID = "121500391433";
 	
 	public static final int REGISTRATION_SUCCESS = 0;
 	public static final int REGISTRATION_FAILURE = 1;
