@@ -93,7 +93,7 @@ public class AddRideActivity extends SherlockFragmentActivity implements OnTimeS
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		dateTime = Calendar.getInstance();
+		dateTime = Calendar.getInstance(LocaleUtil.getLocalTimezone());
 		
 		// Initialize values
 		if (savedInstanceState != null)
@@ -307,7 +307,7 @@ public class AddRideActivity extends SherlockFragmentActivity implements OnTimeS
 		}
 		
 		// Check date validity
-		if (dateTime.before(Calendar.getInstance()))
+		if (dateTime.before(Calendar.getInstance(LocaleUtil.getLocalTimezone())))
 		{
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("error", "Date too early");

@@ -4,6 +4,7 @@ import java.util.Calendar;
 
 import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
+import org.prevoz.android.util.LocaleUtil;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,7 +32,7 @@ public class SearchResultsActivity extends SherlockFragmentActivity
 		Bundle data = getIntent().getExtras();
 		from = data.getString("from");
 		to = data.getString("to");
-		when = Calendar.getInstance();
+		when = Calendar.getInstance(LocaleUtil.getLocalTimezone());
 		when.setTimeInMillis(data.getLong("when"));
 		highlightIds = data.getIntArray("highlights");
 	}

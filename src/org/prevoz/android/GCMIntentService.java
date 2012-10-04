@@ -61,8 +61,10 @@ public class GCMIntentService extends GCMBaseIntentService {
 		String title = getString(R.string.notify_statusbar) + " " + from + " - " + to;
 		
 		// Prepare search results launch intent
-		Calendar when = Calendar.getInstance();
+		Calendar when = Calendar.getInstance(LocaleUtil.getLocalTimezone());
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		format.setTimeZone(LocaleUtil.getLocalTimezone());
+		
 		try 
 		{
 			when.setTime(format.parse(intent.getExtras().getString("date")));

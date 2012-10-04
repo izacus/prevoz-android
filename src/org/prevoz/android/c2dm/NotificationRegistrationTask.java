@@ -8,6 +8,7 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.prevoz.android.util.HTTPHelper;
+import org.prevoz.android.util.LocaleUtil;
 
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -43,6 +44,7 @@ public class NotificationRegistrationTask extends AsyncTask<Void, Void, Boolean>
 			postParams.put("tocountry", "SI");
 			
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			formatter.setTimeZone(LocaleUtil.getLocalTimezone());
 			postParams.put("date", formatter.format(request.getWhen().getTime()));
 			postParams.put("action", request.isRegister() ? "subscribe" : "unsubscribe");
 			

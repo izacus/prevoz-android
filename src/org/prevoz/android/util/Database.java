@@ -119,7 +119,7 @@ public class Database
 		ArrayList<NotifySubscription> subscriptions = new ArrayList<NotifySubscription>();
 		while (results.moveToNext())
 		{
-			Calendar date = Calendar.getInstance();
+			Calendar date = Calendar.getInstance(LocaleUtil.getLocalTimezone());
 			date.setTimeInMillis(results.getLong(dateIndex));
 			NotifySubscription subscription = new NotifySubscription(results.getInt(idIndex),
 																	 results.getString(fromIndex),
@@ -155,7 +155,7 @@ public class Database
 	public static void pruneOldNotifications(Context context)
 	{
 		SQLiteDatabase database = new DatabaseHelper(context).getWritableDatabase();
-		Calendar time = Calendar.getInstance();
+		Calendar time = Calendar.getInstance(LocaleUtil.getLocalTimezone());
 		time.set(Calendar.HOUR_OF_DAY, 0);
 		time.set(Calendar.MINUTE, 0);
 		time.set(Calendar.SECOND, 0);

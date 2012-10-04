@@ -185,7 +185,7 @@ public class SearchFormFragment extends SherlockFragment
 	{
 		super.onActivityCreated(savedInstanceState);
 		
-		selectedDate = Calendar.getInstance();
+		selectedDate = Calendar.getInstance(LocaleUtil.getLocalTimezone());
 		if (savedInstanceState != null)
 		{
 			if (savedInstanceState.containsKey("selected_date") && savedInstanceState.getLong("selected_date") > selectedDate.getTimeInMillis())
@@ -290,7 +290,7 @@ public class SearchFormFragment extends SherlockFragment
 		Log.i(this.toString(), "Starting search for " + from + " - " + to);
 		
 		// Record search request
-		Database.addSearchToHistory(getActivity(), from, to, Calendar.getInstance().getTime());
+		Database.addSearchToHistory(getActivity(), from, to, Calendar.getInstance(LocaleUtil.getLocalTimezone()).getTime());
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("from", from);
 		params.put("to", to);

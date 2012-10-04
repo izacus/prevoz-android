@@ -7,6 +7,7 @@ import org.prevoz.android.c2dm.NotificationManager;
 import org.prevoz.android.search.SearchFormFragment;
 import org.prevoz.android.search.SearchResultsActivity;
 import org.prevoz.android.util.Database;
+import org.prevoz.android.util.LocaleUtil;
 
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -51,7 +52,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnDateSetL
 		// Sanitize search database
 		Database.deleteHistoryEntries(this, 10);
 		setContentView(R.layout.main_activity);		
-		Calendar now = Calendar.getInstance();
+		Calendar now = Calendar.getInstance(LocaleUtil.getLocalTimezone());
 		datePicker = new DatePickerDialog(this, this, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
 		
 		// Refresh login status for it to be ready for user
@@ -60,7 +61,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnDateSetL
 
 	public void onDateSet(DatePicker picker, int year, int month, int dayOfMonth) 
 	{
-		Calendar date = Calendar.getInstance();
+		Calendar date = Calendar.getInstance(LocaleUtil.getLocalTimezone());
 		date.set(Calendar.YEAR, year);
 		date.set(Calendar.MONTH, month);
 		date.set(Calendar.DAY_OF_MONTH, dayOfMonth);

@@ -16,6 +16,7 @@ import org.prevoz.android.RideType;
 import org.prevoz.android.auth.AuthenticationManager;
 import org.prevoz.android.util.AsyncLoader;
 import org.prevoz.android.util.HTTPHelper;
+import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
 
 import com.flurry.android.FlurryAgent;
@@ -147,6 +148,7 @@ public class SearchResultsLoader extends AsyncLoader<SearchResults>
 
 		// Build date
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		formatter.setTimeZone(LocaleUtil.getLocalTimezone());
 		parameters.put("d", formatter.format(request.getWhen().getTime()));
 
 		int search_type = RideType.SHARE.ordinal();

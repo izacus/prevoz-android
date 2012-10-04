@@ -14,7 +14,7 @@ public class LocaleUtil
 {
 	public static String getDayName(Resources res, Date date)
 	{
-		Calendar cal = Calendar.getInstance();
+		Calendar cal = Calendar.getInstance(LocaleUtil.getLocalTimezone());
 		cal.setTime(date);
 		return getDayName(res, cal);
 	}
@@ -33,7 +33,7 @@ public class LocaleUtil
 
 	public static String getFormattedDate(Resources res, Date date)
 	{
-		Calendar cal = Calendar.getInstance();
+		Calendar cal = Calendar.getInstance(LocaleUtil.getLocalTimezone());
 		cal.setTime(date);
 
 		return getFormattedDate(res, cal);
@@ -52,7 +52,7 @@ public class LocaleUtil
 	 */
 	public static String localizeDate(Resources resources, Calendar date)
 	{	
-		Calendar now = Calendar.getInstance();
+		Calendar now = Calendar.getInstance(LocaleUtil.getLocalTimezone());
 		// Check for today and tomorrow
 		if (date.get(Calendar.ERA) == now.get(Calendar.ERA) && 
 			date.get(Calendar.YEAR) == now.get(Calendar.YEAR))

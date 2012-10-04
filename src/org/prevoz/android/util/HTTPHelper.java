@@ -55,7 +55,7 @@ public class HTTPHelper
 	{
 		// There's a bug in SimpleDateFormatter library so we're parsing dates
 		// manually
-		SimpleDateFormat formatter = LocaleUtil.getSimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssz");
+		SimpleDateFormat formatter = LocaleUtil.getSimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
 		Date result = formatter.parse(date);
 		
 		return result;
