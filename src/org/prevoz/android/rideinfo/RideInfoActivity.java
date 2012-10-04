@@ -156,7 +156,7 @@ public class RideInfoActivity extends SherlockFragmentActivity implements Loader
 					}
 				});
 				
-				task.doInBackground(checked);
+				task.execute(checked);
 			}
 		});
 		
