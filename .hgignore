@@ -9,3 +9,5 @@ syntax: regexp
 ^gen/org/prevoz/android/R\.java$
 syntax: regexp
 ^lib/c2dm-sources\.jar$
+syntax: regexp
+^target$

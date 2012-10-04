@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="org.prevoz.android"
       android:versionName="@string/app_version" 
-      android:versionCode="11">
+      android:versionCode="12">
       
 <uses-sdk android:targetSdkVersion="15" android:minSdkVersion="7" />
 <permission android:name="org.prevoz.android.permission.C2D_MESSAGE" android:protectionLevel="signature" />
@@ -29,12 +29,12 @@
 		</intent-filter>
 	</activity>
 	<activity android:name=".CitySelectorActivity" android:theme="@style/PrevozTheme" android:windowSoftInputMode = "stateVisible|adjustResize" />
-    <activity android:name=".rideinfo.RideInfoActivity" android:theme="@style/PrevozTheme" />
-    <activity android:name=".auth.LoginActivity" android:theme="@style/PrevozTheme" />
-    <activity android:name=".search.SearchResultsActivity" android:theme = "@style/PrevozTheme" />
-    <activity android:name=".add_ride.AddRideActivity" android:theme="@style/PrevozTheme" android:windowSoftInputMode="stateHidden" />
-    <activity android:name=".my_rides.MyRidesActivity" android:theme="@style/PrevozTheme"></activity>
-    <activity android:name=".c2dm.NotificationsActivity" android:theme="@style/PrevozTheme" />
+    <activity android:name=".rideinfo.RideInfoActivity" android:label="@string/app_name" android:theme="@style/PrevozTheme" />
+    <activity android:name=".auth.LoginActivity" android:label="@string/title_login" android:theme="@style/PrevozTheme" />
+    <activity android:name=".search.SearchResultsActivity" android:label="@string/title_search" android:theme = "@style/PrevozTheme" />
+    <activity android:name=".add_ride.AddRideActivity" android:label="@string/title_addride" android:theme="@style/PrevozTheme" android:windowSoftInputMode="stateHidden" />
+    <activity android:name=".my_rides.MyRidesActivity" android:label="@string/title_myrides" android:theme="@style/PrevozTheme"></activity>
+    <activity android:name=".c2dm.NotificationsActivity" android:label="@string/title_notifications" android:theme="@style/PrevozTheme" />
     
     <service android:name=".GCMIntentService" />
     

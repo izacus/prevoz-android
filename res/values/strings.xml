@@ -2,11 +2,8 @@
 <resources>
 	<!-- General application data -->
     <string name="app_name">Prevoz</string>
-    <string name="app_version">2.2</string>
+    <string name="app_version">2.2.1</string>
     <string name="flurry_apikey">YU4UUAB4JW592B4LFML8</string>
-    
-    <string name="about">O aplikaciji</string>
-    <string name="about_text">Pripombe na info@prevoz.org</string>
     
     <!-- General strings -->
     <string name="loading">Nalagam&#8230;</string>
@@ -25,12 +22,9 @@
     <string name="search_no_results">Ta dan ni prevozov na izbrani relaciji.</string>
     <string name="all_locations">Vsi kraji</string>
     <string name="search_label_last">Nazadnje iskano</string>
-    <string name="search_hint_from">Odhod iz</string>
-    <string name="search_hint_to">Prihod v</string>
     <string name="search_go">Išči</string>
     <string name="search_gps_locating">Lociram&#8230;</string>
     <string name="search_gps_error">Vaše lokacije ni bilo mogoče najti.</string>
-    <string name="search_searching">Iščem&#8230;</string>
     
     <!-- My rides strings -->
     <string name="myrides_addride">Dodaj prevoz</string>
@@ -51,7 +45,6 @@
     <string name="add_datetime">Datum in čas</string>
     <string name="add_price">Delež stroškov</string>
     <string name="add_price_hint">Stroški</string>
-    <string name="add_numppl">Število mest</string>
     <string name="add_comment">Opombe</string>
     <string name="add_phone">Telefon</string>
     <string name="add_button">Predogled</string>
@@ -83,8 +76,6 @@
     <string name="ride_set_empty_success">Prevoz je bil označen kot prazen.</string>
         
     <string name="cd_my_rides">Moji prevozi</string>
-    <string name="cd_show_active_notifications">Pokaži aktivna obvestila</string>
-    <string name="cd_notify">Obveščaj o novih prevozih</string>
     <string name="cd_gps_location">Izberi trenutno lokacijo</string>
         
     <string-array name="people_tags">
@@ -143,4 +134,9 @@
     
     <string name="menu_my_rides">Moji prevozi</string>
     <string name="menu_notifications">Obvestila</string>
+    <string name="title_login">Prijava</string>
+    <string name="title_search">Iskanje</string>
+    <string name="title_addride">Nov prevoz</string>
+    <string name="title_myrides">Moji prevozi</string>
+    <string name="title_notifications">Obvestila</string>
 </resources>
