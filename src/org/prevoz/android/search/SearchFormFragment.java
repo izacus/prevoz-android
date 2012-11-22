@@ -151,6 +151,7 @@ public class SearchFormFragment extends SherlockFragment
 	{
 		inflater.inflate(R.menu.menu_search_form, menu);
 		buttonNotifications = menu.findItem(R.id.menu_search_notifications);
+		updateNotificationButtonVisibility();
 	}
 
 	@Override
@@ -212,16 +213,22 @@ public class SearchFormFragment extends SherlockFragment
 	{
 		super.onResume();
 		populateLastSearchList();
-		
-		if (NotificationManager.getInstance(getActivity().getApplicationContext()).notificationsAvailable())
+		updateNotificationButtonVisibility();
+	}
+	
+	private void updateNotificationButtonVisibility()
+	{
+		if (buttonNotifications != null)
 		{
-			buttonNotifications.setVisible(true);
+			if (NotificationManager.getInstance(getActivity().getApplicationContext()).notificationsAvailable())
+			{
+				buttonNotifications.setVisible(true);
+			}
+			else
+			{
+				buttonNotifications.setVisible(false);
+			}
 		}
-		else
-		{
-			buttonNotifications.setVisible(false);
-		}
-			
 	}
 
 	@Override
