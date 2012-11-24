@@ -31,7 +31,7 @@ public class Database
 
 		public DatabaseHelper(Context context)
 		{
-			super(context, "settings.db", null, 7);
+			super(context, "settings.db", null, 8);
 			this.storedContext = context;
 		}
 
@@ -49,41 +49,43 @@ public class Database
 					+ "date INTEGER NOT NULL, "
 					+ "registered_date INTEGER NOT NULL)");
 
+			reloadCities(db);
+		}
+
+		private void reloadCities(SQLiteDatabase db)
+		{
+			db.execSQL("DROP TABLE IF EXISTS locations");
+			db.execSQL("DROP INDEX IF EXISTS name_ascii_index");
+			db.execSQL("DROP INDEX IF EXISTS name_index");
+			
 			// Load SQL location script from raw folder and insert all relevant
 			// data into database
-			String[] locationSQL = FileUtil.readSQLStatements(storedContext,
-					R.raw.locations);
+			String[] locationSQL = FileUtil.readSQLStatements(storedContext, R.raw.locations);
 
 			for (String statement : locationSQL)
 			{
-				if (statement.contains("nomelj"))
-				{
-					Log.d("", "");
-				}
-
 				db.execSQL(statement);
 			}
 		}
-
+		
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 		{
-			if (oldVersion > 3)
-			{
-				db.execSQL("DROP TABLE locations");
-			}
-			
 			if (oldVersion < 7)
 			{
 				db.execSQL("DROP TABLE favorites");
+				
+				if (oldVersion > 5)
+				{
+					db.execSQL("DROP TABLE search_history");
+				}
+				
+				onCreate(db);
 			}
-			
-			if (oldVersion > 5)
+			else if (oldVersion < 8)
 			{
-				db.execSQL("DROP TABLE search_history");
+				reloadCities(db);
 			}
-
-			onCreate(db);
 		}
 	}
 	
@@ -252,10 +254,21 @@ public class Database
 		// There's an Android bug when using pre-built queries with LIKE so
 		// rawQuery has to be done
 
-		Cursor cursor = database.rawQuery(
-				"SELECT _id, name FROM locations WHERE (name LIKE '" + what
+		Cursor cursor = null;
+		
+		if (what.trim().equals(""))
+		{
+			cursor = database.rawQuery(
+					  "SELECT _id, name FROM locations WHERE "
+					+ "country = 'SI' ORDER BY sort_num DESC", null);
+		}
+		else
+		{
+			cursor = database.rawQuery(
+						  "SELECT _id, name FROM locations WHERE (name LIKE '" + what
 						+ "%' " + "OR name_ascii LIKE '" + what + "%') "
-						+ "AND country = 'SI' ORDER BY name", null);
+						+ "AND country = 'SI' ORDER BY sort_num DESC", null);
+		}
 
 		return cursor;
 	}
