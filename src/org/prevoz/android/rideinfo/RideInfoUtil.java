@@ -6,6 +6,7 @@ import org.prevoz.android.R;
 import org.prevoz.android.util.LocaleUtil;
 
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Paint;
 import android.view.View;
@@ -152,8 +153,17 @@ public class RideInfoUtil
 		// Setup button callbacks
 		if (showControls)
 		{
-			callButton.setOnClickListener(callAuthor);
 			smsButton.setOnClickListener(sendSMS);
+			
+			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY))
+			{
+				callButton.setOnClickListener(callAuthor);
+			}
+			else
+			{
+				smsButton.setText(context.getString(R.string.add_to_contacts));
+				callButton.setVisibility(View.GONE);
+			}
 		}
 		else
 		{

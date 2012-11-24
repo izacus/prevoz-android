@@ -71,6 +71,7 @@
     <string name="driver_hasnt_insurance">Voznik <b>nima</b> zavarovanja za sopotnike.</string>
    	<string name="send_sms">Pošlji SMS</string>
     <string name="call">Pokliči</string>
+    <string name="add_to_contacts">Dodaj med kontakte</string>
     <string name="ride_is_full">Ni več prostih mest</string>
     <string name="ride_set_full_success">Prevoz je bil označen kot poln.</string>
     <string name="ride_set_empty_success">Prevoz je bil označen kot prazen.</string>

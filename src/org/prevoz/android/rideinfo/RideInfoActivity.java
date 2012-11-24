@@ -4,10 +4,12 @@ import org.prevoz.android.Globals;
 import org.prevoz.android.R;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.ContactsContract;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
@@ -66,9 +68,22 @@ public class RideInfoActivity extends SherlockFragmentActivity implements Loader
 	private void sendSMS()
 	{
 		FlurryAgent.logEvent("RideInfo - Send SMS");
-		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + ride.getContact()));
-		intent.putExtra("address", ride.getContact());
-		intent.setType("vnd.android-dir/mms-sms");
+		
+		Intent intent = null;
+		if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY))
+		{
+			intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + ride.getContact()));
+			intent.putExtra("address", ride.getContact());
+			intent.setType("vnd.android-dir/mms-sms");
+		}
+		else
+		{
+			intent = new Intent(Intent.ACTION_INSERT);
+			intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+			intent.putExtra(ContactsContract.Intents.Insert.NAME, ride.getAuthor());
+			intent.putExtra(ContactsContract.Intents.Insert.PHONE, ride.getContact());
+		}
+		
 		this.startActivity(intent);
 	}
 
@@ -78,6 +93,7 @@ public class RideInfoActivity extends SherlockFragmentActivity implements Loader
 	private void callAuthor()
 	{
 		FlurryAgent.logEvent("RideInfo - Call driver");
+
 		Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + ride.getContact()));
 		this.startActivity(intent);
 	}
