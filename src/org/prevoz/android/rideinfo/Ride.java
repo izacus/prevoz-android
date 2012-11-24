@@ -2,6 +2,7 @@ package org.prevoz.android.rideinfo;
 
 import java.util.Date;
 
+import org.prevoz.android.City;
 import org.prevoz.android.RideType;
 
 import android.os.Bundle;
@@ -11,8 +12,8 @@ public class Ride
 	private int id;
 	private RideType type;
 
-	private String from;
-	private String to;
+	private City from;
+	private City to;
 
 	private Date time;
 
@@ -27,7 +28,7 @@ public class Ride
 	private boolean isInsured;
 	private boolean isFull;
 
-	public Ride(int id, RideType type, String from, String to, Date time,
+	public Ride(int id, RideType type, City from, City to, Date time,
 			int people, Double price, String author, String contact,
 			String comment, boolean isAuthor, boolean isInsured, boolean isFull)
 	{
@@ -55,8 +56,8 @@ public class Ride
 	{
 		id = bundle.getInt("rideinfo_id");
 		type = RideType.values()[bundle.getInt("rideinfo_type")];
-		from = bundle.getString("rideinfo_from");
-		to = bundle.getString("rideinfo_to");
+		from = new City(bundle.getString("rideinfo_from"), bundle.getString("rideinfo_from_country"));
+		to = new City(bundle.getString("rideinfo_to"), bundle.getString("rideinfo_to_country"));
 		time = new Date(bundle.getLong("rideinfo_time"));
 		people = bundle.getInt("rideinfo_people");
 
@@ -85,12 +86,12 @@ public class Ride
 		return type;
 	}
 
-	public String getFrom()
+	public City getFrom()
 	{
 		return from;
 	}
 
-	public String getTo()
+	public City getTo()
 	{
 		return to;
 	}
@@ -139,8 +140,10 @@ public class Ride
 	{
 		bundle.putInt("rideinfo_id", id);
 		bundle.putInt("rideinfo_type", type.ordinal());
-		bundle.putString("rideinfo_from", from);
-		bundle.putString("rideinfo_to", to);
+		bundle.putString("rideinfo_from", from.getDisplayName());
+		bundle.putString("rideinfo_from_country", from.getCountryCode());
+		bundle.putString("rideinfo_to", to.getDisplayName());
+		bundle.putString("rideinfo_to_country", to.getCountryCode());
 		bundle.putLong("rideinfo_time", time.getTime());
 		bundle.putInt("rideinfo_people", people);
 

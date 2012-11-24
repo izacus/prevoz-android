@@ -129,7 +129,8 @@ public class CitySelectorActivity extends SherlockFragmentActivity implements Te
 					return;
 				}
 				
-				returnCity(gpsManager.getCurrentCity());
+				City city = gpsManager.getCurrentCity();
+				returnCity(city.getDisplayName(), city.getCountryCode());
 			}
 		};
 		
@@ -160,8 +161,8 @@ public class CitySelectorActivity extends SherlockFragmentActivity implements Te
 
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 	{
-		String name = ((TextView)view.findViewById(android.R.id.text1)).getText().toString();
-		returnCity(name);
+		City city = (City)(view.getTag());
+		returnCity(city.getDisplayName(), city.getCountryCode());
 	}
 
 	public boolean onEditorAction(TextView v, 
@@ -176,11 +177,11 @@ public class CitySelectorActivity extends SherlockFragmentActivity implements Te
 		}
 		else 
 		{
-			String name = ((TextView)cityList.getChildAt(0)).getText().toString();
+			City city = (City)(cityList.getChildAt(0).getTag());
 			HashMap<String, String> params = new HashMap<String, String>();
-			params.put("city", name);
+			params.put("city", city.getDisplayName());
 			FlurryAgent.logEvent("CitySelector - City Selected", params);
-			returnCity(name);
+			returnCity(city.getDisplayName(), city.getCountryCode());
 		}
 		
 		return false;
@@ -205,9 +206,11 @@ public class CitySelectorActivity extends SherlockFragmentActivity implements Te
 	}
 
 
-	private void returnCity(String name) {
+	private void returnCity(String name, String country) 
+	{
 		Intent result = new Intent();
 		result.putExtra("city", name);
+		result.putExtra("country", country);
 		
 		setResult(RESULT_OK, result);
 		finish();

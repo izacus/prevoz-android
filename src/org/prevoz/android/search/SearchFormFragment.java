@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import org.prevoz.android.City;
 import org.prevoz.android.CitySelectorActivity;
 import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
@@ -50,8 +51,8 @@ public class SearchFormFragment extends SherlockFragment
 	
 	private ListView lastSearches;
 	
-	private String from = "";
-	private String to = "";
+	private City from = null;
+	private City to = null;
 	private Calendar selectedDate;
 	
 	private void prepareFormFields()
@@ -194,10 +195,14 @@ public class SearchFormFragment extends SherlockFragment
 				selectedDate.setTimeInMillis(savedInstanceState.getLong("selected_date"));
 			}
 			
-			if (savedInstanceState.containsKey("from") && savedInstanceState.containsKey("to"))
+			if (savedInstanceState.containsKey("from"))
 			{
-				from = savedInstanceState.getString("from");
-				to = savedInstanceState.getString("to");
+				from = new City(savedInstanceState.getString("from"), savedInstanceState.getString("fromCountry"));
+			}
+			
+			if (savedInstanceState.containsKey("to"))
+			{
+				from = new City(savedInstanceState.getString("to"), savedInstanceState.getString("toCountry"));
 			}
 		}
 		
@@ -246,8 +251,18 @@ public class SearchFormFragment extends SherlockFragment
 	public void onSaveInstanceState(Bundle outState)
 	{
 		outState.putLong("selected_date", selectedDate.getTimeInMillis());
-		outState.putString("from", from);
-		outState.putString("to", to);
+		
+		if (from != null)
+		{
+			outState.putString("from", from.getDisplayName());
+			outState.putString("fromCountry", from.getCountryCode());
+		}
+		
+		if (to != null)
+		{
+			outState.putString("to", to.getDisplayName());
+			outState.putString("toCountry", to.getCountryCode());
+		}
 	}
 	
 	public void setSelectedDate(Calendar date)
@@ -265,11 +280,11 @@ public class SearchFormFragment extends SherlockFragment
 			switch (requestCode)
 			{
 				case FROM_CITY_REQUEST:
-					from = "";
+					from = null;
 					StringUtil.setLocationButtonText(buttonFrom, from, getString(R.string.all_locations));
 					return;
 				case TO_CITY_REQUEST:
-					to = "";
+					to = null;
 					StringUtil.setLocationButtonText(buttonTo, to, getString(R.string.all_locations));
 					return;
 			}
@@ -278,11 +293,11 @@ public class SearchFormFragment extends SherlockFragment
 		switch(requestCode)
 		{
 			case FROM_CITY_REQUEST:
-				from = intent.getStringExtra("city");
+				from = new City(intent.getStringExtra("city"), intent.getStringExtra("country"));
 				StringUtil.setLocationButtonText(buttonFrom, from, getString(R.string.all_locations));
 				break;
 			case TO_CITY_REQUEST:
-				to = intent.getStringExtra("city");
+				to = new City(intent.getStringExtra("city"), intent.getStringExtra("country"));
 				StringUtil.setLocationButtonText(buttonTo, to, getString(R.string.all_locations));
 				break;
 				
@@ -299,8 +314,11 @@ public class SearchFormFragment extends SherlockFragment
 		// Record search request
 		Database.addSearchToHistory(getActivity(), from, to, Calendar.getInstance(LocaleUtil.getLocalTimezone()).getTime());
 		HashMap<String, String> params = new HashMap<String, String>();
-		params.put("from", from);
-		params.put("to", to);
+		
+		params.put("from", from == null ? "" : from.getDisplayName());
+		params.put("fromCountry", from == null ? "" : from.getCountryCode());
+		params.put("to", to == null ? "" : to.getDisplayName());
+		params.put("toCountry", to == null ? "" : to.getCountryCode());
 		FlurryAgent.logEvent("SearchForm - Search", params);
 		
 		MainActivity mainActivity = (MainActivity) getActivity();

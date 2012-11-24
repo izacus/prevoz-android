@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import org.prevoz.android.City;
 import org.prevoz.android.CitySelectorActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.RideType;
@@ -73,8 +74,8 @@ public class AddRideActivity extends SherlockFragmentActivity implements OnTimeS
 	private CheckBox insuranceCheck;
 	
 	// Field data
-	private String fromCity = null;
-	private String toCity = null;
+	private City fromCity = null;
+	private City toCity = null;
 	
 	private Calendar dateTime;
 	
@@ -98,8 +99,8 @@ public class AddRideActivity extends SherlockFragmentActivity implements OnTimeS
 		// Initialize values
 		if (savedInstanceState != null)
 		{
-			fromCity = savedInstanceState.getString("fromCity");
-			toCity = savedInstanceState.getString("toCity");
+			fromCity = new City(savedInstanceState.getString("fromCity"), savedInstanceState.getString("fromCityCountry"));
+			toCity = new City(savedInstanceState.getString("toCity"), savedInstanceState.getString("toCityCountry"));
 			dateTime.setTimeInMillis(savedInstanceState.getLong("date"));
 			prepareFormFields(savedInstanceState.getInt("numPpl"));
 		}
@@ -272,12 +273,12 @@ public class AddRideActivity extends SherlockFragmentActivity implements OnTimeS
 		switch(requestCode)
 		{
 			case FROM_CITY_REQUEST:
-				fromCity = successful ? data.getStringExtra("city") : null;
+				fromCity = successful ? new City(data.getStringExtra("city"), data.getStringExtra("country")) : null;
 				StringUtil.setLocationButtonText(fromButton, fromCity, getString(R.string.add_select_city));
 				break;
 				
 			case TO_CITY_REQUEST:
-				toCity = successful ? data.getStringExtra("city") : null;
+				toCity = successful ? new City(data.getStringExtra("city"), data.getStringExtra("country")) : null;
 				StringUtil.setLocationButtonText(toButton, toCity, getString(R.string.add_select_city));
 				break;
 		}
@@ -530,8 +531,10 @@ public class AddRideActivity extends SherlockFragmentActivity implements OnTimeS
 	{
 		super.onSaveInstanceState(outState);
 		
-		outState.putString("fromCity", fromCity);
-		outState.putString("toCity", toCity);
+		outState.putString("fromCity", fromCity.getDisplayName());
+		outState.putString("fromCityCountry", fromCity.getCountryCode());
+		outState.putString("toCity", toCity.getDisplayName());
+		outState.putString("toCityCountry", toCity.getCountryCode());
 		outState.putInt("numPpl", ((PeopleSpinnerObject)peopleSpinner.getSelectedItem()).getNumber());
 		outState.putLong("date", dateTime.getTimeInMillis());
 	}

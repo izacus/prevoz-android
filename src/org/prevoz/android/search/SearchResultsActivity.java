@@ -2,6 +2,7 @@ package org.prevoz.android.search;
 
 import java.util.Calendar;
 
+import org.prevoz.android.City;
 import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.util.LocaleUtil;
@@ -15,8 +16,8 @@ import com.flurry.android.FlurryAgent;
 
 public class SearchResultsActivity extends SherlockFragmentActivity
 {
-	private String from;
-	private String to;
+	private City from;
+	private City to;
 	private Calendar when;
 	private int[] highlightIds;
 	
@@ -30,19 +31,30 @@ public class SearchResultsActivity extends SherlockFragmentActivity
 		
 		// Extract passed intent data
 		Bundle data = getIntent().getExtras();
-		from = data.getString("from");
-		to = data.getString("to");
+		from = null;
+		to = null;
+		
+		if (data.containsKey("from"))
+		{
+			from = new City(data.getString("from"), data.getString("fromCountry"));
+		}
+		
+		if (data.containsKey("to"))
+		{
+			to = new City(data.getString("to"), data.getString("toCountry"));
+		}
+		
 		when = Calendar.getInstance(LocaleUtil.getLocalTimezone());
 		when.setTimeInMillis(data.getLong("when"));
 		highlightIds = data.getIntArray("highlights");
 	}
 	
-	public String getFrom()
+	public City getFrom()
 	{
 		return from;
 	}
 	
-	public String getTo()
+	public City getTo()
 	{
 		return to;
 	}

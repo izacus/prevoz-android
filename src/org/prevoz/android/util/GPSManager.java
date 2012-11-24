@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.prevoz.android.City;
 
 import android.content.Context;
 import android.location.Location;
@@ -23,7 +24,7 @@ public class GPSManager implements LocationListener
 	private static final int LOCATION_LOCK_TIMEOUT_MILLIS = 30000;
 
 	private Context context;
-	private String currentCity;
+	private City currentCity;
 	private Handler callback;
 	private Timer timeoutTimer;
 	private LocationManager locationManager;
@@ -171,7 +172,7 @@ public class GPSManager implements LocationListener
 		callback.sendEmptyMessage(GPS_CANCELED);
 	}
 
-	public String getCurrentCity()
+	public City getCurrentCity()
 	{
 		return currentCity;
 	}

@@ -33,19 +33,21 @@ public class Database
 
 		public DatabaseHelper(Context context)
 		{
-			super(context, "settings.db", null, 8);
+			super(context, "settings.db", null, 9);
 			this.storedContext = context;
 		}
 
 		@Override
 		public void onCreate(SQLiteDatabase db)
 		{
-			db.execSQL("CREATE TABLE search_history (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+			db.execSQL("CREATE TABLE IF NOT EXISTS search_history (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
 					   "from_loc TEXT NOT NULL, " +
+					   "from_country TEXT NOT NULL," +
 					   "to_loc TEXT NOT NULL, " +
+					   "to_country TEXT NOT NULL," +
 					   "date DATE NOT NULL)");
 			
-			db.execSQL("CREATE TABLE notify_subscriptions (ID INTEGER PRIMARY KEY AUTOINCREMENT, "
+			db.execSQL("CREATE TABLE IF NOT EXISTS notify_subscriptions (ID INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ "from_loc TEXT NOT NULL," 
 					+ "to_loc TEXT NOT NULL,"
 					+ "date INTEGER NOT NULL, "
@@ -73,20 +75,12 @@ public class Database
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 		{
-			if (oldVersion < 7)
+			if (oldVersion < 9)
 			{
-				db.execSQL("DROP TABLE favorites");
-				
-				if (oldVersion > 5)
-				{
-					db.execSQL("DROP TABLE search_history");
-				}
+				db.execSQL("DROP TABLE IF EXISTS favorites");
+				db.execSQL("DROP TABLE IF EXISTS search_history");
 				
 				onCreate(db);
-			}
-			else if (oldVersion < 8)
-			{
-				reloadCities(db);
 			}
 		}
 	}
@@ -167,15 +161,17 @@ public class Database
 		database.close();
 	}
 	
-	public static void addSearchToHistory(Context context, String from, String to, Date date)
+	public static void addSearchToHistory(Context context, City from, City to, Date date)
 	{
 		Log.i("Database","Adding search to history " + from + " - " + to);
 		
 		SimpleDateFormat sqlDateFormatter = LocaleUtil.getSimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		SQLiteDatabase database = new DatabaseHelper(context).getWritableDatabase();
 		ContentValues values = new ContentValues();
-		values.put("from_loc", from);
-		values.put("to_loc", to);
+		values.put("from_loc", from == null ? "" : from.getDisplayName());
+		values.put("from_country", from == null ? "" : from.getCountryCode());
+		values.put("to_loc", to == null ? "" : to.getDisplayName());
+		values.put("to_country", to == null ? "" : to.getCountryCode());
 		values.put("date", sqlDateFormatter.format(date));
 		database.insert("search_history", null, values);
 		database.close();
@@ -188,14 +184,16 @@ public class Database
 		SQLiteDatabase database = new DatabaseHelper(context).getReadableDatabase();
 		
 		ArrayList<Route> searches = new ArrayList<Route>();
-		Cursor results = database.query(true, "search_history", new String[] { "from_loc", "to_loc" }, null, null, null, null, "date DESC", String.valueOf(count));
+		Cursor results = database.query(true, "search_history", new String[] { "from_loc", "from_country", "to_loc", "to_country" }, null, null, null, null, "date DESC", String.valueOf(count));
 		
 		int fromIndex = results.getColumnIndex("from_loc");
+		int fromCountry = results.getColumnIndex("from_country");
 		int toIndex = results.getColumnIndex("to_loc");
+		int toCountry = results.getColumnIndex("to_country");
 		
 		while(results.moveToNext())
 		{
-			Route route = new Route(results.getString(fromIndex), results.getString(toIndex), null);
+			Route route = new Route(new City(results.getString(fromIndex), results.getString(fromCountry)), new City(results.getString(toIndex), results.getString(toCountry)), null);
 			searches.add(route);
 		}
 		
@@ -285,13 +283,13 @@ public class Database
 		return cities;
 	}
 
-	public static String getClosestCity(Context context, double latitude,
+	public static City getClosestCity(Context context, double latitude,
 			double longtitude)
 	{
 		SQLiteDatabase database = new DatabaseHelper(context)
 				.getReadableDatabase();
 
-		String query = "SELECT name, ABS(lat - " + latitude + ") + ABS(long - "
+		String query = "SELECT name, country, ABS(lat - " + latitude + ") + ABS(long - "
 				+ longtitude + ") AS distance " + "FROM locations "
 				+ "ORDER BY distance LIMIT 1";
 
@@ -299,10 +297,9 @@ public class Database
 		cursor.moveToFirst();
 
 		int nameColumn = cursor.getColumnIndex("name");
-		String city = cursor.getString(nameColumn);
-
+		int countryColumn = cursor.getColumnIndex("country");
+		City city = new City(cursor.getString(nameColumn), cursor.getString(countryColumn));
 		database.close();
-
 		return city;
 	}
 }

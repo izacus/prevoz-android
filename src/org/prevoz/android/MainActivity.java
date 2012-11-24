@@ -26,13 +26,24 @@ public class MainActivity extends SherlockFragmentActivity implements OnDateSetL
 	// For picking search date
 	private DatePickerDialog datePicker;
 	
-	public void startSearch(String from, String to, Calendar when)
+	public void startSearch(City from, City to, Calendar when)
 	{
 		// Start new activity with search results
 		Intent intent = new Intent(getApplication(), SearchResultsActivity.class);
 		Bundle dataBundle = new Bundle();
-		dataBundle.putString("from", from);
-		dataBundle.putString("to", to);
+		
+		if (from != null)
+		{
+			dataBundle.putString("from", from.getDisplayName());
+			dataBundle.putString("fromCountry", from.getCountryCode());
+		}
+		
+		if (to != null)
+		{
+			dataBundle.putString("to", to.getDisplayName());
+			dataBundle.putString("toCountry", to.getCountryCode());
+		}
+		
 		dataBundle.putLong("when", when.getTimeInMillis());
 		
 		intent.putExtras(dataBundle);

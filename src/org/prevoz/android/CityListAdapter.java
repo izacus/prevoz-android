@@ -39,6 +39,7 @@ public class CityListAdapter extends ArrayAdapter<City>
 		TextView bottomLine = (TextView) row.findViewById(R.id.city_country);
 		
 		City city = getItem(position);
+		row.setTag(city);
 		
 		mainLine.setText(city.getDisplayName());
 		

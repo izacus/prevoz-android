@@ -140,10 +140,18 @@ public class SearchResultsLoader extends AsyncLoader<SearchResults>
 	{
 		HashMap<String, String> parameters = new HashMap<String, String>();
 		
-		parameters.put("f", request.getFrom());
-		parameters.put("fc", "SI");
-		parameters.put("t", request.getTo());
-		parameters.put("tc", "SI");
+		if (request.getFrom() != null)
+		{
+			parameters.put("f", request.getFrom().getDisplayName());
+			parameters.put("fc", request.getFrom().getCountryCode());
+		}
+		
+		if (request.getTo() != null)
+		{
+			parameters.put("t", request.getTo().getDisplayName());
+			parameters.put("tc", request.getTo().getCountryCode());
+		}
+		
 		parameters.put("client", "android" + StringUtil.numberOnly(context.getString(R.string.app_version), false));
 
 		// Build date

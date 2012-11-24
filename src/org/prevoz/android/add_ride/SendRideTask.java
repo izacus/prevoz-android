@@ -38,10 +38,10 @@ public class SendRideTask implements Runnable
 		timeFormatter.setTimeZone(LocaleUtil.getLocalTimezone());
 		
 		parameters.put("transptype", String.valueOf(ride.getType().ordinal()));
-		parameters.put("transpfrom", ride.getFrom());
-		parameters.put("transpfromcountry", "SI");
-		parameters.put("transpto", ride.getTo());
-		parameters.put("transptocountry", "SI");
+		parameters.put("transpfrom", ride.getFrom().getDisplayName());
+		parameters.put("transpfromcountry", ride.getFrom().getCountryCode());
+		parameters.put("transpto", ride.getTo().getDisplayName());
+		parameters.put("transptocountry", ride.getTo().getCountryCode());
 
 		parameters.put("transpdate", dateFormatter.format(ride.getTime()));
 		parameters.put("transptime", timeFormatter.format(ride.getTime()));

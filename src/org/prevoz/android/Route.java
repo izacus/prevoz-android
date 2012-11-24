@@ -8,24 +8,24 @@ package org.prevoz.android;
  */
 public class Route
 {
-	private String from;
-	private String to;
+	private City from;
+	private City to;
 	private RideType type;
 
-	public Route(String from, String to, RideType type)
+	public Route(City from, City to, RideType type)
 	{
 		super();
-		this.from = from;
-		this.to = to;
+		this.from = from == null || from.getDisplayName().length() == 0 ? null : from;
+		this.to = to == null || to.getDisplayName().length() == 0 ? null : to;
 		this.type = type;
 	}
 
-	public String getFrom()
+	public City getFrom()
 	{
 		return from;
 	}
 
-	public String getTo()
+	public City getTo()
 	{
 		return to;
 	}
@@ -36,24 +36,24 @@ public class Route
 		String fromText;
 		String toText;
 		
-		if (from == null || from.length() == 0)
+		if (from == null)
 		{
 			// TODO: Add resource
 			fromText = "Vsi kraji";
 		}
 		else
 		{
-			fromText = from;
+			fromText = from.toString();
 		}
 		
-		if (to == null || to.length() == 0)
+		if (to == null)
 		{
 			// TODO: Add resource
 			toText = "Vsi kraji";
 		}
 		else
 		{
-			toText = to;
+			toText = to.toString();
 		}
 		
 		return fromText + " - " + toText;

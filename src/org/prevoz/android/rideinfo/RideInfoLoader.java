@@ -6,6 +6,7 @@ import java.util.Date;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.prevoz.android.City;
 import org.prevoz.android.Globals;
 import org.prevoz.android.RideType;
 import org.prevoz.android.util.AsyncLoader;
@@ -74,7 +75,7 @@ public class RideInfoLoader extends AsyncLoader<Ride>
 			
 			Log.i(this.toString(), "Succesfully parsed response for ride id " + rideID);
 			
-			return new Ride(id, type, from, to, time, people, price, author, contact, comment, isAuthor, isInsured, isFull);
+			return new Ride(id, type, new City(from, "SI"), new City(to, "SI"), time, people, price, author, contact, comment, isAuthor, isInsured, isFull);
 		}
 		catch (JSONException e)
 		{

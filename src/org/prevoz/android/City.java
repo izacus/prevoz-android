@@ -20,4 +20,10 @@ public class City
 	{
 		return countryCode;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return getDisplayName() + (countryCode.equals("SI") ? "" : " (" + getCountryCode() + ")");
+	}
 }

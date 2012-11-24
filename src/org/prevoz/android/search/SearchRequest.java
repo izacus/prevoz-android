@@ -2,19 +2,21 @@ package org.prevoz.android.search;
 
 import java.util.Calendar;
 
+import org.prevoz.android.City;
+
 import android.app.Activity;
 
 public class SearchRequest
 {
 	private Activity context = null;
 	
-	private String from;
-	private String to;
+	private City from;
+	private City to;
 	private Calendar when;
 	
 	public SearchRequest(Activity context,
-						 String from,
-						 String to,
+						 City from,
+						 City to,
 						 Calendar when)
 	{
 		this.context = context;
@@ -23,11 +25,11 @@ public class SearchRequest
 		this.when = when;
 	}
 
-	public String getFrom() {
+	public City getFrom() {
 		return from;
 	}
 
-	public String getTo() {
+	public City getTo() {
 		return to;
 	}
 

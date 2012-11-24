@@ -2,6 +2,7 @@ package org.prevoz.android.search;
 
 import java.util.Calendar;
 
+import org.prevoz.android.City;
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
 import org.prevoz.android.c2dm.NotificationManager;
@@ -48,8 +49,8 @@ public class SearchResultsFragment extends SherlockFragment implements LoaderCal
 	
 	
 	// Status
-	private String from;
-	private String to;
+	private City from;
+	private City to;
 	private Calendar when;
 	
 	// Views
@@ -68,8 +69,15 @@ public class SearchResultsFragment extends SherlockFragment implements LoaderCal
 		this.from = activity.getFrom();
 		this.to = activity.getTo();
 		this.when = activity.getWhen();
-		showView(DisplayScreens.RESULTS_SCREEN);	
-		notificationEnabled = NotificationManager.getInstance(getActivity().getApplicationContext()).isNotified(getActivity(), from, to, when);
+		showView(DisplayScreens.RESULTS_SCREEN);
+		
+		notificationEnabled = false;
+		
+		if (from != null && to != null)
+		{
+			notificationEnabled = NotificationManager.getInstance(getActivity().getApplicationContext()).isNotified(getActivity(), from.getDisplayName(), to.getDisplayName(), when);
+		}
+		
 		getSherlockActivity().supportInvalidateOptionsMenu();
 		
 		Log.d(this.toString(), "Activity created, succefully fetched data.");
@@ -86,7 +94,7 @@ public class SearchResultsFragment extends SherlockFragment implements LoaderCal
 		inflater.inflate(R.menu.menu_search_results, menu);
 		
 		notifyButton = menu.findItem(R.id.menu_results_notify);
-		if (NotificationManager.getInstance(getActivity().getApplicationContext()).notificationsAvailable())
+		if (NotificationManager.getInstance(getActivity().getApplicationContext()).notificationsAvailable() && from != null && to != null)
 		{
 			notifyButton.setVisible(true);
 		}
@@ -223,7 +231,7 @@ public class SearchResultsFragment extends SherlockFragment implements LoaderCal
 	{
 		notifyButton.setEnabled(false);
 		
-		if (from == null || to == null || from.length() < 1 || to.length() < 1)
+		if (from == null || to == null)
 		{
 			Toast.makeText(getActivity(), R.string.notify_missing_loc, Toast.LENGTH_SHORT).show();
 			notifyButton.setEnabled(true);
@@ -249,7 +257,7 @@ public class SearchResultsFragment extends SherlockFragment implements LoaderCal
 				}
 			};
 			
-			NotificationManager.getInstance(getActivity().getApplicationContext()).disableNotification(getActivity(), from, to, when, handler);
+			NotificationManager.getInstance(getActivity().getApplicationContext()).disableNotification(getActivity(), from.getDisplayName(), to.getDisplayName(), when, handler);
 		}
 		else
 		{
@@ -269,7 +277,7 @@ public class SearchResultsFragment extends SherlockFragment implements LoaderCal
 				}
 			};
 			
-			NotificationManager.getInstance(getActivity().getApplicationContext()).enableNotification(getActivity(), from, to, when, handler);
+			NotificationManager.getInstance(getActivity().getApplicationContext()).enableNotification(getActivity(), from.getDisplayName(), to.getDisplayName(), when, handler);
 		}
 	}
 }
