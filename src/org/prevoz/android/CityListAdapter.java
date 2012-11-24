@@ -28,15 +28,15 @@ public class CityListAdapter extends ArrayAdapter<City>
 		if (convertView == null)
 		{
 			LayoutInflater inflater = context.getLayoutInflater();
-			row = inflater.inflate(android.R.layout.simple_list_item_2, parent, false);
+			row = inflater.inflate(R.layout.city_item, parent, false);
 		}
 		else
 		{
 			row = convertView;
 		}
 		
-		TextView mainLine = (TextView) row.findViewById(android.R.id.text1);
-		TextView bottomLine = (TextView) row.findViewById(android.R.id.text2);
+		TextView mainLine = (TextView) row.findViewById(R.id.city_name);
+		TextView bottomLine = (TextView) row.findViewById(R.id.city_country);
 		
 		City city = getItem(position);
 		
