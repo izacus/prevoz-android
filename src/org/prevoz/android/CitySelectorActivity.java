@@ -1,13 +1,13 @@
 package org.prevoz.android;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.prevoz.android.util.Database;
 import org.prevoz.android.util.GPSManager;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,7 +24,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
@@ -91,23 +90,13 @@ public class CitySelectorActivity extends SherlockFragmentActivity implements Te
 
 	private void populateCityList(String pattern)
 	{
-		final String[] column = { "name" };
-		final int[] ids = { android.R.id.text1 };
-		
 		if (database == null || !database.isOpen())
 		{
 			database = Database.getSettingsDatabase(this);
 		}
 		
-		Cursor cities = Database.getCitiesStartingWith(database, pattern);
-		startManagingCursor(cities);
-		
-		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, 
-															  android.R.layout.simple_list_item_1, 
-															  cities, 
-															  column, 
-															  ids);
-		cityList.setAdapter(adapter);
+		List<City> cities = Database.getCitiesStartingWith(database, pattern);
+		cityList.setAdapter(new CityListAdapter(this, android.R.layout.simple_list_item_2, cities));
 
 		Log.d(this.toString(), "Populating city list with pattern " + pattern);
 	}

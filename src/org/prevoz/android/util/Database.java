@@ -4,7 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
+import org.prevoz.android.City;
 import org.prevoz.android.R;
 import org.prevoz.android.Route;
 import org.prevoz.android.c2dm.NotifySubscription;
@@ -248,8 +250,7 @@ public class Database
 	 *            string to look for
 	 * @return result cursos
 	 */
-	public static Cursor getCitiesStartingWith(SQLiteDatabase database,
-			String what)
+	public static List<City> getCitiesStartingWith(SQLiteDatabase database, String what)
 	{
 		// There's an Android bug when using pre-built queries with LIKE so
 		// rawQuery has to be done
@@ -259,18 +260,29 @@ public class Database
 		if (what.trim().equals(""))
 		{
 			cursor = database.rawQuery(
-					  "SELECT _id, name FROM locations WHERE "
-					+ "country = 'SI' ORDER BY sort_num DESC", null);
+					  "SELECT _id, name, country FROM locations"
+					+ " ORDER BY sort_num DESC", null);
 		}
 		else
 		{
 			cursor = database.rawQuery(
-						  "SELECT _id, name FROM locations WHERE (name LIKE '" + what
+						  "SELECT _id, name, country FROM locations WHERE (name LIKE '" + what
 						+ "%' " + "OR name_ascii LIKE '" + what + "%') "
-						+ "AND country = 'SI' ORDER BY sort_num DESC", null);
+						+ "ORDER BY sort_num DESC", null);
 		}
-
-		return cursor;
+		
+		ArrayList<City> cities = new ArrayList<City>();
+		
+		int nameIdx = cursor.getColumnIndex("name");
+		int countryIdx = cursor.getColumnIndex("country");
+		
+		while (cursor.moveToNext())
+		{
+			cities.add(new City(cursor.getString(nameIdx), cursor.getString(countryIdx)));
+		}
+		
+		cursor.close();
+		return cities;
 	}
 
 	public static String getClosestCity(Context context, double latitude,
