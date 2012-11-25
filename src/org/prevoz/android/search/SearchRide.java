@@ -2,16 +2,18 @@ package org.prevoz.android.search;
 
 import java.util.Date;
 
+import org.prevoz.android.City;
+
 public class SearchRide implements Comparable<SearchRide>
 {
 	private int id;
-	private String from;
-	private String to;
+	private City from;
+	private City to;
 	private String author;
 	private Double price;
 	private Date time;
 
-	public SearchRide(int id, String from, String to, String author,
+	public SearchRide(int id, City from, City to, String author,
 			Double price, Date time)
 	{
 		this.id = id;
@@ -27,12 +29,12 @@ public class SearchRide implements Comparable<SearchRide>
 		return id;
 	}
 
-	public String getFrom()
+	public City getFrom()
 	{
 		return from;
 	}
 
-	public String getTo()
+	public City getTo()
 	{
 		return to;
 	}

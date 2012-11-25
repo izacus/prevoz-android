@@ -1,6 +1,6 @@
 package org.prevoz.android;
 
-public class City 
+public class City implements Comparable<City>
 {
 	private String displayName;
 	private String countryCode;
@@ -26,4 +26,11 @@ public class City
 	{
 		return getDisplayName() + (countryCode.equals("SI") ? "" : " (" + getCountryCode() + ")");
 	}
+
+	@Override
+	public int compareTo(City another) 
+	{
+		return getDisplayName().compareTo(another.getDisplayName());
+	}
+	
 }

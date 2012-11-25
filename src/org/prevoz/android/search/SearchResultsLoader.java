@@ -10,6 +10,7 @@ import java.util.Iterator;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.prevoz.android.City;
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
 import org.prevoz.android.RideType;
@@ -19,10 +20,10 @@ import org.prevoz.android.util.HTTPHelper;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
 
-import com.flurry.android.FlurryAgent;
-
 import android.content.Context;
 import android.util.Log;
+
+import com.flurry.android.FlurryAgent;
 
 public class SearchResultsLoader extends AsyncLoader<SearchResults> 
 {
@@ -85,8 +86,8 @@ public class SearchResultsLoader extends AsyncLoader<SearchResults>
 					try
 					{
 						SearchRide ride = new SearchRide(jsonRide.getInt("id"),
-														 jsonRide.getString("from"),
-														 jsonRide.getString("to"),
+														 new City(jsonRide.getString("from"), jsonRide.getString("from_country")),
+														 new City(jsonRide.getString("to"), jsonRide.getString("to_country")),
 														 jsonRide.getString("author"),
 														 jsonRide.isNull("price") ? null : jsonRide.getDouble("price"),
 														 HTTPHelper.parseISO8601(jsonRide.getString("date_iso8601")));

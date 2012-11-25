@@ -54,9 +54,6 @@ public class RideInfoLoader extends AsyncLoader<Ride>
 			RideType type = root.getString("share_type").equalsIgnoreCase(
 					"share") ? RideType.SHARE : RideType.SEEK;
 
-			String from = root.getString("from");
-			String to = root.getString("to");
-
 			String iso8601 = root.getString("date_iso8601");
 			Date time = HTTPHelper.parseISO8601(iso8601);
 
@@ -75,7 +72,7 @@ public class RideInfoLoader extends AsyncLoader<Ride>
 			
 			Log.i(this.toString(), "Succesfully parsed response for ride id " + rideID);
 			
-			return new Ride(id, type, new City(from, "SI"), new City(to, "SI"), time, people, price, author, contact, comment, isAuthor, isInsured, isFull);
+			return new Ride(id, type, new City(root.getString("from"), root.getString("from_country")), new City(root.getString("to"), root.getString("to_country")), time, people, price, author, contact, comment, isAuthor, isInsured, isFull);
 		}
 		catch (JSONException e)
 		{
