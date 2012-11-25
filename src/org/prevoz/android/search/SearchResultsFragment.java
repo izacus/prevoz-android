@@ -11,6 +11,8 @@ import org.prevoz.android.search.SearchResultAdapter.SearchResultViewWrapper;
 import org.prevoz.android.util.SectionedAdapter;
 import org.prevoz.android.util.SectionedAdapterUtil;
 
+import roboguice.inject.InjectResource;
+import roboguice.inject.InjectView;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -29,13 +31,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.flurry.android.FlurryAgent;
+import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 
-public class SearchResultsFragment extends SherlockFragment implements LoaderCallbacks<SearchResults>
+public class SearchResultsFragment extends RoboSherlockFragment implements LoaderCallbacks<SearchResults>
 {
 	private enum DisplayScreens
 	{
@@ -44,7 +46,9 @@ public class SearchResultsFragment extends SherlockFragment implements LoaderCal
 	};
 	
 	private MenuItem notifyButton;
+	@InjectResource(R.drawable.bell)
 	private Drawable bellImg;
+	@InjectResource(R.drawable.bell_cross)
 	private Drawable bellCrossImg;
 	
 	
@@ -54,7 +58,9 @@ public class SearchResultsFragment extends SherlockFragment implements LoaderCal
 	private Calendar when;
 	
 	// Views
+	@InjectView(R.id.search_results_flipper)
 	private ViewFlipper viewFlipper;
+	@InjectView(R.id.search_results_list)
 	private ListView resultList;
 	private boolean notificationEnabled = false;
 	
@@ -62,9 +68,8 @@ public class SearchResultsFragment extends SherlockFragment implements LoaderCal
 	public void onActivityCreated(Bundle savedInstanceState)
 	{
 		super.onActivityCreated(savedInstanceState);
-		bellImg = getResources().getDrawable(R.drawable.bell);
-		bellCrossImg = getResources().getDrawable(R.drawable.bell_cross);
 		
+		// Get data from activity
 		SearchResultsActivity activity = (SearchResultsActivity) getActivity();
 		this.from = activity.getFrom();
 		this.to = activity.getTo();
@@ -79,13 +84,11 @@ public class SearchResultsFragment extends SherlockFragment implements LoaderCal
 		}
 		
 		getSherlockActivity().supportInvalidateOptionsMenu();
-		
 		Log.d(this.toString(), "Activity created, succefully fetched data.");
 		FlurryAgent.onPageView();
 		
 		// Get loader for search results
 		getLoaderManager().initLoader(Globals.LOADER_SEARCH_RESULTS, null, this);
-		
 	}
 
 	@Override
@@ -152,11 +155,15 @@ public class SearchResultsFragment extends SherlockFragment implements LoaderCal
 							 ViewGroup container,
 							 Bundle savedInstanceState)
 	{
-		View view = inflater.inflate(R.layout.search_results_frag, container, false);
 		
-		// Populate fields
-		viewFlipper = (ViewFlipper) view.findViewById(R.id.search_results_flipper);
-		resultList = (ListView) view.findViewById(R.id.search_results_list);
+		View view = inflater.inflate(R.layout.search_results_frag, container, false);
+		return view;
+	}
+	
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) 
+	{
+		super.onViewCreated(view, savedInstanceState);
 		resultList.setEmptyView(view.findViewById(R.id.search_no_results));
 		
 		// Prepare click callback for resultlist
@@ -177,11 +184,8 @@ public class SearchResultsFragment extends SherlockFragment implements LoaderCal
 		// Set animations
 		viewFlipper.setInAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in));
 		viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out));
-		
-		return view;
 	}
 
-	
 	private void showSearchResults(SearchResults results)
 	{
 		Log.d(this.toString(), "Search results retrieved, drawing...");

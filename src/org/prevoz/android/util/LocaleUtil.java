@@ -14,7 +14,9 @@ import android.content.res.Resources;
 
 public class LocaleUtil
 {
-	private static HashMap<String, String> localizedCountryNames = new HashMap<String, String>();
+	private static HashMap<String, String> localizedCountryNamesCache = new HashMap<String, String>();
+	private static Locale localeCache = null;
+	private static HashMap<String, SimpleDateFormat> dateFormatCache = new HashMap<String, SimpleDateFormat>();
 	
 	public static String getDayName(Resources res, Date date)
 	{
@@ -109,9 +111,15 @@ public class LocaleUtil
 	
 	public static SimpleDateFormat getSimpleDateFormat(String format)
 	{
-		SimpleDateFormat sdf = new SimpleDateFormat(format, getLocale());
-		sdf.setTimeZone(getLocalTimezone());
-		return sdf;
+		// Cache SimpleDateFormat since retrieving timezone data takes alot of time
+		if (!dateFormatCache.containsKey(format))
+		{
+			SimpleDateFormat sdf = new SimpleDateFormat(format, getLocale());
+			sdf.setTimeZone(getLocalTimezone());
+			dateFormatCache.put(format, sdf);
+		}
+		
+		return dateFormatCache.get(format);
 	}
 	
 	public static TimeZone getLocalTimezone()
@@ -128,16 +136,20 @@ public class LocaleUtil
 	
 	public static Locale getLocale()
 	{
-		return new Locale("sl-SI");
+		if (localeCache == null)
+		{
+			localeCache = new Locale("sl-SI");
+		}
+		return localeCache;
 	}
 	
 	public static String getLocalizedCountryName(Context context, String countryCode)
 	{
-		if (!localizedCountryNames.containsKey(countryCode))
+		if (!localizedCountryNamesCache.containsKey(countryCode))
 		{
-			localizedCountryNames.put(countryCode, Database.getLocalCountryName(context, getLocale().getLanguage(), countryCode));
+			localizedCountryNamesCache.put(countryCode, Database.getLocalCountryName(context, getLocale().getLanguage(), countryCode));
 		}
 		
-		return localizedCountryNames.get(countryCode);
+		return localizedCountryNamesCache.get(countryCode);
 	}
 }

@@ -16,9 +16,14 @@ import org.prevoz.android.util.Database;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
 
+import roboguice.inject.InjectView;
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.DatePickerDialog.OnDateSetListener;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,28 +33,36 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ListView;
+import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.flurry.android.FlurryAgent;
+import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 
-public class SearchFormFragment extends SherlockFragment 
+public class SearchFormFragment extends RoboSherlockFragment 
 {
 	private static final int FROM_CITY_REQUEST = 1;
 	private static final int TO_CITY_REQUEST = 2;
 	
+	@InjectView(R.id.date_button)
 	private Button buttonDate;
+	@InjectView(R.id.search_button)
 	private Button buttonSearch;
-	
+	@InjectView(R.id.from_button)
 	private Button buttonFrom;
+	@InjectView(R.id.to_button)
 	private Button buttonTo;
 	
 	private MenuItem buttonNotifications;
 	
+	@InjectView(R.id.search_last_list)
 	private ListView lastSearches;
+	@InjectView(R.id.last_search_label)
+	private TextView lastSearchesLabel;
 	
 	private City from = null;
 	private City to = null;
@@ -57,13 +70,8 @@ public class SearchFormFragment extends SherlockFragment
 	
 	private void prepareFormFields()
 	{
-		lastSearches = (ListView)getActivity().findViewById(R.id.search_last_list);
-		
-		buttonDate = (Button)getActivity().findViewById(R.id.date_button);
-		buttonSearch = (Button)getActivity().findViewById(R.id.search_button);
-		
-		buttonFrom = (Button)getActivity().findViewById(R.id.from_button);
 		StringUtil.setLocationButtonText(buttonFrom, from, getString(R.string.all_locations));
+		
 		buttonFrom.setOnClickListener(new OnClickListener() 
 		{
 			public void onClick(View v) 
@@ -73,7 +81,6 @@ public class SearchFormFragment extends SherlockFragment
 			}
 		});
 
-		buttonTo = (Button)getActivity().findViewById(R.id.to_button);
 		StringUtil.setLocationButtonText(buttonTo, to, getString(R.string.all_locations));
 		buttonTo.setOnClickListener(new OnClickListener() 
 		{
@@ -88,17 +95,16 @@ public class SearchFormFragment extends SherlockFragment
 		buttonDate.setText(LocaleUtil.localizeDate(getResources(), selectedDate));
 		buttonDate.setOnClickListener(new OnClickListener() 
 		{
-			
 			public void onClick(View v) 
 			{
-				getActivity().showDialog(MainActivity.DIALOG_SEARCH_DATE);
+				DialogFragment picker = new DatePickerFragment();
+				picker.show(getActivity().getSupportFragmentManager(), "datePicker");
 			}
 		});
 		
 		// Set search button action
 		buttonSearch.setOnClickListener(new OnClickListener()
 		{
-			
 			public void onClick(View arg0)
 			{
 				startSearch();
@@ -136,15 +142,14 @@ public class SearchFormFragment extends SherlockFragment
 				}
 			});
 			
-			getActivity().findViewById(R.id.last_search_label).setVisibility(View.VISIBLE);
+			lastSearchesLabel.setVisibility(View.VISIBLE);
 			lastSearches.setVisibility(View.VISIBLE);
 		}
 		else
 		{
-			getActivity().findViewById(R.id.last_search_label).setVisibility(View.INVISIBLE);
+			lastSearchesLabel.setVisibility(View.INVISIBLE);
 			lastSearches.setVisibility(View.INVISIBLE);
 		}
-		
 	}
 	
 	@Override
@@ -207,12 +212,9 @@ public class SearchFormFragment extends SherlockFragment
 		}
 		
 		prepareFormFields();
-		
 		FlurryAgent.onPageView();
 	}
 
-	
-	
 	@Override
 	public void onResume() 
 	{
@@ -265,7 +267,7 @@ public class SearchFormFragment extends SherlockFragment
 		}
 	}
 	
-	public void setSelectedDate(Calendar date)
+	private void setSelectedDate(Calendar date)
 	{
 		this.selectedDate = date;
 		buttonDate.setText(LocaleUtil.localizeDate(getResources(), selectedDate));
@@ -323,5 +325,26 @@ public class SearchFormFragment extends SherlockFragment
 		
 		MainActivity mainActivity = (MainActivity) getActivity();
 		mainActivity.startSearch(from, to, selectedDate);
+	}
+	
+	public class DatePickerFragment extends DialogFragment implements OnDateSetListener
+	{
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) 
+		{
+			Calendar now = Calendar.getInstance(LocaleUtil.getLocalTimezone());
+			return new DatePickerDialog(getActivity(), this, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
+		}
+
+		@Override
+		public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) 
+		{
+			Calendar date = Calendar.getInstance(LocaleUtil.getLocalTimezone());
+			date.set(Calendar.YEAR, year);
+			date.set(Calendar.MONTH, monthOfYear);
+			date.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+			setSelectedDate(date);
+		}
 	}
 }

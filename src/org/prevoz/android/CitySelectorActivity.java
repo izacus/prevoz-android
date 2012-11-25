@@ -6,6 +6,7 @@ import java.util.List;
 import org.prevoz.android.util.Database;
 import org.prevoz.android.util.GPSManager;
 
+import roboguice.inject.InjectView;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
@@ -28,15 +29,19 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.flurry.android.FlurryAgent;
+import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
-public class CitySelectorActivity extends SherlockFragmentActivity implements TextWatcher, OnItemClickListener, OnEditorActionListener
+public class CitySelectorActivity extends RoboSherlockFragmentActivity implements TextWatcher, OnItemClickListener, OnEditorActionListener
 {
-	private SQLiteDatabase database = null;	
+	private SQLiteDatabase database = null;
+	
+	@InjectView(R.id.city_list)
 	private ListView cityList;
+	@InjectView(R.id.city_text)
 	private EditText cityText;
+	@InjectView(R.id.gps_button)
 	private ImageButton gpsButton;
 	
 	@Override
@@ -54,14 +59,12 @@ public class CitySelectorActivity extends SherlockFragmentActivity implements Te
 		}
 		
 		// Prepare view items
-		cityList = (ListView) findViewById(R.id.city_list);
 		cityList.setOnItemClickListener(this);
-		cityText = (EditText) findViewById(R.id.city_text);
+		
 		cityText.addTextChangedListener(this);
 		cityText.setOnEditorActionListener(this);
 		cityText.requestFocus();
 		
-		gpsButton = (ImageButton)findViewById(R.id.gps_button);
 		gpsButton.setOnClickListener(new OnClickListener() 
 		{
 			public void onClick(View v) 
@@ -211,8 +214,7 @@ public class CitySelectorActivity extends SherlockFragmentActivity implements Te
 		Intent result = new Intent();
 		result.putExtra("city", name);
 		result.putExtra("country", country);
-		
 		setResult(RESULT_OK, result);
 		finish();
-	}	
+	}
 }

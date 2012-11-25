@@ -10,11 +10,11 @@ import org.prevoz.android.util.LocaleUtil;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.flurry.android.FlurryAgent;
+import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
-public class SearchResultsActivity extends SherlockFragmentActivity
+public class SearchResultsActivity extends RoboSherlockFragmentActivity
 {
 	private City from;
 	private City to;

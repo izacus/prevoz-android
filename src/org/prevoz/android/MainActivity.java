@@ -7,24 +7,16 @@ import org.prevoz.android.c2dm.NotificationManager;
 import org.prevoz.android.search.SearchFormFragment;
 import org.prevoz.android.search.SearchResultsActivity;
 import org.prevoz.android.util.Database;
-import org.prevoz.android.util.LocaleUtil;
 
-import android.app.DatePickerDialog;
-import android.app.DatePickerDialog.OnDateSetListener;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.DatePicker;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.flurry.android.FlurryAgent;
+import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
-public class MainActivity extends SherlockFragmentActivity implements OnDateSetListener
+public class MainActivity extends RoboSherlockFragmentActivity
 {
 	public static final int DIALOG_SEARCH_DATE = 0;
-	
-	// For picking search date
-	private DatePickerDialog datePicker;
 	
 	public void startSearch(City from, City to, Calendar when)
 	{
@@ -62,25 +54,10 @@ public class MainActivity extends SherlockFragmentActivity implements OnDateSetL
 		
 		// Sanitize search database
 		Database.deleteHistoryEntries(this, 10);
-		setContentView(R.layout.main_activity);		
-		Calendar now = Calendar.getInstance(LocaleUtil.getLocalTimezone());
-		datePicker = new DatePickerDialog(this, this, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
-		
+		setContentView(R.layout.main_activity);
 		// Refresh login status for it to be ready for user
 		AuthenticationManager.getInstance().getAuthenticationStatus(this, null);
 	}
-
-	public void onDateSet(DatePicker picker, int year, int month, int dayOfMonth) 
-	{
-		Calendar date = Calendar.getInstance(LocaleUtil.getLocalTimezone());
-		date.set(Calendar.YEAR, year);
-		date.set(Calendar.MONTH, month);
-		date.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-		
-		SearchFormFragment searchForm = (SearchFormFragment)getSupportFragmentManager().findFragmentById(R.id.search_form_fragment);
-		searchForm.setSelectedDate(date);
-	}
-	
 	
 	@Override
 	protected void onResume() 
@@ -98,18 +75,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnDateSetL
 		
 		SearchFormFragment searchFormFrag = (SearchFormFragment) getSupportFragmentManager().findFragmentById(R.id.search_form_fragment);
 		searchFormFrag.onParentActivityResult(requestCode, resultCode, intent);
-	}
-
-	@Override
-	protected Dialog onCreateDialog(int id) 
-	{
-		switch(id)
-		{
-			case DIALOG_SEARCH_DATE:
-				return datePicker;
-			default:
-				return super.onCreateDialog(id);
-		}
 	}
 
 	@Override

@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.zip.GZIPInputStream;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -169,6 +170,7 @@ public class HTTPHelper
 		}
 		
 		connection.addRequestProperty("User-Agent", "Prevoz on Android " + Build.VERSION.SDK_INT);
+		connection.addRequestProperty("Accept-Encoding", "gzip");
 
 		Log.d("HTTPHelper", "Getting " + url + params);
 		
@@ -181,7 +183,16 @@ public class HTTPHelper
 
 		try
 		{
-			InputStream instream = new BufferedInputStream(connection.getInputStream());
+			InputStream instream = null;
+			if (connection.getHeaderField("Content-Encoding") != null && connection.getHeaderField("Content-Encoding").equalsIgnoreCase("gzip"))
+			{
+				instream = new BufferedInputStream(new GZIPInputStream(connection.getInputStream()));
+			}
+			else
+			{
+				instream = new BufferedInputStream(connection.getInputStream());
+			}
+			
 			String responseString = HTTPHelper.convertStreamToString(instream);
 			instream.close();
 
