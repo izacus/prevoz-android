@@ -3,15 +3,19 @@ package org.prevoz.android.util;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.TimeZone;
 
 import org.prevoz.android.R;
 
+import android.content.Context;
 import android.content.res.Resources;
 
 public class LocaleUtil
 {
+	private static HashMap<String, String> localizedCountryNames = new HashMap<String, String>();
+	
 	public static String getDayName(Resources res, Date date)
 	{
 		Calendar cal = Calendar.getInstance(LocaleUtil.getLocalTimezone());
@@ -105,7 +109,7 @@ public class LocaleUtil
 	
 	public static SimpleDateFormat getSimpleDateFormat(String format)
 	{
-		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		SimpleDateFormat sdf = new SimpleDateFormat(format, getLocale());
 		sdf.setTimeZone(getLocalTimezone());
 		return sdf;
 	}
@@ -125,5 +129,15 @@ public class LocaleUtil
 	public static Locale getLocale()
 	{
 		return new Locale("sl-SI");
+	}
+	
+	public static String getLocalizedCountryName(Context context, String countryCode)
+	{
+		if (!localizedCountryNames.containsKey(countryCode))
+		{
+			localizedCountryNames.put(countryCode, Database.getLocalCountryName(context, getLocale().getLanguage(), countryCode));
+		}
+		
+		return localizedCountryNames.get(countryCode);
 	}
 }

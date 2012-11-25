@@ -99,8 +99,16 @@ public class AddRideActivity extends SherlockFragmentActivity implements OnTimeS
 		// Initialize values
 		if (savedInstanceState != null)
 		{
-			fromCity = new City(savedInstanceState.getString("fromCity"), savedInstanceState.getString("fromCityCountry"));
-			toCity = new City(savedInstanceState.getString("toCity"), savedInstanceState.getString("toCityCountry"));
+			if (savedInstanceState.containsKey("fromCity"))
+			{
+				fromCity = new City(savedInstanceState.getString("fromCity"), savedInstanceState.getString("fromCityCountry"));
+			}
+			
+			if (savedInstanceState.containsKey("toCity"))
+			{
+				toCity = new City(savedInstanceState.getString("toCity"), savedInstanceState.getString("toCityCountry"));
+			}
+			
 			dateTime.setTimeInMillis(savedInstanceState.getLong("date"));
 			prepareFormFields(savedInstanceState.getInt("numPpl"));
 		}
@@ -531,10 +539,18 @@ public class AddRideActivity extends SherlockFragmentActivity implements OnTimeS
 	{
 		super.onSaveInstanceState(outState);
 		
-		outState.putString("fromCity", fromCity.getDisplayName());
-		outState.putString("fromCityCountry", fromCity.getCountryCode());
-		outState.putString("toCity", toCity.getDisplayName());
-		outState.putString("toCityCountry", toCity.getCountryCode());
+		if (fromCity != null)
+		{
+			outState.putString("fromCity", fromCity.getDisplayName());
+			outState.putString("fromCityCountry", fromCity.getCountryCode());
+		}
+		
+		if (toCity != null)
+		{
+			outState.putString("toCity", toCity.getDisplayName());
+			outState.putString("toCityCountry", toCity.getCountryCode());
+		}
+		
 		outState.putInt("numPpl", ((PeopleSpinnerObject)peopleSpinner.getSelectedItem()).getNumber());
 		outState.putLong("date", dateTime.getTimeInMillis());
 	}

@@ -25,8 +25,8 @@ INSERT INTO countries VALUES(23, 'SK', 'Slovaška', 'sl-si');
 INSERT INTO countries VALUES(24, 'AT', 'Avstrija', 'sl-si');
 INSERT INTO countries VALUES(25, 'BA', 'Bosna in Hercegovina', 'sl-si');
 INSERT INTO countries VALUES(26, 'CH', 'Švica', 'sl-si');
-INSERT INTO countries VALUES(26, 'BE', 'Belgija', 'sl-si');
-INSERT INTO countries VALUES(26, 'BG', 'Bolgarija', 'sl-si');
+INSERT INTO countries VALUES(27, 'BE', 'Belgija', 'sl-si');
+INSERT INTO countries VALUES(28, 'BG', 'Bolgarija', 'sl-si');
 CREATE INDEX country_code_index ON countries(country_code ASC);
 CREATE INDEX country_language_index ON countries(language ASC);
 

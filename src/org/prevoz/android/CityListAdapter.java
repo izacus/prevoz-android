@@ -2,6 +2,8 @@ package org.prevoz.android;
 
 import java.util.List;
 
+import org.prevoz.android.util.LocaleUtil;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -50,7 +52,7 @@ public class CityListAdapter extends ArrayAdapter<City>
 		else
 		{
 			bottomLine.setVisibility(View.VISIBLE);
-			bottomLine.setText(city.getCountryCode());
+			bottomLine.setText(LocaleUtil.getLocalizedCountryName(context, city.getCountryCode()));
 		}
 		
 		return row;

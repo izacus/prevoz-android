@@ -33,7 +33,7 @@ public class Database
 
 		public DatabaseHelper(Context context)
 		{
-			super(context, "settings.db", null, 9);
+			super(context, "settings.db", null, 10);
 			this.storedContext = context;
 		}
 
@@ -54,6 +54,7 @@ public class Database
 					+ "registered_date INTEGER NOT NULL)");
 
 			reloadCities(db);
+			reloadCountries(db);
 		}
 
 		private void reloadCities(SQLiteDatabase db)
@@ -68,6 +69,23 @@ public class Database
 
 			for (String statement : locationSQL)
 			{
+				Log.d(this.toString(), "SQL: " + statement);
+				db.execSQL(statement);
+			}
+		}
+		
+		private void reloadCountries(SQLiteDatabase db)
+		{
+			db.execSQL("DROP TABLE IF EXISTS countries");
+			db.execSQL("DROP INDEX IF EXISTS country_code_index");
+			db.execSQL("DROP INDEX IF EXISTS country_language_index");
+			
+			// Load SQL location script from raw folder and insert all relevant
+			// data into database
+			String[] locationSQL = FileUtil.readSQLStatements(storedContext, R.raw.countries);
+
+			for (String statement : locationSQL)
+			{
 				db.execSQL(statement);
 			}
 		}
@@ -75,7 +93,7 @@ public class Database
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 		{
-			if (oldVersion < 9)
+			if (oldVersion < 10)
 			{
 				db.execSQL("DROP TABLE IF EXISTS favorites");
 				db.execSQL("DROP TABLE IF EXISTS search_history");
@@ -301,5 +319,27 @@ public class Database
 		City city = new City(cursor.getString(nameColumn), cursor.getString(countryColumn));
 		database.close();
 		return city;
+	}
+	
+	public static String getLocalCountryName(Context context, String locale, String countryCode)
+	{
+		String name = countryCode;
+		
+		SQLiteDatabase database = new DatabaseHelper(context).getReadableDatabase();
+		Cursor result = database.query("countries", new String[] { "name" }, "language = ? AND country_code = ?", new String[] { locale, countryCode }, null, null, null);
+		
+		int nameIdx = result.getColumnIndex("name");
+		if (result.moveToFirst())
+		{
+			name = result.getString(nameIdx);
+		}
+		else
+		{
+			Log.e("GetLocalCountryName", "No entry found for " + countryCode + " for language " + locale);
+		}
+		
+		result.close();
+		database.close();
+		return name;
 	}
 }
