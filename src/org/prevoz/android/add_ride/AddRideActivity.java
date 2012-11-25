@@ -18,6 +18,7 @@ import org.prevoz.android.rideinfo.RideInfoUtil;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
 
+import roboguice.inject.InjectView;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -29,6 +30,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,17 +44,14 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.flurry.android.FlurryAgent;
+import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
-public class AddRideActivity extends SherlockFragmentActivity implements OnTimeSetListener, OnDateSetListener
+public class AddRideActivity extends RoboSherlockFragmentActivity
 {
 	private static final int FROM_CITY_REQUEST = 1;
 	private static final int TO_CITY_REQUEST = 2;
-	
-	private static final int DIALOG_DATE = 1;
-	private static final int DIALOG_TIME = 2;
 	
 	private static final String PREF_PHONE_NO = "org.prevoz.phoneno";
 	
@@ -61,16 +60,26 @@ public class AddRideActivity extends SherlockFragmentActivity implements OnTimeS
 	private AddStateManager stateManager;
 	
 	// Form buttons
+	@InjectView(R.id.from_button)
 	private Button fromButton;
+	@InjectView(R.id.to_button)
 	private Button toButton;
+	@InjectView(R.id.date_button)
 	private Button dateButton;
+	@InjectView(R.id.time_button)
 	private Button timeButton;
+	@InjectView(R.id.add_button)
 	private Button nextButton;
+	@InjectView(R.id.add_ppl)
 	private Spinner peopleSpinner;
 	// Form fields
+	@InjectView(R.id.add_price)
 	private EditText priceText;
+	@InjectView(R.id.add_phone)
 	private EditText phoneText;
+	@InjectView(R.id.add_comment)
 	private EditText commentText;
+	@InjectView(R.id.check_insurance)
 	private CheckBox insuranceCheck;
 	
 	// Field data
@@ -78,11 +87,7 @@ public class AddRideActivity extends SherlockFragmentActivity implements OnTimeS
 	private City toCity = null;
 	
 	private Calendar dateTime;
-	
-	// Dialogs
-	private DatePickerDialog datePickerDialog;
-	private TimePickerDialog timePickerDialog;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -147,7 +152,6 @@ public class AddRideActivity extends SherlockFragmentActivity implements OnTimeS
 		stateManager.showView(Views.LOADING);
 		
 		// From city selector
-		fromButton = (Button) findViewById(R.id.from_button);
 		fromButton.setOnClickListener(new OnClickListener() 
 		{
 			public void onClick(View v) 
@@ -159,7 +163,6 @@ public class AddRideActivity extends SherlockFragmentActivity implements OnTimeS
 		StringUtil.setLocationButtonText(fromButton, fromCity, getString(R.string.add_select_city));
 		
 		// To city selector
-		toButton = (Button) findViewById(R.id.to_button);
 		toButton.setOnClickListener(new OnClickListener() 
 		{
 			public void onClick(View v) 
@@ -171,30 +174,25 @@ public class AddRideActivity extends SherlockFragmentActivity implements OnTimeS
 		StringUtil.setLocationButtonText(toButton, toCity, getString(R.string.add_select_city));
 		
 		// Date selector
-		dateButton = (Button) findViewById(R.id.date_button);
 		dateButton.setOnClickListener(new OnClickListener()
 		{
 			public void onClick(View v)
 			{
-				showDialog(DIALOG_DATE);
+				DatePickerFragment datePicker = new DatePickerFragment();
+				datePicker.show(getSupportFragmentManager(), "datePicker");
 			}
 		});
 		
-		timeButton = (Button) findViewById(R.id.time_button);
 		timeButton.setOnClickListener(new OnClickListener()
 		{
 			public void onClick(View v)
 			{
-				showDialog(DIALOG_TIME);
+				TimePickerFragment timePicker = new TimePickerFragment();
+				timePicker.show(getSupportFragmentManager(), "timePicker");
 			}
 		});
 		
-		// Initialize dialogs for selection
-		timePickerDialog = new TimePickerDialog(this, this, 0, 0, true);
-		datePickerDialog = new DatePickerDialog(this, this, 2010, 1, 1);
-		
 		// Prepare number of people spinner
-		peopleSpinner = (Spinner) findViewById(R.id.add_ppl);
 		PeopleSpinnerObject[] peopleSpinnerObject = new PeopleSpinnerObject[6];
 		for (int i = 0; i < 6; i++)
 			peopleSpinnerObject[i] = new PeopleSpinnerObject(this, i + 1);
@@ -204,14 +202,7 @@ public class AddRideActivity extends SherlockFragmentActivity implements OnTimeS
 		peopleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		peopleSpinner.setSelection(peopleSelected - 1);
 		
-		// Edit text fields
-		priceText = (EditText) findViewById(R.id.add_price);
-		phoneText = (EditText) findViewById(R.id.add_phone);
-		commentText = (EditText) findViewById(R.id.add_comment);
-		insuranceCheck = (CheckBox) findViewById(R.id.check_insurance);
-		
 		// Next button
-		nextButton = (Button)findViewById(R.id.add_button);
 		nextButton.setOnClickListener(new OnClickListener()
 		{
 			public void onClick(View v)
@@ -493,39 +484,7 @@ public class AddRideActivity extends SherlockFragmentActivity implements OnTimeS
 		
 		return super.onOptionsItemSelected(item);
 	}
-
-	@Override
-	protected Dialog onCreateDialog(int id)
-	{
-		switch(id)
-		{
-			case DIALOG_TIME:
-				timePickerDialog.updateTime(dateTime.get(Calendar.HOUR_OF_DAY), dateTime.get(Calendar.MINUTE));
-				return timePickerDialog;
-			case DIALOG_DATE:
-				datePickerDialog.updateDate(dateTime.get(Calendar.YEAR), dateTime.get(Calendar.MONTH), dateTime.get(Calendar.DAY_OF_MONTH));
-				return datePickerDialog;
-			default:
-				Log.e(this.toString(), "Tried to create unknown dialog!");
-				return null;
-		}
-	}
-
-	public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
-	{
-		dateTime.set(Calendar.YEAR, year);
-		dateTime.set(Calendar.MONTH, monthOfYear);
-		dateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-		updateDateTime();
-	}
-
-	public void onTimeSet(TimePicker view, int hourOfDay, int minute)
-	{
-		dateTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
-		dateTime.set(Calendar.MINUTE, minute);
-		updateDateTime();
-	}
-
+	
 	@Override
 	public void onBackPressed()
 	{
@@ -567,5 +526,45 @@ public class AddRideActivity extends SherlockFragmentActivity implements OnTimeS
 	protected void onStop() {
 		super.onStop();
 		FlurryAgent.onEndSession(this);
+	}
+	
+	public class DatePickerFragment extends DialogFragment implements OnDateSetListener
+	{
+
+		@Override
+		public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) 
+		{
+			dateTime.set(Calendar.YEAR, year);
+			dateTime.set(Calendar.MONTH, monthOfYear);
+			dateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+			updateDateTime();
+		}
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) 
+		{
+			DatePickerDialog dialog = new DatePickerDialog(AddRideActivity.this, this, 2010, 1, 1);
+			dialog.updateDate(dateTime.get(Calendar.YEAR), dateTime.get(Calendar.MONTH), dateTime.get(Calendar.DAY_OF_MONTH));
+			return dialog;
+		}	
+	}
+	
+	public class TimePickerFragment extends DialogFragment implements OnTimeSetListener
+	{
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) 
+		{
+			TimePickerDialog dialog = new TimePickerDialog(AddRideActivity.this, this, 0, 0, true);
+			dialog.updateTime(dateTime.get(Calendar.HOUR_OF_DAY), dateTime.get(Calendar.MINUTE));
+			return dialog; 
+		}
+
+		@Override
+		public void onTimeSet(TimePicker view, int hourOfDay, int minute) 
+		{
+			dateTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+			dateTime.set(Calendar.MINUTE, minute);
+			updateDateTime();
+		}	
 	}
 }
