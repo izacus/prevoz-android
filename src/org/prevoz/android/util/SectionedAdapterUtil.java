@@ -58,7 +58,7 @@ public class SectionedAdapterUtil {
 			HashMap<String, ArrayList<SearchRide>> ridesByPath = new HashMap<String, ArrayList<SearchRide>>();
 			for (SearchRide ride : results.getRides())
 			{
-				String path = ride.getFrom() + " - " + ride.getTo();
+				String path = ride.getFrom().getLocalizedName(activity) + " - " + ride.getTo().getLocalizedName(activity);
 
 				if (ridesByPath.get(path) == null)
 					ridesByPath.put(path, new ArrayList<SearchRide>());

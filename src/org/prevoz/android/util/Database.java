@@ -342,4 +342,22 @@ public class Database
 		database.close();
 		return name;
 	}
+	
+	public static String getLocalCityName(Context context, String city)
+	{
+		SQLiteDatabase database = new DatabaseHelper(context).getReadableDatabase();
+		Cursor result = database.query("locations", new String[] { "name" }, "name_ascii = ?", new String[] { city }, null, null, null);
+		
+		String name = city;
+		if (result.moveToFirst())
+		{
+			int ci = result.getColumnIndex("name");
+			name = result.getString(ci);
+		}
+		
+		result.close();
+		database.close();
+		
+		return name;
+	}
 }

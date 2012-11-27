@@ -1,5 +1,9 @@
 package org.prevoz.android;
 
+import org.prevoz.android.util.LocaleUtil;
+
+import android.content.Context;
+
 public class City implements Comparable<City>
 {
 	private String displayName;
@@ -19,6 +23,11 @@ public class City implements Comparable<City>
 	public String getCountryCode() 
 	{
 		return countryCode;
+	}
+	
+	public String getLocalizedName(Context context)
+	{
+		return LocaleUtil.getLocalizedCityName(context, getDisplayName(), getCountryCode()) + (countryCode.equals("SI") ? "" : " (" + getCountryCode() + ")");
 	}
 	
 	@Override

@@ -15,6 +15,7 @@ import android.content.res.Resources;
 public class LocaleUtil
 {
 	private static HashMap<String, String> localizedCountryNamesCache = new HashMap<String, String>();
+	private static HashMap<String, String> localizedCityNamesCache = new HashMap<String, String>();
 	private static Locale localeCache = null;
 	private static HashMap<String, SimpleDateFormat> dateFormatCache = new HashMap<String, SimpleDateFormat>();
 	
@@ -151,5 +152,15 @@ public class LocaleUtil
 		}
 		
 		return localizedCountryNamesCache.get(countryCode);
+	}
+	
+	public static String getLocalizedCityName(Context context, String cityName, String countryCode)
+	{
+		if (!localizedCityNamesCache.containsKey(cityName))
+		{
+			localizedCityNamesCache.put(cityName, Database.getLocalCityName(context, cityName));
+		}
+		
+		return localizedCityNamesCache.get(cityName);
 	}
 }

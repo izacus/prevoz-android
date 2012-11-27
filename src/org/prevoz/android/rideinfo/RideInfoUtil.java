@@ -102,8 +102,8 @@ public class RideInfoUtil
 		Resources res = context.getResources();
 		
 		// From and to
-		fromText.setText(ride.getFrom().toString());
-		toText.setText(ride.getTo().toString());
+		fromText.setText(ride.getFrom().getLocalizedName(context));
+		toText.setText(ride.getTo().getLocalizedName(context));
 
 		// Time and date
 		SimpleDateFormat timeFormatter = LocaleUtil.getSimpleDateFormat("HH:mm");
