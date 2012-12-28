@@ -320,6 +320,7 @@ public class SearchFormFragment extends RoboSherlockFragment
         if ((from != null && !from.getCountryCode().equalsIgnoreCase("si")) ||
             (to != null && !to.getCountryCode().equalsIgnoreCase("si")))
         {
+            selectedDate = Calendar.getInstance(LocaleUtil.getLocalTimezone());
             buttonDate.setEnabled(false);
             buttonDate.setText("--");
         }
