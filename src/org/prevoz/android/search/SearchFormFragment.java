@@ -139,6 +139,7 @@ public class SearchFormFragment extends RoboSherlockFragment
 					StringUtil.setLocationButtonText(buttonFrom, route.getFrom(), getString(R.string.all_locations));
 					to = route.getTo();
 					StringUtil.setLocationButtonText(buttonTo, route.getTo(), getString(R.string.all_locations));
+                    updateDateButtonState();
 				}
 			});
 			
@@ -210,7 +211,8 @@ public class SearchFormFragment extends RoboSherlockFragment
 				from = new City(savedInstanceState.getString("to"), savedInstanceState.getString("toCountry"));
 			}
 		}
-		
+
+        updateDateButtonState();
 		prepareFormFields();
 		FlurryAgent.onPageView();
 	}
@@ -284,10 +286,12 @@ public class SearchFormFragment extends RoboSherlockFragment
 				case FROM_CITY_REQUEST:
 					from = null;
 					StringUtil.setLocationButtonText(buttonFrom, from, getString(R.string.all_locations));
+                    updateDateButtonState();
 					return;
 				case TO_CITY_REQUEST:
 					to = null;
 					StringUtil.setLocationButtonText(buttonTo, to, getString(R.string.all_locations));
+                    updateDateButtonState();
 					return;
 			}
 		}
@@ -307,7 +311,24 @@ public class SearchFormFragment extends RoboSherlockFragment
 				Log.e(this.toString(), "Handling activity result that does not belong here!");
 				return;
 		}
+
+        updateDateButtonState();
 	}
+
+    private void updateDateButtonState()
+    {
+        if ((from != null && !from.getCountryCode().equalsIgnoreCase("si")) ||
+            (to != null && !to.getCountryCode().equalsIgnoreCase("si")))
+        {
+            buttonDate.setEnabled(false);
+            buttonDate.setText("--");
+        }
+        else
+        {
+            buttonDate.setEnabled(true);
+            setSelectedDate(selectedDate);
+        }
+    }
 	
 	private void startSearch()
 	{
