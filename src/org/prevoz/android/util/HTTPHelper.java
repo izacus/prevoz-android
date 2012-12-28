@@ -12,10 +12,7 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.zip.GZIPInputStream;
 
@@ -52,14 +49,16 @@ public class HTTPHelper
 	
 	private static String sessionCookies = "";
 
-	public static Date parseISO8601(String date) throws ParseException
+	public static Calendar parseISO8601(String date) throws ParseException
 	{
 		// There's a bug in SimpleDateFormatter library so we're parsing dates
 		// manually
 		SimpleDateFormat formatter = LocaleUtil.getSimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
 		Date result = formatter.parse(date);
-		
-		return result;
+
+        Calendar cal = Calendar.getInstance(LocaleUtil.getLocalTimezone());
+        cal.setTime(result);
+		return cal;
 	}
 
 	/**

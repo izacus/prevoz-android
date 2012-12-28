@@ -382,7 +382,7 @@ public class AddRideActivity extends RoboSherlockFragmentActivity
 								 RideType.SHARE,					// Ride type
 								 fromCity,							// From
 								 toCity,							// To
-								 dateTime.getTime(),				// Date and time 
+								 dateTime,				// Date and time
 								 ((PeopleSpinnerObject)peopleSpinner.getSelectedItem()).getNumber(),		// Number of people
 								 price,																		// Ride price
 								 null,																		// Ride author string

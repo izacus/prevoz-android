@@ -2,9 +2,12 @@ package org.prevoz.android.search;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 
 import org.prevoz.android.R;
+import org.prevoz.android.rideinfo.Ride;
 import org.prevoz.android.util.LocaleUtil;
 
 import android.app.Activity;
@@ -36,6 +39,7 @@ public class SearchResultAdapter extends ArrayAdapter<SearchRide>
 
 		private View base = null;
 		private TextView time = null;
+        private TextView date = null;
 		private TextView price = null;
 		private TextView driver = null;
 
@@ -79,6 +83,14 @@ public class SearchResultAdapter extends ArrayAdapter<SearchRide>
 			return driver;
 		}
 
+        public TextView getDate()
+        {
+            if (this.date == null)
+                this.date = (TextView) base.findViewById(R.id.date);
+
+            return date;
+        }
+
 		public void setId(int id)
 		{
 			this.rideId = id;
@@ -96,6 +108,7 @@ public class SearchResultAdapter extends ArrayAdapter<SearchRide>
 		this.context = context;
 		this.rides = rides;
 		this.highlights = new HashSet<Integer>();
+        this.currentDate = Calendar.getInstance(LocaleUtil.getLocalTimezone());
 		
 		if (highlights != null)
 		{
@@ -108,6 +121,7 @@ public class SearchResultAdapter extends ArrayAdapter<SearchRide>
 		timeFormatter = LocaleUtil.getSimpleDateFormat("HH:mm");
 	}
 
+    private Calendar currentDate = null;
 	private Typeface defaultDriverTypeface = null;
 	private Typeface defaultPriceTypeface = null;
 	private Typeface defaultTimeTypeface = null;
@@ -130,6 +144,8 @@ public class SearchResultAdapter extends ArrayAdapter<SearchRide>
 			row = convertView;
 			wrapper = (SearchResultViewWrapper) row.getTag();
 		}
+
+        SearchRide ride = rides.get(position);
 		
 		if (defaultDriverTypeface == null)
 			defaultDriverTypeface = wrapper.getDriver().getTypeface();
@@ -140,21 +156,21 @@ public class SearchResultAdapter extends ArrayAdapter<SearchRide>
 		if (defaultTimeTypeface == null)
 			defaultTimeTypeface = wrapper.getTime().getTypeface();
 
-		wrapper.getTime().setText(timeFormatter.format(rides.get(position).getTime()));
+		wrapper.getTime().setText(timeFormatter.format(ride.getTime().getTime()));
 
-		if (rides.get(position).getPrice() != null)
+		if (ride.getPrice() != null)
 		{
-			wrapper.getPrice().setText(String.format(LocaleUtil.getLocale(), "%1.1f €", rides.get(position).getPrice()));
+			wrapper.getPrice().setText(String.format(LocaleUtil.getLocale(), "%1.1f €", ride.getPrice()));
 		}
 		else
 		{
 			wrapper.getPrice().setText("? €");
 		}
 
-		wrapper.getDriver().setText(rides.get(position).getAuthor());
-		wrapper.setId(rides.get(position).getId());
-		
-		if (highlights.contains(rides.get(position).getId()))
+		wrapper.getDriver().setText(ride.getAuthor());
+		wrapper.setId(ride.getId());
+
+		if (highlights.contains(ride.getId()))
 		{
 			wrapper.getDriver().setTypeface(defaultDriverTypeface, Typeface.BOLD);
 			wrapper.getPrice().setTypeface(defaultPriceTypeface, Typeface.BOLD);
@@ -166,7 +182,19 @@ public class SearchResultAdapter extends ArrayAdapter<SearchRide>
 			wrapper.getPrice().setTypeface(defaultPriceTypeface, Typeface.NORMAL);
 			wrapper.getTime().setTypeface(defaultTimeTypeface, Typeface.NORMAL);
 		} 
-		
+
+        if (currentDate.get(Calendar.YEAR) != ride.getTime().get(Calendar.YEAR) ||
+            currentDate.get(Calendar.MONTH) != ride.getTime().get(Calendar.MONTH)||
+            currentDate.get(Calendar.DATE) != ride.getTime().get(Calendar.DATE))
+        {
+            wrapper.getDate().setText(LocaleUtil.getShortFormattedDate(context.getResources(), ride.getTime()));
+            wrapper.getDate().setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            wrapper.getDate().setVisibility(View.GONE);
+        }
+
 		return row;
 	}
 }

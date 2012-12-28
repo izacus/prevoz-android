@@ -107,6 +107,16 @@
         <item>Petek</item>
         <item>Sobota</item>
     </string-array>
+
+    <string-array name="short_day_names">
+        <item>ned</item>
+        <item>pon</item>
+        <item>tor</item>
+        <item>sre</item>
+        <item>čet</item>
+        <item>pet</item>
+        <item>sob</item>
+    </string-array>
     
     <string-array name="notify_day_names">
         <item>nedeljo</item>

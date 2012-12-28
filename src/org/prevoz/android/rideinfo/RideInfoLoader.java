@@ -1,9 +1,7 @@
 package org.prevoz.android.rideinfo;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.Date;
-
+import android.content.Context;
+import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.prevoz.android.City;
@@ -12,8 +10,9 @@ import org.prevoz.android.RideType;
 import org.prevoz.android.util.AsyncLoader;
 import org.prevoz.android.util.HTTPHelper;
 
-import android.content.Context;
-import android.util.Log;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.Calendar;
 
 public class RideInfoLoader extends AsyncLoader<Ride> 
 {
@@ -55,7 +54,7 @@ public class RideInfoLoader extends AsyncLoader<Ride>
 					"share") ? RideType.SHARE : RideType.SEEK;
 
 			String iso8601 = root.getString("date_iso8601");
-			Date time = HTTPHelper.parseISO8601(iso8601);
+			Calendar time = HTTPHelper.parseISO8601(iso8601);
 
 			int people = root.getInt("num_people");
 

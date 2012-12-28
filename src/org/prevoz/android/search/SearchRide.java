@@ -1,5 +1,6 @@
 package org.prevoz.android.search;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import org.prevoz.android.City;
@@ -11,10 +12,10 @@ public class SearchRide implements Comparable<SearchRide>
 	private City to;
 	private String author;
 	private Double price;
-	private Date time;
+	private Calendar time;
 
 	public SearchRide(int id, City from, City to, String author,
-			Double price, Date time)
+			Double price, Calendar time)
 	{
 		this.id = id;
 		this.from = from;
@@ -49,7 +50,7 @@ public class SearchRide implements Comparable<SearchRide>
 		return price;
 	}
 
-	public Date getTime()
+	public Calendar getTime()
 	{
 		return time;
 	}
