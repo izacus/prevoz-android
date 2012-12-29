@@ -80,6 +80,11 @@ public class SearchRide implements Comparable<SearchRide>
 
 	public int compareTo(SearchRide another)
 	{
+        if (this.getFrom().equals(another.getFrom()) && this.getTo().equals(another.getTo()))
+        {
+            return this.getTime().compareTo(another.getTime());
+        }
+
 		return (this.getFrom().compareTo(another.getFrom()) == 0) ? this
 				.getTo().compareTo(another.getTo()) : this.getFrom().compareTo(
 				another.getFrom());

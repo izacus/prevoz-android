@@ -3,9 +3,7 @@ package org.prevoz.android.search;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -100,7 +98,8 @@ public class SearchResultsLoader extends AsyncLoader<SearchResults>
 					}
 				}
 
-				results = new SearchResults(rides);
+                Collections.sort(rides);
+                results = new SearchResults(rides);
 			}
 			else
 			{

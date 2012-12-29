@@ -18,6 +18,8 @@ import java.util.zip.GZIPInputStream;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -295,4 +297,18 @@ public class HTTPHelper
 		
 		return "http://";
 	}
+
+    public static boolean isNetAvailable(Context context)
+    {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+
+        if (ni != null && ni.isConnected())
+        {
+            return true;
+        }
+
+        return false;
+    }
+
 }

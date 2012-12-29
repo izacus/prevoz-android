@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import android.app.AlertDialog;
 import org.prevoz.android.City;
 import org.prevoz.android.CitySelectorActivity;
 import org.prevoz.android.MainActivity;
@@ -13,6 +14,7 @@ import org.prevoz.android.c2dm.NotificationManager;
 import org.prevoz.android.c2dm.NotificationsActivity;
 import org.prevoz.android.my_rides.MyRidesActivity;
 import org.prevoz.android.util.Database;
+import org.prevoz.android.util.HTTPHelper;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
 
@@ -334,7 +336,15 @@ public class SearchFormFragment extends RoboSherlockFragment
 	private void startSearch()
 	{
 		Log.i(this.toString(), "Starting search for " + from + " - " + to);
-		
+
+        if (!HTTPHelper.isNetAvailable(getActivity()))
+        {
+            NotConnectedDialog ncd = new NotConnectedDialog();
+            ncd.show(getActivity().getSupportFragmentManager(), "NotConnected");
+            FlurryAgent.onEvent("NotConnected");
+            return;
+        }
+
 		// Record search request
 		Database.addSearchToHistory(getActivity(), from, to, Calendar.getInstance(LocaleUtil.getLocalTimezone()).getTime());
 		HashMap<String, String> params = new HashMap<String, String>();
@@ -369,4 +379,17 @@ public class SearchFormFragment extends RoboSherlockFragment
 			setSelectedDate(date);
 		}
 	}
+
+    private class NotConnectedDialog extends DialogFragment
+    {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.notconnected_error_title)
+                    .setMessage(R.string.notconnected_error_text)
+                    .setNegativeButton(R.string.notconnected_error_ok, null);
+            return builder.create();
+        }
+    }
 }

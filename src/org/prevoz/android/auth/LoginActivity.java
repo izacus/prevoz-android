@@ -1,5 +1,9 @@
 package org.prevoz.android.auth;
 
+import android.accounts.AccountManager;
+import android.app.Activity;
+import android.content.Intent;
+import com.github.rtyley.android.sherlock.android.accounts.SherlockAccountAuthenticatorActivity;
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
 import org.prevoz.android.util.HTTPHelper;
@@ -14,14 +18,14 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Window;
 import com.flurry.android.FlurryAgent;
 
-public class LoginActivity extends SherlockFragmentActivity
+public class LoginActivity extends SherlockAccountAuthenticatorActivity
 {
 
 	private class WebViewController extends WebViewClient
 	{
-		private SherlockFragmentActivity context;
+		private SherlockAccountAuthenticatorActivity context;
 
-		public WebViewController(SherlockFragmentActivity context)
+		public WebViewController(SherlockAccountAuthenticatorActivity context)
 		{
 			this.context = context;
 		}
@@ -50,6 +54,14 @@ public class LoginActivity extends SherlockFragmentActivity
 				view.setEnabled(true);
 				// Notify all threads of successful login
 				AuthenticationManager.getInstance().notifyLoginResult(LoginActivity.this, AuthenticationStatus.AUTHENTICATED);
+
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra(AccountManager.KEY_ACCOUNT_NAME, AuthenticationManager.getInstance().getUsername());
+                resultIntent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, getString(R.string.acc_type));
+                resultIntent.putExtra(AccountManager.KEY_AUTHTOKEN, getString(R.string.acc_type));
+
+                context.setAccountAuthenticatorResult(resultIntent.getExtras());
+                context.setResult(Activity.RESULT_OK, resultIntent);
 				// Close this activity
 				context.finish();
 			}

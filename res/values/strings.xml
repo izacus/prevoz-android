@@ -3,12 +3,16 @@
 	<!-- General application data -->
     <string name="app_name">Prevoz</string>
     <string name="app_version">2.3</string>
+    <string name="acc_type">org.prevoz.account</string>
     <string name="flurry_apikey">YU4UUAB4JW592B4LFML8</string>
     
     <!-- General strings -->
     <string name="loading">Nalagam&#8230;</string>
     
     <!-- Error strings -->
+    <string name="notconnected_error_title">Ni internetne povezave</string>
+    <string name="notconnected_error_text">Za iskanje morate biti povezani na internet.</string>
+    <string name="notconnected_error_ok">V redu</string>
     <string name="server_error">Strežnik prevoz ni na voljo. Prosimo poskusite kasneje.</string>
     <string name="network_error">Napaka na internetni povezavi, preverite če ste povezani.</string>
     
