@@ -15,6 +15,7 @@
     <string name="notconnected_error_ok">V redu</string>
     <string name="server_error">Strežnik prevoz ni na voljo. Prosimo poskusite kasneje.</string>
     <string name="network_error">Napaka na internetni povezavi, preverite če ste povezani.</string>
+    <string name="account_exists_error">Račun za Prevoz.org že obstaja, imate lahko samo enega.</string>
     
     <!-- City selector strings -->
     <string name="city_hint">Kraj</string>

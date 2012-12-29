@@ -1,6 +1,8 @@
 
 syntax: regexp
 ^bin$
+syntak: regexp
+^.idea$
 syntax: regexp
 ^gen/org/prevoz/android/R\.java$
 syntax: regexp

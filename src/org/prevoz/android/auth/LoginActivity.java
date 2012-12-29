@@ -3,6 +3,7 @@ package org.prevoz.android.auth;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Intent;
+import android.widget.Toast;
 import com.github.rtyley.android.sherlock.android.accounts.SherlockAccountAuthenticatorActivity;
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
@@ -85,7 +86,16 @@ public class LoginActivity extends SherlockAccountAuthenticatorActivity
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.login_view);
-		
+
+        // Check if account exists first
+        AccountManager mgr = AccountManager.get(this);
+        if (mgr.getAccountsByType(getString(R.string.acc_type)).length > 0)
+        {
+            Toast.makeText(this, getString(R.string.account_exists_error), Toast.LENGTH_SHORT).show();
+            setResult(Activity.RESULT_CANCELED);
+            finish();
+        }
+
 		this.setSupportProgressBarIndeterminateVisibility(false);
 		// Load login view
 		webView = (WebView)findViewById(R.id.loginView);

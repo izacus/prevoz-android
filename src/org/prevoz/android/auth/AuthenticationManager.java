@@ -10,8 +10,8 @@ import android.os.Message;
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
-import com.actionbarsherlock.R;
 import org.prevoz.android.Globals;
+import org.prevoz.android.R;
 
 import java.util.LinkedList;
 
@@ -55,18 +55,6 @@ public class AuthenticationManager
 	public synchronized void getAuthenticationStatus(final Activity context, 
 													 final Handler authCallback)
 	{
-
-
-		if (currentStatus != AuthenticationStatus.UNKNOWN)
-		{
-			if (authCallback != null)
-			{
-				authCallback.sendEmptyMessage(currentStatus.ordinal());
-			}
-			
-			return;
-		}
-
         AccountManager mgr = AccountManager.get(context);
         if (mgr.getAccountsByType(context.getString(R.string.acc_type)).length < 1)
         {
@@ -79,6 +67,16 @@ public class AuthenticationManager
 
             return;
         }
+
+		if (currentStatus != AuthenticationStatus.UNKNOWN)
+		{
+			if (authCallback != null)
+			{
+				authCallback.sendEmptyMessage(currentStatus.ordinal());
+			}
+			
+			return;
+		}
 
 		// Add callback to waiting authentication queue
 		if (authCallback != null)
@@ -220,8 +218,6 @@ public class AuthenticationManager
             mgr.removeAccount(acc, null, null);
         }
 	}
-	
-	
 	
 	/**
 	 * After Login activity completes, send out new login status to all waiting activities
