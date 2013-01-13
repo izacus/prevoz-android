@@ -3,6 +3,8 @@ package org.prevoz.android.auth;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Intent;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.widget.Toast;
 import com.github.rtyley.android.sherlock.android.accounts.SherlockAccountAuthenticatorActivity;
 import org.prevoz.android.Globals;
@@ -15,7 +17,6 @@ import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Window;
 import com.flurry.android.FlurryAgent;
 
@@ -94,6 +95,13 @@ public class LoginActivity extends SherlockAccountAuthenticatorActivity
             Toast.makeText(this, getString(R.string.account_exists_error), Toast.LENGTH_SHORT).show();
             setResult(Activity.RESULT_CANCELED);
             finish();
+        }
+        else
+        {
+            CookieSyncManager csm = CookieSyncManager.createInstance(this);
+            CookieManager cm = CookieManager.getInstance();
+            cm.removeAllCookie();
+            csm.sync();
         }
 
 		this.setSupportProgressBarIndeterminateVisibility(false);

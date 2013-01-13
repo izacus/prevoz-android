@@ -1,23 +1,7 @@
 package org.prevoz.android.search;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-
-import org.prevoz.android.City;
-import org.prevoz.android.CitySelectorActivity;
-import org.prevoz.android.MainActivity;
-import org.prevoz.android.R;
-import org.prevoz.android.Route;
-import org.prevoz.android.c2dm.NotificationManager;
-import org.prevoz.android.c2dm.NotificationsActivity;
-import org.prevoz.android.my_rides.MyRidesActivity;
-import org.prevoz.android.util.Database;
-import org.prevoz.android.util.LocaleUtil;
-import org.prevoz.android.util.StringUtil;
-
-import roboguice.inject.InjectView;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
@@ -29,19 +13,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.ListView;
-import android.widget.TextView;
-
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.flurry.android.FlurryAgent;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
+import org.prevoz.android.*;
+import org.prevoz.android.c2dm.NotificationManager;
+import org.prevoz.android.c2dm.NotificationsActivity;
+import org.prevoz.android.my_rides.MyRidesActivity;
+import org.prevoz.android.util.Database;
+import org.prevoz.android.util.HTTPHelper;
+import org.prevoz.android.util.LocaleUtil;
+import org.prevoz.android.util.StringUtil;
+import roboguice.inject.InjectView;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 
 public class SearchFormFragment extends RoboSherlockFragment 
 {
@@ -376,4 +367,17 @@ public class SearchFormFragment extends RoboSherlockFragment
 			setSelectedDate(date);
 		}
 	}
+
+    private class NotConnectedDialog extends DialogFragment
+    {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.notconnected_error_title)
+                   .setMessage(R.string.notconnected_error_text)
+                   .setNegativeButton(R.string.notconnected_error_ok, null);
+            return builder.create();
+        }
+    }
 }
