@@ -43,8 +43,8 @@ public class SendRideTask implements Runnable
 		parameters.put("transpto", ride.getTo().getDisplayName());
 		parameters.put("transptocountry", ride.getTo().getCountryCode());
 
-		parameters.put("transpdate", dateFormatter.format(ride.getTime()));
-		parameters.put("transptime", timeFormatter.format(ride.getTime()));
+		parameters.put("transpdate", dateFormatter.format(ride.getTime().getTime()));
+		parameters.put("transptime", timeFormatter.format(ride.getTime().getTime()));
 
 		parameters.put("transpppl", String.valueOf(ride.getPeople()));
 		parameters.put("transpinsured", String.valueOf(ride.isInsured()));

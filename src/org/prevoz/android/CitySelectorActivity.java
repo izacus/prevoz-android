@@ -3,6 +3,8 @@ package org.prevoz.android;
 import java.util.HashMap;
 import java.util.List;
 
+import android.content.Context;
+import android.view.inputmethod.InputMethodManager;
 import org.prevoz.android.util.Database;
 import org.prevoz.android.util.GPSManager;
 
@@ -211,6 +213,8 @@ public class CitySelectorActivity extends RoboSherlockFragmentActivity implement
 
 	private void returnCity(String name, String country) 
 	{
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromInputMethod(cityText.getWindowToken(), 0);
 		Intent result = new Intent();
 		result.putExtra("city", name);
 		result.putExtra("country", country);
