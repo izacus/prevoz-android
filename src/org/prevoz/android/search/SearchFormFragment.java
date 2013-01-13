@@ -149,8 +149,8 @@ public class SearchFormFragment extends RoboSherlockFragment
 
     private void updateDateButtonVisibility()
     {
-        if ((this.from != null && this.from.getCountryCode() != "SI") ||
-            (this.to != null && this.to.getCountryCode() != "SI"))
+        if ((this.from != null && !this.from.getCountryCode().equals("SI")) ||
+            (this.to != null && !this.to.getCountryCode().equals("SI")))
         {
             buttonDate.setText("--");
             buttonDate.setEnabled(false);
