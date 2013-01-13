@@ -50,6 +50,8 @@ public class SearchFormFragment extends RoboSherlockFragment
 	
 	@InjectView(R.id.date_button)
 	private Button buttonDate;
+    @InjectView(R.id.date_label)
+    private TextView labelDate;
 	@InjectView(R.id.search_button)
 	private Button buttonSearch;
 	@InjectView(R.id.from_button)
@@ -110,6 +112,7 @@ public class SearchFormFragment extends RoboSherlockFragment
 				startSearch();
 			}
 		});
+        updateDateButtonVisibility();
 	}
 	
 	private void populateLastSearchList()
@@ -139,6 +142,7 @@ public class SearchFormFragment extends RoboSherlockFragment
 					StringUtil.setLocationButtonText(buttonFrom, route.getFrom(), getString(R.string.all_locations));
 					to = route.getTo();
 					StringUtil.setLocationButtonText(buttonTo, route.getTo(), getString(R.string.all_locations));
+                    updateDateButtonVisibility();
 				}
 			});
 			
@@ -151,7 +155,22 @@ public class SearchFormFragment extends RoboSherlockFragment
 			lastSearches.setVisibility(View.INVISIBLE);
 		}
 	}
-	
+
+    private void updateDateButtonVisibility()
+    {
+        if ((this.from != null && this.from.getCountryCode() != "SI") ||
+            (this.to != null && this.to.getCountryCode() != "SI"))
+        {
+            buttonDate.setText("--");
+            buttonDate.setEnabled(false);
+        }
+        else
+        {
+            setSelectedDate(this.selectedDate);
+            buttonDate.setEnabled(true);
+        }
+    }
+
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) 
 	{
@@ -307,6 +326,8 @@ public class SearchFormFragment extends RoboSherlockFragment
 				Log.e(this.toString(), "Handling activity result that does not belong here!");
 				return;
 		}
+
+        updateDateButtonVisibility();
 	}
 	
 	private void startSearch()
