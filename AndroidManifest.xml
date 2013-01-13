@@ -11,6 +11,8 @@
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+<uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
 
 <!-- Required permissions for C2DM services -->
 <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />    
@@ -33,11 +35,16 @@
     <activity android:name=".auth.LoginActivity" android:label="@string/title_login" android:theme="@style/PrevozTheme" />
     <activity android:name=".search.SearchResultsActivity" android:label="@string/title_search" android:theme = "@style/PrevozTheme" />
     <activity android:name=".add_ride.AddRideActivity" android:label="@string/title_addride" android:theme="@style/PrevozTheme" android:windowSoftInputMode="stateHidden" />
-    <activity android:name=".my_rides.MyRidesActivity" android:label="@string/title_myrides" android:theme="@style/PrevozTheme"></activity>
+    <activity android:name=".my_rides.MyRidesActivity" android:label="@string/title_myrides" android:theme="@style/PrevozTheme" />
     <activity android:name=".c2dm.NotificationsActivity" android:label="@string/title_notifications" android:theme="@style/PrevozTheme" />
     
     <service android:name=".GCMIntentService" />
-    
+    <service android:name=".auth.AuthenticatorService">
+        <intent-filter>
+            <action android:name="android.accounts.AccountAuthenticator" />
+        </intent-filter>
+        <meta-data android:name="android.accounts.AccountAuthenticator" android:resource="@xml/authenticator" />
+    </service>
     <!-- Intent receivers -->
     <receiver android:name="com.google.android.gcm.GCMBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
 	  <intent-filter>

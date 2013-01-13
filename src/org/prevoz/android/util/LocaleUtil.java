@@ -18,14 +18,7 @@ public class LocaleUtil
 	private static HashMap<String, String> localizedCityNamesCache = new HashMap<String, String>();
 	private static Locale localeCache = null;
 	private static HashMap<String, SimpleDateFormat> dateFormatCache = new HashMap<String, SimpleDateFormat>();
-	
-	public static String getDayName(Resources res, Date date)
-	{
-		Calendar cal = Calendar.getInstance(LocaleUtil.getLocalTimezone());
-		cal.setTime(date);
-		return getDayName(res, cal);
-	}
-	
+
 	public static String getNotificationDayName(Resources res, Calendar date)
 	{
 		String[] dayNames = res.getStringArray(R.array.notify_day_names);
@@ -38,13 +31,11 @@ public class LocaleUtil
 		return dayNames[date.get(Calendar.DAY_OF_WEEK) - 1];
 	}
 
-	public static String getFormattedDate(Resources res, Date date)
-	{
-		Calendar cal = Calendar.getInstance(LocaleUtil.getLocalTimezone());
-		cal.setTime(date);
-
-		return getFormattedDate(res, cal);
-	}
+    public static String getShortDayName(Resources res, Calendar date)
+    {
+        String[] shortDayNames = res.getStringArray(R.array.short_day_names);
+        return shortDayNames[date.get(Calendar.DAY_OF_WEEK) - 1];
+    }
 
 	public static String getFormattedDate(Resources res, Calendar date)
 	{
@@ -53,6 +44,11 @@ public class LocaleUtil
 				+ monthNames[date.get(Calendar.MONTH)] + " "
 				+ date.get(Calendar.YEAR);
 	}
+
+    public static String getShortFormattedDate(Resources res, Calendar date)
+    {
+        return getShortDayName(res, date) + ", " + date.get(Calendar.DATE) + ". " + (date.get(Calendar.MONTH) + 1) + ".";
+    }
 
 	/**
 	 * Builds a localized date string with day name

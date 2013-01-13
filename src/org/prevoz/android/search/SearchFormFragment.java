@@ -333,7 +333,15 @@ public class SearchFormFragment extends RoboSherlockFragment
 	private void startSearch()
 	{
 		Log.i(this.toString(), "Starting search for " + from + " - " + to);
-		
+
+        if (!HTTPHelper.isNetAvailable(getActivity()))
+        {
+            NotConnectedDialog ncd = new NotConnectedDialog();
+            ncd.show(getActivity().getSupportFragmentManager(), "NotConnected");
+            FlurryAgent.onEvent("NotConnected");
+            return;
+        }
+
 		// Record search request
 		Database.addSearchToHistory(getActivity(), from, to, Calendar.getInstance(LocaleUtil.getLocalTimezone()).getTime());
 		HashMap<String, String> params = new HashMap<String, String>();

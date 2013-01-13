@@ -1,11 +1,13 @@
 package org.prevoz.android.rideinfo;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import org.prevoz.android.City;
 import org.prevoz.android.RideType;
 
 import android.os.Bundle;
+import org.prevoz.android.util.LocaleUtil;
 
 public class Ride
 {
@@ -15,7 +17,7 @@ public class Ride
 	private City from;
 	private City to;
 
-	private Date time;
+	private Calendar time;
 
 	private int people;
 	private Double price;
@@ -28,7 +30,7 @@ public class Ride
 	private boolean isInsured;
 	private boolean isFull;
 
-	public Ride(int id, RideType type, City from, City to, Date time,
+	public Ride(int id, RideType type, City from, City to, Calendar time,
 			int people, Double price, String author, String contact,
 			String comment, boolean isAuthor, boolean isInsured, boolean isFull)
 	{
@@ -58,7 +60,8 @@ public class Ride
 		type = RideType.values()[bundle.getInt("rideinfo_type")];
 		from = new City(bundle.getString("rideinfo_from"), bundle.getString("rideinfo_from_country"));
 		to = new City(bundle.getString("rideinfo_to"), bundle.getString("rideinfo_to_country"));
-		time = new Date(bundle.getLong("rideinfo_time"));
+        time = Calendar.getInstance(LocaleUtil.getLocalTimezone());
+        time.setTimeInMillis(bundle.getLong("rideinfo_time"));
 		people = bundle.getInt("rideinfo_people");
 
 		if (bundle.containsKey("rideinfo_price"))
@@ -96,7 +99,7 @@ public class Ride
 		return to;
 	}
 
-	public Date getTime()
+	public Calendar getTime()
 	{
 		return time;
 	}
@@ -144,7 +147,7 @@ public class Ride
 		bundle.putString("rideinfo_from_country", from.getCountryCode());
 		bundle.putString("rideinfo_to", to.getDisplayName());
 		bundle.putString("rideinfo_to_country", to.getCountryCode());
-		bundle.putLong("rideinfo_time", time.getTime());
+		bundle.putLong("rideinfo_time", time.getTimeInMillis());
 		bundle.putInt("rideinfo_people", people);
 
 		if (price != null)

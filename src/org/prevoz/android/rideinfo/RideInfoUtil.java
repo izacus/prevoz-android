@@ -107,7 +107,7 @@ public class RideInfoUtil
 
 		// Time and date
 		SimpleDateFormat timeFormatter = LocaleUtil.getSimpleDateFormat("HH:mm");
-		timeText.setText(timeFormatter.format(ride.getTime()));
+		timeText.setText(timeFormatter.format(ride.getTime().getTime()));
 		dayText.setText(LocaleUtil.getDayName(res, ride.getTime()) + ",");
 		dateText.setText(LocaleUtil.getFormattedDate(res, ride.getTime()));
 

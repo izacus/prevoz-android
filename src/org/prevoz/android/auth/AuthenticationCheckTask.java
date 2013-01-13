@@ -11,13 +11,25 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
 
-public class AuthenticationCheckTask extends AsyncTask<Handler, Void, AuthenticationStatus>
+public class AuthenticationCheckTask extends AsyncTask<Handler, Void, AuthenticationCheckTask.AuthCheckResult>
 {
+    public static class AuthCheckResult
+    {
+        public AuthenticationStatus status;
+        public String username;
+
+        public AuthCheckResult(AuthenticationStatus status, String username)
+        {
+            this.status = status;
+            this.username = username;
+        }
+    }
+
 	private Handler callback = null;
 	private String apiKey = null;
 	
 	@Override
-	protected AuthenticationStatus doInBackground(Handler... params)
+	protected AuthCheckResult doInBackground(Handler... params)
 	{
 		// Check if callback for authentication status is passed
 		if (params != null && params.length > 0)
@@ -39,32 +51,33 @@ public class AuthenticationCheckTask extends AsyncTask<Handler, Void, Authentica
 				Log.i(this.toString(), "User is logged in.");
 				// Retrieve passed apikey
 				apiKey = jsonObj.getString("apikey");
-				return AuthenticationStatus.AUTHENTICATED;
+                String username = jsonObj.getString("username");
+                return new AuthCheckResult(AuthenticationStatus.AUTHENTICATED, username);
 			}
 			else
 			{
 				Log.i(this.toString(), "User is not logged in.");
-				return AuthenticationStatus.NOT_AUTHENTICATED;
+				return new AuthCheckResult(AuthenticationStatus.NOT_AUTHENTICATED, null);
 			}
 		}
 		catch (IOException e)
 		{
 			Log.e(this.toString(), "Failed to retrieve current login status.", e);
-			return AuthenticationStatus.UNKNOWN;
+			return new AuthCheckResult(AuthenticationStatus.UNKNOWN, null);
 		}
 		catch (JSONException e)
 		{
 			Log.e(this.toString(), "Failed to parse current login status.", e);
-			return AuthenticationStatus.UNKNOWN;
+			return new AuthCheckResult(AuthenticationStatus.UNKNOWN, null);
 		}
 	}
 
 	@Override
-	protected void onPostExecute(AuthenticationStatus result)
+	protected void onPostExecute(AuthCheckResult result)
 	{
 		if (callback != null)
 		{
-			callback.sendEmptyMessage(result.ordinal());
+			callback.sendEmptyMessage(result.status.ordinal());
 		}
 	}
 	

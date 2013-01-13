@@ -3,6 +3,7 @@ package org.prevoz.android.util;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import org.prevoz.android.R;
 import org.prevoz.android.search.SearchResultAdapter;
@@ -71,7 +72,9 @@ public class SectionedAdapterUtil {
 
 			for (String path : ridePaths)
 			{
-				resultsAdapter.addSection(path.toUpperCase(), new SearchResultAdapter(activity, ridesByPath.get(path), highlights));
+                ArrayList<SearchRide> rides = ridesByPath.get(path);
+                Collections.sort(rides);
+				resultsAdapter.addSection(path.toUpperCase(), new SearchResultAdapter(activity, rides, highlights));
 			}
 		}
 		

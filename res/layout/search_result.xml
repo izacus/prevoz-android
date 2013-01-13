@@ -3,24 +3,45 @@
 	  xmlns:android="http://schemas.android.com/apk/res/android"
   	  android:layout_width="fill_parent"
   	  android:layout_height="fill_parent">
-		
-	  <TextView 
-	    android:id="@+id/time" 
-	    android:layout_width="wrap_content" 
-	    android:layout_height="fill_parent"
-	    android:layout_alignParentLeft = "true"
-	    android:layout_alignParentBottom = "true"
-	    android:gravity = "center"
-	    android:padding = "10dp"
-	    android:textSize="20sp"
-	    android:textStyle="bold"
-	     />
+
+      <RelativeLayout
+          android:id="@+id/time_holder"
+          android:layout_width="80dp"
+          android:layout_height="fill_parent"
+          android:layout_alignParentLeft = "true"
+          android:layout_alignParentBottom = "true"
+          >
+
+          <TextView
+              android:id="@+id/time"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity = "center"
+              android:padding = "10dp"
+              android:textSize="20sp"
+              android:textStyle="bold"
+              android:layout_alignParentTop="true"
+              android:layout_alignParentLeft="true"
+              />
+
+          <TextView
+              android:id="@+id/date"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_horizontal"
+              android:paddingLeft="4dp"
+              android:paddingRight="4dp"
+              android:textSize="12sp"
+              android:layout_alignParentBottom="true"
+              android:layout_alignParentLeft="true"
+              />
+      </RelativeLayout>
 	    
 	  <TextView 
         android:id="@+id/price" 
         android:layout_width="wrap_content" 
         android:layout_height="wrap_content"
-        android:layout_toRightOf = "@id/time"
+        android:layout_toRightOf = "@id/time_holder"
         android:layout_alignParentTop = "true"
         android:gravity = "bottom"
         android:paddingLeft = "5dp"

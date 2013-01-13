@@ -1,18 +1,19 @@
 package org.prevoz.android.auth;
 
-import java.util.LinkedList;
-
-import org.prevoz.android.Globals;
-
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
+import org.prevoz.android.Globals;
+import org.prevoz.android.R;
+
+import java.util.LinkedList;
 
 /**
  * Login manager singleton, handles authentication
@@ -33,15 +34,14 @@ public class AuthenticationManager
 		
 		return instance;
 	}
-	
-	private static final String PREF_API_KEY = "org.prevoz.apikey";
-	
+
 	private AuthenticationStatus currentStatus = AuthenticationStatus.UNKNOWN;
 	private LinkedList<Handler> loginStatusQueue = new LinkedList<Handler>();
 	private LinkedList<Handler> callbackQueue = new LinkedList<Handler>();
 	
 	private volatile boolean loginCheckInProgress = false;
-	
+	private String username;
+
 	private AuthenticationManager()
 	{
 		// Nothing TBD
@@ -55,6 +55,19 @@ public class AuthenticationManager
 	public synchronized void getAuthenticationStatus(final Activity context, 
 													 final Handler authCallback)
 	{
+        AccountManager mgr = AccountManager.get(context);
+        if (mgr.getAccountsByType(context.getString(R.string.acc_type)).length < 1)
+        {
+            clearAuthCookies(context);
+
+            if (authCallback != null)
+            {
+                authCallback.sendEmptyMessage(AuthenticationStatus.NOT_AUTHENTICATED.ordinal());
+            }
+
+            return;
+        }
+
 		if (currentStatus != AuthenticationStatus.UNKNOWN)
 		{
 			if (authCallback != null)
@@ -64,7 +77,7 @@ public class AuthenticationManager
 			
 			return;
 		}
-		
+
 		// Add callback to waiting authentication queue
 		if (authCallback != null)
 		{
@@ -101,29 +114,28 @@ public class AuthenticationManager
 		// Retry authentication with apikey if the status is negative
 		if (status == AuthenticationStatus.NOT_AUTHENTICATED && apikeyLogin)
 		{
-			SharedPreferences sharedPrefs = context.getSharedPreferences(PREF_API_KEY, 0);
-			
-			if (sharedPrefs.contains(PREF_API_KEY))
-			{
-				
-				String apikey = sharedPrefs.getString(PREF_API_KEY, "");
-				
-				Log.i(this.toString(), "Attempting login with apikey " + apikey);
-				
-				Handler cback = new Handler() 
-				{
-					@Override
-					public void handleMessage(Message msg)
-					{
-						authenticationStatusReceived(context, AuthenticationStatus.values()[msg.what], false);
-					}
-				};
-				
-				ApiKeyLoginTask apiKeyLogin = new ApiKeyLoginTask(apikey);
-				apiKeyLogin.execute(cback);
-				
-				return;
-			}
+            AccountManager mgr = AccountManager.get(context);
+            Account[] accounts = mgr.getAccountsByType(context.getString(R.string.acc_type));
+            if (accounts.length == 0)
+                return;
+
+            Account account = accounts[0];
+            final String username = account.name;
+            final String apikey = mgr.getPassword(account);
+            Log.i(this.toString(), "Attempting login with apikey " + apikey);
+
+            Handler cback = new Handler()
+            {
+                @Override
+                public void handleMessage(Message msg)
+                {
+                    AuthenticationManager.this.username = username;
+                    authenticationStatusReceived(context, AuthenticationStatus.values()[msg.what], false);
+                }
+            };
+
+            ApiKeyLoginTask apiKeyLogin = new ApiKeyLoginTask(apikey);
+            apiKeyLogin.execute(cback);
 		}
 		
 		CookieSyncManager.createInstance(context).sync();
@@ -199,13 +211,13 @@ public class AuthenticationManager
 	{
 		clearAuthCookies(context);
 		// Clear API key and reset authentication status
-		SharedPreferences sharedPrefs = context.getSharedPreferences(PREF_API_KEY, 0);
-		SharedPreferences.Editor editor = sharedPrefs.edit();
-		editor.remove(PREF_API_KEY);
-		editor.commit();
+		AccountManager mgr = AccountManager.get(context);
+        Account[] accounts = mgr.getAccountsByType(context.getString(R.string.acc_type));
+        for (Account acc : accounts)
+        {
+            mgr.removeAccount(acc, null, null);
+        }
 	}
-	
-	
 	
 	/**
 	 * After Login activity completes, send out new login status to all waiting activities
@@ -239,14 +251,33 @@ public class AuthenticationManager
 		// This is not a fatal error
 		try
 		{
-			if (authCheck.get() == AuthenticationStatus.AUTHENTICATED)
+            AuthenticationCheckTask.AuthCheckResult result = authCheck.get();
+			if (result.status == AuthenticationStatus.AUTHENTICATED)
 			{
-				// Store API key to shared preferences
-				Log.i(this.toString(), "Storing api key " + authCheck.getApiKey() + " to preferences.");
-				SharedPreferences sharedPrefs = context.getSharedPreferences(PREF_API_KEY, 0);
-				SharedPreferences.Editor editor = sharedPrefs.edit();
-				editor.remove(PREF_API_KEY).putString(PREF_API_KEY, authCheck.getApiKey());
-				editor.commit();
+                AccountManager mgr = AccountManager.get(context);
+
+                // Check if account already exists
+                Account account = null;
+                for (Account acc : mgr.getAccountsByType(context.getString(R.string.acc_type)))
+                {
+                    if (acc.name.equals(result.username))
+                    {
+                        account = acc;
+                        break;
+                    }
+                }
+
+                if (account == null)
+                {
+                    account = new Account(result.username, context.getString(R.string.acc_type));
+                    mgr.addAccountExplicitly(account, authCheck.getApiKey(), null);
+                }
+                else
+                {
+                    mgr.setPassword(account, authCheck.getApiKey());
+                }
+
+                this.username = result.username;
 			}
 			else
 			{
@@ -258,4 +289,9 @@ public class AuthenticationManager
 			Log.e(this.toString(), "Failure when trying to retrieve API key!", e);
 		}
 	}
+
+    public String getUsername()
+    {
+        return username;
+    }
 }
