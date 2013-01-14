@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import org.prevoz.android.City;
 import org.prevoz.android.R;
 import org.prevoz.android.util.Database;
 
@@ -83,7 +84,7 @@ public class NotificationManager
 		return registrationId != null && registrationId.trim().length() > 0;
 	}
 	
-	public boolean isNotified(Context context, String from, String to, Calendar when) 
+	public boolean isNotified(Context context, City from, City to, Calendar when)
 	{
 		return Database.getNotificationSubscription(context, from, to, when) != null;
 	}
@@ -94,7 +95,7 @@ public class NotificationManager
 		return subscriptons;
 	}
 
-	public void disableNotification(final Context context, final String from, final String to, final Calendar when, final Handler callback) 
+	public void disableNotification(final Context context, final City from, final City to, final Calendar when, final Handler callback)
 	{
 		Log.d(this.toString(), "Disabling " + from + " - " + to  + ", " + when.toString());
 		
@@ -143,7 +144,7 @@ public class NotificationManager
 		task.execute((Void)null);
 	}
 
-	public void enableNotification(final Context context, final String from, final String to, final Calendar when, final Handler callback) 
+	public void enableNotification(final Context context, final City from, final City to, final Calendar when, final Handler callback)
 	{
 		Log.d(this.toString(), "Enabling " + from + " - " + to  + ", " + when.toString());
 		

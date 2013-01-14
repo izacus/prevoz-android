@@ -43,8 +43,10 @@ public class NotificationsActivity extends SherlockActivity implements OnItemCli
 		// Start new activity with search results
 		Intent intent = new Intent(this, SearchResultsActivity.class);
 		Bundle dataBundle = new Bundle();
-		dataBundle.putString("from", subscription.getFrom());
-		dataBundle.putString("to", subscription.getTo());
+		dataBundle.putString("from", subscription.getFrom().getDisplayName());
+        dataBundle.putString("fromCountry", subscription.getFrom().getCountryCode());
+		dataBundle.putString("to", subscription.getTo().getDisplayName());
+        dataBundle.putString("toCountry", subscription.getTo().getCountryCode());
 		dataBundle.putLong("when", subscription.getDate().getTimeInMillis());
 		intent.putExtras(dataBundle);
 		this.startActivity(intent);

@@ -33,7 +33,7 @@ public class Database
 
 		public DatabaseHelper(Context context)
 		{
-			super(context, "settings.db", null, 10);
+			super(context, "settings.db", null, 11);
 			this.storedContext = context;
 		}
 
@@ -48,8 +48,10 @@ public class Database
 					   "date DATE NOT NULL)");
 			
 			db.execSQL("CREATE TABLE IF NOT EXISTS notify_subscriptions (ID INTEGER PRIMARY KEY AUTOINCREMENT, "
-					+ "from_loc TEXT NOT NULL," 
+					+ "from_loc TEXT NOT NULL,"
+                    + "from_country TEXT NOT NULL,"
 					+ "to_loc TEXT NOT NULL,"
+                    + "to_country TEXT NOT NULL,"
 					+ "date INTEGER NOT NULL, "
 					+ "registered_date INTEGER NOT NULL)");
 
@@ -100,17 +102,22 @@ public class Database
 				
 				onCreate(db);
 			}
+            else if (oldVersion <= 10)
+            {
+                db.execSQL("ALTER TABLE notify_subscriptions ADD COLUMN from_country TEXT DEFAULT 'SI'");
+                db.execSQL("ALTER TABLE notify_subscriptions ADD COLUMN to_country TEXT DEFAULT 'SI'");
+            }
 		}
 	}
 	
-	public static NotifySubscription getNotificationSubscription(Context context, String from, String to, Calendar date)
+	public static NotifySubscription getNotificationSubscription(Context context, City from, City to, Calendar date)
 	{
 		ArrayList<NotifySubscription> subscriptions = Database.getNotificationSubscriptions(context);
 		
 		for (NotifySubscription subscription : subscriptions)
 		{
-			if (subscription.getFrom().equalsIgnoreCase(from) && 
-			    subscription.getTo().equalsIgnoreCase(to) &&
+			if (subscription.getFrom().equals(from) &&
+			    subscription.getTo().equals(to) &&
 			    subscription.getDate().get(Calendar.DATE) == date.get(Calendar.DATE) &&
 			    subscription.getDate().get(Calendar.MONTH) == date.get(Calendar.MONTH) &&
 			    subscription.getDate().get(Calendar.YEAR) == date.get(Calendar.YEAR))
@@ -125,10 +132,12 @@ public class Database
 	public static ArrayList<NotifySubscription> getNotificationSubscriptions(Context context)
 	{
 		SQLiteDatabase database = new DatabaseHelper(context).getReadableDatabase();
-		Cursor results = database.query("notify_subscriptions", new String[] { "id", "from_loc", "to_loc", "date" }, null, null, null, null, "registered_date");
+		Cursor results = database.query("notify_subscriptions", new String[] { "id", "from_loc", "from_country", "to_loc", "to_country", "date" }, null, null, null, null, "registered_date");
 		int idIndex = results.getColumnIndex("ID");
 		int fromIndex = results.getColumnIndex("from_loc");
+        int fromCountryIndex = results.getColumnIndex("from_country");
 		int toIndex = results.getColumnIndex("to_loc");
+        int toCountryIndex = results.getColumnIndex("to_country");
 		int dateIndex = results.getColumnIndex("date");
 		
 		
@@ -138,8 +147,8 @@ public class Database
 			Calendar date = Calendar.getInstance(LocaleUtil.getLocalTimezone());
 			date.setTimeInMillis(results.getLong(dateIndex));
 			NotifySubscription subscription = new NotifySubscription(results.getInt(idIndex),
-																	 results.getString(fromIndex),
-																	 results.getString(toIndex),
+																	 new City(results.getString(fromIndex), results.getString(fromCountryIndex)),
+																	 new City(results.getString(toIndex), results.getString(toCountryIndex)),
 																	 date);
 			subscriptions.add(subscription);
 		}
@@ -149,12 +158,14 @@ public class Database
 		return subscriptions;
 	}
 	
-	public static void addNotificationSubscription(Context context, String from, String to, Calendar date)
+	public static void addNotificationSubscription(Context context, City from, City to, Calendar date)
 	{
 		SQLiteDatabase database = new DatabaseHelper(context).getWritableDatabase();
 		ContentValues values  = new ContentValues();
-		values.put("from_loc", from);
-		values.put("to_loc", to);
+		values.put("from_loc", from.getDisplayName());
+        values.put("from_country", from.getCountryCode());
+		values.put("to_loc", to.getDisplayName());
+        values.put("to_country", to.getCountryCode());
 		values.put("date", date.getTimeInMillis());
 		values.put("registered_date", System.currentTimeMillis());
 		database.insert("notify_subscriptions", null, values);

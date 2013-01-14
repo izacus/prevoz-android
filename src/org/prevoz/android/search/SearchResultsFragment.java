@@ -80,7 +80,7 @@ public class SearchResultsFragment extends RoboSherlockFragment implements Loade
 		
 		if (from != null && to != null)
 		{
-			notificationEnabled = NotificationManager.getInstance(getActivity().getApplicationContext()).isNotified(getActivity(), from.getDisplayName(), to.getDisplayName(), when);
+			notificationEnabled = NotificationManager.getInstance(getActivity().getApplicationContext()).isNotified(getActivity(), from, to, when);
 		}
 		
 		getSherlockActivity().supportInvalidateOptionsMenu();
@@ -261,7 +261,7 @@ public class SearchResultsFragment extends RoboSherlockFragment implements Loade
 				}
 			};
 			
-			NotificationManager.getInstance(getActivity().getApplicationContext()).disableNotification(getActivity(), from.getDisplayName(), to.getDisplayName(), when, handler);
+			NotificationManager.getInstance(getActivity().getApplicationContext()).disableNotification(getActivity(), from, to, when, handler);
 		}
 		else
 		{
@@ -281,7 +281,7 @@ public class SearchResultsFragment extends RoboSherlockFragment implements Loade
 				}
 			};
 			
-			NotificationManager.getInstance(getActivity().getApplicationContext()).enableNotification(getActivity(), from.getDisplayName(), to.getDisplayName(), when, handler);
+			NotificationManager.getInstance(getActivity().getApplicationContext()).enableNotification(getActivity(), from, to, when, handler);
 		}
 	}
 }

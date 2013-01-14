@@ -38,10 +38,10 @@ public class NotificationRegistrationTask extends AsyncTask<Void, Void, Boolean>
 		{
 			Map<String, String> postParams = new HashMap<String, String>();
 			postParams.put("registration_id", request.getRegistrationId());
-			postParams.put("from", request.getFrom());
-			postParams.put("to", request.getTo());
-			postParams.put("fromcountry", "SI");
-			postParams.put("tocountry", "SI");
+			postParams.put("from", request.getFrom().getDisplayName());
+			postParams.put("to", request.getTo().getDisplayName());
+			postParams.put("fromcountry", request.getFrom().getCountryCode());
+			postParams.put("tocountry", request.getTo().getCountryCode());
 			
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			formatter.setTimeZone(LocaleUtil.getLocalTimezone());

@@ -1,17 +1,19 @@
 package org.prevoz.android.c2dm;
 
+import org.prevoz.android.City;
+
 import java.util.Calendar;
 
 public class NotificationRegistrationRequest 
 {
 	private String registrationId;
-	private String from;
-	private String to;
+	private City from;
+	private City to;
 	private Calendar when;
 	private boolean register;
 	
 	
-	public NotificationRegistrationRequest(String registrationId, String from, String to,
+	public NotificationRegistrationRequest(String registrationId, City from, City to,
 			Calendar when, boolean register) 
 	{
 		super();
@@ -28,12 +30,12 @@ public class NotificationRegistrationRequest
 	}
 
 
-	public String getFrom() {
+	public City getFrom() {
 		return from;
 	}
 
 
-	public String getTo() {
+	public City getTo() {
 		return to;
 	}
 
