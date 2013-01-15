@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import android.database.SQLException;
 import org.prevoz.android.City;
 import org.prevoz.android.R;
 import org.prevoz.android.Route;
@@ -33,7 +34,7 @@ public class Database
 
 		public DatabaseHelper(Context context)
 		{
-			super(context, "settings.db", null, 11);
+			super(context, "settings.db", null, 12);
 			this.storedContext = context;
 		}
 
@@ -95,19 +96,26 @@ public class Database
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 		{
-			if (oldVersion < 10)
-			{
-				db.execSQL("DROP TABLE IF EXISTS favorites");
-				db.execSQL("DROP TABLE IF EXISTS search_history");
-				
-				onCreate(db);
-			}
-            else if (oldVersion <= 10)
+            if (oldVersion < 12)
             {
-                db.execSQL("ALTER TABLE notify_subscriptions ADD COLUMN from_country TEXT DEFAULT 'SI'");
-                db.execSQL("ALTER TABLE notify_subscriptions ADD COLUMN to_country TEXT DEFAULT 'SI'");
+                db.execSQL("DROP TABLE IF EXISTS notify_subscriptions");
+                if (oldVersion < 10)
+                {
+                    db.execSQL("DROP TABLE IF EXISTS favorites");
+                    db.execSQL("DROP TABLE IF EXISTS search_history");
+                }
+
+                onCreate(db);
             }
 		}
+
+        public void recreateDb(SQLiteDatabase db)
+        {
+            db.execSQL("DROP TABLE IF EXISTS favorites");
+            db.execSQL("DROP TABLE IF EXISTS search_history");
+            db.execSQL("DROP TABLE IF EXISTS notify_subscriptions");
+            onCreate(db);
+        }
 	}
 	
 	public static NotifySubscription getNotificationSubscription(Context context, City from, City to, Calendar date)
@@ -132,30 +140,44 @@ public class Database
 	public static ArrayList<NotifySubscription> getNotificationSubscriptions(Context context)
 	{
 		SQLiteDatabase database = new DatabaseHelper(context).getReadableDatabase();
-		Cursor results = database.query("notify_subscriptions", new String[] { "id", "from_loc", "from_country", "to_loc", "to_country", "date" }, null, null, null, null, "registered_date");
-		int idIndex = results.getColumnIndex("ID");
-		int fromIndex = results.getColumnIndex("from_loc");
-        int fromCountryIndex = results.getColumnIndex("from_country");
-		int toIndex = results.getColumnIndex("to_loc");
-        int toCountryIndex = results.getColumnIndex("to_country");
-		int dateIndex = results.getColumnIndex("date");
-		
-		
-		ArrayList<NotifySubscription> subscriptions = new ArrayList<NotifySubscription>();
-		while (results.moveToNext())
-		{
-			Calendar date = Calendar.getInstance(LocaleUtil.getLocalTimezone());
-			date.setTimeInMillis(results.getLong(dateIndex));
-			NotifySubscription subscription = new NotifySubscription(results.getInt(idIndex),
-																	 new City(results.getString(fromIndex), results.getString(fromCountryIndex)),
-																	 new City(results.getString(toIndex), results.getString(toCountryIndex)),
-																	 date);
-			subscriptions.add(subscription);
-		}
-		
-		results.close();
-		database.close();
-		return subscriptions;
+        try
+        {
+            Cursor results = database.query("notify_subscriptions", new String[] { "id", "from_loc", "from_country", "to_loc", "to_country", "date" }, null, null, null, null, "registered_date");
+            int idIndex = results.getColumnIndex("ID");
+            int fromIndex = results.getColumnIndex("from_loc");
+            int fromCountryIndex = results.getColumnIndex("from_country");
+            int toIndex = results.getColumnIndex("to_loc");
+            int toCountryIndex = results.getColumnIndex("to_country");
+            int dateIndex = results.getColumnIndex("date");
+
+
+            ArrayList<NotifySubscription> subscriptions = new ArrayList<NotifySubscription>();
+            while (results.moveToNext())
+            {
+                Calendar date = Calendar.getInstance(LocaleUtil.getLocalTimezone());
+                date.setTimeInMillis(results.getLong(dateIndex));
+                NotifySubscription subscription = new NotifySubscription(results.getInt(idIndex),
+                        new City(results.getString(fromIndex), results.getString(fromCountryIndex)),
+                        new City(results.getString(toIndex), results.getString(toCountryIndex)),
+                        date);
+                subscriptions.add(subscription);
+            }
+
+            results.close();
+            database.close();
+            return subscriptions;
+        }
+        catch (SQLException e)
+        {
+            database.close();
+
+            DatabaseHelper dh = new DatabaseHelper(context);
+            SQLiteDatabase db = dh.getWritableDatabase();
+            dh.recreateDb(db);
+            db.close();
+        }
+
+        return new ArrayList<NotifySubscription>();
 	}
 	
 	public static void addNotificationSubscription(Context context, City from, City to, Calendar date)

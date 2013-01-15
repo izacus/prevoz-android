@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import android.database.sqlite.SQLiteException;
 import org.prevoz.android.City;
 import org.prevoz.android.R;
 import org.prevoz.android.util.Database;
@@ -86,7 +87,18 @@ public class NotificationManager
 	
 	public boolean isNotified(Context context, City from, City to, Calendar when)
 	{
-		return Database.getNotificationSubscription(context, from, to, when) != null;
+        boolean notify = false;
+
+        try
+        {
+            notify = (Database.getNotificationSubscription(context, from, to, when) != null);
+        }
+        catch (SQLiteException e)
+        {
+            Log.e(this.toString(), "Failed to get notification status!");
+        }
+
+        return notify;
 	}
 	
 	public List<NotifySubscription> getNotificationSubscriptions(Context context)

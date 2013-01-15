@@ -2,7 +2,7 @@
 <resources>
 	<!-- General application data -->
     <string name="app_name">Prevoz</string>
-    <string name="app_version">2.3</string>
+    <string name="app_version">2.3.1</string>
     <string name="acc_type">org.prevoz.account</string>
     <string name="flurry_apikey">YU4UUAB4JW592B4LFML8</string>
     

@@ -2,6 +2,7 @@ package org.prevoz.android.search;
 
 import java.util.Calendar;
 
+import android.database.sqlite.SQLiteException;
 import org.prevoz.android.City;
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
@@ -77,11 +78,12 @@ public class SearchResultsFragment extends RoboSherlockFragment implements Loade
 		showView(DisplayScreens.RESULTS_SCREEN);
 		
 		notificationEnabled = false;
-		
-		if (from != null && to != null)
-		{
-			notificationEnabled = NotificationManager.getInstance(getActivity().getApplicationContext()).isNotified(getActivity(), from, to, when);
-		}
+
+
+        if (from != null && to != null)
+        {
+            notificationEnabled = NotificationManager.getInstance(getActivity().getApplicationContext()).isNotified(getActivity(), from, to, when);
+        }
 		
 		getSherlockActivity().supportInvalidateOptionsMenu();
 		Log.d(this.toString(), "Activity created, succefully fetched data.");
