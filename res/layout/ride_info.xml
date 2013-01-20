@@ -127,22 +127,6 @@
 	     android:paddingLeft = "8dip"
 	     android:paddingRight = "8dip"
 	     >
-	   
-	     <TextView
-           android:id = "@+id/rideinfo_author" 
-           android:layout_width = "wrap_content"
-           android:layout_height = "fill_parent"
-           android:layout_alignParentTop = "true"
-           style="@style/DriverNameText" />
-           
-         <TextView
-           android:id = "@+id/rideinfo_phone" 
-           android:layout_width = "wrap_content"
-           android:layout_height = "fill_parent"
-           android:layout_below = "@id/rideinfo_author"
-           android:layout_centerVertical = "true"
-           style="@style/PhoneNumberText"
-           />
 	     
 	      <Button
            android:id = "@+id/rideinfo_sms"
@@ -168,6 +152,28 @@
 	        android:background = "@drawable/button_white"
             style = "@style/button_white_small"
 	        />
+
+           <TextView
+               android:id = "@+id/rideinfo_author"
+               android:layout_width = "wrap_content"
+               android:layout_height = "fill_parent"
+               android:layout_alignParentTop = "true"
+               android:layout_toLeftOf="@id/rideinfo_call"
+               android:ellipsize="marquee"
+               android:layout_alignParentLeft="true"
+               style="@style/DriverNameText" />
+
+           <TextView
+               android:id = "@+id/rideinfo_phone"
+               android:layout_width = "wrap_content"
+               android:layout_height = "fill_parent"
+               android:layout_below = "@id/rideinfo_author"
+               android:layout_centerVertical = "true"
+               android:layout_toLeftOf="@id/rideinfo_call"
+               android:layout_alignParentLeft="true"
+               android:ellipsize="marquee"
+               style="@style/PhoneNumberText"
+               />
 	     
 	   </RelativeLayout>
 	  
