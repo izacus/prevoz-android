@@ -34,7 +34,7 @@ public class Database
 
 		public DatabaseHelper(Context context)
 		{
-			super(context, "settings.db", null, 12);
+			super(context, "settings.db", null, 13);
 			this.storedContext = context;
 		}
 
@@ -96,15 +96,11 @@ public class Database
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 		{
-            if (oldVersion < 12)
+            if (oldVersion < 13)
             {
                 db.execSQL("DROP TABLE IF EXISTS notify_subscriptions");
-                if (oldVersion < 10)
-                {
-                    db.execSQL("DROP TABLE IF EXISTS favorites");
-                    db.execSQL("DROP TABLE IF EXISTS search_history");
-                }
-
+                db.execSQL("DROP TABLE IF EXISTS favorites");
+                db.execSQL("DROP TABLE IF EXISTS search_history");
                 onCreate(db);
             }
 		}

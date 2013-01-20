@@ -52,9 +52,8 @@ public class SearchFormFragment extends RoboSherlockFragment
 	
 	private MenuItem buttonNotifications;
 	
-	@InjectView(R.id.search_last_list)
+	// This has to be injected manually due to missing layout on some displays
 	private ListView lastSearches;
-	@InjectView(R.id.last_search_label)
 	private TextView lastSearchesLabel;
 	
 	private City from = null;
@@ -254,6 +253,8 @@ public class SearchFormFragment extends RoboSherlockFragment
 							 Bundle savedInstanceState) 
 	{		
 		View newView = inflater.inflate(R.layout.search_form_frag, container, false);
+        lastSearches = (ListView) newView.findViewById(R.id.search_last_list);
+        lastSearchesLabel = (TextView) newView.findViewById(R.id.last_search_label);
 		return newView;
 	}
 	
