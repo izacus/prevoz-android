@@ -1,5 +1,6 @@
 package org.prevoz.android.search;
 
+import android.*;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -13,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import com.actionbarsherlock.view.Menu;
@@ -21,6 +24,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.flurry.android.FlurryAgent;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import org.prevoz.android.*;
+import org.prevoz.android.R;
 import org.prevoz.android.c2dm.NotificationManager;
 import org.prevoz.android.c2dm.NotificationsActivity;
 import org.prevoz.android.my_rides.MyRidesActivity;
@@ -52,9 +56,8 @@ public class SearchFormFragment extends RoboSherlockFragment
 	
 	private MenuItem buttonNotifications;
 	
-	@InjectView(R.id.search_last_list)
+	// This has to be injected manually due to missing layout on some displays
 	private ListView lastSearches;
-	@InjectView(R.id.last_search_label)
 	private TextView lastSearchesLabel;
 	
 	private City from = null;
@@ -103,7 +106,7 @@ public class SearchFormFragment extends RoboSherlockFragment
 				startSearch();
 			}
 		});
-        updateDateButtonVisibility();
+        updateDateButtonVisibility(false);
 	}
 	
 	private void populateLastSearchList()
@@ -133,7 +136,7 @@ public class SearchFormFragment extends RoboSherlockFragment
 					StringUtil.setLocationButtonText(buttonFrom, route.getFrom(), getString(R.string.all_locations));
 					to = route.getTo();
 					StringUtil.setLocationButtonText(buttonTo, route.getTo(), getString(R.string.all_locations));
-                    updateDateButtonVisibility();
+                    updateDateButtonVisibility(true);
 				}
 			});
 			
@@ -147,18 +150,68 @@ public class SearchFormFragment extends RoboSherlockFragment
 		}
 	}
 
-    private void updateDateButtonVisibility()
+    private void updateDateButtonVisibility(boolean animate)
     {
-        if ((this.from != null && !this.from.getCountryCode().equals("SI")) ||
-            (this.to != null && !this.to.getCountryCode().equals("SI")))
+        if (isItineraryInternational())
         {
-            buttonDate.setText("--");
             buttonDate.setEnabled(false);
+            if (animate && buttonDate.getVisibility() == View.VISIBLE)
+            {
+                Animation anim = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
+                anim.setDuration(300);
+                anim.setAnimationListener(new Animation.AnimationListener()
+                {
+                    @Override
+                    public void onAnimationStart(Animation animation) {}
+                    @Override
+                    public void onAnimationEnd(Animation animation)
+                    {
+                        buttonDate.setVisibility(View.GONE);
+                        labelDate.setVisibility(View.GONE);
+                    }
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {}
+                });
+
+                buttonDate.startAnimation(anim);
+                labelDate.startAnimation(anim);
+            }
+            else
+            {
+                buttonDate.setVisibility(View.GONE);
+                labelDate.setVisibility(View.GONE);
+            }
         }
         else
         {
-            setSelectedDate(this.selectedDate);
-            buttonDate.setEnabled(true);
+            if (animate && buttonDate.getVisibility() == View.GONE)
+            {
+                buttonDate.setVisibility(View.VISIBLE);
+                labelDate.setVisibility(View.VISIBLE);
+                Animation anim = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
+                anim.setDuration(300);
+                anim.setAnimationListener(new Animation.AnimationListener()
+                {
+                    @Override
+                    public void onAnimationStart(Animation animation) {}
+
+                    @Override
+                    public void onAnimationEnd(Animation animation)
+                    {
+                        buttonDate.setEnabled(true);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {}
+                });
+                buttonDate.startAnimation(anim);
+            }
+            else
+            {
+                buttonDate.setVisibility(View.VISIBLE);
+                buttonDate.setEnabled(true);
+                labelDate.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -254,6 +307,8 @@ public class SearchFormFragment extends RoboSherlockFragment
 							 Bundle savedInstanceState) 
 	{		
 		View newView = inflater.inflate(R.layout.search_form_frag, container, false);
+        lastSearches = (ListView) newView.findViewById(R.id.search_last_list);
+        lastSearchesLabel = (TextView) newView.findViewById(R.id.last_search_label);
 		return newView;
 	}
 	
@@ -318,7 +373,7 @@ public class SearchFormFragment extends RoboSherlockFragment
 				return;
 		}
 
-        updateDateButtonVisibility();
+        updateDateButtonVisibility(false);
 	}
 	
 	private void startSearch()
@@ -346,7 +401,13 @@ public class SearchFormFragment extends RoboSherlockFragment
 		MainActivity mainActivity = (MainActivity) getActivity();
 		mainActivity.startSearch(from, to, selectedDate);
 	}
-	
+
+    private boolean isItineraryInternational()
+    {
+        return (this.from != null && !this.from.getCountryCode().equals("SI")) ||
+               (this.to != null && !this.to.getCountryCode().equals("SI"));
+    }
+
 	public class DatePickerFragment extends DialogFragment implements OnDateSetListener
 	{
 
