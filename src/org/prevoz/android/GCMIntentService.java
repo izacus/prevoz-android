@@ -57,13 +57,13 @@ public class GCMIntentService extends GCMBaseIntentService
 		{
 			Log.d(this.toString(), key + ":" + extras.get(key));
 		}
-		
-		String from = intent.getExtras().getString("fromcity");
-		String to = intent.getExtras().getString("tocity");
+
+        City from = new City(intent.getExtras().getString("fromcity"), intent.getExtras().getString("fromcountry"));
+        City to = new City(intent.getExtras().getString("tocity"), intent.getExtras().getString("tocountry"));
 		
 		// Create notification message:
 		NotificationManager notifyManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-		String title = getString(R.string.notify_statusbar) + " " + from + " - " + to;
+		String title = getString(R.string.notify_statusbar) + " " + from.getLocalizedName(this) + " - " + to.getLocalizedName(this);
 		
 		// Prepare search results launch intent
 		Calendar when = Calendar.getInstance(LocaleUtil.getLocalTimezone());
@@ -81,8 +81,10 @@ public class GCMIntentService extends GCMBaseIntentService
 		
 		int[] rideIds = parseRideIds(intent.getExtras().getString("rides"));
 		Intent notificationIntent = new Intent(context, SearchResultsActivity.class);
-		notificationIntent.putExtra("from", from);
-		notificationIntent.putExtra("to", to);
+		notificationIntent.putExtra("from", from.getDisplayName());
+        notificationIntent.putExtra("from_country", from.getCountryCode());
+		notificationIntent.putExtra("to", to.getDisplayName());
+        notificationIntent.putExtra("to_country", to.getCountryCode());
 		notificationIntent.putExtra("when", when.getTimeInMillis());
 		notificationIntent.putExtra("highlights", rideIds);
 		
