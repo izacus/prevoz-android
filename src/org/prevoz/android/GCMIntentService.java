@@ -58,8 +58,8 @@ public class GCMIntentService extends GCMBaseIntentService
 			Log.d(this.toString(), key + ":" + extras.get(key));
 		}
 
-        City from = new City(intent.getExtras().getString("fromcity"), intent.getExtras().getString("fromcountry"));
-        City to = new City(intent.getExtras().getString("tocity"), intent.getExtras().getString("tocountry"));
+        City from = new City(intent.getExtras().getString("fromcity"), intent.getExtras().getString("from_country"));
+        City to = new City(intent.getExtras().getString("tocity"), intent.getExtras().getString("to_country"));
 		
 		// Create notification message:
 		NotificationManager notifyManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
@@ -82,9 +82,9 @@ public class GCMIntentService extends GCMBaseIntentService
 		int[] rideIds = parseRideIds(intent.getExtras().getString("rides"));
 		Intent notificationIntent = new Intent(context, SearchResultsActivity.class);
 		notificationIntent.putExtra("from", from.getDisplayName());
-        notificationIntent.putExtra("from_country", from.getCountryCode());
+        notificationIntent.putExtra("fromCountry", from.getCountryCode());
 		notificationIntent.putExtra("to", to.getDisplayName());
-        notificationIntent.putExtra("to_country", to.getCountryCode());
+        notificationIntent.putExtra("toCountry", to.getCountryCode());
 		notificationIntent.putExtra("when", when.getTimeInMillis());
 		notificationIntent.putExtra("highlights", rideIds);
 		
