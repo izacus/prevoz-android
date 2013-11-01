@@ -21,8 +21,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.flurry.android.FlurryAgent;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
+
 import org.prevoz.android.*;
 import org.prevoz.android.R;
 import org.prevoz.android.c2dm.NotificationManager;
@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class SearchFormFragment extends RoboSherlockFragment 
+public class SearchFormFragment extends RoboSherlockFragment
 {
 	private static final int FROM_CITY_REQUEST = 1;
 	private static final int TO_CITY_REQUEST = 2;
@@ -229,7 +229,6 @@ public class SearchFormFragment extends RoboSherlockFragment
 		switch (item.getItemId())
 		{
 			case R.id.menu_search_myrides:
-				FlurryAgent.logEvent("SearchForm - My Rides");
 				Intent myRidesIntent = new Intent(getActivity(), MyRidesActivity.class);
 				startActivity(myRidesIntent);
 				return true;
@@ -275,7 +274,6 @@ public class SearchFormFragment extends RoboSherlockFragment
 		}
 		
 		prepareFormFields();
-		FlurryAgent.onPageView();
 	}
 
 	@Override
@@ -384,7 +382,6 @@ public class SearchFormFragment extends RoboSherlockFragment
         {
             NotConnectedDialog ncd = new NotConnectedDialog();
             ncd.show(getActivity().getSupportFragmentManager(), "NotConnected");
-            FlurryAgent.onEvent("NotConnected");
             return;
         }
 
@@ -396,8 +393,7 @@ public class SearchFormFragment extends RoboSherlockFragment
 		params.put("fromCountry", from == null ? "" : from.getCountryCode());
 		params.put("to", to == null ? "" : to.getDisplayName());
 		params.put("toCountry", to == null ? "" : to.getCountryCode());
-		FlurryAgent.logEvent("SearchForm - Search", params);
-		
+
 		MainActivity mainActivity = (MainActivity) getActivity();
 		mainActivity.startSearch(from, to, selectedDate);
 	}

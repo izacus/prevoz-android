@@ -11,7 +11,6 @@ import org.prevoz.android.util.Database;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.flurry.android.FlurryAgent;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
 public class MainActivity extends RoboSherlockFragmentActivity
@@ -81,20 +80,5 @@ public class MainActivity extends RoboSherlockFragmentActivity
 	protected void onDestroy() 
 	{
 		super.onDestroy();
-	}
-
-	@Override
-	protected void onStart() 
-	{
-		super.onStart();
-		FlurryAgent.setUseHttps(true);
-		FlurryAgent.setReportLocation(false);
-		FlurryAgent.onStartSession(this, getString(R.string.flurry_apikey));
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-		FlurryAgent.onEndSession(this);
 	}
 }

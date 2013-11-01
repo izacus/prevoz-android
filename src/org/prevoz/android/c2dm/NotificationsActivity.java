@@ -15,7 +15,6 @@ import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
-import com.flurry.android.FlurryAgent;
 
 public class NotificationsActivity extends SherlockActivity implements OnItemClickListener {
 
@@ -60,20 +59,6 @@ public class NotificationsActivity extends SherlockActivity implements OnItemCli
 		List<NotifySubscription> subscriptions = NotificationManager.getInstance(getApplicationContext()).getNotificationSubscriptions(this);
 		NotificationListAdapter adapter = new NotificationListAdapter(this, subscriptions);
 		list.setAdapter(adapter);
-	}
-	
-	@Override
-	protected void onStart() 
-	{
-		super.onStart();
-		FlurryAgent.setReportLocation(false);
-		FlurryAgent.onStartSession(this, getString(R.string.flurry_apikey));
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-		FlurryAgent.onEndSession(this);
 	}
 	
 	@Override

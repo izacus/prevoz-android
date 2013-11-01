@@ -8,7 +8,6 @@ import android.view.inputmethod.InputMethodManager;
 import org.prevoz.android.util.Database;
 import org.prevoz.android.util.GPSManager;
 
-import roboguice.inject.InjectView;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
@@ -31,13 +30,15 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
-import com.flurry.android.FlurryAgent;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
-public class CitySelectorActivity extends RoboSherlockFragmentActivity implements TextWatcher, OnItemClickListener, OnEditorActionListener
+import roboguice.inject.InjectView;
+
+public class CitySelectorActivity extends SherlockActivity implements TextWatcher, OnItemClickListener, OnEditorActionListener
 {
-	private SQLiteDatabase database = null;
+    private static final String LOG_TAG = "Prevoz.CitySelector";
+    private SQLiteDatabase database = null;
 	
 	@InjectView(R.id.city_list)
 	private ListView cityList;
@@ -103,12 +104,11 @@ public class CitySelectorActivity extends RoboSherlockFragmentActivity implement
 		List<City> cities = Database.getCitiesStartingWith(database, pattern);
 		cityList.setAdapter(new CityListAdapter(this, android.R.layout.simple_list_item_2, cities));
 
-		Log.d(this.toString(), "Populating city list with pattern " + pattern);
+		Log.d(LOG_TAG, "Populating city list with pattern " + pattern);
 	}
 
 	private void fillInCurrentLocation(final TextView view)
 	{
-		FlurryAgent.logEvent("CitySelector - GPS");
 		view.setEnabled(false);
 		
 		final String currentText = view.getText().toString();
@@ -176,7 +176,6 @@ public class CitySelectorActivity extends RoboSherlockFragmentActivity implement
 	{
 		if ((cityList.getCount() > 1) || (cityList.getCount() == 0))
 		{
-			FlurryAgent.logEvent("CitySelector - Selection Canceled");
 			setResult(RESULT_CANCELED);
 			finish();
 		}
@@ -185,7 +184,6 @@ public class CitySelectorActivity extends RoboSherlockFragmentActivity implement
 			City city = (City)(cityList.getChildAt(0).getTag());
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("city", city.getDisplayName());
-			FlurryAgent.logEvent("CitySelector - City Selected", params);
 			returnCity(city.getDisplayName(), city.getCountryCode());
 		}
 		
@@ -197,8 +195,6 @@ public class CitySelectorActivity extends RoboSherlockFragmentActivity implement
 	protected void onStart() 
 	{
 		super.onStart();
-		FlurryAgent.setReportLocation(false);
-		FlurryAgent.onStartSession(this, getString(R.string.flurry_apikey));
 	}
 	
 	
@@ -207,7 +203,6 @@ public class CitySelectorActivity extends RoboSherlockFragmentActivity implement
 	{
 		super.onStop();
 		database.close();
-		FlurryAgent.onEndSession(this);
 	}
 
 

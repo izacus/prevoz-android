@@ -2,7 +2,6 @@ package org.prevoz.android.search;
 
 import java.util.Calendar;
 
-import android.database.sqlite.SQLiteException;
 import org.prevoz.android.City;
 import org.prevoz.android.Globals;
 import org.prevoz.android.R;
@@ -35,7 +34,6 @@ import android.widget.ViewFlipper;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.flurry.android.FlurryAgent;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 
 public class SearchResultsFragment extends RoboSherlockFragment implements LoaderCallbacks<SearchResults>
@@ -87,8 +85,7 @@ public class SearchResultsFragment extends RoboSherlockFragment implements Loade
 		
 		getSherlockActivity().supportInvalidateOptionsMenu();
 		Log.d(this.toString(), "Activity created, succefully fetched data.");
-		FlurryAgent.onPageView();
-		
+
 		// Get loader for search results
 		getLoaderManager().initLoader(Globals.LOADER_SEARCH_RESULTS, null, this);
 	}

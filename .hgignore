@@ -17,3 +17,9 @@ syntax: regexp
 ^lib/c2dm-sources\.jar$
 syntax: regexp
 ^target$
+syntax: regexp
+^build$
+syntax: glob
+Prevoz.iml
+local.properties
+prevoz-android.iml

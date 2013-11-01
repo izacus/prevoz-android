@@ -21,8 +21,6 @@ import org.prevoz.android.util.StringUtil;
 import android.content.Context;
 import android.util.Log;
 
-import com.flurry.android.FlurryAgent;
-
 public class SearchResultsLoader extends AsyncLoader<SearchResults> 
 {
 	private Context context;
@@ -55,7 +53,6 @@ public class SearchResultsLoader extends AsyncLoader<SearchResults>
 		catch (IOException e)
 		{
 			Log.e(this.toString(), "Error while requesting search data!", e);
-			FlurryAgent.onError("SearchInvalid", e.getMessage(), "SearchResultsLoader");
 			AuthenticationManager.getInstance().clearAuthCookies(this.context);
 			return new SearchResults(prepareError(context.getString(R.string.network_error)));
 		}

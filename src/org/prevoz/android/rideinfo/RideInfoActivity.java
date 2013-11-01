@@ -24,13 +24,13 @@ import android.widget.ViewFlipper;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
-import com.flurry.android.FlurryAgent;
 
 public class RideInfoActivity extends SherlockFragmentActivity implements LoaderCallbacks<Ride>
 {
 	public static final String RIDE_ID = RideInfoActivity.class.toString() + ".ride_id";
-	
-	private Ride ride;
+    private static final String LOG_TAG = "Prevoz.RideInfo";
+
+    private Ride ride;
 	private RideInfoUtil rideInfoUtil;
 	public ViewFlipper rideFlipper;
 	
@@ -47,11 +47,10 @@ public class RideInfoActivity extends SherlockFragmentActivity implements Loader
 		if (getIntent().getExtras() != null)
 		{
 			int rideID = getIntent().getExtras().getInt(RIDE_ID);
-			Log.d(this.toString(), "Requesting ride info for id " + rideID);
+			Log.d(LOG_TAG, "Requesting ride info for id " + rideID);
 			getSupportLoaderManager().initLoader(rideID, null, this);
 		}
 		
-		FlurryAgent.onPageView();
 	}
 	
 	private void prepareUIElements()
@@ -67,8 +66,6 @@ public class RideInfoActivity extends SherlockFragmentActivity implements Loader
 	 */
 	private void sendSMS()
 	{
-		FlurryAgent.logEvent("RideInfo - Send SMS");
-		
 		Intent intent = null;
 		if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY))
 		{
@@ -92,8 +89,6 @@ public class RideInfoActivity extends SherlockFragmentActivity implements Loader
 	 */
 	private void callAuthor()
 	{
-		FlurryAgent.logEvent("RideInfo - Call driver");
-
 		Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + ride.getContact()));
 		this.startActivity(intent);
 	}
@@ -231,13 +226,11 @@ public class RideInfoActivity extends SherlockFragmentActivity implements Loader
 	{
 		if (code == Globals.REQUEST_SUCCESS)
 		{
-			FlurryAgent.logEvent("RideInfo - Delete Ride");
 			Toast.makeText(this, R.string.ride_deleted, Toast.LENGTH_SHORT).show();
 			finish();
 		}
 		else if (code == Globals.REQUEST_ERROR_NETWORK)
 		{
-			FlurryAgent.logEvent("RideInfo - Delete Ride Fail");
 			Toast.makeText(this, R.string.network_error, Toast.LENGTH_SHORT).show();
 			rideFlipper.showNext();
 		}
@@ -253,19 +246,5 @@ public class RideInfoActivity extends SherlockFragmentActivity implements Loader
 		}
 		
 		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
-	protected void onStart() 
-	{
-		super.onStart();
-		FlurryAgent.setReportLocation(false);
-		FlurryAgent.onStartSession(this, getString(R.string.flurry_apikey));
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-		FlurryAgent.onEndSession(this);
 	}
 }

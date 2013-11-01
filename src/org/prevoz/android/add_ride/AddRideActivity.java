@@ -31,7 +31,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -44,18 +46,15 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import com.actionbarsherlock.view.MenuItem;
-import com.flurry.android.FlurryAgent;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
-
-public class AddRideActivity extends RoboSherlockFragmentActivity
+public class AddRideActivity extends ActionBarActivity
 {
 	private static final int FROM_CITY_REQUEST = 1;
 	private static final int TO_CITY_REQUEST = 2;
 	
 	private static final String PREF_PHONE_NO = "org.prevoz.phoneno";
-	
-	private final SimpleDateFormat timeFormatter = LocaleUtil.getSimpleDateFormat("HH:mm");
+    private static final String LOG_TAG = "Prevoz.AddRide";
+
+    private final SimpleDateFormat timeFormatter = LocaleUtil.getSimpleDateFormat("HH:mm");
 	
 	private AddStateManager stateManager;
 	
@@ -140,7 +139,6 @@ public class AddRideActivity extends RoboSherlockFragmentActivity
 			}
 		};
 		
-		FlurryAgent.onPageView();
 		AuthenticationManager.getInstance().getAuthenticationStatus(this, authHandler);
 	}
 	
@@ -223,7 +221,7 @@ public class AddRideActivity extends RoboSherlockFragmentActivity
 	
 	private void authenticationStatusReceived(AuthenticationStatus status)
 	{
-		Log.i(this.toString(), "Received authentication status: " + status);
+		Log.i(LOG_TAG, "Received authentication status: " + status);
 		
 		
 		switch(status)
@@ -234,7 +232,7 @@ public class AddRideActivity extends RoboSherlockFragmentActivity
 				break;
 				
 			case NOT_AUTHENTICATED:				
-				Log.i(this.toString(), "Opening user login request...");
+				Log.i(LOG_TAG, "Opening user login request...");
 				
 				Handler loginHandler = new Handler()
 				{
@@ -292,7 +290,6 @@ public class AddRideActivity extends RoboSherlockFragmentActivity
 		{
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("error", "No From");
-			FlurryAgent.logEvent("Add - ValidationError", params);
 			showFormError(getString(R.string.add_error_enterfrom));
 			return false;
 		}
@@ -301,7 +298,6 @@ public class AddRideActivity extends RoboSherlockFragmentActivity
 		{
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("error", "No To");
-			FlurryAgent.logEvent("Add - ValidationError", params);
 			showFormError(getString(R.string.add_error_enterto));
 			return false;
 		}
@@ -311,7 +307,6 @@ public class AddRideActivity extends RoboSherlockFragmentActivity
 		{
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("error", "Date too early");
-			FlurryAgent.logEvent("Add - ValidationError", params);
 			showFormError(getString(R.string.add_error_timepast));
 			return false;
 		}
@@ -330,7 +325,6 @@ public class AddRideActivity extends RoboSherlockFragmentActivity
 			{
 				HashMap<String, String> params = new HashMap<String, String>();
 				params.put("error", "Missing / Invalid price");
-				FlurryAgent.logEvent("Add - ValidationError", params);
 				showFormError(getString(R.string.add_error_enterprice));
 				return false;
 			}
@@ -339,7 +333,6 @@ public class AddRideActivity extends RoboSherlockFragmentActivity
 			{
 				HashMap<String, String> params = new HashMap<String, String>();
 				params.put("error", "Price outside limits");
-				FlurryAgent.logEvent("Add - ValidationError", params);
 				showFormError(getString(R.string.add_error_enterprice));
 				return false;
 			}
@@ -349,7 +342,6 @@ public class AddRideActivity extends RoboSherlockFragmentActivity
 		{
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("error", "Missing phone no.");
-			FlurryAgent.logEvent("Add - ValidationError", params);
 			showFormError(getString(R.string.add_error_enterphone));
 			return false;
 		}
@@ -441,23 +433,19 @@ public class AddRideActivity extends RoboSherlockFragmentActivity
 					case SendRideTask.AUTHENTICATION_ERROR:
 						
 						params.put("error", "Authentication error");
-						FlurryAgent.logEvent("Add - PostError", params);
 						authenticationStatusReceived(AuthenticationStatus.NOT_AUTHENTICATED);
 						break;
 					case SendRideTask.SERVER_ERROR:
 						params.put("error", "Server error");
-						FlurryAgent.logEvent("Add - PostError", params);
 						Toast.makeText(AddRideActivity.this, R.string.server_error, Toast.LENGTH_SHORT).show();
 						stateManager.showView(Views.FORM);
 						break;
 					case SendRideTask.SEND_ERROR:
 						params.put("error", "Send error");
-						FlurryAgent.logEvent("Add - PostError", params);
 						Toast.makeText(AddRideActivity.this, task.getErrorMessage(), Toast.LENGTH_SHORT).show();
 						stateManager.showView(Views.FORM);
 						break;
 					case SendRideTask.SEND_SUCCESS:
-						FlurryAgent.logEvent("Add - PostOK", params);
 						Intent rideInfo = new Intent(AddRideActivity.this, RideInfoActivity.class);
 						rideInfo.putExtra(RideInfoActivity.RIDE_ID, task.getRideId());
 						startActivity(rideInfo);
@@ -472,7 +460,7 @@ public class AddRideActivity extends RoboSherlockFragmentActivity
 	}
 	
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) 
+	public boolean onOptionsItemSelected(MenuItem item)
 	{
 		if (item.getItemId() == android.R.id.home)
 		{
@@ -512,20 +500,6 @@ public class AddRideActivity extends RoboSherlockFragmentActivity
 		
 		outState.putInt("numPpl", ((PeopleSpinnerObject)peopleSpinner.getSelectedItem()).getNumber());
 		outState.putLong("date", dateTime.getTimeInMillis());
-	}
-	
-	@Override
-	protected void onStart() 
-	{
-		super.onStart();
-		FlurryAgent.setReportLocation(false);
-		FlurryAgent.onStartSession(this, getString(R.string.flurry_apikey));
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-		FlurryAgent.onEndSession(this);
 	}
 	
 	public class DatePickerFragment extends DialogFragment implements OnDateSetListener
