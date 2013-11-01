@@ -4,7 +4,7 @@
       android:versionName="@string/app_version" 
       android:versionCode="18">
       
-<uses-sdk android:targetSdkVersion="19" android:minSdkVersion="7" />
+<uses-sdk android:targetSdkVersion="19" android:minSdkVersion="8" />
 <permission android:name="org.prevoz.android.permission.C2D_MESSAGE" android:protectionLevel="signature" />
 <!-- This app has permission to register and receive message -->
 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />

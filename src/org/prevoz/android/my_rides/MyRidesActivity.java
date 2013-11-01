@@ -32,11 +32,12 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.flurry.android.FlurryAgent;
 
 public class MyRidesActivity extends SherlockFragmentActivity implements LoaderCallbacks<SearchResults> 
 {
-	private ViewFlipper loadingFlipper;
+    private static final String LOG_TAG = "Prevoz.MyRides";
+
+    private ViewFlipper loadingFlipper;
 	private ListView ridesList;
 	private Button addRideButton;
 	private Boolean authenticated = false;
@@ -62,7 +63,6 @@ public class MyRidesActivity extends SherlockFragmentActivity implements LoaderC
 									int position, 
 									long id) 
 			{
-				FlurryAgent.logEvent("MyRides - Show Ride");
 				SearchResultViewWrapper viewWrapper = (SearchResultViewWrapper)view.getTag();
 				Intent intent = new Intent(MyRidesActivity.this, RideInfoActivity.class);
 				intent.putExtra(RideInfoActivity.RIDE_ID, viewWrapper.getRideId());
@@ -76,7 +76,6 @@ public class MyRidesActivity extends SherlockFragmentActivity implements LoaderC
 		{
 			public void onClick(View v) 
 			{
-				FlurryAgent.logEvent("MyRides - Add ride");
 				Intent intent = new Intent(MyRidesActivity.this, AddRideActivity.class);
 				startActivity(intent);
 			}
@@ -91,13 +90,12 @@ public class MyRidesActivity extends SherlockFragmentActivity implements LoaderC
 		};
 		
 		// Page display tracking
-		FlurryAgent.onPageView();
 		AuthenticationManager.getInstance().getAuthenticationStatus(this, authHandler);
 	}
 	
 	private void authenticationStatusReceived(AuthenticationStatus status)
 	{
-		Log.i(this.toString(), "Received authentication status: " + status);
+		Log.i(LOG_TAG, "Received authentication status: " + status);
 		
 		
 		switch(status)
@@ -108,7 +106,7 @@ public class MyRidesActivity extends SherlockFragmentActivity implements LoaderC
 				break;
 				
 			case NOT_AUTHENTICATED:				
-				Log.i(this.toString(), "Opening user login request...");
+				Log.i(LOG_TAG, "Opening user login request...");
 				
 				Handler loginHandler = new Handler()
 				{
@@ -150,7 +148,7 @@ public class MyRidesActivity extends SherlockFragmentActivity implements LoaderC
 
 	private void reload()
 	{
-		Log.d(this.toString(), "Reloading....");
+		Log.d(LOG_TAG, "Reloading....");
 		loadingFlipper.setDisplayedChild(0);
 		Loader<SearchResults> loader = getSupportLoaderManager().initLoader(Globals.LOADER_MYRIDES, null, this);
 		loader.forceLoad();
@@ -187,7 +185,6 @@ public class MyRidesActivity extends SherlockFragmentActivity implements LoaderC
 		switch(item.getItemId())
 		{
 			case R.id.menu_myrides_logout:
-				FlurryAgent.logEvent("MyRides - Logout");
 				AuthenticationManager.getInstance().requestLogout(this);
 				Toast.makeText(this, R.string.logout_success, Toast.LENGTH_SHORT).show();
 				finish();
@@ -200,19 +197,5 @@ public class MyRidesActivity extends SherlockFragmentActivity implements LoaderC
 			default:
 				return false;
 		}
-	}
-	
-	@Override
-	protected void onStart() 
-	{
-		super.onStart();
-		FlurryAgent.setReportLocation(false);
-		FlurryAgent.onStartSession(this, getString(R.string.flurry_apikey));
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-		FlurryAgent.onEndSession(this);
 	}
 }

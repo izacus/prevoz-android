@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.actionbarsherlock.view.MenuItem;
-import com.flurry.android.FlurryAgent;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
 public class SearchResultsActivity extends RoboSherlockFragmentActivity
@@ -67,20 +66,6 @@ public class SearchResultsActivity extends RoboSherlockFragmentActivity
 	public int[] getHighlights()
 	{
 		return highlightIds;
-	}
-	
-	@Override
-	protected void onStart() 
-	{
-		super.onStart();
-		FlurryAgent.setReportLocation(false);
-		FlurryAgent.onStartSession(this, getString(R.string.flurry_apikey));
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-		FlurryAgent.onEndSession(this);
 	}
 
 	@Override

@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.actionbarsherlock.view.Window;
-import com.flurry.android.FlurryAgent;
 
 public class LoginActivity extends SherlockAccountAuthenticatorActivity
 {
@@ -128,19 +127,5 @@ public class LoginActivity extends SherlockAccountAuthenticatorActivity
 	{
 		AuthenticationManager.getInstance().notifyLoginResult(this, AuthenticationStatus.NOT_AUTHENTICATED);
 		super.onBackPressed();
-	}
-	
-	@Override
-	protected void onStart() 
-	{
-		super.onStart();
-		FlurryAgent.setReportLocation(false);
-		FlurryAgent.onStartSession(this, getString(R.string.flurry_apikey));
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-		FlurryAgent.onEndSession(this);
 	}
 }
