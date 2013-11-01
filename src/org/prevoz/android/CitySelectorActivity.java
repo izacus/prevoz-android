@@ -32,10 +32,11 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockActivity;
 
 import roboguice.inject.InjectView;
 
-public class CitySelectorActivity extends SherlockActivity implements TextWatcher, OnItemClickListener, OnEditorActionListener
+public class CitySelectorActivity extends RoboSherlockActivity implements TextWatcher, OnItemClickListener, OnEditorActionListener
 {
     private static final String LOG_TAG = "Prevoz.CitySelector";
     private SQLiteDatabase database = null;

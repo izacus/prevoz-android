@@ -44,10 +44,10 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
-public class AddRideActivity extends SherlockFragmentActivity
+public class AddRideActivity extends RoboSherlockFragmentActivity
 {
 	private static final int FROM_CITY_REQUEST = 1;
 	private static final int TO_CITY_REQUEST = 2;

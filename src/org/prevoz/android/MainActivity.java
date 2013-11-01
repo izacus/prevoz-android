@@ -3,6 +3,7 @@ package org.prevoz.android;
 import java.util.Calendar;
 
 import org.prevoz.android.auth.AuthenticationManager;
+import org.prevoz.android.c2dm.GCMTools;
 import org.prevoz.android.c2dm.NotificationManager;
 import org.prevoz.android.search.SearchFormFragment;
 import org.prevoz.android.search.SearchResultsActivity;
@@ -54,6 +55,9 @@ public class MainActivity extends RoboSherlockFragmentActivity
 		// Sanitize search database
 		Database.deleteHistoryEntries(this, 10);
 		setContentView(R.layout.main_activity);
+
+        GCMTools.checkRegisterGCM(this);
+
 		// Refresh login status for it to be ready for user
 		AuthenticationManager.getInstance().getAuthenticationStatus(this, null);
 	}

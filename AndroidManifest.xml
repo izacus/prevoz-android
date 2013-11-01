@@ -38,7 +38,6 @@
     <activity android:name=".my_rides.MyRidesActivity" android:label="@string/title_myrides" android:theme="@style/PrevozTheme" />
     <activity android:name=".c2dm.NotificationsActivity" android:label="@string/title_notifications" android:theme="@style/PrevozTheme" />
     
-    <service android:name=".GCMIntentService" />
     <service android:name=".auth.AuthenticatorService">
         <intent-filter>
             <action android:name="android.accounts.AccountAuthenticator" />
@@ -46,10 +45,9 @@
         <meta-data android:name="android.accounts.AccountAuthenticator" android:resource="@xml/authenticator" />
     </service>
     <!-- Intent receivers -->
-    <receiver android:name="com.google.android.gcm.GCMBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
+    <receiver android:name=".c2dm.NotificationsReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
 	  <intent-filter>
 	    <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-	    <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 	    <category android:name="org.prevoz.android" />
 	  </intent-filter>
     </receiver>

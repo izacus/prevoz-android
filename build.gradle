@@ -35,6 +35,7 @@ dependencies {
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
     compile 'com.android.support:support-v4:+'
     compile 'org.roboguice:roboguice:2.0'
+    compile 'com.google.inject:guice:3.0'
     compile 'com.github.rtyley:roboguice-sherlock:1.5'
     compile 'com.google.android.gms:play-services:+'
 }

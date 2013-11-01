@@ -15,8 +15,6 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.gcm.GCMRegistrar;
-
 public class NotificationManager
 {
 	public static final String GCM_PROJECT_ID = "121500391433";
@@ -47,29 +45,7 @@ public class NotificationManager
 	private String registrationId = null;
 	
 	private NotificationManager()
-	{
-		if (applicationContext != null)
-		{
-			try
-			{
-				GCMRegistrar.checkDevice(applicationContext);
-				GCMRegistrar.checkManifest(applicationContext);
-			}
-			catch(Exception e)
-			{
-				this.registrationId = null;
-				return;
-			}
-			
-			registrationId = GCMRegistrar.getRegistrationId(applicationContext);
-			Log.i(this.toString(), "Device C2DM registration string is " + registrationId);
-			
-			if (registrationId == null || registrationId.trim().length() == 0)
-			{
-				GCMRegistrar.register(applicationContext, GCM_PROJECT_ID);
-			}
-		}
-	}
+	{	}
 
 	public boolean notificationsAvailable()
 	{
@@ -78,7 +54,8 @@ public class NotificationManager
 		{
 			if (applicationContext != null)
 			{
-				registrationId = GCMRegistrar.getRegistrationId(applicationContext);
+                // TODO
+				//registrationId = GCMRegistrar.getRegistrationId(applicationContext);
 			}
 		}
 		
