@@ -1,55 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="org.prevoz.android"
-      android:versionName="@string/app_version" 
-      android:versionCode="18">
-      
-<uses-sdk android:targetSdkVersion="19" android:minSdkVersion="8" />
-<permission android:name="org.prevoz.android.permission.C2D_MESSAGE" android:protectionLevel="signature" />
-<!-- This app has permission to register and receive message -->
-<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-<uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-<uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
-<uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+	package="org.prevoz.android"
+	android:versionCode="1"
+	android:versionName="1.0" >
 
-<!-- Required permissions for C2DM services -->
-<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />    
-<uses-permission android:name="org.prevoz.android.permission.C2D_MESSAGE" />
-<uses-permission android:name="android.permission.GET_ACCOUNTS" />
-<uses-permission android:name="android.permission.WAKE_LOCK" />
+	<uses-sdk
+		android:minSdkVersion="8"
+		android:targetSdkVersion="16" />
+	
+		
 
-<uses-feature android:name="android.hardware.location" android:required="false" />
+	<application
+		android:icon="@drawable/ic_launcher"
+        android:theme="@style/AppTheme"
+		android:label="@string/app_name" >
+		<activity
+			android:name="MainActivity_"
+			android:label="@string/app_name" >
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+	</application>
 
-<application android:icon="@drawable/icon" android:label="@string/app_name" android:hardwareAccelerated="true">
-    <!-- Activities -->
-	<activity android:name="MainActivity" android:label="@string/app_name" android:theme = "@style/PrevozTheme">
-		<intent-filter>
-		    <action android:name="android.intent.action.MAIN" />
-		    <category android:name="android.intent.category.LAUNCHER" />
-		</intent-filter>
-	</activity>
-	<activity android:name=".CitySelectorActivity" android:theme="@style/PrevozTheme" android:windowSoftInputMode = "stateVisible|adjustResize" />
-    <activity android:name=".rideinfo.RideInfoActivity" android:label="@string/app_name" android:theme="@style/PrevozTheme" />
-    <activity android:name=".auth.LoginActivity" android:label="@string/title_login" android:theme="@style/PrevozTheme" />
-    <activity android:name=".search.SearchResultsActivity" android:label="@string/title_search" android:theme = "@style/PrevozTheme" />
-    <activity android:name=".add_ride.AddRideActivity" android:label="@string/title_addride" android:theme="@style/PrevozTheme" android:windowSoftInputMode="stateHidden" />
-    <activity android:name=".my_rides.MyRidesActivity" android:label="@string/title_myrides" android:theme="@style/PrevozTheme" />
-    <activity android:name=".c2dm.NotificationsActivity" android:label="@string/title_notifications" android:theme="@style/PrevozTheme" />
-    
-    <service android:name=".auth.AuthenticatorService">
-        <intent-filter>
-            <action android:name="android.accounts.AccountAuthenticator" />
-        </intent-filter>
-        <meta-data android:name="android.accounts.AccountAuthenticator" android:resource="@xml/authenticator" />
-    </service>
-    <!-- Intent receivers -->
-    <receiver android:name=".c2dm.NotificationsReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
-	  <intent-filter>
-	    <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-	    <category android:name="org.prevoz.android" />
-	  </intent-filter>
-    </receiver>
-</application>
-</manifest> 
+</manifest>
