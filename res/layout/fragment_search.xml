@@ -133,12 +133,13 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
+            android:background="@drawable/borderless_button"
             android:gravity="left|center_vertical"
             android:paddingLeft="16dp"
             android:textColor="@color/prevoztheme_color"
             android:drawableLeft="@drawable/ic_action_send"
             android:drawablePadding="8dp"
+
             android:text="Išči"
             />
 
