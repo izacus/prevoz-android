@@ -7,8 +7,7 @@ import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EActivity;
 
 @EActivity(R.layout.activity_main)
-public class MainActivity
-    extends SherlockActivity
+public class MainActivity extends SherlockActivity
 {
 
 

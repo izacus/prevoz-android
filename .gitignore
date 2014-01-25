@@ -17,6 +17,8 @@ obj/
 # Ignore gradle files
 .gradle/
 build/
+gen-external-apklibs/
+*.iml
 
 # IDEA files
 out/

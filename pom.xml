@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.prevoz.android</groupId>
 	<artifactId>Prevoz</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>3.0-SNAPSHOT</version>
 	<packaging>apk</packaging>
 	<name>Prevoz</name>
 
@@ -15,23 +15,22 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- Plugins -->
-		<android-maven-plugin.version>3.6.0</android-maven-plugin.version>
+		<android-maven-plugin.version>3.8.2</android-maven-plugin.version>
 		<maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
-		<api.platform>16</api.platform>
+		<api.platform>19</api.platform>
 
 		<!-- Dependencies -->
 		<androidannotations.version>2.7.1</androidannotations.version>
 		<actionBarSherlock.version>4.3.1</actionBarSherlock.version>
-		<android.version>4.1.1.4</android.version>
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>com.google.android</groupId>
-			<artifactId>android</artifactId>
-			<scope>provided</scope>
-			<version>${android.version}</version>
-		</dependency>
+        <dependency>
+            <groupId>android</groupId>
+            <artifactId>android</artifactId>
+            <version>4.4_r1</version>
+            <scope>provided</scope>
+        </dependency>
 		<dependency>
 			<groupId>com.googlecode.androidannotations</groupId>
 			<artifactId>androidannotations</artifactId>
