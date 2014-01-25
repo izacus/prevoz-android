@@ -1,12 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    >
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Search."
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="Iskanje"
+        style="?android:listSeparatorTextViewStyle"
         />
+
+    <!-- Search card -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/card_bg_r4"
+        android:orientation="vertical"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            >
+
+            <ImageView
+                android:id="@+id/search_ic_from"
+                android:layout_width="32dp"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:scaleType="center"
+                android:src="@drawable/ic_action_location_from"
+                />
+            
+            <ImageView
+                android:id="@+id/search_ic_dots"
+                android:layout_width="32dp"
+                android:layout_height="16dp"
+                android:layout_below="@id/search_ic_from"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_action_overflow"
+                />
+
+            <ImageView
+                android:id="@+id/search_ic_to"
+                android:layout_below="@id/search_ic_dots"
+                android:layout_width="32dp"
+                android:layout_height="40dp"
+                android:scaleType="center"
+                android:src="@drawable/ic_action_location_to"
+                />
+
+            <EditText
+                android:id="@+id/search_from"
+                android:layout_width="match_parent"
+                android:layout_toRightOf="@id/search_ic_from"
+                android:layout_alignBottom="@id/search_ic_from"
+                android:layout_height="48dp"
+                android:layout_marginLeft="8dp"
+                android:singleLine="true"
+                android:imeOptions="actionNext"
+                android:inputType="textPostalAddress"
+                android:hint="Kraj odhoda"
+                style="@style/EditTextPrevozTheme"
+                />
+
+            <EditText
+                android:id="@+id/search_to"
+                android:layout_width="match_parent"
+                android:layout_toRightOf="@id/search_ic_to"
+                android:layout_alignBottom="@id/search_ic_to"
+                android:layout_height="48dp"
+                android:layout_marginLeft="8dp"
+                android:imeOptions="actionNext"
+                android:inputType="textPostalAddress"
+                android:singleLine="true"
+                android:hint="Kraj prihoda"
+                style="@style/EditTextPrevozTheme"
+                />
+            
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/search_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:clickable="true"
+            android:orientation="horizontal"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_action_calendar_day"
+                android:scaleType="center"
+                />
+
+            <EditText
+                android:id="@+id/search_date_edit"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginLeft="8dp"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:clickable="true"
+                android:hint="Datum"
+                style="@style/EditTextPrevozTheme"
+                />
+
+         </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginTop="16dp"
+            android:layout_height="1dp"
+            android:background="#DDDDDD" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="16dp"
+            android:textColor="@color/prevoztheme_color"
+            android:drawableLeft="@drawable/ic_action_send"
+            android:drawablePadding="8dp"
+            android:text="Išči"
+            />
+
+    </LinearLayout>
 
 </LinearLayout>

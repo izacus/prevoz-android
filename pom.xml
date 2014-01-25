@@ -66,6 +66,12 @@
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
+        <dependency>
+            <groupId>com.github.flavienlaurent</groupId>
+            <artifactId>datetimepicker</artifactId>
+            <version>1.0.0</version>
+            <type>apklib</type>
+        </dependency>
 	</dependencies>
 
 	<build>
