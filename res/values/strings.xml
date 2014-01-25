@@ -1,3 +1,43 @@
 <resources>
 	<string name="app_name">Prevoz</string>
+
+    <!--  Day and month names -->
+
+    <string name="today">danes</string>
+    <string name="tomorrow">jutri</string>
+
+    <string-array name="day_names">
+        <item>Nedelja</item>
+        <item>Ponedeljek</item>
+        <item>Torek</item>
+        <item>Sreda</item>
+        <item>Četrtek</item>
+        <item>Petek</item>
+        <item>Sobota</item>
+    </string-array>
+
+    <string-array name="short_day_names">
+        <item>ned</item>
+        <item>pon</item>
+        <item>tor</item>
+        <item>sre</item>
+        <item>čet</item>
+        <item>pet</item>
+        <item>sob</item>
+    </string-array>
+
+    <string-array name="month_names">
+        <item>januar</item>
+        <item>februar</item>
+        <item>marec</item>
+        <item>april</item>
+        <item>maj</item>
+        <item>junij</item>
+        <item>julij</item>
+        <item>avgust</item>
+        <item>september</item>
+        <item>oktober</item>
+        <item>november</item>
+        <item>december</item>
+    </string-array>
 </resources>
