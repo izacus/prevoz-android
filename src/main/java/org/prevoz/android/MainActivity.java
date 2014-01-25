@@ -10,15 +10,4 @@ import com.googlecode.androidannotations.annotations.EActivity;
 public class MainActivity extends SherlockActivity
 {
 
-
-    @AfterViews
-    void afterViews() {
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater();
-        return true;
-    }
-
 }
