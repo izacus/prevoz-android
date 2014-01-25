@@ -132,4 +132,24 @@ public class LocaleUtil
         }
         return localeCache;
     }
+
+    public static String getLocalizedCountryName(Context context, String countryCode)
+    {
+        if (!localizedCountryNamesCache.containsKey(countryCode))
+        {
+            localizedCountryNamesCache.put(countryCode, Database.getLocalCountryName(context, getLocale().getLanguage(), countryCode));
+        }
+
+        return localizedCountryNamesCache.get(countryCode);
+    }
+
+    public static String getLocalizedCityName(Context context, String cityName, String countryCode)
+    {
+        if (!localizedCityNamesCache.containsKey(cityName))
+        {
+            localizedCityNamesCache.put(cityName, Database.getLocalCityName(context, cityName));
+        }
+
+        return localizedCityNamesCache.get(cityName);
+    }
 }
