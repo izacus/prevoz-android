@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style name="AutoCompleteTextViewPrevozTheme" parent="android:Widget.Holo.Light.AutoCompleteTextView">
+      <item name="android:dropDownSelector">@drawable/prevoztheme_list_selector_holo_light</item>
+	    <item name="android:background">@drawable/prevoztheme_edit_text_holo_light</item>
+  </style>
+
+  <style name="ButtonPrevozTheme" parent="android:Widget.Holo.Light.Button">
+	  <item name="android:background">@drawable/prevoztheme_btn_default_holo_light</item>
+  </style>
+
+  <style name="ImageButtonPrevozTheme" parent="android:Widget.Holo.Light.ImageButton">
+	  <item name="android:background">@drawable/prevoztheme_btn_default_holo_light</item>
+  </style>
+
+  <style name="SpinnerPrevozTheme" parent="android:Widget.Holo.Light.Spinner">
+      <item name="android:background">@drawable/prevoztheme_spinner_background_holo_light</item>
+      <item name="android:dropDownSelector">@drawable/prevoztheme_list_selector_holo_light</item>
+  </style>
+
+  <style name="ProgressBarPrevozTheme" parent="android:Widget.Holo.Light.ProgressBar.Horizontal">
+      <item name="android:progressDrawable">@drawable/prevoztheme_progress_horizontal_holo_light</item>
+      <item name="android:indeterminateDrawable">@drawable/prevoztheme_progress_indeterminate_horizontal_holo_light</item>
+  </style>
+
+  <style name="TogglePrevozTheme" parent="android:Widget.Holo.Light.Button.Toggle">
+      <item name="android:background">@drawable/prevoztheme_btn_toggle_holo_light</item>
+  </style>
+
+</resources>
