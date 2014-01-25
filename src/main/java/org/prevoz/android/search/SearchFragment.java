@@ -1,10 +1,13 @@
 package org.prevoz.android.search;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.googlecode.androidannotations.annotations.*;
 import org.prevoz.android.R;
+import org.prevoz.android.util.Database;
 import org.prevoz.android.util.LocaleUtil;
 
 import java.util.Calendar;
@@ -14,6 +17,10 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
 {
     @ViewById(R.id.search_date_edit)
     protected EditText searchDate;
+    @ViewById(R.id.search_from)
+    protected AutoCompleteTextView searchFrom;
+    @ViewById(R.id.search_to)
+    protected AutoCompleteTextView searchTo;
 
     @InstanceState
     protected Calendar selectedDate;
@@ -26,6 +33,11 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
             selectedDate = Calendar.getInstance();
             updateShownDate();
         }
+
+        // Setup autocomplete text views
+        SQLiteDatabase db = Database.getSettingsDatabase(getActivity());
+        searchFrom.setAdapter(new CityAutocompleteAdapter(getActivity(), db));
+        searchTo.setAdapter(new CityAutocompleteAdapter(getActivity(), db));
     }
 
 

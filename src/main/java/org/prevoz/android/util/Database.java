@@ -94,16 +94,8 @@ public class Database
         return new DatabaseHelper(context).getReadableDatabase();
     }
 
-    /**
-     * Returns all cities starting with string
-     *
-     * @param database
-     *            database on which to do query on (to prevent handle leaks)
-     * @param what
-     *            string to look for
-     * @return result cursos
-     */
-    public static List<City> getCitiesStartingWith(SQLiteDatabase database, String what)
+
+    public static Cursor getCityCursor(SQLiteDatabase database, String what)
     {
         // There's an Android bug when using pre-built queries with LIKE so
         // rawQuery has to be done
@@ -124,18 +116,7 @@ public class Database
                             + "ORDER BY sort_num DESC", null);
         }
 
-        ArrayList<City> cities = new ArrayList<City>();
-
-        int nameIdx = cursor.getColumnIndex("name");
-        int countryIdx = cursor.getColumnIndex("country");
-
-        while (cursor.moveToNext())
-        {
-            cities.add(new City(cursor.getString(nameIdx), cursor.getString(countryIdx)));
-        }
-
-        cursor.close();
-        return cities;
+        return cursor;
     }
 
     public static City getClosestCity(Context context, double latitude,

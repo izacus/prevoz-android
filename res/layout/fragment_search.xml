@@ -60,7 +60,7 @@
                 android:src="@drawable/ic_action_location_to"
                 />
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/search_from"
                 android:layout_width="match_parent"
                 android:layout_toRightOf="@id/search_ic_from"
@@ -74,7 +74,7 @@
                 style="@style/EditTextPrevozTheme"
                 />
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/search_to"
                 android:layout_width="match_parent"
                 android:layout_toRightOf="@id/search_ic_to"
