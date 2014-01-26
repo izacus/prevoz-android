@@ -13,6 +13,8 @@ import org.prevoz.android.search.SearchFragment;
 import org.prevoz.android.search.SearchFragment_;
 import org.prevoz.android.util.Database;
 
+import de.greenrobot.event.EventBus;
+
 @EActivity(R.layout.activity_main)
 public class MainActivity extends SherlockFragmentActivity
 {
@@ -45,5 +47,19 @@ public class MainActivity extends SherlockFragmentActivity
     protected void checkInitDatabase()
     {
         Database.getSettingsDatabase(this);
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        EventBus.getDefault().register(this);
     }
 }
