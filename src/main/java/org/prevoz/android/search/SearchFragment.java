@@ -7,10 +7,13 @@ import android.widget.EditText;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.googlecode.androidannotations.annotations.*;
 import org.prevoz.android.R;
+import org.prevoz.android.events.Events;
 import org.prevoz.android.util.Database;
 import org.prevoz.android.util.LocaleUtil;
 
 import java.util.Calendar;
+
+import de.greenrobot.event.EventBus;
 
 @EFragment(R.layout.fragment_search)
 public class SearchFragment extends Fragment implements DatePickerDialog.OnDateSetListener
@@ -58,6 +61,12 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
     protected void clickDateEdit()
     {
         clickDate();
+    }
+
+    @Click(R.id.search_button)
+    protected void clickSearch()
+    {
+        EventBus.getDefault().post(new Events.NewSearchEvent(searchFrom.getText().toString(), searchTo.getText().toString(), selectedDate));
     }
 
     @Override
