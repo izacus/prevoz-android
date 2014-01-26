@@ -7,5 +7,5 @@ import java.util.List;
 public class RestSearchResults
 {
     @SerializedName("carshare_list")
-    List<RestSearchRide> results;
+    public List<RestSearchRide> results;
 }
