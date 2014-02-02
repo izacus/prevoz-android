@@ -4,13 +4,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EFragment;
+import com.googlecode.androidannotations.annotations.InstanceState;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
@@ -20,17 +19,20 @@ import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestSearchRequest;
 import org.prevoz.android.api.rest.RestSearchResults;
+import org.prevoz.android.api.rest.RestSearchRide;
+import org.prevoz.android.events.Events;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
 
-@EFragment(R.layout.fragment_search_results)
+@EFragment(R.layout.fragment_search_list)
 public class SearchResultsFragment extends Fragment implements Callback<RestSearchResults>
 {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -40,29 +42,46 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
 
     @ViewById(R.id.search_results_list)
     protected ListView resultList;
-    @ViewById(R.id.search_results_progress)
-    protected View progressView;
-    @ViewById(R.id.search_results_container)
-    protected View resultsContainer;
+
+    @InstanceState
+    protected RestSearchResults results;
+
+    private View headerFragmentView;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        Bundle args = getArguments();
-        String from = args.getString(PARAM_SEARCH_FROM);
-        String to = args.getString(PARAM_SEARCH_TO);
-        Calendar date = Calendar.getInstance();
-        date.setTimeInMillis(args.getLong(PARAM_SEARCH_DATE));
-
-        RestSearchRequest request = new RestSearchRequest(from, "SI", to, "SI", sdf.format(date.getTime()));
-        ApiClient.getAdapter().search(request, this);
+        headerFragmentView = getLayoutInflater(savedInstanceState).inflate(R.layout.header_search_form, null, false);
     }
 
     @AfterViews
     protected void afterViews()
     {
-        ViewHelper.setAlpha(resultsContainer, 0.0f);
+        resultList.addHeaderView(headerFragmentView, null, true);
+
+        if (results == null)
+        {
+            resultList.setAdapter(new SearchResultsAdapter(getActivity(), new ArrayList<RestSearchRide>()));
+        }
+        else
+        {
+            showResults(results);
+        }
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -70,27 +89,8 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     {
         if (getActivity() == null) return;
         Log.d("Prevoz", "Response: " + response.getBody().toString());
-        resultList.setAdapter(new SearchResultsAdapter(getActivity(), restSearchResults.results));
-        setListViewHeightBasedOnChildren(resultList);
-        resultList.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw()
-            {
-                resultList.getViewTreeObserver().removeOnPreDrawListener(this);
-
-                ViewHelper.setTranslationY(resultsContainer, 300.0f);
-                ObjectAnimator containerFlyUp = ObjectAnimator.ofFloat(resultsContainer, "translationY", 0.0f);
-                ObjectAnimator containerFadeIn = ObjectAnimator.ofFloat(resultsContainer, "alpha", 0.00f, 1.0f, 1);
-                ObjectAnimator loadingFadeOut = ObjectAnimator.ofFloat(progressView, "alpha", 1.0f, 0.0f);
-
-                AnimatorSet animator = new AnimatorSet();
-                animator.setDuration(3000);
-                animator.playTogether(containerFlyUp, containerFadeIn, loadingFadeOut);
-                animator.start();
-
-                return true;
-            }
-        });
+        results = restSearchResults;
+        showResults(results);
     }
 
     @Override
@@ -99,27 +99,15 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
         Log.d("Prevoz", "Response: " + retrofitError);
     }
 
-    public static void setListViewHeightBasedOnChildren(ListView listView)
+    private void showResults(RestSearchResults results)
     {
-        ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter == null) {
-            return;
-        }
+        resultList.setAdapter(new SearchResultsAdapter(getActivity(), results.results));
+    }
 
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.AT_MOST);
-        int totalHeight = 0;
-        View view = null;
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            view = listAdapter.getView(i, view, listView);
-            if (i == 0) {
-                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
-            }
-            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += view.getMeasuredHeight();
-        }
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
-        listView.requestLayout();
+    public void onEventMainThread(Events.NewSearchEvent e)
+    {
+        Log.d("Prevoz", "Starting search for " + e.from + "-" + e.to + " [" + e.date.toString() + "]");
+        RestSearchRequest request = new RestSearchRequest(e.from, "SI", e.to, "SI", sdf.format(e.date.getTime()));
+        ApiClient.getAdapter().search(request, this);
     }
 }

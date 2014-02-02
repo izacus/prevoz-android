@@ -45,7 +45,7 @@ public class MainActivity extends SherlockFragmentActivity
         if (searchFragment == null)
         {
             FragmentTransaction transaction = fm.beginTransaction();
-            transaction.replace(R.id.main_search_form_container, new SearchFragment_(), SEARCH_FRAGMENT_TAG);
+            transaction.replace(R.id.main_search_container, new SearchResultsFragment_(), SEARCH_FRAGMENT_TAG);
             transaction.commit();
         }
     }
@@ -60,17 +60,17 @@ public class MainActivity extends SherlockFragmentActivity
     protected void onPause()
     {
         super.onPause();
-        EventBus.getDefault().unregister(this);
+ //       EventBus.getDefault().unregister(this);
     }
 
     @Override
     protected void onResume()
     {
         super.onResume();
-        EventBus.getDefault().register(this);
+//        EventBus.getDefault().register(this);
     }
 
-    public void onEventMainThread(Events.NewSearchEvent e)
+/*    public void onEventMainThread(Events.NewSearchEvent e)
     {
         Log.d("Prevoz", "Starting search for " + e.from + "-" + e.to + " [" + e.date.toString() + "]");
         SearchResultsFragment fragment = new SearchResultsFragment_();
@@ -83,5 +83,5 @@ public class MainActivity extends SherlockFragmentActivity
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_search_results_container, fragment, SEARCH_RESULTS_FRAGMENT_TAG);
         transaction.commit();
-    }
+    } */
 }

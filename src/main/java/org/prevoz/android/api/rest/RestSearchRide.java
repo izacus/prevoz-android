@@ -2,9 +2,12 @@ package org.prevoz.android.api.rest;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.prevoz.android.model.City;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class RestSearchRide
+public class RestSearchRide implements Serializable
 {
     @SerializedName("id")
     public Long id;
@@ -22,4 +25,14 @@ public class RestSearchRide
     public float price;
     @SerializedName("date_iso8601")
     public Date date;
+
+    public City getFrom()
+    {
+        return new City(fromCity, fromCountry);
+    }
+
+    public City getTo()
+    {
+        return new City(toCity, toCountry);
+    }
 }
