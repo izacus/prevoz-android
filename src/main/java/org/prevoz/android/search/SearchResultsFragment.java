@@ -66,7 +66,7 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
         }
         else
         {
-            showResults(results);
+            showResults(results, false);
         }
     }
 
@@ -90,7 +90,7 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
         if (getActivity() == null) return;
         Log.d("Prevoz", "Response: " + response.getBody().toString());
         results = restSearchResults;
-        showResults(results);
+        showResults(results, true);
     }
 
     @Override
@@ -99,7 +99,7 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
         Log.d("Prevoz", "Response: " + retrofitError);
     }
 
-    private void showResults(RestSearchResults results)
+    private void showResults(RestSearchResults results, boolean animate)
     {
         resultList.setAdapter(new SearchResultsAdapter(getActivity(), results.results));
     }
@@ -107,7 +107,6 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     public void onEventMainThread(Events.NewSearchEvent e)
     {
         Log.d("Prevoz", "Starting search for " + e.from + "-" + e.to + " [" + e.date.toString() + "]");
-        RestSearchRequest request = new RestSearchRequest(e.from, "SI", e.to, "SI", sdf.format(e.date.getTime()));
-        ApiClient.getAdapter().search(request, this);
+        ApiClient.getAdapter().search(e.from, "SI", e.to, "SI", this);
     }
 }

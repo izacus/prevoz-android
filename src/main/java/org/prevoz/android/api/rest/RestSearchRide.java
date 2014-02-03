@@ -7,7 +7,7 @@ import org.prevoz.android.model.City;
 import java.io.Serializable;
 import java.util.Date;
 
-public class RestSearchRide implements Serializable
+public class RestSearchRide implements Serializable, Comparable
 {
     @SerializedName("id")
     public Long id;
@@ -34,5 +34,16 @@ public class RestSearchRide implements Serializable
     public City getTo()
     {
         return new City(toCity, toCountry);
+    }
+
+
+    @Override
+    public int compareTo(Object another)
+    {
+        if (!(another instanceof RestSearchRide))
+            return 0;
+
+        RestSearchRide other = (RestSearchRide) another;
+        return (fromCity + toCity).compareTo(other.fromCity + other.toCity);
     }
 }
