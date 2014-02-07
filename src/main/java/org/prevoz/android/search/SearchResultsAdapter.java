@@ -82,11 +82,8 @@ public class SearchResultsAdapter extends BaseAdapter
             TextView time = (TextView) v.findViewById(R.id.item_result_time);
             time.setText(timeFormatter.format(ride.date));
 
-            TextView path = (TextView) v.findViewById(R.id.item_result_path);
-            path.setText(ride.getFrom().toString().replace(' ', '\u00A0') + " - " + ride.getTo().toString().replace(' ', '\u00A0'));      // Do not break spaces inside the city name
-
             TextView price = (TextView) v.findViewById(R.id.item_result_price);
-            price.setText(String.format(Locale.GERMAN, "%1.1f€", ride.price));
+            price.setText(String.format(Locale.GERMAN, "%1.1f €", ride.price));
 
             TextView driver = (TextView) v.findViewById(R.id.item_result_driver);
             driver.setText(ride.author);
@@ -107,6 +104,24 @@ public class SearchResultsAdapter extends BaseAdapter
             return 0;
 
         return 1;
+    }
+
+    @Override
+    public boolean isEnabled(int position)
+    {
+        return results.get(position) instanceof ResultItem;
+    }
+
+    @Override
+    public boolean hasStableIds()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean areAllItemsEnabled()
+    {
+        return false;
     }
 
     private void buildResults(List<RestSearchRide> rides)

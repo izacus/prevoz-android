@@ -21,6 +21,7 @@ import org.prevoz.android.api.rest.RestSearchRequest;
 import org.prevoz.android.api.rest.RestSearchResults;
 import org.prevoz.android.api.rest.RestSearchRide;
 import org.prevoz.android.events.Events;
+import org.prevoz.android.ui.ListFlyupAnimator;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -102,6 +103,7 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     private void showResults(RestSearchResults results, boolean animate)
     {
         resultList.setAdapter(new SearchResultsAdapter(getActivity(), results.results));
+        new ListFlyupAnimator(resultList).animate();
     }
 
     public void onEventMainThread(Events.NewSearchEvent e)

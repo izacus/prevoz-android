@@ -27,35 +27,28 @@
         >
 
         <TextView
-            android:id="@+id/item_result_path"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:fontFamily="sans-serif-thin"
-            style="?android:attr/textAppearanceSmall"
-            />
-
-        <TextView
             android:id="@+id/item_result_driver"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:gravity="top|right"
             android:layout_marginTop="2dp"
             android:textColor="@android:color/darker_gray"
             android:textStyle="italic|bold"
             style="?android:attr/textAppearanceSmall"
             />
 
-     </LinearLayout>
+        <TextView
+            android:id="@+id/item_result_price"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:gravity="bottom|right"
+            android:textColor="@color/prevoztheme_color"
+            style="?android:attr/textAppearanceListItemSmall"
+            />
 
-     <TextView
-         android:id="@+id/item_result_price"
-         android:layout_width="100dp"
-         android:layout_height="match_parent"
-         android:textStyle="bold"
-         android:gravity="bottom|right"
-         android:textColor="@color/prevoztheme_color"
-         style="?android:attr/textAppearanceListItemSmall"
-         />
+     </LinearLayout>
 
 </LinearLayout>
