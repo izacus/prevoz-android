@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import org.prevoz.android.R;
+import org.prevoz.android.api.rest.RestSearchResults;
 import org.prevoz.android.api.rest.RestSearchRide;
 import org.prevoz.android.util.LocaleUtil;
 
@@ -122,6 +123,12 @@ public class SearchResultsAdapter extends BaseAdapter
     public boolean areAllItemsEnabled()
     {
         return false;
+    }
+
+    public void setResults(List<RestSearchRide> rides)
+    {
+        buildResults(rides);
+        notifyDataSetChanged();
     }
 
     private void buildResults(List<RestSearchRide> rides)

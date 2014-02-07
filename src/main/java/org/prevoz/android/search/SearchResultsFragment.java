@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
@@ -106,7 +107,16 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
 
     private void showResults(RestSearchResults results, boolean animate)
     {
-        resultList.setAdapter(new SearchResultsAdapter(getActivity(), results.results));
+        if (resultList.getAdapter() == null)
+        {
+            resultList.setAdapter(new SearchResultsAdapter(getActivity(), results.results));
+        }
+        else
+        {
+            SearchResultsAdapter adapter = (SearchResultsAdapter) ((HeaderViewListAdapter)resultList.getAdapter()).getWrappedAdapter();
+            adapter.setResults(results.results);
+        }
+
         new ListFlyupAnimator(resultList).animate();
     }
 
