@@ -20,4 +20,6 @@ public class Events
             this.date = date;
         }
     }
+
+    public static class SearchComplete {}
 }

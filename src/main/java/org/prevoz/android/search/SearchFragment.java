@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.googlecode.androidannotations.annotations.*;
@@ -27,6 +28,8 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
     protected AutoCompleteTextView searchFrom;
     @ViewById(R.id.search_to)
     protected AutoCompleteTextView searchTo;
+    @ViewById(R.id.search_button)
+    protected Button searchButton;
 
     @InstanceState
     protected Calendar selectedDate;
@@ -69,6 +72,7 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
     @Click(R.id.search_button)
     protected void clickSearch()
     {
+        searchButton.setEnabled(false);
         InputMethodManager inputManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         View currentFocus = getActivity().getCurrentFocus();
         if (currentFocus != null)
@@ -89,5 +93,24 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
     private void updateShownDate()
     {
         searchDate.setText(LocaleUtil.localizeDate(getResources(), selectedDate));
+    }
+
+    public void onEventMainThread(Events.SearchComplete e)
+    {
+        searchButton.setEnabled(true);
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        EventBus.getDefault().register(this);
     }
 }

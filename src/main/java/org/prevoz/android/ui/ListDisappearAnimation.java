@@ -27,7 +27,7 @@ public class ListDisappearAnimation implements ViewTreeObserver.OnPreDrawListene
         for (int i = 1; i < view.getChildCount(); i++ )
         {
             final View child = view.getChildAt(i);
-            child.animate().translationY(300).alpha(0).setDuration(150).setInterpolator(new AccelerateInterpolator()).start();
+            child.animate().translationY(300).alpha(0).setDuration(150).start();
         }
 
         return true;
