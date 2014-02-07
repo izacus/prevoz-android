@@ -21,6 +21,7 @@ import org.prevoz.android.api.rest.RestSearchRequest;
 import org.prevoz.android.api.rest.RestSearchResults;
 import org.prevoz.android.api.rest.RestSearchRide;
 import org.prevoz.android.events.Events;
+import org.prevoz.android.ui.ListDisappearAnimation;
 import org.prevoz.android.ui.ListFlyupAnimator;
 
 import java.text.SimpleDateFormat;
@@ -47,6 +48,9 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     @InstanceState
     protected RestSearchResults results;
 
+    @InstanceState
+    protected boolean searching;
+
     private View headerFragmentView;
 
     @Override
@@ -59,6 +63,7 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     @AfterViews
     protected void afterViews()
     {
+        searching = false;
         resultList.addHeaderView(headerFragmentView, null, true);
 
         if (results == null)
@@ -88,6 +93,7 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     @Override
     public void success(RestSearchResults restSearchResults, Response response)
     {
+        searching = false;
         if (getActivity() == null) return;
         Log.d("Prevoz", "Response: " + response.getBody().toString());
         results = restSearchResults;
@@ -97,6 +103,7 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     @Override
     public void failure(RetrofitError retrofitError)
     {
+        searching = false;
         Log.d("Prevoz", "Response: " + retrofitError);
     }
 
@@ -108,7 +115,16 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
 
     public void onEventMainThread(Events.NewSearchEvent e)
     {
+        if (searching)
+            return;
+
+        if (resultList.getAdapter() != null)
+        {
+            new ListDisappearAnimation(resultList).animate();
+        }
+
         Log.d("Prevoz", "Starting search for " + e.from + "-" + e.to + " [" + e.date.toString() + "]");
         ApiClient.getAdapter().search(e.from, "SI", e.to, "SI", this);
+        searching = true;
     }
 }
