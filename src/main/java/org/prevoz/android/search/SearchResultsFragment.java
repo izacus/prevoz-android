@@ -33,6 +33,7 @@ import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 
 @EFragment(R.layout.fragment_search_list)
@@ -44,7 +45,7 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     public static final String PARAM_SEARCH_DATE = "SearchDate";
 
     @ViewById(R.id.search_results_list)
-    protected ListView resultList;
+    protected StickyListHeadersListView resultList;
 
     @InstanceState
     protected RestSearchResults results;
@@ -61,6 +62,8 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     @AfterViews
     protected void afterViews()
     {
+        resultList.setDivider(null);
+        resultList.setDividerHeight(0);
         resultList.addHeaderView(headerFragmentView, null, true);
 
         if (results == null)
@@ -113,7 +116,7 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
         }
         else
         {
-            SearchResultsAdapter adapter = (SearchResultsAdapter) ((HeaderViewListAdapter)resultList.getAdapter()).getWrappedAdapter();
+            SearchResultsAdapter adapter = (SearchResultsAdapter) resultList.getAdapter();
             adapter.setResults(results.results);
         }
 

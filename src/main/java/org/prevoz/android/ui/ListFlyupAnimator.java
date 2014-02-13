@@ -5,10 +5,12 @@ import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ListView;
 
-public class ListFlyupAnimator implements ViewTreeObserver.OnPreDrawListener {
-    private final ListView view;
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
-    public ListFlyupAnimator(ListView view)
+public class ListFlyupAnimator implements ViewTreeObserver.OnPreDrawListener {
+    private final StickyListHeadersListView view;
+
+    public ListFlyupAnimator(StickyListHeadersListView view)
     {
         this.view = view;
     }

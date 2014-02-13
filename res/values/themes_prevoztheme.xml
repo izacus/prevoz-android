@@ -3,7 +3,9 @@
 <!-- Generated with http://android-holo-colors.com -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <style name="PrevozTheme" parent="@style/_PrevozTheme"/>
+  <style name="PrevozTheme" parent="@style/_PrevozTheme">
+      <item name="android:windowBackground">@color/abs__background_holo_light</item>
+  </style>
 
   <style name="_PrevozTheme" parent="Theme.Sherlock.Light">
 
