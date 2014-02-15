@@ -1,18 +1,24 @@
 package org.prevoz.android.ui;
 
+import android.support.v4.view.ViewCompat;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ListView;
 
+import com.nineoldandroids.view.ViewHelper;
+import com.nineoldandroids.view.ViewPropertyAnimator;
+
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
-public class ListFlyupAnimator implements ViewTreeObserver.OnPreDrawListener {
-    private final StickyListHeadersListView view;
+public class ListFlyupAnimator implements ViewTreeObserver.OnPreDrawListener
+{
+    private final ListView view;
 
     public ListFlyupAnimator(StickyListHeadersListView view)
     {
-        this.view = view;
+        this.view = view.getWrappedList();
     }
 
     public void animate()
@@ -30,9 +36,11 @@ public class ListFlyupAnimator implements ViewTreeObserver.OnPreDrawListener {
         for (int i = 1; i < view.getChildCount(); i++ )
         {
             final View child = view.getChildAt(i);
-            child.setTranslationY(300);
-            child.setAlpha(0);
-            child.animate().translationY(0).alpha(1).setStartDelay(delay).setDuration(300).setInterpolator(new DecelerateInterpolator()).start();
+            ViewCompat.setLayerType(child, ViewCompat.LAYER_TYPE_HARDWARE, null);
+            int position = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200.0f, view.getResources().getDisplayMetrics());
+            ViewHelper.setTranslationY(child, position);
+            ViewHelper.setAlpha(child, 0);
+            ViewPropertyAnimator.animate(child).translationY(0).alpha(1).setStartDelay(delay).setDuration(300).setInterpolator(new DecelerateInterpolator()).start();
             delay += 50;
         }
 

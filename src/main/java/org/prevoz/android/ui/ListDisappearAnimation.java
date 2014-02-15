@@ -1,20 +1,24 @@
 package org.prevoz.android.ui;
 
+import android.support.v4.view.ViewCompat;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ListView;
 
+import com.nineoldandroids.view.ViewPropertyAnimator;
+
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class ListDisappearAnimation implements ViewTreeObserver.OnPreDrawListener
 {
-    private final StickyListHeadersListView view;
+    private final ListView view;
 
     public ListDisappearAnimation(StickyListHeadersListView view)
     {
-        this.view = view;
+        this.view = view.getWrappedList();
     }
 
     public void animate()
@@ -29,7 +33,9 @@ public class ListDisappearAnimation implements ViewTreeObserver.OnPreDrawListene
         for (int i = 1; i < view.getChildCount(); i++ )
         {
             final View child = view.getChildAt(i);
-            child.animate().translationY(300).alpha(0).setDuration(150).start();
+            ViewCompat.setLayerType(child, ViewCompat.LAYER_TYPE_HARDWARE, null);
+            int position = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200.0f, view.getResources().getDisplayMetrics());
+            ViewPropertyAnimator.animate(child).translationY(position).alpha(0).setDuration(150).start();
         }
 
         return true;
