@@ -8,6 +8,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.googlecode.androidannotations.annotations.*;
 import org.prevoz.android.R;
@@ -29,7 +33,14 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
     @ViewById(R.id.search_to)
     protected AutoCompleteTextView searchTo;
     @ViewById(R.id.search_button)
-    protected Button searchButton;
+    protected View searchButton;
+
+    @ViewById(R.id.search_button_text)
+    protected TextView searchButtonText;
+    @ViewById(R.id.search_button_img)
+    protected ImageView searchButtonImage;
+    @ViewById(R.id.search_button_progress)
+    protected ProgressBar searchButtonProgress;
 
     @InstanceState
     protected Calendar selectedDate;
@@ -72,7 +83,7 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
     @Click(R.id.search_button)
     protected void clickSearch()
     {
-        searchButton.setEnabled(false);
+        updateSearchButtonProgress(true);
         InputMethodManager inputManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         View currentFocus = getActivity().getCurrentFocus();
         if (currentFocus != null)
@@ -95,9 +106,17 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
         searchDate.setText(LocaleUtil.localizeDate(getResources(), selectedDate));
     }
 
+    private void updateSearchButtonProgress(boolean progressShown)
+    {
+        searchButton.setEnabled(!progressShown);
+        searchButtonImage.setVisibility(progressShown ? View.INVISIBLE : View.VISIBLE);
+        searchButtonProgress.setVisibility(progressShown ? View.VISIBLE : View.INVISIBLE);
+        searchButtonText.setText(progressShown ? "Iščem..." : "Išči");
+    }
+
     public void onEventMainThread(Events.SearchComplete e)
     {
-        searchButton.setEnabled(true);
+        updateSearchButtonProgress(false);
     }
 
     @Override
