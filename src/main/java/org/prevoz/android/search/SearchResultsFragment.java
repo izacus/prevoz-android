@@ -5,12 +5,14 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
 import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.InstanceState;
+import com.googlecode.androidannotations.annotations.ItemClick;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
@@ -22,6 +24,7 @@ import org.prevoz.android.api.rest.RestSearchRequest;
 import org.prevoz.android.api.rest.RestSearchResults;
 import org.prevoz.android.api.rest.RestSearchRide;
 import org.prevoz.android.events.Events;
+import org.prevoz.android.ride.RideInfoFragment;
 import org.prevoz.android.ui.ListDisappearAnimation;
 import org.prevoz.android.ui.ListFlyupAnimator;
 
@@ -40,9 +43,6 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 public class SearchResultsFragment extends Fragment implements Callback<RestSearchResults>
 {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    public static final String PARAM_SEARCH_FROM = "SearchFrom";
-    public static final String PARAM_SEARCH_TO = "SearchTo";
-    public static final String PARAM_SEARCH_DATE = "SearchDate";
 
     @ViewById(R.id.search_results_list)
     protected StickyListHeadersListView resultList;
@@ -51,6 +51,8 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     protected RestSearchResults results;
 
     private View headerFragmentView;
+
+    private SearchResultsAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -68,12 +70,24 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
 
         if (results == null)
         {
-            resultList.setAdapter(new SearchResultsAdapter(getActivity(), new ArrayList<RestSearchRide>()));
+            adapter = new SearchResultsAdapter(getActivity(), new ArrayList<RestSearchRide>());
+            resultList.setAdapter(adapter);
         }
         else
         {
             showResults(results, false);
         }
+
+        resultList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                RestSearchRide ride = (RestSearchRide) adapter.getItem(position - 1);
+                RideInfoFragment rideInfo = RideInfoFragment.newInstance(ride);
+                rideInfo.show(getActivity().getSupportFragmentManager(), "RideInfo");
+            }
+        });
     }
 
     @Override
@@ -112,7 +126,8 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     {
         if (resultList.getAdapter() == null)
         {
-            resultList.setAdapter(new SearchResultsAdapter(getActivity(), results.results));
+            adapter = new SearchResultsAdapter(getActivity(), results.results);
+            resultList.setAdapter(adapter);
         }
         else
         {
