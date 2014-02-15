@@ -11,7 +11,7 @@ import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.FragmentByTag;
 
-import org.prevoz.android.search.SearchFragment;
+import org.prevoz.android.search.SearchResultsFragment;
 import org.prevoz.android.search.SearchResultsFragment_;
 import org.prevoz.android.util.Database;
 
@@ -21,7 +21,7 @@ public class MainActivity extends SherlockFragmentActivity
     private static final String SEARCH_FRAGMENT_TAG = "SearchFragment";
 
     @FragmentByTag(SEARCH_FRAGMENT_TAG)
-    protected SearchFragment searchFragment;
+    protected SearchResultsFragment searchFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
