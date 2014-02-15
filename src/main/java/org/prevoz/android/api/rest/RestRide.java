@@ -37,6 +37,10 @@ public class RestRide
 
     @SerializedName("contact")
     public String phoneNumber;
+    @SerializedName("confirmed_contact")
+    public boolean phoneNumberConfirmed;
+    @SerializedName("insured")
+    public boolean insured;
     @SerializedName("author")
     public String author;
     @SerializedName("comment")
