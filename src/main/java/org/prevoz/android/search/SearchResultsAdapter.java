@@ -23,12 +23,14 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 public class SearchResultsAdapter extends BaseAdapter implements StickyListHeadersAdapter
 {
     private static final SimpleDateFormat timeFormatter = LocaleUtil.getSimpleDateFormat("HH:mm");
+    private final Context context;
 
-    private List<ResultItem> results;
+    private List<RestSearchRide> results;
     private final LayoutInflater inflater;
 
     public SearchResultsAdapter(Context context, List<RestSearchRide> results)
     {
+        this.context = context;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         buildResults(results);
     }
@@ -48,7 +50,7 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
     @Override
     public long getItemId(int position)
     {
-        return results.get(position).getId();
+        return results.get(position).id;
     }
 
     @Override
@@ -56,17 +58,12 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
     {
         View v = convertView;
 
-
-        Result result = results.get(position);
-
-        ResultItem rideItem = (ResultItem)result;
-
         if (v == null)
         {
             v = inflater.inflate(R.layout.item_search_result, parent, false);
         }
 
-        RestSearchRide ride = rideItem.ride;
+        RestSearchRide ride = results.get(position);
         TextView time = (TextView) v.findViewById(R.id.item_result_time);
         time.setText(timeFormatter.format(ride.date));
 
@@ -99,16 +96,7 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
     private void buildResults(List<RestSearchRide> rides)
     {
         Collections.sort(rides);
-
-        ArrayList<ResultItem> results = new ArrayList<ResultItem>();
-        for (RestSearchRide ride : rides)
-        {
-            ResultItem item = new ResultItem();
-            item.ride = ride;
-            results.add(item);
-        }
-
-        this.results = results;
+        this.results = rides;
     }
 
     @Override
@@ -120,35 +108,21 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
             v = inflater.inflate(R.layout.item_search_title, parent, false);
         }
 
-        ResultItem item = results.get(position);
+        RestSearchRide item = results.get(position);
         TextView titleView = (TextView) v.findViewById(R.id.search_item_title);
-        titleView.setText(item.getTitle());
+
+        String titleText = LocaleUtil.getLocalizedCityName(context, item.fromCity, item.fromCountry) +
+                           " - " +
+                           LocaleUtil.getLocalizedCityName(context, item.toCity, item.toCountry);
+
+        titleView.setText(titleText);
         return v;
     }
 
     @Override
     public long getHeaderId(int position)
     {
-        ResultItem item = results.get(position);
-        return item.ride.fromCity.hashCode() * item.ride.toCity.hashCode();
-    }
-
-
-    private interface Result
-    {
-        public long getId();
-    };
-
-    private static class ResultItem implements Result
-    {
-        RestSearchRide ride;
-
-        @Override
-        public long getId()
-        {
-            return ride.id;
-        }
-
-        public String getTitle() { return ride.fromCity + " - " + ride.toCity; }
+        RestSearchRide ride = results.get(position);
+        return (ride.fromCity.hashCode() + ride.fromCountry.hashCode()) * (ride.toCity.hashCode() + ride.toCountry.hashCode());
     }
 }
