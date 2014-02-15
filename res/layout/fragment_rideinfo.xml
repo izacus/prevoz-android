@@ -4,13 +4,15 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
     >
 
     <TextView
         android:id="@+id/rideinfo_from"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
         android:textStyle="bold"
         android:fontFamily="sans-serif-light"
         android:textSize="24sp"
@@ -21,6 +23,8 @@
         android:id="@+id/rideinfo_to"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:textStyle="bold"
         android:fontFamily="sans-serif-light"
         android:textSize="24sp"
@@ -37,7 +41,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
         >
 
         <ImageView
@@ -87,13 +93,161 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
 
-        android:fontFamily="sans-serif-light"
-        android:gravity="center_vertical"
         android:drawableLeft="@drawable/ic_action_calendar_day"
         android:drawablePadding="8dp"
 
+        android:fontFamily="sans-serif-light"
+        android:gravity="center_vertical"
         style="?android:attr/textAppearanceMedium"
         />
+
+    <FrameLayout
+        android:id="@+id/rideinfo_load_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        >
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateOnly="true"
+            android:layout_gravity="center"
+            />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/rideinfo_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginTop="16dp"
+            android:layout_height="1dp"
+            android:background="#DDDDDD" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal"
+            >
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_action_phone_start"
+                android:drawableLeft="@drawable/ic_action_phone_start"
+                android:scaleType="center"
+                />
+
+            <TextView
+                android:id="@+id/rideinfo_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="6dp"
+
+                android:fontFamily="sans-serif-light"
+                android:gravity="center_vertical"
+                style="?android:attr/textAppearanceMedium"
+                />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_action_users"
+                android:drawableLeft="@drawable/ic_action_phone_start"
+                android:scaleType="center"
+                />
+
+            <TextView
+                android:id="@+id/rideinfo_people"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="6dp"
+
+                android:fontFamily="sans-serif-light"
+                android:gravity="center_vertical"
+                style="?android:attr/textAppearanceMedium"
+                />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/rideinfo_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif-thin"
+            style="?android:attr/textAppearanceSmall"
+            />
+
+        <TextView
+            android:id="@+id/rideinfo_driver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|right"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:textColor="@android:color/darker_gray"
+            android:textStyle="italic|bold"
+            style="?android:attr/textAppearanceSmall"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginTop="16dp"
+            android:layout_height="1dp"
+            android:background="#DDDDDD" />
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="48dp"
+             android:orientation="horizontal"
+             >
+
+             <Button
+                 android:layout_width="0dp"
+                 android:layout_height="match_parent"
+                 android:layout_weight="1"
+                 android:textColor="@color/prevoztheme_color"
+                 android:background="@drawable/borderless_button"
+                 style="?android:textAppearanceButton"
+
+                 android:text="Pokliči"
+                 />
+
+             <Button
+                 android:layout_width="0dp"
+                 android:layout_height="match_parent"
+                 android:layout_weight="1"
+                 android:textColor="@color/prevoztheme_color"
+                 android:background="@drawable/borderless_button"
+                 style="?android:textAppearanceButton"
+
+                 android:text="Pošlji SMS"
+                 />
+
+         </LinearLayout>
+
+     </LinearLayout>
 
 </LinearLayout>
