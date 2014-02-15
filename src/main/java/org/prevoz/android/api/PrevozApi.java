@@ -12,7 +12,7 @@ import retrofit.http.Query;
 public interface PrevozApi
 {
     @GET("/search/shares")
-    public void search(@Query("f") String from, @Query("fc") String fromCountry, @Query("t") String to, @Query("tc") String toCountry, Callback<RestSearchResults> cb);
+    public void search(@Query("f") String from, @Query("fc") String fromCountry, @Query("t") String to, @Query("tc") String toCountry, @Query("d") String date, Callback<RestSearchResults> cb);
 
     @GET("/carshare/{id}/")
     public void getRide(@Path("id") String id, Callback<RestRide> cb);
