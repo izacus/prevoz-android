@@ -7,7 +7,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
 	<application
-        android:theme="@style/Theme.Prevoz" android:label="@string/app_name" >
+        android:name=".PrevozApplication"
+        android:theme="@style/Theme.Prevoz"
+        android:label="@string/app_name" >
 
 		<activity android:name="MainActivity_" >
 			<intent-filter>
