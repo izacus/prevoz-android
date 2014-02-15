@@ -111,7 +111,7 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
         searchButton.setEnabled(!progressShown);
         searchButtonImage.setVisibility(progressShown ? View.INVISIBLE : View.VISIBLE);
         searchButtonProgress.setVisibility(progressShown ? View.VISIBLE : View.INVISIBLE);
-        searchButtonText.setText(progressShown ? "Iščem..." : "Išči");
+        searchButtonText.setText(progressShown ? getString(R.string.search_form_button_searching) : getString(R.string.search_form_button_search));
     }
 
     public void onEventMainThread(Events.SearchComplete e)

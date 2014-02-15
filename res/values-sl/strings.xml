@@ -1,11 +1,18 @@
 <resources>
 	<string name="app_name">Prevoz</string>
 
-    <!--  Day and month names -->
-
     <string name="today">danes</string>
     <string name="tomorrow">jutri</string>
 
+    <!-- Search form strings -->
+    <string name="search_form_title">Iskanje</string>
+    <string name="search_form_from_hint">Kraj odhoda</string>
+    <string name="search_form_to_hint">Kraj prihoda</string>
+    <string name="search_form_date">Datum</string>
+    <string name="search_form_button_search">Išči</string>
+    <string name="search_form_button_searching">Iščem...</string>
+
+    <!--  Day and month names -->
     <string-array name="day_names">
         <item>Nedelja</item>
         <item>Ponedeljek</item>

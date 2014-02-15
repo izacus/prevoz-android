@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:text="Iskanje"
+        android:text="@string/search_form_title"
         style="?android:listSeparatorTextViewStyle"
         />
 
@@ -71,7 +71,7 @@
                 android:singleLine="true"
                 android:imeOptions="actionNext"
                 android:inputType="textPostalAddress"
-                android:hint="Kraj odhoda"
+                android:hint="@string/search_form_from_hint"
                 style="@style/EditTextPrevozTheme"
                 />
 
@@ -85,7 +85,7 @@
                 android:imeOptions="actionNext"
                 android:inputType="textPostalAddress"
                 android:singleLine="true"
-                android:hint="Kraj prihoda"
+                android:hint="@string/search_form_to_hint"
                 style="@style/EditTextPrevozTheme"
                 />
             
@@ -119,7 +119,7 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:clickable="true"
-                android:hint="Datum"
+                android:hint="@string/search_form_date"
                 style="@style/EditTextPrevozTheme"
                 />
 
@@ -172,7 +172,7 @@
                 android:paddingLeft="16dp"
 
                 android:textColor="@color/prevoztheme_color"
-                android:text="Išči"
+                android:text="@string/search_form_button_search"
                 style="?android:textAppearanceButton"
                 />
         </LinearLayout>
