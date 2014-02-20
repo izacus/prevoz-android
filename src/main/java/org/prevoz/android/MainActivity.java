@@ -1,6 +1,7 @@
 
 package org.prevoz.android;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,6 +15,9 @@ import com.googlecode.androidannotations.annotations.FragmentByTag;
 import org.prevoz.android.search.SearchResultsFragment;
 import org.prevoz.android.search.SearchResultsFragment_;
 import org.prevoz.android.util.Database;
+import org.prevoz.android.util.LocaleUtil;
+
+import java.util.Locale;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends SherlockFragmentActivity
@@ -59,5 +63,22 @@ public class MainActivity extends SherlockFragmentActivity
     protected void onResume()
     {
         super.onResume();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig)
+    {
+        Locale appLocale = LocaleUtil.getLocale();
+        if (newConfig.locale != appLocale)
+        {
+            newConfig.locale = appLocale;
+            super.onConfigurationChanged(newConfig);
+            Locale.setDefault(appLocale);
+            getBaseContext().getResources().updateConfiguration(newConfig, getBaseContext().getResources().getDisplayMetrics());
+        }
+        else
+        {
+            super.onConfigurationChanged(newConfig);
+        }
     }
 }

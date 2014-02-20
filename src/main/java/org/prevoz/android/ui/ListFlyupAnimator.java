@@ -7,6 +7,8 @@ import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ListView;
 
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorListenerAdapter;
 import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 
@@ -40,7 +42,20 @@ public class ListFlyupAnimator implements ViewTreeObserver.OnPreDrawListener
             int position = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200.0f, view.getResources().getDisplayMetrics());
             ViewHelper.setTranslationY(child, position);
             ViewHelper.setAlpha(child, 0);
-            ViewPropertyAnimator.animate(child).translationY(0).alpha(1).setStartDelay(delay).setDuration(300).setInterpolator(new DecelerateInterpolator()).start();
+            ViewPropertyAnimator.animate(child)
+                                    .translationY(0)
+                                    .alpha(1)
+                                    .setStartDelay(delay)
+                                    .setDuration(300)
+                                    .setInterpolator(new DecelerateInterpolator())
+                                    .setListener(new AnimatorListenerAdapter() {
+                                        @Override
+                                        public void onAnimationEnd(Animator animation)
+                                        {
+                                            ViewCompat.setLayerType(child, ViewCompat.LAYER_TYPE_NONE, null);
+                                        }
+                                    })
+                                    .start();
             delay += 50;
         }
 
