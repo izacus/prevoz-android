@@ -146,6 +146,10 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
         }
 
         Log.d("Prevoz", "Starting search for " + e.from + "-" + e.to + " [" + e.date.toString() + "]");
-        ApiClient.getAdapter().search(e.from, "SI", e.to, "SI", sdf.format(e.date.getTime()), this);
+        ApiClient.getAdapter().search(e.from == null ? null : e.from.getDisplayName(),
+                                      e.from == null ? null : e.from.getCountryCode(),
+                                      e.to == null ? null : e.to.getDisplayName(),
+                                      e.to == null ? null : e.to.getCountryCode(),
+                                      sdf.format(e.date.getTime()), this);
     }
 }

@@ -94,8 +94,15 @@ public class Database
         return new DatabaseHelper(context).getReadableDatabase();
     }
 
+    public static boolean cityExists(SQLiteDatabase database, String city)
+    {
+        Cursor cursor = database.rawQuery("SELECT _id FROM locations WHERE name = ?", new String[] { city });
+        boolean exists = cursor.getCount() > 0;
+        cursor.close();
+        return exists;
+    }
 
-    public static Cursor getCityCursor(SQLiteDatabase database, String what)
+    public static Cursor getCityCursor(SQLiteDatabase database, String what, String country)
     {
         // There's an Android bug when using pre-built queries with LIKE so
         // rawQuery has to be done
@@ -113,6 +120,7 @@ public class Database
             cursor = database.rawQuery(
                     "SELECT _id, name, country FROM locations WHERE (name LIKE '" + what
                             + "%' " + "OR name_ascii LIKE '" + what + "%') "
+                            + (country != null ? " AND country = '" + country + "' " : "")
                             + "ORDER BY sort_num DESC", null);
         }
 

@@ -1,5 +1,7 @@
 package org.prevoz.android.events;
 
+import org.prevoz.android.model.City;
+
 import java.util.Calendar;
 
 /**
@@ -9,11 +11,11 @@ public class Events
 {
     public static class NewSearchEvent
     {
-        public final String from;
-        public final String to;
+        public final City from;
+        public final City to;
         public final Calendar date;
 
-        public NewSearchEvent(String from, String to, Calendar date)
+        public NewSearchEvent(City from, City to, Calendar date)
         {
             this.from = from;
             this.to = to;

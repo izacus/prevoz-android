@@ -3,8 +3,10 @@ package org.prevoz.android.model;
 import org.prevoz.android.util.LocaleUtil;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class City implements Comparable<City>
+public class City implements Comparable<City>, Parcelable
 {
     private String displayName;
     private String countryCode;
@@ -27,7 +29,7 @@ public class City implements Comparable<City>
 
     public String getLocalizedName(Context context)
     {
-        return LocaleUtil.getLocalizedCityName(context, getDisplayName(), getCountryCode()) + (countryCode.equals("SI") ? "" : " (" + getCountryCode() + ")");
+        return LocaleUtil.getLocalizedCityName(context, getDisplayName(), getCountryCode());
     }
 
     @Override
@@ -51,4 +53,37 @@ public class City implements Comparable<City>
         City c = (City)o;
         return c.getDisplayName().equalsIgnoreCase(displayName) && c.getCountryCode().equalsIgnoreCase(countryCode);
     }
+
+
+    @Override
+    public int describeContents()
+    {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags)
+    {
+        dest.writeString(this.displayName);
+        dest.writeString(this.countryCode);
+    }
+
+    private City(Parcel in)
+    {
+        this.displayName = in.readString();
+        this.countryCode = in.readString();
+    }
+
+    public static Creator<City> CREATOR = new Creator<City>()
+    {
+        public City createFromParcel(Parcel source)
+        {
+            return new City(source);
+        }
+
+        public City[] newArray(int size)
+        {
+            return new City[size];
+        }
+    };
 }

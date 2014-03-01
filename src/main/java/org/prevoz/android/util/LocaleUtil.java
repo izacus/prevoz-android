@@ -147,9 +147,14 @@ public class LocaleUtil
     {
         if (!localizedCityNamesCache.containsKey(cityName))
         {
-            localizedCityNamesCache.put(cityName, Database.getLocalCityName(context, cityName));
+            localizedCityNamesCache.put(cityName, Database.getLocalCityName(context, cityName) + (countryCode.equals(LocaleUtil.getCurrentCountryCode()) ? "" : " (" + countryCode + ")"));
         }
 
         return localizedCityNamesCache.get(cityName);
+    }
+
+    public static String getCurrentCountryCode()
+    {
+        return "SI";
     }
 }
