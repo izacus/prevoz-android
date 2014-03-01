@@ -72,7 +72,7 @@
                 android:layout_marginLeft="8dp"
                 android:singleLine="true"
                 android:imeOptions="actionNext"
-                android:inputType="textPostalAddress"
+                android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
                 android:hint="@string/search_form_from_hint"
                 style="@style/EditTextPrevozTheme"
                 />
@@ -85,7 +85,7 @@
                 android:layout_height="48dp"
                 android:layout_marginLeft="8dp"
                 android:imeOptions="actionNext"
-                android:inputType="textPostalAddress"
+                android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
                 android:singleLine="true"
                 android:hint="@string/search_form_to_hint"
                 style="@style/EditTextPrevozTheme"

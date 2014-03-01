@@ -71,6 +71,7 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
     @Click(R.id.search_date)
     protected void clickDate()
     {
+        hideKeyboard();
         final Calendar calendar = Calendar.getInstance();
         DatePickerDialog dialog = DatePickerDialog.newInstance(this,
                                                                calendar.get(Calendar.YEAR),
@@ -91,10 +92,7 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
     protected void clickSearch()
     {
         updateSearchButtonProgress(true);
-        InputMethodManager inputManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        View currentFocus = getActivity().getCurrentFocus();
-        if (currentFocus != null)
-            inputManager.hideSoftInputFromWindow(currentFocus.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+        hideKeyboard();
         startSearch();
     }
 
@@ -105,6 +103,14 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
         selectedDate.set(Calendar.MONTH, month);
         selectedDate.set(Calendar.DAY_OF_MONTH, day);
         updateShownDate();
+    }
+
+    private void hideKeyboard()
+    {
+        InputMethodManager inputManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        View currentFocus = getActivity().getCurrentFocus();
+        if (currentFocus != null)
+            inputManager.hideSoftInputFromWindow(currentFocus.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     private void startSearch()
