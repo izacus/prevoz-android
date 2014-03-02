@@ -12,18 +12,8 @@ import java.util.Locale;
  */
 public class PrevozApplication extends Application
 {
-    @Override
-    public void onCreate()
-    {
-        super.onCreate();
-        Configuration config = getBaseContext().getResources().getConfiguration();
 
-        Locale appLocale = LocaleUtil.getLocale();
-        if (config.locale != appLocale)
-        {
-            Locale.setDefault(appLocale);
-            config.locale = appLocale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        }
-    }
+
+
+
 }

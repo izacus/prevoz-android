@@ -1,5 +1,6 @@
 package org.prevoz.android.search;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -133,6 +134,9 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
         {
             SearchResultsAdapter adapter = (SearchResultsAdapter) resultList.getAdapter();
             adapter.setResults(results.results);
+
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+                resultList.smoothScrollToPosition(1);
         }
 
         new ListFlyupAnimator(resultList).animate();

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import android.content.res.Configuration;
 import org.prevoz.android.R;
 
 import android.content.Context;
@@ -156,5 +157,16 @@ public class LocaleUtil
     public static String getCurrentCountryCode()
     {
         return "SI";
+    }
+
+    public static void checkSetLocale(Context ctx, Configuration config)
+    {
+        Locale appLocale = LocaleUtil.getLocale();
+        if (config.locale != appLocale)
+        {
+            Locale.setDefault(appLocale);
+            config.locale = appLocale;
+            ctx.getResources().updateConfiguration(config, ctx.getResources().getDisplayMetrics());
+        }
     }
 }

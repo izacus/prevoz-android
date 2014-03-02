@@ -30,6 +30,7 @@ public class MainActivity extends SherlockFragmentActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        LocaleUtil.checkSetLocale(this, getResources().getConfiguration());
         super.onCreate(savedInstanceState);
         checkInitDatabase();
     }
