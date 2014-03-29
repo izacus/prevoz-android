@@ -160,6 +160,7 @@
 
                 android:fontFamily="sans-serif-light"
                 android:gravity="center_vertical"
+                android:textIsSelectable="true"
                 style="?android:attr/textAppearanceMedium"
                 />
 
@@ -202,16 +203,23 @@
             android:textColor="@color/prevoztheme_color"
             />
 
-        <TextView
-            android:id="@+id/rideinfo_comment"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="16dp"
-            android:fontFamily="sans-serif-thin"
-            style="?android:attr/textAppearanceMedium"
-            />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/rideinfo_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:textIsSelectable="true"
+                style="?android:attr/textAppearanceMedium"
+                />
+
+         </ScrollView>
+
 
         <TextView
             android:id="@+id/rideinfo_driver"

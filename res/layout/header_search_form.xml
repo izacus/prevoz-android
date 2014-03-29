@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusable="false"
     android:focusableInTouchMode="false"
+    android:orientation="vertical"
     >
 
     <fragment
@@ -12,4 +13,41 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-</FrameLayout>
+    <FrameLayout
+        android:id="@+id/search_notify_button_container"
+        android:layout_height="44dp"
+        android:layout_width="match_parent"
+        android:background="@drawable/card_bg_r4"
+        android:visibility="gone"
+    >
+        <FrameLayout
+            android:id="@+id/search_notify_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:background="@drawable/borderless_button"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:drawableLeft="@drawable/ic_action_bell"
+                android:text="Obveščaj me o novih prevozih"
+                android:singleLine="true"
+                android:textColor="@color/prevoztheme_color"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:background="@null"
+                style="?android:attr/textAppearanceButton"
+                />
+
+        </FrameLayout>
+
+    </FrameLayout>
+
+
+</LinearLayout>

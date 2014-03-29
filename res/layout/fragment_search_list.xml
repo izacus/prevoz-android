@@ -11,7 +11,7 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:divider="@null"
-        android:listSelector="@color/prevoztheme_color"
+        android:listSelector="@drawable/search_list_selector"
         android:scrollbarStyle="outsideOverlay"
         />
 
