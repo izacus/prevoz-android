@@ -68,7 +68,16 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
         time.setText(timeFormatter.format(ride.date));
 
         TextView price = (TextView) v.findViewById(R.id.item_result_price);
-        price.setText(String.format(Locale.GERMAN, "%1.1f €", ride.price));
+
+        if (ride.price == 0)
+        {
+            price.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            price.setText(String.format(Locale.GERMAN, "%1.1f €", ride.price));
+            price.setVisibility(View.VISIBLE);
+        }
 
         TextView driver = (TextView) v.findViewById(R.id.item_result_driver);
         driver.setText(ride.author);
