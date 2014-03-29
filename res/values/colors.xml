@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="prevoztheme_color">#ec7100</color>
     <color name="prevoztheme_pressed">#44ff9300</color>
 </resources>

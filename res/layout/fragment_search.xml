@@ -74,7 +74,6 @@
                 android:imeOptions="actionNext"
                 android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
                 android:hint="@string/search_form_from_hint"
-                style="@style/EditTextPrevozTheme"
                 />
 
             <AutoCompleteTextView
@@ -88,7 +87,6 @@
                 android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
                 android:singleLine="true"
                 android:hint="@string/search_form_to_hint"
-                style="@style/EditTextPrevozTheme"
                 />
             
         </RelativeLayout>
@@ -122,7 +120,6 @@
                 android:focusableInTouchMode="false"
                 android:clickable="true"
                 android:hint="@string/search_form_date"
-                style="@style/EditTextPrevozTheme"
                 />
 
          </LinearLayout>

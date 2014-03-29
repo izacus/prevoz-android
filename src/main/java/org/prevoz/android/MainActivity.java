@@ -3,10 +3,10 @@ package org.prevoz.android;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EActivity;
@@ -20,7 +20,7 @@ import org.prevoz.android.util.LocaleUtil;
 import java.util.Locale;
 
 @EActivity(R.layout.activity_main)
-public class MainActivity extends SherlockFragmentActivity
+public class MainActivity extends FragmentActivity
 {
     private static final String SEARCH_FRAGMENT_TAG = "SearchFragment";
 
