@@ -79,7 +79,6 @@
             <version>2.1.5</version>
             <type>apklib</type>
         </dependency>
-
 	</dependencies>
 
 	<build>
