@@ -1,18 +1,23 @@
 
 package org.prevoz.android;
 
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
-import android.view.MenuItem;
+import android.view.ActionProvider;
+import android.view.ContextMenu;
+import android.view.SubMenu;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.googlecode.androidannotations.annotations.*;
 
 import org.prevoz.android.search.SearchResultsFragment;
@@ -23,7 +28,7 @@ import org.prevoz.android.util.LocaleUtil;
 import java.util.Locale;
 
 @EActivity(R.layout.activity_main)
-public class MainActivity extends ActionBarActivity
+public class MainActivity extends SherlockFragmentActivity
 {
     private static final String SEARCH_FRAGMENT_TAG = "SearchFragment";
 
@@ -111,7 +116,7 @@ public class MainActivity extends ActionBarActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        if (drawerLayoutToggle.onOptionsItemSelected(item))
+        if (drawerLayoutToggle.onOptionsItemSelected(getMenuItem(item)))
             return true;
 
         return super.onOptionsItemSelected(item);
@@ -130,5 +135,258 @@ public class MainActivity extends ActionBarActivity
     protected void clickDrawerOption(int position)
     {
 
+    }
+
+    private android.view.MenuItem getMenuItem(final MenuItem item)
+    {
+        return new android.view.MenuItem()
+        {
+
+            @Override
+            public int getItemId()
+            {
+                return item.getItemId();
+            }
+
+            @Override
+            public int getGroupId()
+            {
+                return 0;
+            }
+
+            @Override
+            public int getOrder()
+            {
+                return 0;
+            }
+
+            @Override
+            public android.view.MenuItem setTitle(CharSequence title)
+            {
+                return null;
+            }
+
+            @Override
+            public android.view.MenuItem setTitle(int title)
+            {
+                return null;
+            }
+
+            @Override
+            public CharSequence getTitle()
+            {
+                return null;
+            }
+
+            @Override
+            public android.view.MenuItem setTitleCondensed(CharSequence title)
+            {
+                return null;
+            }
+
+            @Override
+            public CharSequence getTitleCondensed()
+            {
+                return null;
+            }
+
+            @Override
+            public android.view.MenuItem setIcon(Drawable icon)
+            {
+                return null;
+            }
+
+            @Override
+            public android.view.MenuItem setIcon(int iconRes)
+            {
+                return null;
+            }
+
+            @Override
+            public Drawable getIcon()
+            {
+                return null;
+            }
+
+            @Override
+            public android.view.MenuItem setIntent(Intent intent)
+            {
+                return null;
+            }
+
+            @Override
+            public Intent getIntent()
+            {
+                return null;
+            }
+
+            @Override
+            public android.view.MenuItem setShortcut(char numericChar, char alphaChar)
+            {
+                return null;
+            }
+
+            @Override
+            public android.view.MenuItem setNumericShortcut(char numericChar)
+            {
+                return null;
+            }
+
+            @Override
+            public char getNumericShortcut()
+            {
+                return 0;
+            }
+
+            @Override
+            public android.view.MenuItem setAlphabeticShortcut(char alphaChar)
+            {
+                return null;
+            }
+
+            @Override
+            public char getAlphabeticShortcut()
+            {
+                return 0;
+            }
+
+            @Override
+            public android.view.MenuItem setCheckable(boolean checkable)
+            {
+                return null;
+            }
+
+            @Override
+            public boolean isCheckable()
+            {
+                return false;
+            }
+
+            @Override
+            public android.view.MenuItem setChecked(boolean checked)
+            {
+                return null;
+            }
+
+            @Override
+            public boolean isChecked()
+            {
+                return false;
+            }
+
+            @Override
+            public android.view.MenuItem setVisible(boolean visible)
+            {
+                return null;
+            }
+
+            @Override
+            public boolean isVisible()
+            {
+                return false;
+            }
+
+            @Override
+            public android.view.MenuItem setEnabled(boolean enabled)
+            {
+                return null;
+            }
+
+            @Override
+            public boolean isEnabled()
+            {
+                return item.isEnabled();
+            }
+
+            @Override
+            public boolean hasSubMenu()
+            {
+                return false;
+            }
+
+            @Override
+            public SubMenu getSubMenu()
+            {
+                return null;
+            }
+
+            @Override
+            public android.view.MenuItem setOnMenuItemClickListener(OnMenuItemClickListener menuItemClickListener)
+            {
+                return null;
+            }
+
+            @Override
+            public ContextMenu.ContextMenuInfo getMenuInfo()
+            {
+                return null;
+            }
+
+            @Override
+            public void setShowAsAction(int actionEnum)
+            {
+
+            }
+
+            @Override
+            public android.view.MenuItem setShowAsActionFlags(int actionEnum)
+            {
+                return null;
+            }
+
+            @Override
+            public android.view.MenuItem setActionView(View view)
+            {
+                return null;
+            }
+
+            @Override
+            public android.view.MenuItem setActionView(int resId)
+            {
+                return null;
+            }
+
+            @Override
+            public View getActionView()
+            {
+                return null;
+            }
+
+            @Override
+            public android.view.MenuItem setActionProvider(ActionProvider actionProvider)
+            {
+                return null;
+            }
+
+            @Override
+            public ActionProvider getActionProvider()
+            {
+                return null;
+            }
+
+            @Override
+            public boolean expandActionView()
+            {
+                return false;
+            }
+
+            @Override
+            public boolean collapseActionView()
+            {
+                return false;
+            }
+
+            @Override
+            public boolean isActionViewExpanded()
+            {
+                return false;
+            }
+
+            @Override
+            public android.view.MenuItem setOnActionExpandListener(OnActionExpandListener listener)
+            {
+                return null;
+            }
+        };
     }
 }
