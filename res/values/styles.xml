@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Prevoz.Theme" parent="@android:style/Theme.Holo.Light">
+    <style name="Prevoz.Theme" parent="@style/Theme.AppCompat.Light">
         <item name="android:windowBackground">@color/background_color</item>
+        <item name="android:actionBarStyle">@style/Prevoz.ActionBar.Solid</item>
+    </style>
+
+    <style name="Prevoz.ActionBar.Solid" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@drawable/ab_solid_prevoz</item>
     </style>
 </resources>

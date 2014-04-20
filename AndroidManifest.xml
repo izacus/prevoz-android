@@ -9,7 +9,10 @@
 	<application
         android:name=".PrevozApplication"
         android:theme="@style/Prevoz.Theme"
-        android:label="@string/app_name" >
+        android:label="@string/app_name"
+        android:logo="@drawable/icon_ab"
+        android:icon="@drawable/icon"
+        >
 
 		<activity android:name="MainActivity_"
                   android:configChanges="locale"

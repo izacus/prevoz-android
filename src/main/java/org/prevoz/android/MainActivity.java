@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -22,7 +23,7 @@ import org.prevoz.android.util.LocaleUtil;
 import java.util.Locale;
 
 @EActivity(R.layout.activity_main)
-public class MainActivity extends FragmentActivity
+public class MainActivity extends ActionBarActivity
 {
     private static final String SEARCH_FRAGMENT_TAG = "SearchFragment";
 
@@ -47,7 +48,7 @@ public class MainActivity extends FragmentActivity
     @AfterViews
     protected void initActivity()
     {
-        drawerLayoutToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, 0, 0);
+        drawerLayoutToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_navigation_drawer, 0, 0);
         drawerLayout.setDrawerListener(drawerLayoutToggle);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);

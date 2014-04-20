@@ -79,6 +79,19 @@
             <version>2.1.5</version>
             <type>apklib</type>
         </dependency>
+        <dependency>
+            <groupId>android.support</groupId>
+            <artifactId>compatibility-v7-appcompat</artifactId>
+            <version>19.1.0</version>
+            <type>apklib</type>
+        </dependency>
+
+        <dependency>
+            <groupId>android.support</groupId>
+            <artifactId>compatibility-v7-appcompat</artifactId>
+            <version>19.1.0</version>
+            <type>jar</type>
+        </dependency>
 	</dependencies>
 
 	<build>
