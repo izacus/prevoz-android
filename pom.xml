@@ -11,6 +11,13 @@
 	<packaging>apk</packaging>
 	<name>Prevoz</name>
 
+  <repositories>
+    <repository>
+      <id>android-personal</id>
+      <url>http://mvn.virag.si/content/groups/public/</url>
+    </repository>
+  </repositories>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
@@ -50,7 +57,7 @@
         <dependency>
             <groupId>com.github.flavienlaurent</groupId>
             <artifactId>datetimepicker</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
             <type>apklib</type>
         </dependency>
         <dependency>
