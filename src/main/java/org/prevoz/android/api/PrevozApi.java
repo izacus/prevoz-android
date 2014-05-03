@@ -2,13 +2,12 @@ package org.prevoz.android.api;
 
 
 import org.prevoz.android.api.rest.RestAccountStatus;
+import org.prevoz.android.api.rest.RestApiKey;
 import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.api.rest.RestSearchResults;
 
 import retrofit.Callback;
-import retrofit.http.GET;
-import retrofit.http.Path;
-import retrofit.http.Query;
+import retrofit.http.*;
 
 public interface PrevozApi
 {
@@ -20,4 +19,7 @@ public interface PrevozApi
 
     @GET("/accounts/status/")
     public void getAccountStatus(Callback<RestAccountStatus> cb);
+
+    @POST("/accounts/login/apikey")
+    public void loginWithApiKey(@Body RestApiKey apiKey, Callback<RestAccountStatus> cb);
 }

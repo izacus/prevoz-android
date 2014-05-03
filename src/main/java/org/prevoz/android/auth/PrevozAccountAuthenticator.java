@@ -5,6 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import org.prevoz.android.api.ApiClient;
+import org.prevoz.android.api.rest.RestAccountStatus;
+import org.prevoz.android.api.rest.RestApiKey;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class PrevozAccountAuthenticator extends AbstractAccountAuthenticator
 {
@@ -48,14 +54,16 @@ public class PrevozAccountAuthenticator extends AbstractAccountAuthenticator
     }
 
     @Override
-    public Bundle getAuthToken(AccountAuthenticatorResponse response,
+    public Bundle getAuthToken(final AccountAuthenticatorResponse response,
                                Account account,
                                String authTokenType,
                                Bundle options) throws NetworkErrorException
     {
-        Log.d(LOG_TAG, "GetAuthToken.");
-
-        return null;
+        final Bundle result = new Bundle();
+        final Intent loginActivityIntent = new Intent(ctx, LoginActivity_.class);
+        loginActivityIntent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
+        result.putParcelable(AccountManager.KEY_INTENT, loginActivityIntent);
+        return result;
     }
 
     @Override
