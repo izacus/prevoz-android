@@ -1,6 +1,7 @@
 package org.prevoz.android.events;
 
 import org.prevoz.android.model.City;
+import org.prevoz.android.model.Route;
 
 import java.util.Calendar;
 
@@ -24,4 +25,19 @@ public class Events
     }
 
     public static class SearchComplete {}
+
+    public static class SearchFillWithRoute
+    {
+        private final Route route;
+
+        public SearchFillWithRoute(Route route)
+        {
+            this.route = route;
+        }
+
+        public Route getRoute()
+        {
+            return route;
+        }
+    }
 }

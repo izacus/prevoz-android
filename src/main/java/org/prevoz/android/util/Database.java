@@ -17,6 +17,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import org.prevoz.android.model.City;
+import org.prevoz.android.model.Route;
 
 /**
  * Handles SQLite database operations
@@ -39,6 +40,13 @@ public class Database
         @Override
         public void onCreate(SQLiteDatabase db)
         {
+            db.execSQL("CREATE TABLE IF NOT EXISTS search_history (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "from_loc TEXT NOT NULL, " +
+                    "from_country TEXT NOT NULL," +
+                    "to_loc TEXT NOT NULL, " +
+                    "to_country TEXT NOT NULL," +
+                    "date DATE NOT NULL)");
+
             reloadCities(db);
             reloadCountries(db);
         }
@@ -81,9 +89,13 @@ public class Database
         {
             if (oldVersion < 14)
             {
+                if (oldVersion < 13)
+                {
+                    db.execSQL("DROP TABLE IF EXISTS search_history");
+                }
+
                 db.execSQL("DROP TABLE IF EXISTS notify_subscriptions");
                 db.execSQL("DROP TABLE IF EXISTS favorites");
-                db.execSQL("DROP TABLE IF EXISTS search_history");
                 onCreate(db);
             }
         }
@@ -93,6 +105,82 @@ public class Database
     {
         return new DatabaseHelper(context).getReadableDatabase();
     }
+
+    public static void addSearchToHistory(Context context, City from, City to, Date date)
+    {
+        Log.i("Database","Adding search to history " + from + " - " + to);
+
+        SimpleDateFormat sqlDateFormatter = LocaleUtil.getSimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SQLiteDatabase database = new DatabaseHelper(context).getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("from_loc", from == null ? "" : from.getDisplayName());
+        values.put("from_country", from == null ? "" : from.getCountryCode());
+        values.put("to_loc", to == null ? "" : to.getDisplayName());
+        values.put("to_country", to == null ? "" : to.getCountryCode());
+        values.put("date", sqlDateFormatter.format(date));
+        database.insert("search_history", null, values);
+        database.close();
+    }
+
+    public static ArrayList<Route> getLastSearches(Context context, int count)
+    {
+        Log.i("Database", "Retrieving last " + count + " search records...");
+
+        SQLiteDatabase database = new DatabaseHelper(context).getReadableDatabase();
+
+        ArrayList<Route> searches = new ArrayList<Route>();
+        Cursor results = database.query(true, "search_history", new String[] { "from_loc", "from_country", "to_loc", "to_country" }, null, null, null, null, "date DESC", String.valueOf(count));
+
+        int fromIndex = results.getColumnIndex("from_loc");
+        int fromCountry = results.getColumnIndex("from_country");
+        int toIndex = results.getColumnIndex("to_loc");
+        int toCountry = results.getColumnIndex("to_country");
+
+        while(results.moveToNext())
+        {
+            Route route = new Route(new City(results.getString(fromIndex), results.getString(fromCountry)), new City(results.getString(toIndex), results.getString(toCountry)));
+            searches.add(route);
+        }
+
+        results.close();
+        database.close();
+
+        return searches;
+    }
+
+
+    public static void deleteHistoryEntries(Context context, int min)
+    {
+        SQLiteDatabase database = new DatabaseHelper(context).getWritableDatabase();
+
+        Cursor results = database.query(true, "search_history", new String[] { "ID" }, null, null, null, null, "date DESC", null);
+
+        if (results.getCount() > min)
+        {
+            Log.i("Database", "Deleting old last search entries.");
+
+            results.move(min);
+
+            ArrayList<Integer> ids = new ArrayList<Integer>();
+
+            while(!results.isAfterLast())
+            {
+                ids.add(results.getInt(0));
+                results.moveToNext();
+            }
+
+            for (Integer id : ids)
+            {
+                database.delete("search_history", "id = ?", new String[] { String.valueOf(id) });
+            }
+        }
+
+        results.close();
+
+        database.close();
+    }
+
+
 
     public static boolean cityExists(SQLiteDatabase database, String city)
     {

@@ -20,6 +20,7 @@ import com.googlecode.androidannotations.annotations.*;
 import org.prevoz.android.R;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
+import org.prevoz.android.model.Route;
 import org.prevoz.android.util.Database;
 import org.prevoz.android.util.LocaleUtil;
 
@@ -117,8 +118,9 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
     {
         City fromCity = StringUtil.splitStringToCity(searchFrom.getText().toString());
         City toCity = StringUtil.splitStringToCity(searchTo.getText().toString());
-        EventBus.getDefault().post(new Events.NewSearchEvent(fromCity, toCity, selectedDate));
 
+        Database.addSearchToHistory(getActivity(), fromCity, toCity, selectedDate.getTime());
+        EventBus.getDefault().post(new Events.NewSearchEvent(fromCity, toCity, selectedDate));
     }
 
     private void updateShownDate()
@@ -137,6 +139,20 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
     public void onEventMainThread(Events.SearchComplete e)
     {
         updateSearchButtonProgress(false);
+    }
+
+    public void onEventMainThread(Events.SearchFillWithRoute e)
+    {
+        Route r = e.getRoute();
+        if (r.getFrom() == null)
+            searchFrom.setText("");
+        else
+            searchFrom.setText(r.getFrom().toString());
+
+        if (r.getTo() == null)
+            searchTo.setText("");
+        else
+            searchTo.setText(r.getTo().toString());
     }
 
     @Override
