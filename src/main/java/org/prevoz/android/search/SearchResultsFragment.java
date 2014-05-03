@@ -89,16 +89,6 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
         else
         {
             showResults(results, false);
-            resultList.setOnItemClickListener(new AdapterView.OnItemClickListener()
-            {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-                {
-                    RestSearchRide ride = (RestSearchRide) adapter.getItem(position - 1);
-                    RideInfoFragment rideInfo = RideInfoFragment.newInstance(ride);
-                    rideInfo.show(getActivity().getSupportFragmentManager(), "RideInfo");
-                }
-            });
         }
     }
 
@@ -143,12 +133,24 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
         }
         else
         {
-            SearchResultsAdapter adapter = (SearchResultsAdapter) resultList.getAdapter();
+            final SearchResultsAdapter adapter = (SearchResultsAdapter) resultList.getAdapter();
             adapter.setResults(results.results);
 
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
                 resultList.smoothScrollToPosition(1);
+
         }
+
+        resultList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                RestSearchRide ride = (RestSearchRide) adapter.getItem(position - 1);
+                RideInfoFragment rideInfo = RideInfoFragment.newInstance(ride);
+                rideInfo.show(getActivity().getSupportFragmentManager(), "RideInfo");
+            }
+        });
 
         new ListFlyupAnimator(resultList).animate();
     }
