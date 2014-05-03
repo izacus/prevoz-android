@@ -1,5 +1,6 @@
 <resources>
 	<string name="app_name">Prevoz</string>
+    <string name="account_type">org.prevoz.account</string>
 
     <string name="today">danes</string>
     <string name="tomorrow">jutri</string>
@@ -11,6 +12,7 @@
     <string name="search_form_date">Datum</string>
     <string name="search_form_button_search">Išči</string>
     <string name="search_form_button_searching">Iščem...</string>
+    <string name="login_title">Prijava</string>
 
     <!--  Day and month names -->
     <string-array name="day_names">

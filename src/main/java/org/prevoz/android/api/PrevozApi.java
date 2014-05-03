@@ -1,6 +1,7 @@
 package org.prevoz.android.api;
 
 
+import org.prevoz.android.api.rest.RestAccountStatus;
 import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.api.rest.RestSearchResults;
 
@@ -16,4 +17,7 @@ public interface PrevozApi
 
     @GET("/carshare/{id}/")
     public void getRide(@Path("id") String id, Callback<RestRide> cb);
+
+    @GET("/accounts/status/")
+    public void getAccountStatus(Callback<RestAccountStatus> cb);
 }

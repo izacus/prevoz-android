@@ -13,12 +13,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 
 public class ApiClient
 {
     private static RestAdapter adapter = null;
+    private static String cookies = null;
+
     static
     {
         Gson gson = new GsonBuilder()
@@ -29,6 +32,7 @@ public class ApiClient
         adapter = new RestAdapter.Builder()
                                  .setServer("https://prevoz.org/api")
                                  .setConverter(new GsonConverter(gson))
+                                 .setRequestInterceptor(new CookieSetterInterceptor())
                                  .setLogLevel(RestAdapter.LogLevel.FULL)
                                  .build();
     }
@@ -36,6 +40,11 @@ public class ApiClient
     public static PrevozApi getAdapter()
     {
         return adapter.create(PrevozApi.class);
+    }
+
+    public static void setCookies(String cookies)
+    {
+        ApiClient.cookies = cookies;
     }
 
     private static class Iso8601DateAdapter extends TypeAdapter<Date>
@@ -59,6 +68,16 @@ public class ApiClient
             {
                 throw new IOException("Invalid date encountered: " + e.getMessage());
             }
+        }
+    }
+
+    private static class CookieSetterInterceptor implements RequestInterceptor
+    {
+        @Override
+        public void intercept(RequestFacade requestFacade)
+        {
+            if (cookies != null)
+                requestFacade.addHeader("Cookie", cookies);
         }
     }
 }
