@@ -41,7 +41,7 @@
         <dependency>
             <groupId>android.support</groupId>
             <artifactId>compatibility-v4</artifactId>
-            <version>19.0.1</version>
+            <version>19.1.0</version>
         </dependency>
 		<dependency>
 			<groupId>com.googlecode.androidannotations</groupId>
@@ -55,10 +55,16 @@
 			<version>${androidannotations.version}</version>
 		</dependency>
         <dependency>
-            <groupId>com.github.flavienlaurent</groupId>
-            <artifactId>datetimepicker</artifactId>
-            <version>1.0.1</version>
-            <type>apklib</type>
+            <groupId>com.github.flavienlaurent.datetimepicker</groupId>
+            <artifactId>library</artifactId>
+            <version>0.0.1</version>
+            <type>aar</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.android.support</groupId>
+                    <artifactId>support-v4</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>de.greenrobot</groupId>
@@ -113,7 +119,7 @@
 					</sdk>
 					<!-- Proguard is not skipped by default -->
 					<proguard>
-						<skip>false</skip>
+						<skip>true</skip>
 					</proguard>
 				</configuration>
 			</plugin>
