@@ -1,6 +1,7 @@
 
 package org.prevoz.android;
 
+import android.accounts.Account;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
@@ -16,10 +17,12 @@ import android.view.SubMenu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.googlecode.androidannotations.annotations.*;
 
+import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.search.SearchResultsFragment;
 import org.prevoz.android.search.SearchResultsFragment_;
 import org.prevoz.android.util.Database;
@@ -36,11 +39,17 @@ public class MainActivity extends SherlockFragmentActivity
     protected DrawerLayout drawerLayout;
     protected ActionBarDrawerToggle drawerLayoutToggle;
 
-    @ViewById(R.id.main_left_drawer)
+    @ViewById(R.id.main_left_drawer_list)
     protected ListView leftDrawer;
+
+    @ViewById(R.id.main_left_drawer_username)
+    protected TextView leftUsername;
 
     @FragmentByTag(SEARCH_FRAGMENT_TAG)
     protected SearchResultsFragment searchFragment;
+
+    @Bean
+    protected AuthenticationUtils authUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -59,6 +68,7 @@ public class MainActivity extends SherlockFragmentActivity
         getActionBar().setHomeButtonEnabled(true);
 
         prepareDrawer();
+        checkAuthenticated();
 
         // Attach search fragment if it's missing
         FragmentManager fm = getSupportFragmentManager();
@@ -74,6 +84,20 @@ public class MainActivity extends SherlockFragmentActivity
     protected void checkInitDatabase()
     {
         Database.getSettingsDatabase(this);
+    }
+
+    @Background
+    protected void checkAuthenticated()
+    {
+        String username = authUtils.getUsername();
+        if (username != null)
+            setDrawerUsername(username);
+    }
+
+    @UiThread
+    protected void setDrawerUsername(String username)
+    {
+        leftUsername.setText(username);
     }
 
     @Override
@@ -131,7 +155,7 @@ public class MainActivity extends SherlockFragmentActivity
         leftDrawer.setAdapter(adapter);
     }
 
-    @ItemClick(R.id.main_left_drawer)
+    @ItemClick(R.id.main_left_drawer_list)
     protected void clickDrawerOption(int position)
     {
 

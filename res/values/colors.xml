@@ -2,5 +2,6 @@
 <resources>
     <color name="background_color">#fff3f3f3</color>
     <color name="prevoztheme_color">#ec7100</color>
+    <color name="prevoztheme_color_soft">#30ec7100</color>
     <color name="prevoztheme_pressed">#44ff9300</color>
 </resources>
