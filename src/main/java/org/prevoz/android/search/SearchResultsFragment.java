@@ -6,10 +6,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.HeaderViewListAdapter;
-import android.widget.ListView;
+import android.widget.*;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EFragment;
@@ -111,8 +108,17 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     {
         if (getActivity() == null) return;
         Log.d("Prevoz", "Response: " + response.getBody().toString());
-        results = restSearchResults;
-        showResults(results, true);
+
+        if (restSearchResults == null || restSearchResults.results == null)
+        {
+            results = null;
+            Toast.makeText(getActivity(), R.string.search_no_results, Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            results = restSearchResults;
+            showResults(results, true);
+        }
 
         EventBus.getDefault().post(new Events.SearchComplete());
     }

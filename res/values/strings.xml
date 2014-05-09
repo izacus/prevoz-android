@@ -13,6 +13,7 @@
     <string name="search_form_button_search">Išči</string>
     <string name="search_form_button_searching">Iščem...</string>
     <string name="login_title">Prijava</string>
+    <string name="search_no_results">Noben prevoz ni bil najden.</string>
 
     <!--  Day and month names -->
     <string-array name="day_names">
