@@ -10,11 +10,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.*;
 
-import com.googlecode.androidannotations.annotations.AfterViews;
-import com.googlecode.androidannotations.annotations.EFragment;
-import com.googlecode.androidannotations.annotations.InstanceState;
-import com.googlecode.androidannotations.annotations.ItemClick;
-import com.googlecode.androidannotations.annotations.ViewById;
+import com.googlecode.androidannotations.annotations.*;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.view.ViewHelper;
@@ -26,6 +22,7 @@ import org.prevoz.android.api.rest.RestSearchResults;
 import org.prevoz.android.api.rest.RestSearchRide;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.Route;
+import org.prevoz.android.push.PushManager;
 import org.prevoz.android.ride.RideInfoFragment;
 import org.prevoz.android.ui.ListDisappearAnimation;
 import org.prevoz.android.ui.ListFlyupAnimator;
@@ -60,6 +57,9 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
 
     private View headerFragmentView;
     private StickyListHeadersAdapter adapter;
+
+    @Bean
+    protected PushManager pushManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -171,8 +171,12 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
 
     private void showNotificationsButton()
     {
-        if (!shouldShowNotificationButton || searchNofityButton.getVisibility() == View.VISIBLE)
+        if (!shouldShowNotificationButton ||
+             searchNofityButton.getVisibility() == View.VISIBLE ||
+            !pushManager.isPushAvailable())
+        {
             return;
+        }
 
         // Show notifications button
         searchNofityButton.clearAnimation();

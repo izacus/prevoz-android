@@ -23,6 +23,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.googlecode.androidannotations.annotations.*;
 
 import org.prevoz.android.auth.AuthenticationUtils;
+import org.prevoz.android.push.PushManager;
 import org.prevoz.android.search.SearchResultsFragment;
 import org.prevoz.android.search.SearchResultsFragment_;
 import org.prevoz.android.util.Database;
@@ -50,6 +51,9 @@ public class MainActivity extends SherlockFragmentActivity
 
     @Bean
     protected AuthenticationUtils authUtils;
+
+    @Bean
+    protected PushManager pushManager;  // This is here for initialization at startup
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
