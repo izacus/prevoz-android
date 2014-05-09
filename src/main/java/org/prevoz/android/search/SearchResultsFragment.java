@@ -1,5 +1,7 @@
 package org.prevoz.android.search;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -48,11 +50,15 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     @ViewById(R.id.search_results_list)
     protected StickyListHeadersListView resultList;
 
+    protected View searchNofityButton;
+
     @InstanceState
     protected RestSearchResults results;
 
-    private View headerFragmentView;
+    @InstanceState
+    protected boolean shouldShowNotificationButton = false;
 
+    private View headerFragmentView;
     private StickyListHeadersAdapter adapter;
 
     @Override
@@ -60,6 +66,7 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     {
         super.onCreate(savedInstanceState);
         headerFragmentView = getLayoutInflater(savedInstanceState).inflate(R.layout.header_search_form, null, false);
+        searchNofityButton = headerFragmentView.findViewById(R.id.search_notify_button_container);
     }
 
     @AfterViews
@@ -158,17 +165,49 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
             }
         });
 
+        showNotificationsButton();
         new ListFlyupAnimator(resultList).animate();
+    }
+
+    private void showNotificationsButton()
+    {
+        if (!shouldShowNotificationButton || searchNofityButton.getVisibility() == View.VISIBLE)
+            return;
+
+        // Show notifications button
+        searchNofityButton.clearAnimation();
+        searchNofityButton.setAlpha(0.0f);
+        searchNofityButton.setVisibility(View.VISIBLE);
+        searchNofityButton.animate().alpha(1.0f).setDuration(200).setListener(null);
+    }
+
+    private void hideNotificationsButton()
+    {
+        if (searchNofityButton.getVisibility() == View.GONE)
+            return;
+
+        searchNofityButton.clearAnimation();
+        searchNofityButton.animate().alpha(0.0f).setListener(new AnimatorListenerAdapter()
+        {
+            @Override
+            public void onAnimationEnd(Animator animation)
+            {
+                searchNofityButton.setVisibility(View.GONE);
+            }
+        }).setDuration(200).start();
     }
 
     public void onEventMainThread(Events.NewSearchEvent e)
     {
         if (resultList.getAdapter() != null)
         {
+            hideNotificationsButton();
             new ListDisappearAnimation(resultList).animate();
         }
 
         Log.d("Prevoz", "Starting search for " + e.from + "-" + e.to + " [" + e.date.toString() + "]");
+
+        shouldShowNotificationButton = !(e.from == null || e.to == null);
         ApiClient.getAdapter().search(e.from == null ? null : e.from.getDisplayName(),
                                       e.from == null ? null : e.from.getCountryCode(),
                                       e.to == null ? null : e.to.getDisplayName(),

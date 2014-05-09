@@ -2,7 +2,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:focusable="false"
     android:focusableInTouchMode="false"
     android:orientation="vertical"
@@ -11,7 +11,7 @@
     <fragment
         android:name="org.prevoz.android.search.SearchFragment_"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
 
     <FrameLayout
         android:id="@+id/search_notify_button_container"
