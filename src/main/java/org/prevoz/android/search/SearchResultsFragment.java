@@ -201,6 +201,12 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
         }).setDuration(200).start();
     }
 
+    private void clickNotificationButton()
+    {
+
+    }
+
+
     public void onEventMainThread(Events.NewSearchEvent e)
     {
         if (resultList.getAdapter() != null)

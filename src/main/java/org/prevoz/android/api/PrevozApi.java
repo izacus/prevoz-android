@@ -1,10 +1,7 @@
 package org.prevoz.android.api;
 
 
-import org.prevoz.android.api.rest.RestAccountStatus;
-import org.prevoz.android.api.rest.RestApiKey;
-import org.prevoz.android.api.rest.RestRide;
-import org.prevoz.android.api.rest.RestSearchResults;
+import org.prevoz.android.api.rest.*;
 
 import retrofit.Callback;
 import retrofit.http.*;
@@ -22,4 +19,7 @@ public interface PrevozApi
 
     @POST("/accounts/login/apikey")
     public void loginWithApiKey(@Body RestApiKey apiKey, Callback<RestAccountStatus> cb);
+
+    @POST("/c2dm/register")
+    public void setSubscriptionState(@Body RestPushSubscription subscription, Callback<RestPushStatus> cb);
 }

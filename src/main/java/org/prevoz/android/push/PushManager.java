@@ -3,14 +3,23 @@ package org.prevoz.android.push;
 import android.content.Context;
 import android.os.ConditionVariable;
 import android.util.Log;
+import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.api.Scope;
+import org.prevoz.android.api.ApiClient;
+import org.prevoz.android.api.rest.RestPushStatus;
+import org.prevoz.android.api.rest.RestPushSubscription;
+import org.prevoz.android.model.City;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 import java.io.IOException;
+import java.util.Date;
 
 @EBean(scope = Scope.Singleton)
 public class PushManager
@@ -58,6 +67,24 @@ public class PushManager
         {
             initLock.open();
         }
+    }
+
+    public void setSubscriptionStatus(City from, City to, Date date, boolean subscribed)
+    {
+        ApiClient.getAdapter().setSubscriptionState(new RestPushSubscription(gcmId, from, to, date, subscribed), new Callback<RestPushStatus>() {
+
+            @Override
+            public void success(RestPushStatus restPushStatus, Response response)
+            {
+                Toast.makeText(context, "Registracija uspela.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void failure(RetrofitError retrofitError)
+            {
+                Toast.makeText(context, "Registracija neuspešna.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public String getGcmId()
