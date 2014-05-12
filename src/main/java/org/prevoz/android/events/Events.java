@@ -40,4 +40,6 @@ public class Events
             return route;
         }
     }
+
+    public static class NotificationSubscriptionStatusChanged {}
 }

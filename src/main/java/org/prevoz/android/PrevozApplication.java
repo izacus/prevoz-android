@@ -23,7 +23,6 @@ public class PrevozApplication extends Application
     {
         super.onCreate();
         new PruneHistory().execute();
-        authUtils.updateRetrofitAuthenticationCookie();
     }
 
     private class PruneHistory extends AsyncTask<Void, Void, Void>
@@ -32,7 +31,9 @@ public class PrevozApplication extends Application
         @Override
         protected Void doInBackground(Void... params)
         {
+            authUtils.updateRetrofitAuthenticationCookie();
             Database.deleteHistoryEntries(PrevozApplication.this, 10);
+            Database.pruneOldNotifications(PrevozApplication.this);
             return null;
         }
     }

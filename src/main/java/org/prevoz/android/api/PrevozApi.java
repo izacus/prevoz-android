@@ -20,6 +20,13 @@ public interface PrevozApi
     @POST("/accounts/login/apikey")
     public void loginWithApiKey(@Body RestApiKey apiKey, Callback<RestAccountStatus> cb);
 
-    @POST("/c2dm/register")
-    public void setSubscriptionState(@Body RestPushSubscription subscription, Callback<RestPushStatus> cb);
+    @FormUrlEncoded
+    @POST("/c2dm/register/")
+    public void setSubscriptionState(@Field("registration_id") String registrationId,
+                                     @Field("from") String form,
+                                     @Field("fromcountry") String fromCountry,
+                                     @Field("to") String to,
+                                     @Field("tocountry") String toCountry,
+                                     @Field("date") String date,
+                                     @Field("action") String action, Callback<RestPushStatus> cb);
 }

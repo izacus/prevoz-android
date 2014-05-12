@@ -32,11 +32,11 @@
             >
 
             <TextView
+                android:id="@+id/search_notify_button_text"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:drawableLeft="@drawable/ic_action_bell"
-                android:text="Obveščaj me o novih prevozih"
                 android:singleLine="true"
                 android:textColor="@color/prevoztheme_color"
                 android:textSize="16sp"

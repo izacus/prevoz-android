@@ -7,20 +7,16 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.*;
 
 import com.googlecode.androidannotations.annotations.*;
-import com.nineoldandroids.animation.AnimatorSet;
-import com.nineoldandroids.animation.ObjectAnimator;
-import com.nineoldandroids.view.ViewHelper;
 
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
-import org.prevoz.android.api.rest.RestSearchRequest;
 import org.prevoz.android.api.rest.RestSearchResults;
 import org.prevoz.android.api.rest.RestSearchRide;
 import org.prevoz.android.events.Events;
+import org.prevoz.android.model.City;
 import org.prevoz.android.model.Route;
 import org.prevoz.android.push.PushManager;
 import org.prevoz.android.ride.RideInfoFragment;
@@ -28,7 +24,6 @@ import org.prevoz.android.ui.ListDisappearAnimation;
 import org.prevoz.android.ui.ListFlyupAnimator;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import de.greenrobot.event.EventBus;
@@ -47,7 +42,9 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     @ViewById(R.id.search_results_list)
     protected StickyListHeadersListView resultList;
 
-    protected View searchNofityButton;
+    protected View searchNofityButtonContainer;
+    protected View searchNotifyButton;
+    protected TextView searchNofityButtonText;
 
     @InstanceState
     protected RestSearchResults results;
@@ -61,12 +58,32 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     @Bean
     protected PushManager pushManager;
 
+    // Needed to keep track of last searches
+    // TODO: find a better solution
+    @InstanceState
+    protected City lastFrom;
+    @InstanceState
+    protected City lastTo;
+    @InstanceState
+    protected Calendar lastDate;
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         headerFragmentView = getLayoutInflater(savedInstanceState).inflate(R.layout.header_search_form, null, false);
-        searchNofityButton = headerFragmentView.findViewById(R.id.search_notify_button_container);
+        searchNofityButtonContainer = headerFragmentView.findViewById(R.id.search_notify_button_container);
+        searchNofityButtonText = (TextView) headerFragmentView.findViewById(R.id.search_notify_button_text);
+        searchNotifyButton = headerFragmentView.findViewById(R.id.search_notify_button);
+
+        searchNotifyButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                clickNotificationButton();
+            }
+        });
     }
 
     @AfterViews
@@ -172,40 +189,53 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     private void showNotificationsButton()
     {
         if (!shouldShowNotificationButton ||
-             searchNofityButton.getVisibility() == View.VISIBLE ||
+             searchNofityButtonContainer.getVisibility() == View.VISIBLE ||
             !pushManager.isPushAvailable())
         {
             return;
         }
 
         // Show notifications button
-        searchNofityButton.clearAnimation();
-        searchNofityButton.setAlpha(0.0f);
-        searchNofityButton.setVisibility(View.VISIBLE);
-        searchNofityButton.animate().alpha(1.0f).setDuration(200).setListener(null);
+        searchNofityButtonContainer.clearAnimation();
+        searchNofityButtonContainer.setAlpha(0.0f);
+        updateNotificationButtonText();
+        searchNofityButtonContainer.setVisibility(View.VISIBLE);
+        searchNofityButtonContainer.animate().alpha(1.0f).setDuration(200).setListener(null);
+    }
+
+    private void updateNotificationButtonText()
+    {
+        if (pushManager.isSubscribed(lastFrom, lastTo, lastDate))
+        {
+            searchNofityButtonText.setText("Prenehaj z obveščanjem o prevozih");
+        }
+        else
+        {
+            searchNofityButtonText.setText("Obveščaj me o novih prevozih");
+        }
     }
 
     private void hideNotificationsButton()
     {
-        if (searchNofityButton.getVisibility() == View.GONE)
+        if (searchNofityButtonContainer.getVisibility() == View.GONE)
             return;
 
-        searchNofityButton.clearAnimation();
-        searchNofityButton.animate().alpha(0.0f).setListener(new AnimatorListenerAdapter()
+        searchNofityButtonContainer.clearAnimation();
+        searchNofityButtonContainer.animate().alpha(0.0f).setListener(new AnimatorListenerAdapter()
         {
             @Override
             public void onAnimationEnd(Animator animation)
             {
-                searchNofityButton.setVisibility(View.GONE);
+                searchNofityButtonContainer.setVisibility(View.GONE);
             }
         }).setDuration(200).start();
     }
 
     private void clickNotificationButton()
     {
-
+        searchNotifyButton.setEnabled(false);
+        pushManager.setSubscriptionStatus(lastFrom, lastTo, lastDate, !pushManager.isSubscribed(lastFrom, lastTo, lastDate));
     }
-
 
     public void onEventMainThread(Events.NewSearchEvent e)
     {
@@ -223,5 +253,15 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
                                       e.to == null ? null : e.to.getDisplayName(),
                                       e.to == null ? null : e.to.getCountryCode(),
                                       sdf.format(e.date.getTime()), this);
+
+        lastFrom = e.from;
+        lastTo = e.to;
+        lastDate = e.date;
+    }
+
+    public void onEventMainThread(Events.NotificationSubscriptionStatusChanged e)
+    {
+        updateNotificationButtonText();
+        searchNotifyButton.setEnabled(true);
     }
 }
