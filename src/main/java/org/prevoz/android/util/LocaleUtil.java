@@ -169,4 +169,10 @@ public class LocaleUtil
             ctx.getResources().updateConfiguration(config, ctx.getResources().getDisplayMetrics());
         }
     }
+
+    public static String getNotificationDayName(Resources res, Calendar date)
+    {
+        String[] dayNames = res.getStringArray(R.array.notify_day_names);
+        return dayNames[date.get(Calendar.DAY_OF_WEEK) - 1];
+    }
 }

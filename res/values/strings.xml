@@ -15,6 +15,15 @@
     <string name="login_title">Prijava</string>
     <string name="search_no_results">Noben prevoz ni bil najden.</string>
 
+    <string name="notify_statusbar">Novi prevozi na relaciji</string>
+
+    <string-array name="ride_forms">
+        <item>nov prevoz</item>
+        <item>nova prevoza</item>
+        <item>novi prevozi</item>
+        <item>novih prevozov</item>
+    </string-array>
+
     <!--  Day and month names -->
     <string-array name="day_names">
         <item>Nedelja</item>
@@ -49,5 +58,15 @@
         <item>oktober</item>
         <item>november</item>
         <item>december</item>
+    </string-array>
+
+    <string-array name="notify_day_names">
+        <item>nedeljo</item>
+        <item>ponedeljek</item>
+        <item>torek</item>
+        <item>sredo</item>
+        <item>četrtek</item>
+        <item>petek</item>
+        <item>soboto</item>
     </string-array>
 </resources>

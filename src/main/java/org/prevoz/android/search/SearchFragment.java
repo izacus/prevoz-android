@@ -143,7 +143,7 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
 
     public void onEventMainThread(Events.SearchFillWithRoute e)
     {
-        Route r = e.getRoute();
+        Route r = e.route;
         if (r.getFrom() == null)
             searchFrom.setText("");
         else
@@ -153,6 +153,14 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
             searchTo.setText("");
         else
             searchTo.setText(r.getTo().toString());
+
+        if (e.date != null)
+        {
+            selectedDate = e.date;
+            updateShownDate();
+        }
+
+        EventBus.getDefault().removeStickyEvent(e);
     }
 
     @Override
@@ -166,7 +174,7 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
     public void onResume()
     {
         super.onResume();
-        EventBus.getDefault().register(this);
+        EventBus.getDefault().registerSticky(this);
     }
 
     @Override

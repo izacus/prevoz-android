@@ -28,16 +28,19 @@ public class Events
 
     public static class SearchFillWithRoute
     {
-        private final Route route;
+        public final Route route;
+        public final Calendar date;
 
         public SearchFillWithRoute(Route route)
         {
             this.route = route;
+            this.date = null;
         }
 
-        public Route getRoute()
+        public SearchFillWithRoute(Route route, Calendar date)
         {
-            return route;
+            this.route = route;
+            this.date = date;
         }
     }
 

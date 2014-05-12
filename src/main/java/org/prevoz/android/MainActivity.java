@@ -22,13 +22,18 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.googlecode.androidannotations.annotations.*;
 
+import de.greenrobot.event.EventBus;
 import org.prevoz.android.auth.AuthenticationUtils;
+import org.prevoz.android.events.Events;
+import org.prevoz.android.model.City;
+import org.prevoz.android.model.Route;
 import org.prevoz.android.push.PushManager;
 import org.prevoz.android.search.SearchResultsFragment;
 import org.prevoz.android.search.SearchResultsFragment_;
 import org.prevoz.android.util.Database;
 import org.prevoz.android.util.LocaleUtil;
 
+import java.util.Calendar;
 import java.util.Locale;
 
 @EActivity(R.layout.activity_main)
@@ -114,6 +119,21 @@ public class MainActivity extends SherlockFragmentActivity
     protected void onResume()
     {
         super.onResume();
+
+        if (getIntent().hasExtra("from") && getIntent().hasExtra("to"))
+        {
+            City from = getIntent().getParcelableExtra("from");
+            City to = getIntent().getParcelableExtra("to");
+
+            Calendar date = Calendar.getInstance();
+            date.setTimeZone(LocaleUtil.getLocalTimezone());
+            date.setTimeInMillis(getIntent().getLongExtra("when", 0));
+
+            EventBus.getDefault().postSticky(new Events.NewSearchEvent(from, to, date));
+            Route route = new Route(from, to);
+            EventBus.getDefault().postSticky(new Events.SearchFillWithRoute(route, date));
+
+        }
     }
 
     @Override

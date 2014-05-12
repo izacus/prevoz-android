@@ -38,6 +38,16 @@
             <meta-data android:name="android.accounts.AccountAuthenticator" android:resource="@xml/authenticator" />
         </service>
 
+        <receiver android:name=".push.PushReceiver"
+                  android:permission="com.google.android.c2dm.permission.SEND" >
+
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="org.prevoz.android" />
+            </intent-filter>
+
+        </receiver>
+
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
 	</application>
 </manifest>

@@ -117,7 +117,7 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     public void onResume()
     {
         super.onResume();
-        EventBus.getDefault().register(this);
+        EventBus.getDefault().registerSticky(this);
     }
 
     @Override
@@ -239,6 +239,8 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
 
     public void onEventMainThread(Events.NewSearchEvent e)
     {
+        EventBus.getDefault().removeStickyEvent(e);
+
         if (resultList.getAdapter() != null)
         {
             hideNotificationsButton();
