@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import de.greenrobot.event.EventBus;
+import org.prevoz.android.util.LocaleUtil;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -37,7 +38,7 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 @EFragment(R.layout.fragment_search_list)
 public class SearchResultsFragment extends Fragment implements Callback<RestSearchResults>
 {
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", LocaleUtil.getLocale());
 
     @ViewById(R.id.search_results_list)
     protected StickyListHeadersListView resultList;
@@ -246,8 +247,6 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
             hideNotificationsButton();
             new ListDisappearAnimation(resultList).animate();
         }
-
-        Log.d("Prevoz", "Starting search for " + e.from + "-" + e.to + " [" + e.date.toString() + "]");
 
         shouldShowNotificationButton = !(e.from == null || e.to == null);
         ApiClient.getAdapter().search(e.from == null ? null : e.from.getDisplayName(),

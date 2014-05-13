@@ -35,6 +35,7 @@ import org.prevoz.android.util.LocaleUtil;
 
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.TimeZone;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends SherlockFragmentActivity
@@ -126,7 +127,6 @@ public class MainActivity extends SherlockFragmentActivity
             City to = getIntent().getParcelableExtra("to");
 
             Calendar date = Calendar.getInstance();
-            date.setTimeZone(LocaleUtil.getLocalTimezone());
             date.setTimeInMillis(getIntent().getLongExtra("when", 0));
 
             EventBus.getDefault().postSticky(new Events.NewSearchEvent(from, to, date));

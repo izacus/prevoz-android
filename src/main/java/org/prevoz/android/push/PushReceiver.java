@@ -40,9 +40,8 @@ public class PushReceiver extends BroadcastReceiver
         String title = context.getString(R.string.notify_statusbar) + " " + from.getLocalizedName(context) + " - " + to.getLocalizedName(context);
 
         // Prepare search results launch intent
-        Calendar when = Calendar.getInstance(LocaleUtil.getLocalTimezone());
+        Calendar when = Calendar.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        format.setTimeZone(LocaleUtil.getLocalTimezone());
 
         try
         {
