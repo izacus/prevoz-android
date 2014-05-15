@@ -13,6 +13,12 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Window;
+import com.google.api.client.auth.oauth2.*;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.client.http.GenericUrl;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.util.store.DataStoreFactory;
+import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
@@ -22,13 +28,17 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @EActivity
 public class LoginActivity extends SherlockFragmentActivity
 {
-    private static final String LOGIN_URL = "https://prevoz.org/accounts/simple/signin/";
     private static final String LOG_TAG = "Prevoz.Login";
+    private static final String CLIENT_ID = "b89d13d3b102d84963bb";
+    private static final String CLIENT_SECRET = "d94e76ff9086e1fe428519b6aed6dbe65adde616";
+    private static final String REDIRECT_URL = "http://app.local/login_done/";
 
     private AccountAuthenticatorResponse authenticatorResponse;
     private Bundle authenticatorResult;
@@ -53,7 +63,18 @@ public class LoginActivity extends SherlockFragmentActivity
         webview.setWebViewClient(new WebViewController());
         WebSettings settings = webview.getSettings();
         settings.setJavaScriptEnabled(true);
-        webview.loadUrl(LOGIN_URL);
+
+        // Generate OAuth login URL
+        List<String> responseTypes = new ArrayList<String>();
+        responseTypes.add("code");
+        String authenticationUrl = new AuthorizationRequestUrl("https://prevoz.org/oauth2/authorize/",
+                                                                CLIENT_ID,
+                                                                responseTypes)
+                                                                .setRedirectUri(REDIRECT_URL)
+                                                                .build();
+
+
+        webview.loadUrl(authenticationUrl);
         setSupportProgressBarIndeterminate(true);
     }
 
@@ -63,31 +84,60 @@ public class LoginActivity extends SherlockFragmentActivity
         super.onResume();
     }
 
-    private void getAccountUsernameAndApiKey(final String cookies)
+    private void getAccountUsernameAndApiKey(final String code)
     {
         final ProgressDialog dialog = ProgressDialog.show(this, "Prijava", "Prijavljam....", true, false);
-
-        ApiClient.setCookies(cookies);
-        ApiClient.getAdapter().getAccountStatus(new Callback<RestAccountStatus>()
-        {
-            @Override
-            public void success(RestAccountStatus restAccountStatus, Response response)
-            {
-                updateAuthenticatorResult(restAccountStatus, cookies);
-                UpdateAccountInformationTask updateInfoTask = new UpdateAccountInformationTask(dialog, restAccountStatus, cookies);
-                updateInfoTask.execute();
-            }
-
-            @Override
-            public void failure(RetrofitError retrofitError)
-            {
-                Log.e(LOG_TAG, "Failed to login: " + retrofitError);
-                dialog.dismiss();
-            }
-        });
+        requestAccessToken(dialog, code);
     }
 
-    private void updateAuthenticatorResult(RestAccountStatus restAccountStatus, String cookies)
+    @Background
+    protected void requestAccessToken(final ProgressDialog dialog, String code)
+    {
+        final NetHttpTransport transport = new NetHttpTransport();
+        final AndroidJsonFactory jsonFactory = new AndroidJsonFactory();
+        final ClientParametersAuthentication authentication = new ClientParametersAuthentication(CLIENT_ID, CLIENT_SECRET);
+
+        AuthorizationCodeTokenRequest tokenRequest = new AuthorizationCodeTokenRequest(transport,
+                                                                                       jsonFactory,
+                                                                                       new GenericUrl("https://prevoz.org/oauth2/access_token/"),
+                                                                                       code);
+
+        tokenRequest.setClientAuthentication(authentication);
+
+        try
+        {
+            final TokenResponse retrievedToken = tokenRequest.execute();
+            ApiClient.setBearer(retrievedToken.getAccessToken());
+
+            ApiClient.getAdapter().getAccountStatus(new Callback<RestAccountStatus>()
+            {
+                @Override
+                public void success(RestAccountStatus restAccountStatus, Response response)
+                {
+                    updateAuthenticatorResult(restAccountStatus, retrievedToken.getAccessToken(), retrievedToken.getRefreshToken());
+                    UpdateAccountInformationTask updateInfoTask = new UpdateAccountInformationTask(dialog, restAccountStatus, retrievedToken.getAccessToken(), retrievedToken.getRefreshToken());
+                    updateInfoTask.execute();
+                }
+
+                @Override
+                public void failure(RetrofitError retrofitError)
+                {
+                    Log.e(LOG_TAG, "Failed to login: " + retrofitError);
+                    dialog.dismiss();
+                }
+            });
+        }
+        catch (IOException e)
+        {
+            final Bundle result = new Bundle();
+            result.putInt(AccountManager.KEY_ERROR_CODE, AccountManager.ERROR_CODE_BAD_AUTHENTICATION);
+            result.putString(AccountManager.KEY_ERROR_MESSAGE, "Failed to confirm authentication.");
+            authenticatorResult = result;
+            finish();
+        }
+    }
+
+    private void updateAuthenticatorResult(RestAccountStatus restAccountStatus, String accessToken, String refreshToken)
     {
         if (authenticatorResponse != null)
         {
@@ -95,8 +145,8 @@ public class LoginActivity extends SherlockFragmentActivity
             if (restAccountStatus.isAuthenticated)
             {
                 result.putString(AccountManager.KEY_ACCOUNT_NAME, restAccountStatus.username);
-                result.putString(AccountManager.KEY_PASSWORD, restAccountStatus.apiKey);
-                result.putString(AccountManager.KEY_AUTHTOKEN, cookies);
+                result.putString(AccountManager.KEY_PASSWORD, refreshToken);
+                result.putString(AccountManager.KEY_AUTHTOKEN, accessToken);
                 result.putString(AccountManager.KEY_ACCOUNT_TYPE, getString(R.string.account_type));
             }
             else
@@ -113,13 +163,15 @@ public class LoginActivity extends SherlockFragmentActivity
     {
         private final ProgressDialog dialog;
         private final RestAccountStatus status;
-        private final String cookies;
+        private final String accessToken;
+        private final String refreshToken;
 
-        public UpdateAccountInformationTask(ProgressDialog dialog, RestAccountStatus status, String cookies)
+        public UpdateAccountInformationTask(ProgressDialog dialog, RestAccountStatus status, String accessToken, String refreshToken)
         {
             this.dialog = dialog;
             this.status = status;
-            this.cookies = cookies;
+            this.accessToken = accessToken;
+            this.refreshToken = refreshToken;
         }
 
 
@@ -154,8 +206,8 @@ public class LoginActivity extends SherlockFragmentActivity
 
 
             Account acc = new Account(status.username, getString(R.string.account_type));
-            am.addAccountExplicitly(acc, status.apiKey, null);
-            am.setAuthToken(acc, "default", cookies);
+            am.addAccountExplicitly(acc, refreshToken, null);
+            am.setAuthToken(acc, "default", accessToken);
             return null;
         }
 
@@ -176,12 +228,12 @@ public class LoginActivity extends SherlockFragmentActivity
         {
             Log.d(LOG_TAG, "Loading " + url);
 
-            if (url.contains("/login/success"))
+            if (url.startsWith(REDIRECT_URL))
             {
-                CookieManager cm = CookieManager.getInstance();
-                String cookies = cm.getCookie("prevoz.org");
-                Log.d(LOG_TAG, "Cookies: " + cookies);
-                getAccountUsernameAndApiKey(cookies);
+                AuthorizationCodeResponseUrl authorizationCodeResponseUrl = new AuthorizationCodeResponseUrl(url);
+                // TODO: Error handling.
+                getAccountUsernameAndApiKey(authorizationCodeResponseUrl.getCode());
+                return true;
             }
 
             view.loadUrl(url);

@@ -55,6 +55,11 @@
 			<version>${androidannotations.version}</version>
 		</dependency>
         <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client-android</artifactId>
+            <version>1.18.0-rc</version>
+        </dependency>
+        <dependency>
             <groupId>com.github.flavienlaurent.datetimepicker</groupId>
             <artifactId>library</artifactId>
             <version>0.0.1</version>

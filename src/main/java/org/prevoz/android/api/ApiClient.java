@@ -4,7 +4,6 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
-import com.google.gson.internal.bind.DateTypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
@@ -20,7 +19,7 @@ import retrofit.converter.GsonConverter;
 public class ApiClient
 {
     private static RestAdapter adapter = null;
-    private static String cookies = null;
+    private static String bearer = null;
 
     static
     {
@@ -42,9 +41,9 @@ public class ApiClient
         return adapter.create(PrevozApi.class);
     }
 
-    public static void setCookies(String cookies)
+    public static void setBearer(String bearer)
     {
-        ApiClient.cookies = cookies;
+        ApiClient.bearer = bearer;
     }
 
     private static class Iso8601DateAdapter extends TypeAdapter<Date>
@@ -76,8 +75,8 @@ public class ApiClient
         @Override
         public void intercept(RequestFacade requestFacade)
         {
-            if (cookies != null)
-                requestFacade.addHeader("Cookie", cookies);
+            if (bearer != null)
+                requestFacade.addHeader("Authorization", String.format("Bearer %s", bearer));
         }
     }
 }

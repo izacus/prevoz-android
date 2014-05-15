@@ -62,51 +62,12 @@ public class PrevozAccountAuthenticator extends AbstractAccountAuthenticator
                                Bundle options) throws NetworkErrorException
     {
         AccountManager am = AccountManager.get(ctx);
-        String apiKey = am.getPassword(account);
+        String refreshToken = am.getPassword(account);
 
-        if (apiKey != null)
+        if (refreshToken != null)
         {
-            Log.d(LOG_TAG, "Attempting authentication with apikey " + apiKey);
-            ApiClient.getAdapter().loginWithApiKey(new RestApiKey(apiKey), new Callback<RestAccountStatus>()
-            {
-                @Override
-                public void success(RestAccountStatus restAccountStatus, Response response)
-                {
-                    String cookies = null;
-                    for (Header h : response.getHeaders())
-                    {
-                        if ("Set-Cookie".equals(h.getName()))
-                        {
-                            cookies = h.getValue();
-                            break;
-                        }
-                    }
-
-                    if (cookies == null)
-                    {
-                        authenticatorResponse.onResult(getLoginIntentBundle(authenticatorResponse));
-                        return;
-                    }
-
-                    Bundle b = new Bundle();
-                    b.putString(AccountManager.KEY_ACCOUNT_NAME, restAccountStatus.username);
-                    b.putString(AccountManager.KEY_ACCOUNT_TYPE, ctx.getString(R.string.account_type));
-                    b.putString(AccountManager.KEY_AUTHTOKEN, cookies);
-                    authenticatorResponse.onResult(b);
-                }
-
-                @Override
-                public void failure(RetrofitError retrofitError)
-                {
-                    Bundle b = new Bundle();
-                    b.putInt(AccountManager.KEY_ERROR_CODE, AccountManager.ERROR_CODE_NETWORK_ERROR);
-                    b.putString(AccountManager.KEY_ERROR_MESSAGE, retrofitError.getMessage());
-                    authenticatorResponse.onResult(b);
-                }
-
-            });
-
-            return null;
+            // TODO TODO TODO TODO
+            // Setup refresh!
         }
 
         return getLoginIntentBundle(authenticatorResponse);
