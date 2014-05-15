@@ -1,7 +1,6 @@
 package org.prevoz.android.api;
 
 import org.prevoz.android.api.rest.*;
-
 import retrofit.Callback;
 import retrofit.http.*;
 

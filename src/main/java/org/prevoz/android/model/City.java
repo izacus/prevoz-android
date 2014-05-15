@@ -1,15 +1,14 @@
 package org.prevoz.android.model;
 
-import org.prevoz.android.util.LocaleUtil;
-
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import org.prevoz.android.util.LocaleUtil;
 
 public class City implements Comparable<City>, Parcelable
 {
-    private String displayName;
-    private String countryCode;
+    private final String displayName;
+    private final String countryCode;
 
     public City(String displayName, String countryCode)
     {

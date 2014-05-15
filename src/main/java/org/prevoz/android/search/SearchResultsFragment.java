@@ -7,10 +7,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
-import android.widget.*;
-
+import android.widget.AdapterView;
+import android.widget.TextView;
+import android.widget.Toast;
 import com.googlecode.androidannotations.annotations.*;
-
+import de.greenrobot.event.EventBus;
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestRide;
@@ -22,17 +23,15 @@ import org.prevoz.android.push.PushManager;
 import org.prevoz.android.ride.RideInfoFragment;
 import org.prevoz.android.ui.ListDisappearAnimation;
 import org.prevoz.android.ui.ListFlyupAnimator;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
-import de.greenrobot.event.EventBus;
 import org.prevoz.android.util.LocaleUtil;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 
 @EFragment(R.layout.fragment_search_list)
@@ -110,7 +109,7 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
         }
         else
         {
-            showResults(results, false);
+            showResults(results);
         }
     }
 
@@ -142,7 +141,7 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
         else
         {
             results = restSearchResults;
-            showResults(results, true);
+            showResults(results);
         }
 
         EventBus.getDefault().post(new Events.SearchComplete());
@@ -155,7 +154,7 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
         EventBus.getDefault().post(new Events.SearchComplete());
     }
 
-    private void showResults(RestSearchResults results, boolean animate)
+    private void showResults(RestSearchResults results)
     {
         if (resultList.getAdapter() == null || !(resultList.getAdapter() instanceof SearchResultsAdapter))
         {

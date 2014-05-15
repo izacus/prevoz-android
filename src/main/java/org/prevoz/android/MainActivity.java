@@ -1,7 +1,7 @@
 
 package org.prevoz.android;
 
-import android.accounts.Account;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-
 import android.support.v4.widget.DrawerLayout;
 import android.view.ActionProvider;
 import android.view.ContextMenu;
@@ -21,7 +20,6 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.googlecode.androidannotations.annotations.*;
-
 import de.greenrobot.event.EventBus;
 import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.events.Events;
@@ -35,8 +33,8 @@ import org.prevoz.android.util.LocaleUtil;
 
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.TimeZone;
 
+@SuppressLint("Registered")          // AndroidAnnotated activity is registered.
 @EActivity(R.layout.activity_main)
 public class MainActivity extends SherlockFragmentActivity
 {
@@ -108,12 +106,6 @@ public class MainActivity extends SherlockFragmentActivity
     protected void setDrawerUsername(String username)
     {
         leftUsername.setText(username);
-    }
-
-    @Override
-    protected void onPause()
-    {
-        super.onPause();
     }
 
     @Override

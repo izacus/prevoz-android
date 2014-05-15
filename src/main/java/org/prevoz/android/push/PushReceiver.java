@@ -17,6 +17,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 public class PushReceiver extends BroadcastReceiver
@@ -41,7 +42,7 @@ public class PushReceiver extends BroadcastReceiver
 
         // Prepare search results launch intent
         Calendar when = Calendar.getInstance();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
         try
         {

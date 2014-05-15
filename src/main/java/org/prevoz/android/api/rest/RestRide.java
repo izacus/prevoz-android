@@ -6,9 +6,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
-/**
- * Created by jernej on 15/02/14.
- */
 public class RestRide implements Comparable, Parcelable
 {
     @SerializedName("id")
@@ -57,10 +54,7 @@ public class RestRide implements Comparable, Parcelable
         if (!(o instanceof RestRide)) return false;
 
         RestRide restRide = (RestRide) o;
-
-        if (id != restRide.id) return false;
-
-        return true;
+        return id == restRide.id;
     }
 
     @Override

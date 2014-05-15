@@ -11,11 +11,13 @@
     <string name="search_form_to_hint">Kraj prihoda</string>
     <string name="search_form_date">Datum</string>
     <string name="search_form_button_search">Išči</string>
-    <string name="search_form_button_searching">Iščem...</string>
+    <string name="search_form_button_searching">Iščem…</string>
     <string name="login_title">Prijava</string>
     <string name="search_no_results">Noben prevoz ni bil najden.</string>
 
     <string name="notify_statusbar">Novi prevozi na relaciji</string>
+    <string name="rideinfo_call">Pokliči</string>
+    <string name="rideinfo_send_sms">Pošlji SMS</string>
 
     <string-array name="ride_forms">
         <item>nov prevoz</item>

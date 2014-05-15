@@ -1,23 +1,22 @@
 package org.prevoz.android.util;
 
+import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import org.prevoz.android.R;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import android.content.res.Configuration;
-import org.prevoz.android.R;
-
-import android.content.Context;
-import android.content.res.Resources;
-
 public class LocaleUtil
 {
-    private static HashMap<String, String> localizedCountryNamesCache = new HashMap<String, String>();
-    private static HashMap<String, String> localizedCityNamesCache = new HashMap<String, String>();
+    private static final HashMap<String, String> localizedCountryNamesCache = new HashMap<String, String>();
+    private static final HashMap<String, String> localizedCityNamesCache = new HashMap<String, String>();
     private static Locale localeCache = null;
-    private static HashMap<String, SimpleDateFormat> dateFormatCache = new HashMap<String, SimpleDateFormat>();
+    private static final HashMap<String, SimpleDateFormat> dateFormatCache = new HashMap<String, SimpleDateFormat>();
 
     public static String getDayName(Resources res, Calendar date)
     {
@@ -70,12 +69,7 @@ public class LocaleUtil
             }
         }
 
-        StringBuilder dateString = new StringBuilder();
-
-        dateString.append(LocaleUtil.getDayName(resources, date) + ", ");
-        dateString.append(LocaleUtil.getFormattedDate(resources, date));
-
-        return dateString.toString();
+        return LocaleUtil.getDayName(resources, date) + ", " + LocaleUtil.getFormattedDate(resources, date);
     }
 
 

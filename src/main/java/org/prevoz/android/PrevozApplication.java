@@ -2,16 +2,11 @@ package org.prevoz.android;
 
 import android.app.Application;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-
 import android.os.AsyncTask;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EApplication;
 import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.util.Database;
-import org.prevoz.android.util.LocaleUtil;
-
-import java.util.Locale;
 
 @EApplication
 public class PrevozApplication extends Application

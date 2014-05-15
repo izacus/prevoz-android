@@ -5,9 +5,6 @@ import org.prevoz.android.model.Route;
 
 import java.util.Calendar;
 
-/**
- * Created by jernej on 26/01/14.
- */
 public class Events
 {
     public static class NewSearchEvent

@@ -6,17 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import org.prevoz.android.R;
 import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.util.LocaleUtil;
+import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-
-import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 public class SearchResultsAdapter extends BaseAdapter implements StickyListHeadersAdapter
 {
@@ -140,9 +138,9 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
 
     private static class ResultsViewHolder
     {
-        TextView time;
-        TextView price;
-        TextView driver;
+        final TextView time;
+        final TextView price;
+        final TextView driver;
 
         private ResultsViewHolder(TextView time, TextView price, TextView driver)
         {

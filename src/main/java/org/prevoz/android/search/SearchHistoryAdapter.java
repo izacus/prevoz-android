@@ -15,13 +15,11 @@ import java.util.List;
 
 public class SearchHistoryAdapter extends BaseAdapter implements StickyListHeadersAdapter
 {
-    private final Context ctx;
     private final LayoutInflater inflater;
-    private List<Route> searchHistory;
+    private final List<Route> searchHistory;
 
     public SearchHistoryAdapter(Context ctx)
     {
-        this.ctx = ctx;
         this.searchHistory = Database.getLastSearches(ctx, 3);
         this.inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }

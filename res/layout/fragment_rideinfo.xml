@@ -197,7 +197,7 @@
             android:layout_marginRight="24dp"
             android:layout_marginLeft="16dp"
             android:includeFontPadding="false"
-            android:textSize="11sp"
+            android:textSize="12sp"
             android:gravity="right"
             style="?android:attr/textAppearanceSmall"
             android:textColor="@color/prevoztheme_color"
@@ -258,7 +258,7 @@
                  android:background="@drawable/borderless_button"
                  style="?android:textAppearanceButton"
 
-                 android:text="Pokliči"
+                 android:text="@string/rideinfo_call"
                  />
 
              <Button
@@ -270,7 +270,7 @@
                  android:background="@drawable/borderless_button"
                  style="?android:textAppearanceButton"
 
-                 android:text="Pošlji SMS"
+                 android:text="@string/rideinfo_send_sms"
                  />
 
          </LinearLayout>

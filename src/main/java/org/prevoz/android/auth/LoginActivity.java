@@ -1,6 +1,9 @@
 package org.prevoz.android.auth;
 
-import android.accounts.*;
+import android.accounts.Account;
+import android.accounts.AccountAuthenticatorResponse;
+import android.accounts.AccountManager;
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -19,7 +22,6 @@ import com.google.api.client.auth.oauth2.*;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.util.store.DataStoreFactory;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EActivity;
@@ -36,6 +38,7 @@ import java.util.List;
 
 
 @EActivity
+@SuppressLint("Registered")     // AndroidAnnotated activity is registered.
 public class LoginActivity extends SherlockFragmentActivity
 {
     private static final String LOG_TAG = "Prevoz.Login";
@@ -50,6 +53,7 @@ public class LoginActivity extends SherlockFragmentActivity
     @Bean
     protected AuthenticationUtils authUtils;
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -82,12 +86,6 @@ public class LoginActivity extends SherlockFragmentActivity
 
         webview.loadUrl(authenticationUrl);
         setSupportProgressBarIndeterminate(true);
-    }
-
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
     }
 
     private void getAccountUsernameAndApiKey(final String code)

@@ -9,6 +9,7 @@
     >
 
     <fragment
+        android:tag="SearchFragment"
         android:name="org.prevoz.android.search.SearchFragment_"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

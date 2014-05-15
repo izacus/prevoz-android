@@ -4,23 +4,22 @@ import java.util.Calendar;
 
 public class NotificationSubscription
 {
-    private Integer id;
-    private City from;
-    private City to;
-    private Calendar date;
+    private final Integer id;
+    private final City from;
+    private final City to;
+    private final Calendar date;
 
-    public NotificationSubscription(City from, City to, Calendar date)
+    public NotificationSubscription(Integer id, City from, City to, Calendar date)
     {
         this.from = from;
         this.to = to;
         this.date = date;
-        this.id = null;
+        this.id = id;
     }
 
-    public NotificationSubscription(int id, City from, City to, Calendar date)
+    public NotificationSubscription(City from, City to, Calendar date)
     {
-        this(from, to, date);
-        this.id = id;
+        this(null, from, to, date);
     }
 
     public Integer getId() {

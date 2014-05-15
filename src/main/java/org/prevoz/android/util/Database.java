@@ -1,24 +1,22 @@
 package org.prevoz.android.util;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import android.database.SQLException;
-import org.prevoz.android.R;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import org.prevoz.android.R;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.NotificationSubscription;
 import org.prevoz.android.model.Route;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Handles SQLite database operations
@@ -30,7 +28,7 @@ public class Database
 {
     private static class DatabaseHelper extends SQLiteOpenHelper
     {
-        private Context storedContext;
+        private final Context storedContext;
 
         public DatabaseHelper(Context context)
         {

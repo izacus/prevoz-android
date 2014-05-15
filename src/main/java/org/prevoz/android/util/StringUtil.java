@@ -5,9 +5,6 @@ import org.prevoz.android.model.City;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by jernej on 01/03/14.
- */
 public class StringUtil
 {
     private static final String REGEX_CITY_NAME_MATCHER = "([\\p{L} ]+)(\\(([A-Za-z][A-Za-z])\\))?";    // Used to match <CITY> (<COUNTRY CODE>) strings

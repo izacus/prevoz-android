@@ -5,14 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import org.prevoz.android.R;
-import org.prevoz.android.api.ApiClient;
-import org.prevoz.android.api.rest.RestAccountStatus;
-import org.prevoz.android.api.rest.RestApiKey;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Header;
-import retrofit.client.Response;
 
 public class PrevozAccountAuthenticator extends AbstractAccountAuthenticator
 {

@@ -16,9 +16,7 @@ import android.text.style.TypefaceSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.googlecode.androidannotations.annotations.*;
-
 import org.prevoz.android.R;
 import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.util.LocaleUtil;
@@ -27,9 +25,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-/**
- * Created by jernej on 15/02/14.
- */
 @EFragment(R.layout.fragment_rideinfo)
 public class RideInfoFragment extends DialogFragment
 {

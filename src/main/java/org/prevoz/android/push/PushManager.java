@@ -26,6 +26,7 @@ import retrofit.client.Response;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 @EBean(scope = Scope.Singleton)
 public class PushManager
@@ -34,7 +35,7 @@ public class PushManager
     private static final String LOG_TAG = "Prevoz.Push";
     private static final String GCM_PROJECT_ID = "121500391433";
 
-    private ConditionVariable initLock;
+    private final ConditionVariable initLock;
 
     private final Context context;
     private boolean available = false;
@@ -79,7 +80,6 @@ public class PushManager
         catch (IOException e)
         {
             Log.e(LOG_TAG, "Failed to register for notifications.", e);
-            return;
         }
         catch (PackageManager.NameNotFoundException e)
         {
@@ -93,7 +93,7 @@ public class PushManager
 
     public void setSubscriptionStatus(final City from, final City to, final Calendar date, final boolean subscribed)
     {
-        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
         ApiClient.getAdapter().setSubscriptionState(gcmId,
                                                     from.getDisplayName(),

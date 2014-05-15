@@ -8,8 +8,8 @@ package org.prevoz.android.model;
  */
 public class Route
 {
-    private City from;
-    private City to;
+    private final City from;
+    private final City to;
 
     public Route(City from, City to)
     {

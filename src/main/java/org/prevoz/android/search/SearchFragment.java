@@ -4,30 +4,21 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-
+import android.widget.*;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.googlecode.androidannotations.annotations.*;
+import de.greenrobot.event.EventBus;
 import org.prevoz.android.R;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.Route;
 import org.prevoz.android.util.Database;
 import org.prevoz.android.util.LocaleUtil;
+import org.prevoz.android.util.StringUtil;
 
 import java.util.Calendar;
-
-import de.greenrobot.event.EventBus;
-import org.prevoz.android.util.StringUtil;
 
 @EFragment(R.layout.fragment_search)
 public class SearchFragment extends Fragment implements DatePickerDialog.OnDateSetListener, AutoCompleteTextView.Validator
