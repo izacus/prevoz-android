@@ -8,5 +8,5 @@ import java.util.List;
 public class RestSearchResults implements Serializable
 {
     @SerializedName("carshare_list")
-    public List<RestSearchRide> results;
+    public List<RestRide> results;
 }

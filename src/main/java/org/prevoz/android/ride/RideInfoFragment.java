@@ -17,43 +17,33 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.googlecode.androidannotations.annotations.AfterViews;
-import com.googlecode.androidannotations.annotations.Click;
-import com.googlecode.androidannotations.annotations.EFragment;
-import com.googlecode.androidannotations.annotations.ViewById;
+import com.googlecode.androidannotations.annotations.*;
 
 import org.prevoz.android.R;
-import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestRide;
-import org.prevoz.android.api.rest.RestSearchRide;
 import org.prevoz.android.util.LocaleUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-
 /**
  * Created by jernej on 15/02/14.
  */
 @EFragment(R.layout.fragment_rideinfo)
-public class RideInfoFragment extends DialogFragment implements Callback<RestRide> {
+public class RideInfoFragment extends DialogFragment
+{
     private static final SimpleDateFormat timeFormatter = LocaleUtil.getSimpleDateFormat("HH:mm");
     private static final String ARG_RIDE = "ride";
 
-    public static RideInfoFragment newInstance(RestSearchRide ride)
+    public static RideInfoFragment newInstance(RestRide ride)
     {
         RideInfoFragment fragment = new RideInfoFragment_();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_RIDE, ride);
+        args.putParcelable(ARG_RIDE, ride);
         fragment.setArguments(args);
         return fragment;
     }
-
-    protected RestSearchRide sourceRide;
 
     @ViewById(R.id.rideinfo_from)
     protected TextView txtFrom;
@@ -91,7 +81,8 @@ public class RideInfoFragment extends DialogFragment implements Callback<RestRid
     @ViewById(R.id.rideinfo_button_sms)
     protected Button smsButton;
 
-    private RestRide ride = null;
+    @InstanceState
+    protected RestRide ride = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -107,28 +98,47 @@ public class RideInfoFragment extends DialogFragment implements Callback<RestRid
             setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Dialog);
         }
 
-        sourceRide = (RestSearchRide) getArguments().getSerializable(ARG_RIDE);
+        ride = getArguments().getParcelable(ARG_RIDE);
     }
 
     @AfterViews
     protected void initFragment()
     {
-        txtFrom.setText(LocaleUtil.getLocalizedCityName(getActivity(), sourceRide.fromCity, sourceRide.fromCountry));
-        txtTo.setText(LocaleUtil.getLocalizedCityName(getActivity(), sourceRide.toCity, sourceRide.toCountry));
-        txtTime.setText(timeFormatter.format(sourceRide.date));
+        txtFrom.setText(LocaleUtil.getLocalizedCityName(getActivity(), ride.fromCity, ride.fromCountry));
+        txtTo.setText(LocaleUtil.getLocalizedCityName(getActivity(), ride.toCity, ride.toCountry));
+        txtTime.setText(timeFormatter.format(ride.date));
 
-        if (sourceRide.price == 0)
+        if (ride.price == 0)
         {
             txtPrice.setVisibility(View.INVISIBLE);
         }
         else
         {
-            txtPrice.setText(String.format(LocaleUtil.getLocale(), "%1.1f €", sourceRide.price));
+            txtPrice.setText(String.format(LocaleUtil.getLocale(), "%1.1f €", ride.price));
         }
 
         Calendar cal = new GregorianCalendar();
-        cal.setTime(sourceRide.date);
+        cal.setTime(ride.date);
         txtDate.setText(LocaleUtil.localizeDate(getResources(), cal));
+
+        vProgress.setVisibility(View.GONE);
+        vDetails.setVisibility(View.VISIBLE);
+
+        txtPhone.setText(getPhoneNumberString(ride.phoneNumber, ride.phoneNumberConfirmed));
+        txtPeople.setText(String.valueOf(ride.numPeople) + (ride.isFull ? " (Ni mest)" : ""));
+        txtComment.setText(ride.comment);
+
+        if (ride.author == null || ride.author.length() == 0)
+        {
+            txtDriver.setVisibility(View.GONE);
+        }
+        else
+        {
+            txtDriver.setText(ride.author);
+        }
+
+
+        txtInsurance.setText(ride.insured ? "\u2713 Ima zavarovanje." : "\u2717 Nima zavarovanja.");
 
         // Hide call/SMS buttons on devices without telephony support
         PackageManager pm = getActivity().getPackageManager();
@@ -137,14 +147,6 @@ public class RideInfoFragment extends DialogFragment implements Callback<RestRid
             callButton.setVisibility(View.GONE);
             smsButton.setVisibility(View.GONE);
         }
-
-
-        // Reenable them after contact information is loaded
-        callButton.setEnabled(false);
-        smsButton.setEnabled(false);
-
-        // Load detail data
-        ApiClient.getAdapter().getRide(String.valueOf(sourceRide.id), this);
     }
 
     private SpannableString getPhoneNumberString(String phoneNumber, boolean confirmed)
@@ -163,40 +165,6 @@ public class RideInfoFragment extends DialogFragment implements Callback<RestRid
         phoneNumberString.setSpan(styleSpan, phoneNumber.length(), phoneNumberString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         return phoneNumberString;
-    }
-
-    @Override
-    public void success(RestRide restRide, Response response)
-    {
-        ride = restRide;
-
-        vProgress.setVisibility(View.GONE);
-        vDetails.setVisibility(View.VISIBLE);
-
-        txtPhone.setText(getPhoneNumberString(restRide.phoneNumber, restRide.phoneNumberConfirmed));
-        txtPeople.setText(String.valueOf(restRide.numPeople) + (restRide.isFull ? " (Ni mest)" : ""));
-        txtComment.setText(restRide.comment);
-
-        if (restRide.author == null || restRide.author.length() == 0)
-        {
-            txtDriver.setVisibility(View.GONE);
-        }
-        else
-        {
-            txtDriver.setText(restRide.author);
-        }
-
-
-        txtInsurance.setText(restRide.insured ? "\u2713 Ima zavarovanje." : "\u2717 Nima zavarovanja.");
-
-        callButton.setEnabled(true);
-        smsButton.setEnabled(true);
-    }
-
-    @Override
-    public void failure(RetrofitError retrofitError)
-    {
-        vProgress.setVisibility(View.GONE);
     }
 
     @Click(R.id.rideinfo_button_call)

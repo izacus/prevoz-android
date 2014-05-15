@@ -8,12 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import org.prevoz.android.R;
-import org.prevoz.android.api.rest.RestSearchResults;
-import org.prevoz.android.api.rest.RestSearchRide;
+import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.util.LocaleUtil;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -25,10 +23,10 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
     private static final SimpleDateFormat timeFormatter = LocaleUtil.getSimpleDateFormat("HH:mm");
     private final Context context;
 
-    private List<RestSearchRide> results;
+    private List<RestRide> results;
     private final LayoutInflater inflater;
 
-    public SearchResultsAdapter(Context context, List<RestSearchRide> results)
+    public SearchResultsAdapter(Context context, List<RestRide> results)
     {
         this.context = context;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -61,26 +59,29 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
         if (v == null)
         {
             v = inflater.inflate(R.layout.item_search_result, parent, false);
+            TextView time = (TextView) v.findViewById(R.id.item_result_time);
+            TextView price = (TextView) v.findViewById(R.id.item_result_price);
+            TextView driver = (TextView) v.findViewById(R.id.item_result_driver);
+
+            v.setTag(new ResultsViewHolder(time, price, driver));
         }
 
-        RestSearchRide ride = results.get(position);
-        TextView time = (TextView) v.findViewById(R.id.item_result_time);
-        time.setText(timeFormatter.format(ride.date));
+        ResultsViewHolder holder = (ResultsViewHolder) v.getTag();
+        RestRide ride = results.get(position);
+        holder.time.setText(timeFormatter.format(ride.date));
 
-        TextView price = (TextView) v.findViewById(R.id.item_result_price);
 
-        if (ride.price == 0)
+        if (ride.price == null || ride.price == 0)
         {
-            price.setVisibility(View.INVISIBLE);
+            holder.price.setVisibility(View.INVISIBLE);
         }
         else
         {
-            price.setText(String.format(Locale.GERMAN, "%1.1f €", ride.price));
-            price.setVisibility(View.VISIBLE);
+            holder.price.setText(String.format(Locale.GERMAN, "%1.1f €", ride.price));
+            holder.price.setVisibility(View.VISIBLE);
         }
 
-        TextView driver = (TextView) v.findViewById(R.id.item_result_driver);
-        driver.setText(ride.author);
+        holder.driver.setText(ride.author);
         return v;
     }
 
@@ -96,13 +97,13 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
         return false;
     }
 
-    public void setResults(List<RestSearchRide> rides)
+    public void setResults(List<RestRide> rides)
     {
         buildResults(rides);
         notifyDataSetChanged();
     }
 
-    private void buildResults(List<RestSearchRide> rides)
+    private void buildResults(List<RestRide> rides)
     {
         Collections.sort(rides);
         this.results = rides;
@@ -115,15 +116,17 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
         if (v == null)
         {
             v = inflater.inflate(R.layout.item_search_title, parent, false);
+            TextView titleView = (TextView) v.findViewById(R.id.search_item_title);
+            v.setTag(titleView);
         }
 
-        RestSearchRide item = results.get(position);
-        TextView titleView = (TextView) v.findViewById(R.id.search_item_title);
+        RestRide item = results.get(position);
 
         String titleText = LocaleUtil.getLocalizedCityName(context, item.fromCity, item.fromCountry) +
                            " - " +
                            LocaleUtil.getLocalizedCityName(context, item.toCity, item.toCountry);
 
+        TextView titleView = (TextView) v.getTag();
         titleView.setText(titleText);
         return v;
     }
@@ -131,7 +134,21 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
     @Override
     public long getHeaderId(int position)
     {
-        RestSearchRide ride = results.get(position);
+        RestRide ride = results.get(position);
         return (ride.fromCity.hashCode() + ride.fromCountry.hashCode()) * (ride.toCity.hashCode() + ride.toCountry.hashCode());
+    }
+
+    private static class ResultsViewHolder
+    {
+        TextView time;
+        TextView price;
+        TextView driver;
+
+        private ResultsViewHolder(TextView time, TextView price, TextView driver)
+        {
+            this.time = time;
+            this.price = price;
+            this.driver = driver;
+        }
     }
 }

@@ -13,8 +13,8 @@ import com.googlecode.androidannotations.annotations.*;
 
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
+import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.api.rest.RestSearchResults;
-import org.prevoz.android.api.rest.RestSearchRide;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.Route;
@@ -177,7 +177,7 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                RestSearchRide ride = (RestSearchRide) adapter.getItem(position - 1);
+                RestRide ride = (RestRide) adapter.getItem(position - 1);
                 RideInfoFragment rideInfo = RideInfoFragment.newInstance(ride);
                 rideInfo.show(getActivity().getSupportFragmentManager(), "RideInfo");
             }

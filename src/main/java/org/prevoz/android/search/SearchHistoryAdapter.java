@@ -7,13 +7,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import org.prevoz.android.R;
-import org.prevoz.android.api.rest.RestSearchRide;
 import org.prevoz.android.model.Route;
 import org.prevoz.android.util.Database;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 import java.util.List;
-import java.util.Locale;
 
 public class SearchHistoryAdapter extends BaseAdapter implements StickyListHeadersAdapter
 {
