@@ -38,7 +38,7 @@ import java.util.Locale;
 @EActivity(R.layout.activity_main)
 public class MainActivity extends SherlockFragmentActivity
 {
-    private static final String SEARCH_FRAGMENT_TAG = "SearchFragment";
+    private static final String SEARCH_FRAGMENT_TAG = "SearchResultsFragment";
 
     @ViewById(R.id.main_drawer)
     protected DrawerLayout drawerLayout;
