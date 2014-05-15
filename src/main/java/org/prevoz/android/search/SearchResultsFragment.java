@@ -189,15 +189,17 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
 
     private void showNotificationsButton()
     {
+        searchNofityButtonContainer.clearAnimation();
+
         if (!shouldShowNotificationButton ||
              searchNofityButtonContainer.getVisibility() == View.VISIBLE ||
             !pushManager.isPushAvailable())
         {
+            searchNofityButtonContainer.setAlpha(1.0f);
             return;
         }
 
         // Show notifications button
-        searchNofityButtonContainer.clearAnimation();
         searchNofityButtonContainer.setAlpha(0.0f);
         updateNotificationButtonText();
         searchNofityButtonContainer.setVisibility(View.VISIBLE);
@@ -222,14 +224,14 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
             return;
 
         searchNofityButtonContainer.clearAnimation();
-        searchNofityButtonContainer.animate().alpha(0.0f).setListener(new AnimatorListenerAdapter()
+        searchNofityButtonContainer.animate().alpha(0.0f).setDuration(200).setListener(new AnimatorListenerAdapter()
         {
             @Override
             public void onAnimationEnd(Animator animation)
             {
                 searchNofityButtonContainer.setVisibility(View.GONE);
             }
-        }).setDuration(200).start();
+        });
     }
 
     private void clickNotificationButton()
