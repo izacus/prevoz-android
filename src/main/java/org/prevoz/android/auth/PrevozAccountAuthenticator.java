@@ -17,6 +17,10 @@ import retrofit.client.Response;
 public class PrevozAccountAuthenticator extends AbstractAccountAuthenticator
 {
     private static final String LOG_TAG = "Prevoz.Authenticator";
+
+    public static final String PREF_KEY_EXPIRES = "oauth2.token_expires";
+    public static final String PREF_OAUTH2 = "oauth2";
+
     private final Context ctx;
 
     public PrevozAccountAuthenticator(Context context)

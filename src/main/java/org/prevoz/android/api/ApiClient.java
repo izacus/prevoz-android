@@ -1,5 +1,6 @@
 package org.prevoz.android.api;
 
+import android.os.Build;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -12,6 +13,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.prevoz.android.PrevozApplication_;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
@@ -75,6 +77,7 @@ public class ApiClient
         @Override
         public void intercept(RequestFacade requestFacade)
         {
+            requestFacade.addHeader("User-Agent", String.format("Prevoz/%d Android/%d", PrevozApplication_.VERSION, Build.VERSION.SDK_INT));
             if (bearer != null)
                 requestFacade.addHeader("Authorization", String.format("Bearer %s", bearer));
         }

@@ -2,9 +2,11 @@ package org.prevoz.android.auth;
 
 import android.accounts.*;
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
@@ -19,6 +21,7 @@ import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.util.store.DataStoreFactory;
 import com.googlecode.androidannotations.annotations.Background;
+import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
@@ -43,6 +46,9 @@ public class LoginActivity extends SherlockFragmentActivity
     private AccountAuthenticatorResponse authenticatorResponse;
     private Bundle authenticatorResult;
     private WebView webview;
+
+    @Bean
+    protected AuthenticationUtils authUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -115,7 +121,11 @@ public class LoginActivity extends SherlockFragmentActivity
                 public void success(RestAccountStatus restAccountStatus, Response response)
                 {
                     updateAuthenticatorResult(restAccountStatus, retrievedToken.getAccessToken(), retrievedToken.getRefreshToken());
-                    UpdateAccountInformationTask updateInfoTask = new UpdateAccountInformationTask(dialog, restAccountStatus, retrievedToken.getAccessToken(), retrievedToken.getRefreshToken());
+                    UpdateAccountInformationTask updateInfoTask = new UpdateAccountInformationTask(dialog,
+                                                                                                   restAccountStatus,
+                                                                                                   retrievedToken.getAccessToken(),
+                                                                                                   retrievedToken.getRefreshToken(),
+                                                                                                   System.currentTimeMillis() + (retrievedToken.getExpiresInSeconds() * 1000));
                     updateInfoTask.execute();
                 }
 
@@ -165,13 +175,15 @@ public class LoginActivity extends SherlockFragmentActivity
         private final RestAccountStatus status;
         private final String accessToken;
         private final String refreshToken;
+        private final long expires;
 
-        public UpdateAccountInformationTask(ProgressDialog dialog, RestAccountStatus status, String accessToken, String refreshToken)
+        public UpdateAccountInformationTask(ProgressDialog dialog, RestAccountStatus status, String accessToken, String refreshToken, long expires)
         {
             this.dialog = dialog;
             this.status = status;
             this.accessToken = accessToken;
             this.refreshToken = refreshToken;
+            this.expires = expires;
         }
 
 
@@ -180,34 +192,15 @@ public class LoginActivity extends SherlockFragmentActivity
         {
             // Try to find existing account
             AccountManager am = AccountManager.get(LoginActivity.this);
-
-            // Remove possible existing accounts
-            Account[] accounts = am.getAccountsByType(getString(R.string.account_type));
-            for (Account acc : accounts)
-            {
-                AccountManagerFuture<Boolean> future = am.removeAccount(acc, null, null);
-                try
-                {
-                    future.getResult();
-                }
-                catch (OperationCanceledException e)
-                {
-                    // Nothing TBD
-                }
-                catch (IOException e)
-                {
-                    // Nothing TBD
-                }
-                catch (AuthenticatorException e)
-                {
-                    // Nothing TBD
-                }
-            }
-
-
+            authUtils.removeExistingAccounts();
             Account acc = new Account(status.username, getString(R.string.account_type));
             am.addAccountExplicitly(acc, refreshToken, null);
             am.setAuthToken(acc, "default", accessToken);
+
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+            sp.edit().putBoolean(PrevozAccountAuthenticator.PREF_OAUTH2, true)
+                     .putLong(PrevozAccountAuthenticator.PREF_KEY_EXPIRES, expires)
+                     .commit();
             return null;
         }
 

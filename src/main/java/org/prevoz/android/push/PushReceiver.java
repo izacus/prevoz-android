@@ -32,8 +32,8 @@ public class PushReceiver extends BroadcastReceiver
             Log.d(this.toString(), key + ":" + extras.get(key));
         }
 
-        City from = new City(intent.getExtras().getString("fromcity"), intent.getExtras().getString("fromcountry"));
-        City to = new City(intent.getExtras().getString("tocity"), intent.getExtras().getString("tocountry"));
+        City from = new City(intent.getExtras().getString("fromcity"), intent.getExtras().getString("from_country"));
+        City to = new City(intent.getExtras().getString("tocity"), intent.getExtras().getString("to_country"));
 
         // Create notification message:
         android.app.NotificationManager notifyManager = (android.app.NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);

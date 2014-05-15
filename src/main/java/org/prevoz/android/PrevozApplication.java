@@ -1,6 +1,7 @@
 package org.prevoz.android;
 
 import android.app.Application;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 
 import android.os.AsyncTask;
@@ -15,6 +16,9 @@ import java.util.Locale;
 @EApplication
 public class PrevozApplication extends Application
 {
+    public static int VERSION = -1;
+
+
     @Bean
     protected AuthenticationUtils authUtils;
 
@@ -22,6 +26,16 @@ public class PrevozApplication extends Application
     public void onCreate()
     {
         super.onCreate();
+
+        try
+        {
+            VERSION = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+        }
+        catch (PackageManager.NameNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+
         new PruneHistory().execute();
     }
 
