@@ -13,9 +13,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.squareup.okhttp.OkHttpClient;
 import org.prevoz.android.PrevozApplication_;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
+import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 
 public class ApiClient
@@ -31,9 +33,10 @@ public class ApiClient
                 .create();
 
         adapter = new RestAdapter.Builder()
-                                 .setServer("https://prevoz.org/api")
+                                 .setEndpoint("https://prevoz.org/api")
                                  .setConverter(new GsonConverter(gson))
                                  .setRequestInterceptor(new CookieSetterInterceptor())
+                                 .setClient(new OkClient(new OkHttpClient()))
                                  .setLogLevel(RestAdapter.LogLevel.FULL)
                                  .build();
     }
@@ -78,6 +81,7 @@ public class ApiClient
         public void intercept(RequestFacade requestFacade)
         {
             requestFacade.addHeader("User-Agent", String.format("Prevoz/%d Android/%d", PrevozApplication_.VERSION, Build.VERSION.SDK_INT));
+
             if (bearer != null)
                 requestFacade.addHeader("Authorization", String.format("Bearer %s", bearer));
         }
