@@ -103,7 +103,7 @@ public class RideInfoFragment extends DialogFragment
         txtTo.setText(LocaleUtil.getLocalizedCityName(getActivity(), ride.toCity, ride.toCountry));
         txtTime.setText(timeFormatter.format(ride.date));
 
-        if (ride.price == 0)
+        if (ride.price == null || ride.price == 0)
         {
             txtPrice.setVisibility(View.INVISIBLE);
         }

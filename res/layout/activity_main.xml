@@ -21,7 +21,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="54dp"
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
             android:paddingLeft="4dp"
@@ -62,7 +62,7 @@
             android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:choiceMode="singleChoice"
-            android:divider="@android:color/transparent"
+            android:divider="?android:attr/listDivider"
             android:dividerHeight="0dp"
             />
 

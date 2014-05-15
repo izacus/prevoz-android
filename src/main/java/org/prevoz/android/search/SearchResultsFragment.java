@@ -5,9 +5,11 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.googlecode.androidannotations.annotations.*;
@@ -92,6 +94,10 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
         resultList.setDivider(null);
         resultList.setDividerHeight(0);
         resultList.addHeaderView(headerFragmentView, null, true);
+
+        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+        ft.replace(R.id.search_form, new SearchFragment_());
+        ft.commit();
 
         if (results == null)
         {

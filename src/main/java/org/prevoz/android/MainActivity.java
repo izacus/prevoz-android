@@ -25,6 +25,7 @@ import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.Route;
+import org.prevoz.android.push.PushFragment_;
 import org.prevoz.android.push.PushManager;
 import org.prevoz.android.search.SearchResultsFragment;
 import org.prevoz.android.search.SearchResultsFragment_;
@@ -39,6 +40,7 @@ import java.util.Locale;
 public class MainActivity extends SherlockFragmentActivity
 {
     private static final String SEARCH_FRAGMENT_TAG = "SearchResultsFragment";
+    private static final String PUSH_NOTIFICATIONS_FRAGMENT_TAG = "PushNotificationsFragment";
 
     @ViewById(R.id.main_drawer)
     protected DrawerLayout drawerLayout;
@@ -49,9 +51,6 @@ public class MainActivity extends SherlockFragmentActivity
 
     @ViewById(R.id.main_left_drawer_username)
     protected TextView leftUsername;
-
-    @FragmentByTag(SEARCH_FRAGMENT_TAG)
-    protected SearchResultsFragment searchFragment;
 
     @Bean
     protected AuthenticationUtils authUtils;
@@ -80,7 +79,8 @@ public class MainActivity extends SherlockFragmentActivity
 
         // Attach search fragment if it's missing
         FragmentManager fm = getSupportFragmentManager();
-        if (searchFragment == null)
+
+        if (fm.findFragmentByTag(SEARCH_FRAGMENT_TAG) == null)
         {
             FragmentTransaction transaction = fm.beginTransaction();
             transaction.replace(R.id.main_search_container, new SearchResultsFragment_(), SEARCH_FRAGMENT_TAG);
@@ -164,7 +164,8 @@ public class MainActivity extends SherlockFragmentActivity
 
     private void prepareDrawer()
     {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.drawer_list_item);
+        adapter.add("Iskanje");
         adapter.add("Moji prevozi");
         adapter.add("Obvestila");
 
@@ -174,7 +175,31 @@ public class MainActivity extends SherlockFragmentActivity
     @ItemClick(R.id.main_left_drawer_list)
     protected void clickDrawerOption(int position)
     {
+        FragmentManager fm = getSupportFragmentManager();
+        switch(position)
+        {
+            case 0:     // SEARCH
+                if (fm.findFragmentByTag(SEARCH_FRAGMENT_TAG) == null)
+                {
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.main_search_container, new SearchResultsFragment_(), SEARCH_FRAGMENT_TAG);
+                    transaction.commit();
+                }
+                break;
+            case 1:     // MY RIDES
+                break;
 
+            case 2:     // PUSH NOTIFICATION LIST
+                if (fm.findFragmentByTag(PUSH_NOTIFICATIONS_FRAGMENT_TAG) == null)
+                {
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.main_search_container, new PushFragment_(), PUSH_NOTIFICATIONS_FRAGMENT_TAG);
+                    transaction.commit();
+                }
+                break;
+        }
+
+        drawerLayout.closeDrawers();
     }
 
     private android.view.MenuItem getMenuItem(final MenuItem item)
