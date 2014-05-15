@@ -210,10 +210,12 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     {
         if (pushManager.isSubscribed(lastFrom, lastTo, lastDate))
         {
+            searchNofityButtonText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_cancel, 0, 0, 0);
             searchNofityButtonText.setText("Prenehaj z obveščanjem o prevozih");
         }
         else
         {
+            searchNofityButtonText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_bell, 0, 0, 0);
             searchNofityButtonText.setText("Obveščaj me o novih prevozih");
         }
     }

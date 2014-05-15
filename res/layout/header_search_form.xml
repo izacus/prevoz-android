@@ -37,6 +37,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:drawableLeft="@drawable/ic_action_bell"
+
                 android:singleLine="true"
                 android:textColor="@color/prevoztheme_color"
                 android:textSize="16sp"
