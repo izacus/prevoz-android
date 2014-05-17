@@ -18,6 +18,7 @@ import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestPushStatus;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
+import org.prevoz.android.model.NotificationSubscription;
 import org.prevoz.android.util.Database;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -26,6 +27,7 @@ import retrofit.client.Response;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 @EBean(scope = Scope.Singleton)
@@ -89,6 +91,11 @@ public class PushManager
         {
             initLock.open();
         }
+    }
+
+    public List<NotificationSubscription> getSubscriptions()
+    {
+        return Database.getNotificationSubscriptions(context);
     }
 
     public void setSubscriptionStatus(final City from, final City to, final Calendar date, final boolean subscribed)

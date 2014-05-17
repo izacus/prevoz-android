@@ -13,6 +13,7 @@ import org.prevoz.android.model.City;
 import org.prevoz.android.model.NotificationSubscription;
 import org.prevoz.android.model.Route;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -107,6 +108,8 @@ public class Database
             }
         }
     }
+
+    private static final SimpleDateFormat sqlDateFormatter = LocaleUtil.getSimpleDateFormat("yyyy-MM-dd 00:00:00");
 
     public static synchronized SQLiteDatabase getSettingsDatabase(Context context)
     {
@@ -333,7 +336,7 @@ public class Database
             while (results.moveToNext())
             {
                 Calendar date = Calendar.getInstance(LocaleUtil.getLocalTimezone());
-                date.setTimeInMillis(results.getLong(dateIndex));
+                date.setTime(sqlDateFormatter.parse(results.getString(dateIndex)));
                 NotificationSubscription subscription = new NotificationSubscription(results.getInt(idIndex),
                         new City(results.getString(fromIndex), results.getString(fromCountryIndex)),
                         new City(results.getString(toIndex), results.getString(toCountryIndex)),
@@ -349,6 +352,11 @@ public class Database
         {
             database.close();
         }
+        catch (ParseException e)
+        {
+            Log.e("Database", "Couldn't parse date in DB!", e);
+            database.close();
+        }
 
         return new ArrayList<NotificationSubscription>();
     }
@@ -360,7 +368,6 @@ public class Database
 
         Log.d("Database", "Adding subscription: " + from + " " + to + " - " + date);
 
-        SimpleDateFormat sqlDateFormatter = LocaleUtil.getSimpleDateFormat("yyyy-MM-dd 00:00:00");
         values.put("from_loc", from.getDisplayName());
         values.put("from_country", from.getCountryCode());
         values.put("to_loc", to.getDisplayName());

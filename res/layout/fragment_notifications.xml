@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 8 dp for listview padding and 5dp for card padding -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="13dp"
+        android:layout_marginTop="12dp"
+        android:text="Naročena obvestila"
+        style="?android:listSeparatorTextViewStyle"
+        />
+
+    <ListView
+        android:id="@+id/notifications_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:divider="@null"
+        android:listSelector="@drawable/search_list_selector"
+        android:scrollbarStyle="outsideOverlay"
+        />
+
+</LinearLayout>
