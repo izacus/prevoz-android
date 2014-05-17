@@ -121,6 +121,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>net.hockeyapp.android</groupId>
+            <artifactId>HockeySDK</artifactId>
+            <version>3.0.2</version>
+        </dependency>
 	</dependencies>
 
 	<build>

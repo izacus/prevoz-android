@@ -21,6 +21,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.googlecode.androidannotations.annotations.*;
 import de.greenrobot.event.EventBus;
+import net.hockeyapp.android.CrashManager;
 import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
@@ -112,6 +113,7 @@ public class MainActivity extends SherlockFragmentActivity
     protected void onResume()
     {
         super.onResume();
+        CrashManager.register(this, "bf529dcbb5c656bba1195961d0bffd08");
 
         if (getIntent().hasExtra("from") && getIntent().hasExtra("to"))
         {
