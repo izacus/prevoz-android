@@ -25,6 +25,9 @@
         android:divider="@null"
         android:listSelector="@drawable/search_list_selector"
         android:scrollbarStyle="outsideOverlay"
-        />
+        >
+    </ListView>
+
+    <include layout="@layout/empty_view" />
 
 </LinearLayout>

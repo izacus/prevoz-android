@@ -33,6 +33,10 @@ public class PushReceiver extends BroadcastReceiver
             Log.d(this.toString(), key + ":" + extras.get(key));
         }
 
+        int[] rideIds = parseRideIds(intent.getExtras().getString("rides"));
+        if (rideIds.length == 0)
+            return;
+
         City from = new City(intent.getExtras().getString("fromcity"), intent.getExtras().getString("from_country"));
         City to = new City(intent.getExtras().getString("tocity"), intent.getExtras().getString("to_country"));
 
@@ -54,7 +58,6 @@ public class PushReceiver extends BroadcastReceiver
             return;
         }
 
-        int[] rideIds = parseRideIds(intent.getExtras().getString("rides"));
         Intent notificationIntent = new Intent(context, MainActivity_.class);
         notificationIntent.putExtra("from", from);
         notificationIntent.putExtra("to", to);

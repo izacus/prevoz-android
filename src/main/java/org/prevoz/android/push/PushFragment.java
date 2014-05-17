@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import com.googlecode.androidannotations.annotations.*;
 import de.greenrobot.event.EventBus;
 import org.prevoz.android.R;
@@ -22,12 +25,16 @@ public class PushFragment extends Fragment
     @ViewById(R.id.notifications_list)
     protected ListView notificationList;
 
+    @ViewById(R.id.empty_view)
+    protected View emptyView;
+
     @Bean
     protected PushManager pushManager;
 
     @AfterViews
     protected void initFragment()
     {
+        setupEmptyView(notificationList, "Niste prijavljeni na nobena obvestila.");
         List<NotificationSubscription> notifications = pushManager.getSubscriptions();
         notificationList.setAdapter(new PushNotificationsAdapter(getActivity(), notifications));
     }
@@ -54,6 +61,13 @@ public class PushFragment extends Fragment
     {
         super.onResume();
         EventBus.getDefault().register(this);
+    }
+
+    private void setupEmptyView(ListView listView, String text)
+    {
+        TextView textView = (TextView) emptyView.findViewById(R.id.empty_text);
+        textView.setText(text);
+        listView.setEmptyView(emptyView);
     }
 
     public void onEventMainThread(Events.NotificationSubscriptionStatusChanged e)
