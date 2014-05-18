@@ -27,6 +27,7 @@ import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.Route;
 import org.prevoz.android.myrides.MyRidesFragment_;
+import org.prevoz.android.myrides.NewRideFragment_;
 import org.prevoz.android.push.PushFragment_;
 import org.prevoz.android.push.PushManager;
 import org.prevoz.android.search.SearchResultsFragment;
@@ -194,7 +195,7 @@ public class MainActivity extends SherlockFragmentActivity
                 if (fm.findFragmentByTag(MY_RIDES_FRAGMENT_TAG) == null)
                 {
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.main_search_container, new MyRidesFragment_(), MY_RIDES_FRAGMENT_TAG);
+                    transaction.replace(R.id.main_search_container, new NewRideFragment_(), MY_RIDES_FRAGMENT_TAG);
                     transaction.commit();
                 }
                 break;

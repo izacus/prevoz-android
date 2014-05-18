@@ -1,6 +1,324 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-</LinearLayout>
+    <LinearLayout
+
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="Nov prevoz"
+            style="?android:listSeparatorTextViewStyle"
+            />
+
+        <!-- Search card -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/card_bg_r4"
+            android:orientation="vertical"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                >
+
+                <ImageView
+                    android:id="@+id/newride_ic_from"
+                    android:layout_width="32dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_action_location_from"
+                    />
+
+                <ImageView
+                    android:id="@+id/newride_ic_dots"
+                    android:layout_width="32dp"
+                    android:layout_height="16dp"
+                    android:layout_below="@id/newride_ic_from"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_action_overflow"
+                    />
+
+                <ImageView
+                    android:id="@+id/newride_ic_to"
+                    android:layout_below="@id/newride_ic_dots"
+                    android:layout_width="32dp"
+                    android:layout_height="40dp"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_action_location_to"
+                    />
+
+                <AutoCompleteTextView
+                    android:id="@+id/newride_from"
+                    android:layout_width="match_parent"
+                    android:layout_toRightOf="@id/newride_ic_from"
+                    android:layout_alignBottom="@id/newride_ic_from"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="8dp"
+                    android:singleLine="true"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
+                    android:hint="@string/search_form_from_hint"
+
+                    style="@style/Prevoz.AutoCompleteTextView"
+                    />
+
+                <AutoCompleteTextView
+                    android:id="@+id/newride_to"
+                    android:layout_width="match_parent"
+                    android:layout_toRightOf="@id/newride_ic_to"
+                    android:layout_alignBottom="@id/newride_ic_to"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="8dp"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
+                    android:singleLine="true"
+                    android:hint="@string/search_form_to_hint"
+
+                    style="@style/Prevoz.AutoCompleteTextView"
+                    />
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:id="@+id/newride_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:clickable="true"
+                android:orientation="horizontal"
+                >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_action_calendar_day"
+                    android:scaleType="center"
+                    />
+
+                <EditText
+                    android:id="@+id/newride_date_edit"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="8dp"
+                    android:inputType="textNoSuggestions"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:clickable="true"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:hint="@string/search_form_date"
+                    style="@style/Prevoz.EditText"
+                    tools:ignore="TextFields" />
+
+                <EditText
+                    android:id="@+id/newride_time_edit"
+                    android:layout_width="100dp"
+                    android:layout_height="48dp"
+                    android:inputType="textNoSuggestions"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:clickable="true"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:hint="Čas"
+                    style="@style/Prevoz.EditText"
+                    tools:ignore="TextFields"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/newride_money_people"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:clickable="true"
+                android:orientation="horizontal"
+                >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_action_ticket"
+                    android:scaleType="center"
+                    />
+
+                <EditText
+                    android:id="@+id/newride_price"
+                    android:layout_width="100dp"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="8dp"
+                    android:inputType="numberDecimal"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:hint="Stroški"
+                    style="@style/Prevoz.EditText"
+                    tools:ignore="TextFields"
+                    />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="32dp"
+                    android:src="@drawable/ic_action_users"
+                    android:scaleType="center"
+                    />
+
+                <EditText
+                    android:id="@+id/newride_people"
+                    android:layout_width="100dp"
+                    android:layout_height="48dp"
+                    android:inputType="number"
+                    android:layout_marginLeft="8dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:hint="Oseb"
+                    style="@style/Prevoz.EditText"
+                    tools:ignore="TextFields"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:clickable="true"
+                android:orientation="horizontal"
+                >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_action_phone_start"
+                    android:scaleType="center"
+                    />
+
+                <EditText
+                    android:id="@+id/newride_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="8dp"
+                    android:inputType="phone"
+                    android:singleLine="true"
+                    android:hint="Telefonska številka"
+                    style="@style/Prevoz.EditText"
+                    tools:ignore="TextFields"
+                    />
+
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/newride_insurance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:paddingLeft="12dp"
+                android:text="Nezgodno zavarovanje potnikov"
+                style="@style/Prevoz.CheckBox"
+                tools:ignore="TextFields"
+                />
+
+            <EditText
+                android:id="@+id/newride_notes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:inputType="textMultiLine"
+                android:scrollbars="none"
+                android:hint="Opombe"
+                style="@style/Prevoz.EditText"
+                tools:ignore="TextFields"
+                />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_marginTop="16dp"
+                android:layout_height="1dp"
+
+                android:background="#DDDDDD" />
+
+            <LinearLayout
+                android:id="@+id/newride_button"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:paddingLeft="16dp"
+                android:orientation="horizontal"
+                android:background="@drawable/borderless_button"
+                >
+
+                <FrameLayout
+                    android:layout_width="32dp"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/newride_button_img"
+                        android:layout_width="32dp"
+                        android:layout_height="match_parent"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_action_send"
+                        />
+
+                    <ProgressBar
+                        android:id="@+id/newride_button_progress"
+                        android:layout_width="32dp"
+                        android:layout_height="match_parent"
+                        android:indeterminateOnly="true"
+                        android:visibility="invisible"
+                        />
+
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/newride_button_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"
+                    android:paddingLeft="16dp"
+
+                    android:textColor="@color/prevoztheme_color"
+                    android:text="Oddaj prevoz"
+                    style="?android:textAppearanceButton"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
