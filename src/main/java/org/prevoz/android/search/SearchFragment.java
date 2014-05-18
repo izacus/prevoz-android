@@ -1,11 +1,8 @@
 package org.prevoz.android.search;
 
-import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.googlecode.androidannotations.annotations.*;
@@ -13,15 +10,17 @@ import de.greenrobot.event.EventBus;
 import org.prevoz.android.R;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
+import org.prevoz.android.model.CityNameTextValidator;
 import org.prevoz.android.model.Route;
 import org.prevoz.android.util.Database;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
+import org.prevoz.android.util.ViewUtils;
 
 import java.util.Calendar;
 
 @EFragment(R.layout.fragment_search)
-public class SearchFragment extends Fragment implements DatePickerDialog.OnDateSetListener, AutoCompleteTextView.Validator
+public class SearchFragment extends Fragment implements DatePickerDialog.OnDateSetListener
 {
     @ViewById(R.id.search_date_edit)
     protected EditText searchDate;
@@ -55,16 +54,16 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
         SQLiteDatabase db = Database.getSettingsDatabase(getActivity());
         searchFrom.setAdapter(new CityAutocompleteAdapter(getActivity(), db));
         searchTo.setAdapter(new CityAutocompleteAdapter(getActivity(), db));
-        searchFrom.setValidator(this);
-        searchTo.setValidator(this);
+        searchFrom.setValidator(new CityNameTextValidator(getActivity()));
+        searchTo.setValidator(new CityNameTextValidator(getActivity()));
     }
 
 
     @Click(R.id.search_date)
     protected void clickDate()
     {
-        hideKeyboard();
-        final Calendar calendar = Calendar.getInstance();
+        ViewUtils.hideKeyboard(getActivity());
+        final Calendar calendar = Calendar.getInstance(LocaleUtil.getLocale());
         DatePickerDialog dialog = DatePickerDialog.newInstance(this,
                                                                calendar.get(Calendar.YEAR),
                                                                calendar.get(Calendar.MONTH),
@@ -84,7 +83,7 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
     protected void clickSearch()
     {
         updateSearchButtonProgress(true);
-        hideKeyboard();
+        ViewUtils.hideKeyboard(getActivity());
         startSearch();
     }
 
@@ -95,14 +94,6 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
         selectedDate.set(Calendar.MONTH, month);
         selectedDate.set(Calendar.DAY_OF_MONTH, day);
         updateShownDate();
-    }
-
-    private void hideKeyboard()
-    {
-        InputMethodManager inputManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        View currentFocus = getActivity().getCurrentFocus();
-        if (currentFocus != null)
-            inputManager.hideSoftInputFromWindow(currentFocus.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     private void startSearch()
@@ -166,29 +157,5 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
     {
         super.onResume();
         EventBus.getDefault().registerSticky(this);
-    }
-
-    @Override
-    public boolean isValid(CharSequence text)
-    {
-        return Database.cityExists(Database.getSettingsDatabase(getActivity()), text.toString());
-    }
-
-    @Override
-    public CharSequence fixText(CharSequence invalidText)
-    {
-        City c = StringUtil.splitStringToCity(invalidText.toString());
-        if (c == null)
-            return null;
-
-        Cursor cityCandidates = Database.getCityCursor(Database.getSettingsDatabase(getActivity()), c.getDisplayName(), c.getCountryCode());
-        if (cityCandidates.moveToNext())
-        {
-            int idx = cityCandidates.getColumnIndex("name");
-            int cidx = cityCandidates.getColumnIndex("country");
-            return LocaleUtil.getLocalizedCityName(getActivity(), cityCandidates.getString(idx), cityCandidates.getString(cidx));
-        }
-
-        return null;
     }
 }

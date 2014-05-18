@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="Nov prevoz"
+            android:text="@string/newride_title"
             style="?android:listSeparatorTextViewStyle"
             />
 
@@ -66,22 +66,23 @@
                     android:src="@drawable/ic_action_location_to"
                     />
 
-                <AutoCompleteTextView
+                <org.prevoz.android.ui.FloatingHintAutocompleteEditText
                     android:id="@+id/newride_from"
                     android:layout_width="match_parent"
                     android:layout_toRightOf="@id/newride_ic_from"
                     android:layout_alignBottom="@id/newride_ic_from"
                     android:layout_height="48dp"
                     android:layout_marginLeft="8dp"
+                    android:layout_marginTop="2dp"
                     android:singleLine="true"
                     android:imeOptions="actionNext"
                     android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
                     android:hint="@string/search_form_from_hint"
 
-                    style="@style/Prevoz.AutoCompleteTextView"
+                    style="@style/Prevoz.FloatingHintEditText"
                     />
 
-                <AutoCompleteTextView
+                <org.prevoz.android.ui.FloatingHintAutocompleteEditText
                     android:id="@+id/newride_to"
                     android:layout_width="match_parent"
                     android:layout_toRightOf="@id/newride_ic_to"
@@ -93,7 +94,7 @@
                     android:singleLine="true"
                     android:hint="@string/search_form_to_hint"
 
-                    style="@style/Prevoz.AutoCompleteTextView"
+                    style="@style/Prevoz.FloatingHintEditText"
                     />
 
             </RelativeLayout>
@@ -117,7 +118,7 @@
                     android:scaleType="center"
                     />
 
-                <EditText
+                <org.prevoz.android.ui.FloatingHintEditText
                     android:id="@+id/newride_date_edit"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -130,10 +131,10 @@
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:hint="@string/search_form_date"
-                    style="@style/Prevoz.EditText"
+                    style="@style/Prevoz.FloatingHintEditText"
                     tools:ignore="TextFields" />
 
-                <EditText
+                <org.prevoz.android.ui.FloatingHintEditText
                     android:id="@+id/newride_time_edit"
                     android:layout_width="100dp"
                     android:layout_height="48dp"
@@ -144,7 +145,7 @@
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:hint="Čas"
-                    style="@style/Prevoz.EditText"
+                    style="@style/Prevoz.FloatingHintEditText"
                     tools:ignore="TextFields"
                     />
 
@@ -168,7 +169,7 @@
                     android:scaleType="center"
                     />
 
-                <EditText
+                <org.prevoz.android.ui.FloatingHintEditText
                     android:id="@+id/newride_price"
                     android:layout_width="100dp"
                     android:layout_height="48dp"
@@ -177,7 +178,7 @@
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:hint="Stroški"
-                    style="@style/Prevoz.EditText"
+                    style="@style/Prevoz.FloatingHintEditText"
                     tools:ignore="TextFields"
                     />
 
@@ -194,7 +195,7 @@
                     android:scaleType="center"
                     />
 
-                <EditText
+                <org.prevoz.android.ui.FloatingHintEditText
                     android:id="@+id/newride_people"
                     android:layout_width="100dp"
                     android:layout_height="48dp"
@@ -203,7 +204,7 @@
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:hint="Oseb"
-                    style="@style/Prevoz.EditText"
+                    style="@style/Prevoz.FloatingHintEditText"
                     tools:ignore="TextFields"
                     />
 
@@ -226,7 +227,7 @@
                     android:scaleType="center"
                     />
 
-                <EditText
+                <org.prevoz.android.ui.FloatingHintEditText
                     android:id="@+id/newride_phone"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
@@ -234,7 +235,7 @@
                     android:inputType="phone"
                     android:singleLine="true"
                     android:hint="Telefonska številka"
-                    style="@style/Prevoz.EditText"
+                    style="@style/Prevoz.FloatingHintEditText"
                     tools:ignore="TextFields"
                     />
 
@@ -253,7 +254,7 @@
                 tools:ignore="TextFields"
                 />
 
-            <EditText
+            <org.prevoz.android.ui.FloatingHintEditText
                 android:id="@+id/newride_notes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -262,7 +263,7 @@
                 android:inputType="textMultiLine"
                 android:scrollbars="none"
                 android:hint="Opombe"
-                style="@style/Prevoz.EditText"
+                style="@style/Prevoz.FloatingHintEditText"
                 tools:ignore="TextFields"
                 />
 

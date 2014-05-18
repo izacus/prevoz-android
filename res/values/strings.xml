@@ -18,6 +18,7 @@
     <string name="notify_statusbar">Novi prevozi na relaciji</string>
     <string name="rideinfo_call">Pokliči</string>
     <string name="rideinfo_send_sms">Pošlji SMS</string>
+    <string name="newride_title">Nov prevoz</string>
 
     <string-array name="ride_forms">
         <item>nov prevoz</item>

@@ -32,4 +32,9 @@
     <style name="Prevoz.AutoCompleteTextView" parent="@style/Prevoz.EditText">
 
     </style>
+
+    <style name="Prevoz.FloatingHintEditText" parent="@style/Prevoz.EditText">
+        <item name="android:paddingTop">0dp</item>
+    </style>
+
 </resources>
