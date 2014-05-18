@@ -4,6 +4,8 @@ import org.prevoz.android.api.rest.*;
 import retrofit.Callback;
 import retrofit.http.*;
 
+import java.util.List;
+
 public interface PrevozApi
 {
     @GET("/search/shares/")
@@ -32,4 +34,7 @@ public interface PrevozApi
                                      @Field("tocountry") String toCountry,
                                      @Field("date") String date,
                                      @Field("action") String action, Callback<RestPushStatus> cb);
+
+    @GET("/carshare/list/")
+    public void getMyRides(Callback<List<RestRide>> cb);
 }

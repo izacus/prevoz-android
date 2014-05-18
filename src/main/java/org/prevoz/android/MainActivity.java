@@ -26,6 +26,7 @@ import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.Route;
+import org.prevoz.android.myrides.MyRidesFragment_;
 import org.prevoz.android.push.PushFragment_;
 import org.prevoz.android.push.PushManager;
 import org.prevoz.android.search.SearchResultsFragment;
@@ -42,6 +43,7 @@ public class MainActivity extends SherlockFragmentActivity
 {
     private static final String SEARCH_FRAGMENT_TAG = "SearchResultsFragment";
     private static final String PUSH_NOTIFICATIONS_FRAGMENT_TAG = "PushNotificationsFragment";
+    private static final String MY_RIDES_FRAGMENT_TAG = "MyRidesFragment";
 
     @ViewById(R.id.main_drawer)
     protected DrawerLayout drawerLayout;
@@ -174,13 +176,13 @@ public class MainActivity extends SherlockFragmentActivity
         leftDrawer.setAdapter(adapter);
     }
 
-    @ItemClick(R.id.main_left_drawer_list)
-    protected void clickDrawerOption(int position)
+    private void showFragment(UiFragment fragment)
     {
         FragmentManager fm = getSupportFragmentManager();
-        switch(position)
+
+        switch(fragment)
         {
-            case 0:     // SEARCH
+            case FRAGMENT_SEARCH:
                 if (fm.findFragmentByTag(SEARCH_FRAGMENT_TAG) == null)
                 {
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -188,10 +190,15 @@ public class MainActivity extends SherlockFragmentActivity
                     transaction.commit();
                 }
                 break;
-            case 1:     // MY RIDES
+            case FRAGMENT_MY_RIDES:
+                if (fm.findFragmentByTag(MY_RIDES_FRAGMENT_TAG) == null)
+                {
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.main_search_container, new MyRidesFragment_(), MY_RIDES_FRAGMENT_TAG);
+                    transaction.commit();
+                }
                 break;
-
-            case 2:     // PUSH NOTIFICATION LIST
+            case FRAGMENT_NOTIFICATIONS:
                 if (fm.findFragmentByTag(PUSH_NOTIFICATIONS_FRAGMENT_TAG) == null)
                 {
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -202,6 +209,24 @@ public class MainActivity extends SherlockFragmentActivity
         }
 
         drawerLayout.closeDrawers();
+    }
+
+    @ItemClick(R.id.main_left_drawer_list)
+    protected void clickDrawerOption(int position)
+    {
+        switch (position)
+        {
+            case 0:     // SEARCH
+                showFragment(UiFragment.FRAGMENT_SEARCH);
+                break;
+            case 1:     // MY RIDES
+                showFragment(UiFragment.FRAGMENT_MY_RIDES);
+                break;
+
+            case 2:     // PUSH NOTIFICATION LIST
+                showFragment(UiFragment.FRAGMENT_NOTIFICATIONS);
+                break;
+        }
     }
 
     private android.view.MenuItem getMenuItem(final MenuItem item)

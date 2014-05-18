@@ -14,6 +14,7 @@ import de.greenrobot.event.EventBus;
 import org.prevoz.android.R;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.NotificationSubscription;
+import org.prevoz.android.util.ViewUtils;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class PushFragment extends Fragment
     @AfterViews
     protected void initFragment()
     {
-        setupEmptyView(notificationList, "Niste prijavljeni na nobena obvestila.");
+        ViewUtils.setupEmptyView(notificationList, emptyView, "Niste prijavljeni na nobena obvestila.");
         List<NotificationSubscription> notifications = pushManager.getSubscriptions();
         notificationList.setAdapter(new PushNotificationsAdapter(getActivity(), notifications));
     }
@@ -61,13 +62,6 @@ public class PushFragment extends Fragment
     {
         super.onResume();
         EventBus.getDefault().register(this);
-    }
-
-    private void setupEmptyView(ListView listView, String text)
-    {
-        TextView textView = (TextView) emptyView.findViewById(R.id.empty_text);
-        textView.setText(text);
-        listView.setEmptyView(emptyView);
     }
 
     public void onEventMainThread(Events.NotificationSubscriptionStatusChanged e)
