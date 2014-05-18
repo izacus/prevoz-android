@@ -40,11 +40,14 @@ import java.util.Locale;
 
 @SuppressLint("Registered")          // AndroidAnnotated activity is registered.
 @EActivity(R.layout.activity_main)
+@OptionsMenu(R.menu.fragment_myrides)
 public class MainActivity extends SherlockFragmentActivity
 {
     private static final String SEARCH_FRAGMENT_TAG = "SearchResultsFragment";
     private static final String PUSH_NOTIFICATIONS_FRAGMENT_TAG = "PushNotificationsFragment";
     private static final String MY_RIDES_FRAGMENT_TAG = "MyRidesFragment";
+    private static final String NEW_RIDE_FRAGMENT_TAG = "NewRideFragment";
+
 
     @ViewById(R.id.main_drawer)
     protected DrawerLayout drawerLayout;
@@ -195,7 +198,7 @@ public class MainActivity extends SherlockFragmentActivity
                 if (fm.findFragmentByTag(MY_RIDES_FRAGMENT_TAG) == null)
                 {
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.main_search_container, new NewRideFragment_(), MY_RIDES_FRAGMENT_TAG);
+                    transaction.replace(R.id.main_search_container, new MyRidesFragment_(), MY_RIDES_FRAGMENT_TAG);
                     transaction.commit();
                 }
                 break;
@@ -204,6 +207,15 @@ public class MainActivity extends SherlockFragmentActivity
                 {
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.main_search_container, new PushFragment_(), PUSH_NOTIFICATIONS_FRAGMENT_TAG);
+                    transaction.commit();
+                }
+                break;
+
+            case FRAGMENT_NEW_RIDE:
+                if (fm.findFragmentByTag(NEW_RIDE_FRAGMENT_TAG) == null)
+                {
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.main_search_container, new NewRideFragment_(), NEW_RIDE_FRAGMENT_TAG);
                     transaction.commit();
                 }
                 break;
@@ -228,6 +240,12 @@ public class MainActivity extends SherlockFragmentActivity
                 showFragment(UiFragment.FRAGMENT_NOTIFICATIONS);
                 break;
         }
+    }
+
+    @OptionsItem(R.id.menu_myrides_add)
+    protected void clickAddRide()
+    {
+        showFragment(UiFragment.FRAGMENT_NEW_RIDE);
     }
 
     private android.view.MenuItem getMenuItem(final MenuItem item)

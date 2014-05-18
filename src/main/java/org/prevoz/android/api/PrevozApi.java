@@ -36,5 +36,5 @@ public interface PrevozApi
                                      @Field("action") String action, Callback<RestPushStatus> cb);
 
     @GET("/carshare/list/")
-    public void getMyRides(Callback<List<RestRide>> cb);
+    public void getMyRides(Callback<RestSearchResults> cb);
 }

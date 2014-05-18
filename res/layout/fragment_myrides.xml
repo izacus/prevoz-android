@@ -5,6 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- 8 dp for listview padding and 5dp for card padding -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="13dp"
+        android:layout_marginTop="12dp"
+        android:text="Moji prevozi"
+        style="?android:listSeparatorTextViewStyle"
+        />
+
+
     <ListView
         android:id="@+id/myrides_list"
         android:layout_width="match_parent"

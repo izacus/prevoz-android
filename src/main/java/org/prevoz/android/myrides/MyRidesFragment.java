@@ -7,19 +7,18 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EFragment;
+import com.googlecode.androidannotations.annotations.OptionsMenu;
 import com.googlecode.androidannotations.annotations.ViewById;
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
-import org.prevoz.android.api.rest.RestRide;
+import org.prevoz.android.api.rest.RestSearchResults;
 import org.prevoz.android.util.ViewUtils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-import java.util.List;
-
 @EFragment(R.layout.fragment_myrides)
-public class MyRidesFragment extends Fragment implements Callback<List<RestRide>>
+public class MyRidesFragment extends Fragment implements Callback<RestSearchResults>
 {
     private static final String LOG_TAG = "Prevoz.MyRides";
 
@@ -35,9 +34,7 @@ public class MyRidesFragment extends Fragment implements Callback<List<RestRide>
     @AfterViews
     protected void initFragment()
     {
-        ViewUtils.setupEmptyView(myridesList, emptyView, "Nimate objavljenih prevozov.");
-        myridesList.setVisibility(View.INVISIBLE);
-        emptyView.setVisibility(View.INVISIBLE);
+        setListVisibility(false);
     }
 
     @Override
@@ -48,15 +45,26 @@ public class MyRidesFragment extends Fragment implements Callback<List<RestRide>
     }
 
     @Override
-    public void success(List<RestRide> restRide, Response response)
+    public void success(RestSearchResults restRide, Response response)
     {
         Log.d(LOG_TAG, "Rides loaded: " + response.getStatus());
+        ViewUtils.setupEmptyView(myridesList, emptyView, "Nimate objavljenih prevozov.");
+        setListVisibility(true);
+
     }
 
     @Override
     public void failure(RetrofitError error)
     {
         Log.e(LOG_TAG, "Ride load failed!");
-        error.printStackTrace();
+        ViewUtils.setupEmptyView(myridesList, emptyView, "Pri nalaganju vaših prevozov je prišlo do napake.");
+        setListVisibility(true);
+    }
+
+    private void setListVisibility(boolean listVisible)
+    {
+        myridesList.setVisibility(listVisible ? View.VISIBLE : View.INVISIBLE);
+        emptyView.setVisibility(listVisible ? View.VISIBLE : View.INVISIBLE);
+        throbber.setVisibility(listVisible ? View.INVISIBLE : View.VISIBLE);
     }
 }
