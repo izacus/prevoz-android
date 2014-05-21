@@ -9,7 +9,7 @@ import java.util.Date;
 public class RestRide implements Comparable, Parcelable
 {
     @SerializedName("id")
-    public long id;
+    public Long id;
 
     @SerializedName("from")
     public String fromCity;
@@ -45,7 +45,25 @@ public class RestRide implements Comparable, Parcelable
     @SerializedName("comment")
     public String comment;
 
+    @SerializedName("is_author")
+    public boolean isAuthor;
 
+    public RestRide(String fromCity, String fromCountry, String toCity, String toCountry, Float price, Integer numPeople, Date date, String phoneNumber, boolean insured, String comment)
+    {
+        this.id = null;
+        this.fromCity = fromCity;
+        this.fromCountry = fromCountry;
+        this.toCity = toCity;
+        this.toCountry = toCountry;
+        this.price = price;
+        this.numPeople = numPeople;
+        this.date = date;
+        this.phoneNumber = phoneNumber;
+        this.phoneNumberConfirmed = true;
+        this.isAuthor = true;
+        this.insured = insured;
+        this.comment = comment;
+    }
 
     @Override
     public boolean equals(Object o)

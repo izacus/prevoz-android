@@ -2,6 +2,7 @@ package org.prevoz.android.api;
 
 import org.prevoz.android.api.rest.*;
 import retrofit.Callback;
+import retrofit.client.Response;
 import retrofit.http.*;
 
 import java.util.List;
@@ -34,6 +35,9 @@ public interface PrevozApi
                                      @Field("tocountry") String toCountry,
                                      @Field("date") String date,
                                      @Field("action") String action, Callback<RestPushStatus> cb);
+
+    @POST("/carshare/create/")
+    public void postRide(@Body RestRide ride, Callback<Response> cb);
 
     @GET("/carshare/list/")
     public void getMyRides(Callback<RestSearchResults> cb);

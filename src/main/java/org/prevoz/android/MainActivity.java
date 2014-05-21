@@ -180,7 +180,7 @@ public class MainActivity extends SherlockFragmentActivity
         leftDrawer.setAdapter(adapter);
     }
 
-    private void showFragment(UiFragment fragment)
+    public void showFragment(UiFragment fragment)
     {
         FragmentManager fm = getSupportFragmentManager();
 

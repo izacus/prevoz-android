@@ -30,12 +30,27 @@ public class RideInfoFragment extends DialogFragment
 {
     private static final SimpleDateFormat timeFormatter = LocaleUtil.getSimpleDateFormat("HH:mm");
     private static final String ARG_RIDE = "ride";
+    private static final String ARG_ACTION = "action";
+
+    public static final String PARAM_ACTION_SHOW = "show";
+    public static final String PARAM_ACTION_EDIT = "edit";
+    public static final String PARAM_ACTION_SUBMIT = "submit";
 
     public static RideInfoFragment newInstance(RestRide ride)
     {
         RideInfoFragment fragment = new RideInfoFragment_();
         Bundle args = new Bundle();
         args.putParcelable(ARG_RIDE, ride);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static RideInfoFragment newInstance(RestRide ride, String action)
+    {
+        RideInfoFragment fragment = new RideInfoFragment_();
+        Bundle args = new Bundle();
+        args.putParcelable(ARG_RIDE, ride);
+        args.putString(ARG_ACTION, action);
         fragment.setArguments(args);
         return fragment;
     }
@@ -72,12 +87,17 @@ public class RideInfoFragment extends DialogFragment
     protected TextView txtComment;
 
     @ViewById(R.id.rideinfo_button_call)
-    protected Button callButton;
+    protected Button leftButton;
     @ViewById(R.id.rideinfo_button_sms)
-    protected Button smsButton;
+    protected Button rightButton;
 
     @InstanceState
     protected RestRide ride = null;
+
+    @InstanceState
+    protected String action = null;
+
+    private RideInfoListener listener;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -94,6 +114,12 @@ public class RideInfoFragment extends DialogFragment
         }
 
         ride = getArguments().getParcelable(ARG_RIDE);
+        action = getArguments().getString(ARG_ACTION, PARAM_ACTION_SHOW);
+
+        if (PARAM_ACTION_SHOW.equals(action) && ride.isAuthor)
+        {
+            action = PARAM_ACTION_EDIT;
+        }
     }
 
     @AfterViews
@@ -139,9 +165,11 @@ public class RideInfoFragment extends DialogFragment
         PackageManager pm = getActivity().getPackageManager();
         if (!pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY))
         {
-            callButton.setVisibility(View.GONE);
-            smsButton.setVisibility(View.GONE);
+            leftButton.setVisibility(View.GONE);
+            rightButton.setVisibility(View.GONE);
         }
+
+        setupActionButtons(action);
     }
 
     private SpannableString getPhoneNumberString(String phoneNumber, boolean confirmed)
@@ -162,19 +190,62 @@ public class RideInfoFragment extends DialogFragment
         return phoneNumberString;
     }
 
+    private void setupActionButtons(String currentAction)
+    {
+        if (PARAM_ACTION_SUBMIT.equals(currentAction))
+        {
+            leftButton.setText("Prekliči");
+            rightButton.setText("Oddaj");
+        }
+        else if (PARAM_ACTION_EDIT.equals(currentAction))
+        {
+            leftButton.setText("Uredi");
+            rightButton.setText("Izbriši");
+        }
+        else
+        {
+            leftButton.setText(R.string.rideinfo_call);
+            rightButton.setText(R.string.rideinfo_send_sms);
+        }
+    }
+
     @Click(R.id.rideinfo_button_call)
     protected void clickCall()
     {
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:" + ride.phoneNumber));
-        startActivity(intent);
+        if (PARAM_ACTION_SHOW.equals(action))
+        {
+            Intent intent = new Intent(Intent.ACTION_DIAL);
+            intent.setData(Uri.parse("tel:" + ride.phoneNumber));
+            startActivity(intent);
+        }
+        else
+        {
+            dismiss();
+            if (listener != null)
+                listener.onLeftButtonClicked(ride);
+        }
     }
 
     @Click(R.id.rideinfo_button_sms)
     protected void clickSms()
     {
-        Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.setData(Uri.parse("smsto:" + ride.phoneNumber));
-        startActivity(intent);
+        if (PARAM_ACTION_SHOW.equals(action))
+        {
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("smsto:" + ride.phoneNumber));
+            startActivity(intent);
+        }
+        else
+        {
+            dismiss();
+
+            if (listener != null)
+                listener.onRightButtonClicked(ride);
+        }
+    }
+
+    public void setRideInfoListener(RideInfoListener listener)
+    {
+        this.listener = listener;
     }
 }
