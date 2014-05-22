@@ -223,7 +223,7 @@ public class MainActivity extends SherlockFragmentActivity
             case FRAGMENT_NEW_RIDE:
                 if (fm.findFragmentByTag(NEW_RIDE_FRAGMENT_TAG) == null)
                 {
-                    f = new RideInfoFragment_();
+                    f = new NewRideFragment_();
                     tag = NEW_RIDE_FRAGMENT_TAG;
                 }
                 break;
