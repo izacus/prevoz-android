@@ -1,21 +1,26 @@
 package org.prevoz.android.myrides;
 
+import android.accounts.*;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import com.googlecode.androidannotations.annotations.AfterViews;
-import com.googlecode.androidannotations.annotations.EFragment;
-import com.googlecode.androidannotations.annotations.OptionsMenu;
-import com.googlecode.androidannotations.annotations.ViewById;
+import com.googlecode.androidannotations.annotations.*;
+import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
+import org.prevoz.android.UiFragment;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestSearchResults;
+import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.util.ViewUtils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+
+import java.io.IOException;
 
 @EFragment(R.layout.fragment_myrides)
 public class MyRidesFragment extends Fragment implements Callback<RestSearchResults>
@@ -31,6 +36,9 @@ public class MyRidesFragment extends Fragment implements Callback<RestSearchResu
     @ViewById(R.id.myrides_throbber)
     protected ProgressBar throbber;
 
+    @Bean
+    protected AuthenticationUtils authUtils;
+
     @AfterViews
     protected void initFragment()
     {
@@ -41,7 +49,32 @@ public class MyRidesFragment extends Fragment implements Callback<RestSearchResu
     public void onResume()
     {
         super.onResume();
-        ApiClient.getAdapter().getMyRides(this);
+
+        if (!authUtils.isAuthenticated())
+        {
+            requestAuthentication();
+        }
+        else
+        {
+            ApiClient.getAdapter().getMyRides(this);
+        }
+    }
+
+    @Background
+    protected void requestAuthentication()
+    {
+        AccountManager am = AccountManager.get(getActivity());
+        AccountManagerFuture<Bundle> result = am.addAccount(getString(R.string.account_type), null, null, null, null, null, null);
+
+        try
+        {
+            Intent i = (Intent) result.getResult().get(AccountManager.KEY_INTENT);
+            getActivity().startActivityForResult(i, MainActivity.REQUEST_CODE_AUTHORIZE_MYRIDES);
+        }
+        catch (Exception e)
+        {
+            Log.e(LOG_TAG, "Error!", e);
+        }
     }
 
     @Override

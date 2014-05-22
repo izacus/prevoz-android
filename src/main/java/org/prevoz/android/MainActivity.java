@@ -43,6 +43,8 @@ import java.util.Locale;
 @OptionsMenu(R.menu.fragment_myrides)
 public class MainActivity extends SherlockFragmentActivity
 {
+    public static final int REQUEST_CODE_AUTHORIZE_MYRIDES = 100;
+
     private static final String SEARCH_FRAGMENT_TAG = "SearchResultsFragment";
     private static final String PUSH_NOTIFICATIONS_FRAGMENT_TAG = "PushNotificationsFragment";
     private static final String MY_RIDES_FRAGMENT_TAG = "MyRidesFragment";
@@ -246,6 +248,19 @@ public class MainActivity extends SherlockFragmentActivity
     protected void clickAddRide()
     {
         showFragment(UiFragment.FRAGMENT_NEW_RIDE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_AUTHORIZE_MYRIDES)
+        {
+            if (resultCode == RESULT_CANCELED)
+                showFragment(UiFragment.FRAGMENT_SEARCH);
+            else if (resultCode == RESULT_OK)
+                showFragment(UiFragment.FRAGMENT_MY_RIDES);
+        }
     }
 
     private android.view.MenuItem getMenuItem(final MenuItem item)

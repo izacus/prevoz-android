@@ -2,12 +2,16 @@ package org.prevoz.android.api.rest;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
 public class RestRide implements Comparable, Parcelable
 {
+    @SerializedName("type")
+    public int type = 0;        // 0 - share, 1 - seek
+
     @SerializedName("id")
     public Long id;
 
@@ -31,6 +35,7 @@ public class RestRide implements Comparable, Parcelable
 
     @SerializedName("date_iso8601")
     public Date date;
+
     /*@SerializedName("added")
     public Date published; */
 

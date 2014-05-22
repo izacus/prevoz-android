@@ -261,9 +261,14 @@ public class LoginActivity extends SherlockFragmentActivity
         if (authenticatorResponse != null)
         {
             if (authenticatorResult != null)
+            {
                 authenticatorResponse.onResult(authenticatorResult);
+                setResult(RESULT_OK);
+            }
             else
+            {
                 authenticatorResponse.onError(AccountManager.ERROR_CODE_CANCELED, "Cancelled.");
+            }
         }
 
 
