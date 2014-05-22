@@ -232,10 +232,11 @@ public class RideInfoFragment extends DialogFragment
         }
         else
         {
-            dismiss();
             if (listener != null)
                 listener.onLeftButtonClicked(ride);
         }
+
+        dismiss();
     }
 
     @Click(R.id.rideinfo_button_sms)

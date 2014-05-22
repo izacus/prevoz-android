@@ -66,6 +66,9 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
     @InstanceState
     protected boolean timeSet;
 
+    @InstanceState
+    protected Long editRideId;
+
     @AfterViews
     protected void initFragment()
     {
@@ -82,6 +85,46 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
         textTo.setAdapter(new CityAutocompleteAdapter(getActivity(), db));
         textFrom.setValidator(new CityNameTextValidator(getActivity()));
         textTo.setValidator(new CityNameTextValidator(getActivity()));
+
+        if (getArguments() != null)
+        {
+            RestRide editRide = getArguments().getParcelable(PARAM_EDIT_RIDE);
+            fillInEditRide(editRide);
+        }
+    }
+
+    protected void fillInEditRide(RestRide editRide)
+    {
+        if (editRide == null)
+            return;
+
+        City from = new City(editRide.fromCity, editRide.fromCountry);
+        City to = new City(editRide.toCity, editRide.toCountry);
+
+        textFrom.setText(from.toString());
+        textTo.setText(to.toString());
+        textPrice.setText(String.valueOf(editRide.price));
+        textPeople.setText(String.valueOf(editRide.numPeople));
+        textNotes.setText(editRide.comment);
+        textPhone.setText(editRide.phoneNumber);
+        chkInsurance.setChecked(editRide.insured);
+        setTime = Calendar.getInstance(LocaleUtil.getLocale());
+        setTime.setTime(editRide.date);
+        updateDateTimeDisplay(true, true);
+        editRideId = editRide.id;
+
+        // Now disable fields user should not edit
+        textFrom.setEnabled(false);
+        textFrom.setBackgroundDrawable(null);
+        textTo.setEnabled(false);
+        textTo.setBackgroundDrawable(null);
+        textDate.setEnabled(false);
+        textDate.setBackgroundDrawable(null);
+        chkInsurance.setEnabled(false);
+        textPhone.setEnabled(false);
+        textPhone.setBackgroundDrawable(null);
+        textPrice.setEnabled(false);
+        textPrice.setBackgroundDrawable(null);
     }
 
     @Click(R.id.newride_date_edit)
@@ -125,6 +168,9 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
                                       chkInsurance.isChecked(),
                                       textNotes.getText().toString());
 
+        if (editRideId != null)
+            ride.id = editRideId;
+
         RideInfoFragment rideInfo = RideInfoFragment.newInstance(ride, RideInfoFragment.PARAM_ACTION_SUBMIT);
         rideInfo.setRideInfoListener(this);
         rideInfo.show(getActivity().getSupportFragmentManager(), "RideInfo");
@@ -138,7 +184,7 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
         setTime.set(Calendar.DAY_OF_MONTH, day);
 
         dateSet = true;
-        textDate.setText(LocaleUtil.getShortFormattedDate(getResources(), setTime));
+        updateDateTimeDisplay(true, false);
     }
 
     @Override
@@ -148,7 +194,16 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
         setTime.set(Calendar.MINUTE, minute);
 
         timeSet = true;
-        textTime.setText(timeFormat.format(setTime.getTime()));
+        updateDateTimeDisplay(false, true);
+    }
+
+    protected void updateDateTimeDisplay(boolean date, boolean time)
+    {
+        if (date)
+            textDate.setText(LocaleUtil.getShortFormattedDate(getResources(), setTime));
+
+        if (time)
+            textTime.setText(timeFormat.format(setTime.getTime()));
     }
 
     @Override
