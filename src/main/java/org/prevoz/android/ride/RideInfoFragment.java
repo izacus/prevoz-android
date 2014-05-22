@@ -17,8 +17,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import com.googlecode.androidannotations.annotations.*;
+import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
+import org.prevoz.android.UiFragment;
 import org.prevoz.android.api.rest.RestRide;
+import org.prevoz.android.myrides.NewRideFragment;
 import org.prevoz.android.util.LocaleUtil;
 
 import java.text.SimpleDateFormat;
@@ -217,6 +220,15 @@ public class RideInfoFragment extends DialogFragment
             Intent intent = new Intent(Intent.ACTION_DIAL);
             intent.setData(Uri.parse("tel:" + ride.phoneNumber));
             startActivity(intent);
+        }
+        else if (PARAM_ACTION_EDIT.equals(action))
+        {
+            MainActivity activity = (MainActivity) getActivity();
+            if (activity == null) return;
+
+            Bundle params = new Bundle();
+            params.putParcelable(NewRideFragment.PARAM_EDIT_RIDE, ride);
+            activity.showFragment(UiFragment.FRAGMENT_NEW_RIDE, params);
         }
         else
         {

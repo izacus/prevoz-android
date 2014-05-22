@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -30,6 +31,7 @@ import org.prevoz.android.myrides.MyRidesFragment_;
 import org.prevoz.android.myrides.NewRideFragment_;
 import org.prevoz.android.push.PushFragment_;
 import org.prevoz.android.push.PushManager;
+import org.prevoz.android.ride.RideInfoFragment_;
 import org.prevoz.android.search.SearchResultsFragment;
 import org.prevoz.android.search.SearchResultsFragment_;
 import org.prevoz.android.util.Database;
@@ -184,46 +186,65 @@ public class MainActivity extends SherlockFragmentActivity
 
     public void showFragment(UiFragment fragment)
     {
+        showFragment(fragment, null);
+    }
+
+    public void showFragment(UiFragment fragment, Bundle params)
+    {
         FragmentManager fm = getSupportFragmentManager();
+
+        Fragment f = null;
+        String tag = null;
 
         switch(fragment)
         {
             case FRAGMENT_SEARCH:
                 if (fm.findFragmentByTag(SEARCH_FRAGMENT_TAG) == null)
                 {
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.main_search_container, new SearchResultsFragment_(), SEARCH_FRAGMENT_TAG);
-                    transaction.commit();
+                    f = new SearchResultsFragment_();
+                    tag = SEARCH_FRAGMENT_TAG;
                 }
                 break;
             case FRAGMENT_MY_RIDES:
                 if (fm.findFragmentByTag(MY_RIDES_FRAGMENT_TAG) == null)
                 {
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.main_search_container, new MyRidesFragment_(), MY_RIDES_FRAGMENT_TAG);
-                    transaction.commit();
+                    f = new MyRidesFragment_();
+                    tag = MY_RIDES_FRAGMENT_TAG;
                 }
                 break;
             case FRAGMENT_NOTIFICATIONS:
                 if (fm.findFragmentByTag(PUSH_NOTIFICATIONS_FRAGMENT_TAG) == null)
                 {
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.main_search_container, new PushFragment_(), PUSH_NOTIFICATIONS_FRAGMENT_TAG);
-                    transaction.commit();
+                    f = new PushFragment_();
+                    tag = PUSH_NOTIFICATIONS_FRAGMENT_TAG;
                 }
                 break;
 
             case FRAGMENT_NEW_RIDE:
                 if (fm.findFragmentByTag(NEW_RIDE_FRAGMENT_TAG) == null)
                 {
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.main_search_container, new NewRideFragment_(), NEW_RIDE_FRAGMENT_TAG);
-                    transaction.commit();
+                    f = new RideInfoFragment_();
+                    tag = NEW_RIDE_FRAGMENT_TAG;
                 }
                 break;
         }
 
+        if (f != null)
+        {
+            if (params != null)
+                f.setArguments(params);
+
+            replaceFragment(f, tag);
+        }
+
         drawerLayout.closeDrawers();
+    }
+
+    private void replaceFragment(Fragment fragment, String tag)
+    {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.main_search_container, fragment, tag);
+        ft.commit();
     }
 
     @ItemClick(R.id.main_left_drawer_list)

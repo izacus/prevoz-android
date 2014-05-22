@@ -36,6 +36,8 @@ import java.util.Calendar;
 @EFragment(R.layout.fragment_newride)
 public class NewRideFragment extends Fragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, RideInfoListener
 {
+    public static String PARAM_EDIT_RIDE = "EditRide";
+
     private static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", LocaleUtil.getLocale());
 
     @ViewById(R.id.newride_from)
