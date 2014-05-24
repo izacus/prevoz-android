@@ -27,8 +27,7 @@
 		<api.platform>19</api.platform>
 
 		<!-- Dependencies -->
-		<androidannotations.version>2.7.1</androidannotations.version>
-		<actionBarSherlock.version>4.3.1</actionBarSherlock.version>
+		<androidannotations.version>3.0.1</androidannotations.version>
 	</properties>
 
 	<dependencies>
@@ -44,13 +43,13 @@
             <version>19.1.0</version>
         </dependency>
 		<dependency>
-			<groupId>com.googlecode.androidannotations</groupId>
+			<groupId>org.androidannotations</groupId>
 			<artifactId>androidannotations</artifactId>
 			<version>${androidannotations.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.googlecode.androidannotations</groupId>
+			<groupId>org.androidannotations</groupId>
 			<artifactId>androidannotations-api</artifactId>
 			<version>${androidannotations.version}</version>
 		</dependency>
@@ -150,8 +149,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 		</plugins>

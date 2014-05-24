@@ -1,16 +1,11 @@
 package org.prevoz.android.push;
 
-import android.app.Dialog;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.TextView;
-import com.googlecode.androidannotations.annotations.*;
 import de.greenrobot.event.EventBus;
+import org.androidannotations.annotations.*;
 import org.prevoz.android.R;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.NotificationSubscription;

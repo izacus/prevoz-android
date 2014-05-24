@@ -10,10 +10,9 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.googlecode.androidannotations.annotations.Background;
-import com.googlecode.androidannotations.annotations.EBean;
-import com.googlecode.androidannotations.api.Scope;
 import de.greenrobot.event.EventBus;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.EBean;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestPushStatus;
 import org.prevoz.android.events.Events;
@@ -30,7 +29,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-@EBean(scope = Scope.Singleton)
+@EBean(scope = EBean.Scope.Singleton)
 public class PushManager
 {
     private static final String GCM_ID_KEY = "GCM_ID_";

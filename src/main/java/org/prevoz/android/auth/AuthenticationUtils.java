@@ -6,14 +6,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import com.googlecode.androidannotations.annotations.EBean;
-import com.googlecode.androidannotations.api.Scope;
+import org.androidannotations.annotations.EBean;
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
 
 import java.io.IOException;
 
-@EBean(scope = Scope.Singleton)
+@EBean(scope = EBean.Scope.Singleton)
 public class AuthenticationUtils
 {
     private static final String LOG_TAG = "Prevoz.Authentication";

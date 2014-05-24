@@ -16,7 +16,7 @@ import android.text.style.TypefaceSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import com.googlecode.androidannotations.annotations.*;
+import org.androidannotations.annotations.*;
 import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.UiFragment;

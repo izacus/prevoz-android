@@ -6,8 +6,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import com.googlecode.androidannotations.annotations.Bean;
-import com.googlecode.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EFragment;
 import org.prevoz.android.model.NotificationSubscription;
 
 @EFragment

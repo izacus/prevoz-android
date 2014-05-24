@@ -1,6 +1,7 @@
 package org.prevoz.android.myrides;
 
-import android.accounts.*;
+import android.accounts.AccountManager;
+import android.accounts.AccountManagerFuture;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,10 +9,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import com.googlecode.androidannotations.annotations.*;
+import org.androidannotations.annotations.*;
 import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
-import org.prevoz.android.UiFragment;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestSearchResults;
 import org.prevoz.android.auth.AuthenticationUtils;
@@ -19,8 +19,6 @@ import org.prevoz.android.util.ViewUtils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-
-import java.io.IOException;
 
 @EFragment(R.layout.fragment_myrides)
 public class MyRidesFragment extends Fragment implements Callback<RestSearchResults>

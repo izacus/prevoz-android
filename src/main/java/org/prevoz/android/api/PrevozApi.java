@@ -5,8 +5,6 @@ import retrofit.Callback;
 import retrofit.client.Response;
 import retrofit.http.*;
 
-import java.util.List;
-
 public interface PrevozApi
 {
     @GET("/search/shares/")
