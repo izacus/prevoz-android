@@ -4,9 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class RestRide implements Comparable, Parcelable
+public class RestRide implements Comparable, Parcelable, Serializable
 {
     @SerializedName("type")
     public int type = 0;        // 0 - share, 1 - seek
