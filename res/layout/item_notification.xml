@@ -1,48 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="8dp"
-    android:paddingTop="8dp"
-    android:paddingRight="8dp"
-    android:background="@drawable/card_bg_r4"
-    android:showDividers="middle"
-    android:divider="?android:dividerHorizontal"
-    >
+    android:layout_height="wrap_content">
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:padding="8dp"
-        android:orientation="vertical"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/card_bg_r4"
+        android:showDividers="middle"
+        android:divider="?android:dividerHorizontal"
         >
 
-        <TextView
-            android:id="@+id/item_push_route"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="?android:attr/textAppearanceListItem"
-            />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="8dp"
+            android:orientation="vertical"
+            >
 
-        <TextView
-            android:id="@+id/item_push_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
-            style="?android:attr/textAppearanceListItemSmall"
+            <TextView
+                android:id="@+id/item_push_route"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:fontFamily="sans-serif-light"
+                style="?android:attr/textAppearanceListItem"
+                />
+
+            <TextView
+                android:id="@+id/item_push_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                style="?android:attr/textAppearanceListItemSmall"
+                />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:scaleType="center"
+            android:background="@null"
+            android:src="@drawable/ic_action_cancel"
             />
 
     </LinearLayout>
-
-    <ImageView
-        android:layout_width="48dp"
-        android:layout_height="match_parent"
-        android:scaleType="center"
-        android:background="@null"
-        android:src="@drawable/ic_action_cancel"
-        />
-
-</LinearLayout>
+</FrameLayout>

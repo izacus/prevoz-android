@@ -9,10 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_margin="4dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
+        android:padding="8dp"
         android:background="@drawable/card_bg_r4"
         >
 
