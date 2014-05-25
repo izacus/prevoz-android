@@ -1,17 +1,15 @@
 package org.prevoz.android.auth;
 
-import android.accounts.Account;
 import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.webkit.CookieManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -22,9 +20,7 @@ import com.google.api.client.auth.oauth2.*;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.javanet.NetHttpTransport;
-import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.*;
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestAccountStatus;
@@ -37,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@EActivity
+@EActivity(R.layout.activity_login)
 @SuppressLint("Registered")     // AndroidAnnotated activity is registered.
 public class LoginActivity extends SherlockFragmentActivity
 {
@@ -48,10 +44,18 @@ public class LoginActivity extends SherlockFragmentActivity
 
     private AccountAuthenticatorResponse authenticatorResponse;
     private Bundle authenticatorResult;
-    private WebView webview;
+
+    @ViewById(R.id.login_webview)
+    protected WebView webview;
+
+    @ViewById(R.id.login_autologin_stub)
+    protected ViewStub autologinStub;
 
     @Bean
     protected AuthenticationUtils authUtils;
+
+    private DeviceAccountLogin autologin;
+    private AutologinBar autologinBar;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -65,11 +69,11 @@ public class LoginActivity extends SherlockFragmentActivity
             authenticatorResponse.onRequestContinued();
 
         CookieManager.getInstance().removeAllCookie();
+    }
 
-        webview = new WebView(this);
-        webview.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        setContentView(webview);
-
+    @AfterViews
+    protected void initActivity()
+    {
         webview.setWebViewClient(new WebViewController());
         WebSettings settings = webview.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -78,10 +82,10 @@ public class LoginActivity extends SherlockFragmentActivity
         List<String> responseTypes = new ArrayList<String>();
         responseTypes.add("code");
         String authenticationUrl = new AuthorizationRequestUrl("https://prevoz.org/oauth2/authorize/",
-                                                                CLIENT_ID,
-                                                                responseTypes)
-                                                                .setRedirectUri(REDIRECT_URL)
-                                                                .build();
+                CLIENT_ID,
+                responseTypes)
+                .setRedirectUri(REDIRECT_URL)
+                .build();
 
 
         webview.loadUrl(authenticationUrl);
@@ -119,7 +123,9 @@ public class LoginActivity extends SherlockFragmentActivity
                 public void success(RestAccountStatus restAccountStatus, Response response)
                 {
                     updateAuthenticatorResult(restAccountStatus, retrievedToken.getAccessToken(), retrievedToken.getRefreshToken());
-                    UpdateAccountInformationTask updateInfoTask = new UpdateAccountInformationTask(dialog,
+                    UpdateAccountInformationTask updateInfoTask = new UpdateAccountInformationTask(LoginActivity.this,
+                                                                                                   authUtils,
+                                                                                                   dialog,
                                                                                                    restAccountStatus,
                                                                                                    retrievedToken.getAccessToken(),
                                                                                                    retrievedToken.getRefreshToken(),
@@ -167,50 +173,68 @@ public class LoginActivity extends SherlockFragmentActivity
         }
     }
 
-    private class UpdateAccountInformationTask extends AsyncTask<Void, Void, Void>
+    private void inflateAutoLoginBar()
     {
-        private final ProgressDialog dialog;
-        private final RestAccountStatus status;
-        private final String accessToken;
-        private final String refreshToken;
-        private final long expires;
-
-        public UpdateAccountInformationTask(ProgressDialog dialog, RestAccountStatus status, String accessToken, String refreshToken, long expires)
+        if (autologinBar != null)
         {
-            this.dialog = dialog;
-            this.status = status;
-            this.accessToken = accessToken;
-            this.refreshToken = refreshToken;
-            this.expires = expires;
+            return;
         }
 
-
-        @Override
-        protected Void doInBackground(Void... params)
-        {
-            // Try to find existing account
-            AccountManager am = AccountManager.get(LoginActivity.this);
-            authUtils.removeExistingAccounts();
-            Account acc = new Account(status.username, getString(R.string.account_type));
-            am.addAccountExplicitly(acc, refreshToken, null);
-            am.setAuthToken(acc, "default", accessToken);
-
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
-            sp.edit().putBoolean(PrevozAccountAuthenticator.PREF_OAUTH2, true)
-                     .putLong(PrevozAccountAuthenticator.PREF_KEY_EXPIRES, expires)
-                     .commit();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid)
-        {
-            super.onPostExecute(aVoid);
-            dialog.dismiss();
-            finish();
-        }
+        autologinBar = (AutologinBar) autologinStub.inflate();
+        autologinBar.setActivity(this);
     }
 
+    public void hideAutoLogin()
+    {
+        updateAutoLogin(false);
+    }
+
+    public void showAutoLogin()
+    {
+        updateAutoLogin(false);
+    }
+
+    public void hideAutoLogin(boolean animate)
+    {
+        autologinBar.setVisibility(View.GONE);
+        webview.invalidate();
+    }
+
+    public void showAutoLogin(boolean animate)
+    {
+        if (autologinBar == null)
+        {
+            inflateAutoLoginBar();
+        }
+
+        autologinBar.setVisibility(View.VISIBLE);
+    }
+
+    private void updateAutoLogin(boolean animate)
+    {
+        if(autologinBar == null)
+        {
+            if(getDeviceAccountLogin() == null)
+            {
+                return;
+            }
+
+            inflateAutoLoginBar();
+        }
+
+        autologinBar.updateAutoLogin(this, animate);
+    }
+
+    // Used for Google authentication
+    public void setDeviceAccountLogin(DeviceAccountLogin login)
+    {
+        this.autologin = login;
+    }
+
+    public DeviceAccountLogin getDeviceAccountLogin()
+    {
+        return autologin;
+    }
 
     private class WebViewController extends WebViewClient
     {
@@ -243,6 +267,17 @@ public class LoginActivity extends SherlockFragmentActivity
         {
             super.onPageFinished(view, url);
             setSupportProgressBarIndeterminateVisibility(false);
+        }
+
+        @Override
+        public void onReceivedLoginRequest(WebView view, String realm, String account, String args)
+        {
+            super.onReceivedLoginRequest(view, realm, account, args);
+
+            // TODO TODO TODO TODO : Enable when the site is ready for that
+
+            //autologin = new DeviceAccountLogin(LoginActivity.this, view);
+            //autologin.handleLogin(realm, account, args);
         }
     }
 

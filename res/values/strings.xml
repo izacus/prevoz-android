@@ -72,4 +72,13 @@
         <item>petek</item>
         <item>soboto</item>
     </string-array>
+
+    <!-- Auto-login bar description [CHAR-LIMIT=40] -->
+    <string name="autologin_bar_text">Sign in as</string>
+    <!-- Login button [CHAR-LIMIT=10] -->
+    <string name="autologin_bar_login_text">Sign in</string>
+    <!-- Hide button [CHAR-LIMIT=10] -->
+    <string name="autologin_bar_hide_text">Hide</string>
+    <!-- Login failure text [CHAR-LIMIT=25] -->
+    <string name="autologin_bar_error">Couldn\'t sign in.</string>
 </resources>
