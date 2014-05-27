@@ -22,6 +22,8 @@ import java.util.Locale;
 
 public class ApiClient
 {
+    public static final String BASE_URL = "https://prevoz.org";
+
     private static RestAdapter adapter = null;
     private static String bearer = null;
 
@@ -33,7 +35,7 @@ public class ApiClient
                 .create();
 
         adapter = new RestAdapter.Builder()
-                                 .setEndpoint("https://prevoz.org/api")
+                                 .setEndpoint(BASE_URL + "/api")
                                  .setConverter(new GsonConverter(gson))
                                  .setRequestInterceptor(new CookieSetterInterceptor())
                                  .setClient(new OkClient(new OkHttpClient()))

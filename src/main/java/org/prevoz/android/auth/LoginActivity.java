@@ -81,7 +81,7 @@ public class LoginActivity extends SherlockFragmentActivity
         // Generate OAuth login URL
         List<String> responseTypes = new ArrayList<String>();
         responseTypes.add("code");
-        String authenticationUrl = new AuthorizationRequestUrl(String.format("https://prevoz.org/oauth2/authorize/%s/code/", CLIENT_ID),
+        String authenticationUrl = new AuthorizationRequestUrl(String.format(ApiClient.BASE_URL + "/oauth2/authorize/%s/code/", CLIENT_ID),
                 CLIENT_ID,
                 responseTypes)
                 .setRedirectUri(REDIRECT_URL)
@@ -108,7 +108,7 @@ public class LoginActivity extends SherlockFragmentActivity
 
         AuthorizationCodeTokenRequest tokenRequest = new AuthorizationCodeTokenRequest(transport,
                                                                                        jsonFactory,
-                                                                                       new GenericUrl("https://prevoz.org/oauth2/access_token/"),
+                                                                                       new GenericUrl(ApiClient.BASE_URL + "/oauth2/access_token/"),
                                                                                        code);
 
         tokenRequest.setClientAuthentication(authentication);
