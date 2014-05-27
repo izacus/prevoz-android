@@ -81,7 +81,7 @@
     <string name="autologin_bar_hide_text">Hide</string>
     <!-- Login failure text [CHAR-LIMIT=25] -->
     <string name="autologin_bar_error">Couldn\'t sign in.</string>
-    <string name="ride_delete_message">Ali želite izbrisati prevoz v %s ob %s?</string>
+    <string name="ride_delete_message">Ali želite izbrisati prevoz v %1$s ob %2$s?</string>
     <string name="ride_delete_ok">Izbriši</string>
     <string name="ride_delete_cancel">Prekliči</string>
     <string name="ride_delete_progress">Brišem...</string>

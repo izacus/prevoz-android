@@ -42,4 +42,14 @@ public class Events
     }
 
     public static class NotificationSubscriptionStatusChanged {}
+
+    public static class RideDeleted
+    {
+        public final Long id;
+
+        public RideDeleted(Long id)
+        {
+            this.id = id;
+        }
+    }
 }

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import de.greenrobot.event.EventBus;
 import org.androidannotations.annotations.*;
 import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
@@ -16,6 +17,7 @@ import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.api.rest.RestSearchResults;
 import org.prevoz.android.auth.AuthenticationUtils;
+import org.prevoz.android.events.Events;
 import org.prevoz.android.ride.RideInfoFragment;
 import org.prevoz.android.search.SearchResultsAdapter;
 import org.prevoz.android.util.ViewUtils;
@@ -40,16 +42,12 @@ public class MyRidesFragment extends Fragment implements Callback<RestSearchResu
     @Bean
     protected AuthenticationUtils authUtils;
 
-    @AfterViews
-    protected void initFragment()
-    {
-        setListVisibility(false);
-    }
-
     @Override
     public void onResume()
     {
         super.onResume();
+        EventBus.getDefault().register(this);
+
 
         if (!authUtils.isAuthenticated())
         {
@@ -57,8 +55,21 @@ public class MyRidesFragment extends Fragment implements Callback<RestSearchResu
         }
         else
         {
-            ApiClient.getAdapter().getMyRides(this);
+            loadRides();
         }
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
+    }
+
+    private void loadRides()
+    {
+        setListVisibility(false);
+        ApiClient.getAdapter().getMyRides(this);
     }
 
     @Background
@@ -110,5 +121,10 @@ public class MyRidesFragment extends Fragment implements Callback<RestSearchResu
         myridesList.setVisibility(listVisible ? View.VISIBLE : View.INVISIBLE);
         emptyView.setVisibility(listVisible ? View.VISIBLE : View.INVISIBLE);
         throbber.setVisibility(listVisible ? View.INVISIBLE : View.VISIBLE);
+    }
+
+    public void onEventMainThread(Events.RideDeleted e)
+    {
+        loadRides();
     }
 }

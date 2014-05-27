@@ -135,6 +135,25 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
         return (ride.fromCity.hashCode() + ride.fromCountry.hashCode()) * (ride.toCity.hashCode() + ride.toCountry.hashCode());
     }
 
+    public void removeRide(Long id)
+    {
+        // Find ride
+        RestRide ride = null;
+        for (RestRide r : results)
+        {
+            if (r.id == id)
+            {
+                ride = r;
+                break;
+            }
+        }
+
+        if (ride == null)   return;
+
+        results.remove(ride);
+        notifyDataSetChanged();
+    }
+
     private static class ResultsViewHolder
     {
         final TextView time;

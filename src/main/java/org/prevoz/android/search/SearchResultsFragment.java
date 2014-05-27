@@ -273,4 +273,10 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
         updateNotificationButtonText();
         searchNotifyButton.setEnabled(true);
     }
+
+    public void onEventMainThread(Events.RideDeleted e)
+    {
+        if (adapter != null && adapter instanceof SearchResultsAdapter)
+            ((SearchResultsAdapter) adapter).removeRide(e.id);
+    }
 }

@@ -8,9 +8,11 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.widget.Toast;
+import de.greenrobot.event.EventBus;
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestRide;
+import org.prevoz.android.events.Events;
 import org.prevoz.android.util.LocaleUtil;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -56,7 +58,7 @@ public class DeleteRideDialog extends DialogFragment
         return builder.create();
     }
 
-    private void deleteRide(Long id)
+    private void deleteRide(final Long id)
     {
         dismiss();
 
@@ -72,6 +74,7 @@ public class DeleteRideDialog extends DialogFragment
             {
                 deleteDialog.dismiss();
                 Toast.makeText(context, R.string.ride_delete_success, Toast.LENGTH_SHORT).show();
+                EventBus.getDefault().post(new Events.RideDeleted(id));
             }
 
             @Override
