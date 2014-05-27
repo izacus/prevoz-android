@@ -18,7 +18,6 @@ import java.util.Locale;
 
 public class SearchResultsAdapter extends BaseAdapter implements StickyListHeadersAdapter
 {
-    private static final SimpleDateFormat timeFormatter = LocaleUtil.getSimpleDateFormat("HH:mm");
     private final Context context;
 
     private List<RestRide> results;
@@ -66,7 +65,7 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
 
         ResultsViewHolder holder = (ResultsViewHolder) v.getTag();
         RestRide ride = results.get(position);
-        holder.time.setText(timeFormatter.format(ride.date));
+        holder.time.setText(LocaleUtil.getFormattedTime(ride.date));
 
 
         if (ride.price == null || ride.price == 0)

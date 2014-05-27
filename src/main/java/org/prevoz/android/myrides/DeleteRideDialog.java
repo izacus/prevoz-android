@@ -8,12 +8,15 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.widget.Toast;
-import org.androidannotations.annotations.EFragment;
+import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestRide;
+import org.prevoz.android.util.LocaleUtil;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+
+import java.util.Calendar;
 
 public class DeleteRideDialog extends DialogFragment
 {
@@ -33,9 +36,13 @@ public class DeleteRideDialog extends DialogFragment
     {
         final RestRide ride = getArguments().getParcelable(ARG_RIDE);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(ride.fromCity.toString() + " - " + ride.toCity.toString())
-               .setMessage(String.format("Ali želite izbirsati prevoz v %s ob %s?", "petek", "12:00"))
-               .setPositiveButton("Izbriši", new DialogInterface.OnClickListener()
+
+        Calendar date = Calendar.getInstance(LocaleUtil.getLocale());
+        date.setTime(ride.date);
+
+        builder.setTitle(ride.fromCity + " - " + ride.toCity)
+               .setMessage(getString(R.string.ride_delete_message, LocaleUtil.getDayName(getResources(), date).toLowerCase(LocaleUtil.getLocale()), LocaleUtil.getFormattedTime(date)))
+               .setPositiveButton(R.string.ride_delete_ok, new DialogInterface.OnClickListener()
                {
                    @Override
                    public void onClick(DialogInterface dialog, int which)
@@ -43,7 +50,7 @@ public class DeleteRideDialog extends DialogFragment
                        deleteRide(ride.id);
                    }
                })
-               .setNegativeButton("Prekliči", null);
+               .setNegativeButton(R.string.ride_delete_cancel, null);
 
 
         return builder.create();
@@ -55,7 +62,7 @@ public class DeleteRideDialog extends DialogFragment
 
         final Activity context = getActivity();
         final ProgressDialog deleteDialog = new ProgressDialog(getActivity());
-        deleteDialog.setMessage("Brišem...");
+        deleteDialog.setMessage(context.getString(R.string.ride_delete_progress));
         deleteDialog.show();
 
         ApiClient.getAdapter().deleteRide(String.valueOf(id), new Callback<Response>()
@@ -64,14 +71,14 @@ public class DeleteRideDialog extends DialogFragment
             public void success(Response response, Response response2)
             {
                 deleteDialog.dismiss();
-                Toast.makeText(context, "Prevoz izbrisan.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.ride_delete_success, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void failure(RetrofitError error)
             {
                 deleteDialog.dismiss();
-                Toast.makeText(context, "Prevoza ni bilo mogoče izbrisati.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.ride_delete_failure, Toast.LENGTH_SHORT).show();
             }
         });
     }

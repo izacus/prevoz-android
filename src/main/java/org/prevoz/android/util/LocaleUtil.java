@@ -6,10 +6,7 @@ import android.content.res.Resources;
 import org.prevoz.android.R;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 
 public class LocaleUtil
 {
@@ -17,6 +14,18 @@ public class LocaleUtil
     private static final HashMap<String, String> localizedCityNamesCache = new HashMap<String, String>();
     private static Locale localeCache = null;
     private static final HashMap<String, SimpleDateFormat> dateFormatCache = new HashMap<String, SimpleDateFormat>();
+
+    private static final SimpleDateFormat timeFormatter = LocaleUtil.getSimpleDateFormat("HH:mm");
+
+    public static String getFormattedTime(Calendar date)
+    {
+        return getFormattedTime(date.getTime());
+    }
+
+    public static String getFormattedTime(Date date)
+    {
+        return timeFormatter.format(date);
+    }
 
     public static String getDayName(Resources res, Calendar date)
     {
