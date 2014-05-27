@@ -13,8 +13,11 @@ import org.androidannotations.annotations.*;
 import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
+import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.api.rest.RestSearchResults;
 import org.prevoz.android.auth.AuthenticationUtils;
+import org.prevoz.android.ride.RideInfoFragment;
+import org.prevoz.android.search.SearchResultsAdapter;
 import org.prevoz.android.util.ViewUtils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -82,6 +85,9 @@ public class MyRidesFragment extends Fragment implements Callback<RestSearchResu
         ViewUtils.setupEmptyView(myridesList, emptyView, "Nimate objavljenih prevozov.");
         setListVisibility(true);
 
+
+        SearchResultsAdapter adapter = new SearchResultsAdapter(getActivity(), restRide.results);
+        myridesList.setAdapter(adapter);
     }
 
     @Override
@@ -90,6 +96,13 @@ public class MyRidesFragment extends Fragment implements Callback<RestSearchResu
         Log.e(LOG_TAG, "Ride load failed!");
         ViewUtils.setupEmptyView(myridesList, emptyView, "Pri nalaganju vaših prevozov je prišlo do napake.");
         setListVisibility(true);
+    }
+
+    @ItemClick(R.id.myrides_list)
+    protected void itemClick(RestRide ride)
+    {
+        RideInfoFragment fragment = RideInfoFragment.newInstance(ride, RideInfoFragment.PARAM_ACTION_EDIT);
+        fragment.show(getActivity().getSupportFragmentManager(), "RideInfoFragment");
     }
 
     private void setListVisibility(boolean listVisible)

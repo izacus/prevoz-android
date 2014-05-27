@@ -39,4 +39,7 @@ public interface PrevozApi
 
     @GET("/carshare/list/")
     public void getMyRides(Callback<RestSearchResults> cb);
+
+    @POST("/carshare/delete/{id}/")
+    public void deleteRide(@Path("id") String id, Callback<Response> cb);
 }

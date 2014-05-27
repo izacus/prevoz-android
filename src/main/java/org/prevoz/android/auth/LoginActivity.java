@@ -81,13 +81,14 @@ public class LoginActivity extends SherlockFragmentActivity
         // Generate OAuth login URL
         List<String> responseTypes = new ArrayList<String>();
         responseTypes.add("code");
-        String authenticationUrl = new AuthorizationRequestUrl("https://prevoz.org/oauth2/authorize/",
+        String authenticationUrl = new AuthorizationRequestUrl(String.format("https://prevoz.org/oauth2/authorize/%s/code/", CLIENT_ID),
                 CLIENT_ID,
                 responseTypes)
                 .setRedirectUri(REDIRECT_URL)
                 .build();
 
 
+        Log.d(LOG_TAG, "Opening login at " + authenticationUrl);
         webview.loadUrl(authenticationUrl);
         setSupportProgressBarIndeterminate(true);
     }

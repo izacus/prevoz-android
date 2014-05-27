@@ -21,6 +21,7 @@ import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.UiFragment;
 import org.prevoz.android.api.rest.RestRide;
+import org.prevoz.android.myrides.DeleteRideDialog;
 import org.prevoz.android.myrides.NewRideFragment;
 import org.prevoz.android.util.LocaleUtil;
 
@@ -247,6 +248,12 @@ public class RideInfoFragment extends DialogFragment
             Intent intent = new Intent(Intent.ACTION_SENDTO);
             intent.setData(Uri.parse("smsto:" + ride.phoneNumber));
             startActivity(intent);
+        }
+        else if (PARAM_ACTION_EDIT.equals(action))
+        {
+            dismiss();
+            DeleteRideDialog dialog = DeleteRideDialog.newInstance(ride);
+            dialog.show(getActivity().getSupportFragmentManager(), "DeleteRideDialog");
         }
         else
         {
