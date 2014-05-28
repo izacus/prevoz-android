@@ -59,9 +59,9 @@
             <version>1.18.0-rc</version>
         </dependency>
         <dependency>
-            <groupId>com.github.flavienlaurent.datetimepicker</groupId>
+            <groupId>si.virag.flavienlaurent.datetimepicker</groupId>
             <artifactId>library</artifactId>
-            <version>0.0.1</version>
+            <version>0.1.0</version>
             <type>aar</type>
             <exclusions>
                 <exclusion>
