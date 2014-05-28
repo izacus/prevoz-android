@@ -7,8 +7,10 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.view.View;
 import android.widget.Toast;
 import de.greenrobot.event.EventBus;
+import eu.inmite.android.lib.dialogs.BaseDialogFragment;
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestRide;
@@ -20,7 +22,7 @@ import retrofit.client.Response;
 
 import java.util.Calendar;
 
-public class DeleteRideDialog extends DialogFragment
+public class DeleteRideDialog extends BaseDialogFragment
 {
     private static String ARG_RIDE = "ride";
 
@@ -34,28 +36,25 @@ public class DeleteRideDialog extends DialogFragment
     }
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState)
+    protected Builder build(Builder builder)
     {
         final RestRide ride = getArguments().getParcelable(ARG_RIDE);
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
         Calendar date = Calendar.getInstance(LocaleUtil.getLocale());
         date.setTime(ride.date);
 
         builder.setTitle(ride.fromCity + " - " + ride.toCity)
-               .setMessage(getString(R.string.ride_delete_message, LocaleUtil.getDayName(getResources(), date).toLowerCase(LocaleUtil.getLocale()), LocaleUtil.getFormattedTime(date)))
-               .setPositiveButton(R.string.ride_delete_ok, new DialogInterface.OnClickListener()
-               {
-                   @Override
-                   public void onClick(DialogInterface dialog, int which)
-                   {
-                       deleteRide(ride.id);
-                   }
-               })
-               .setNegativeButton(R.string.ride_delete_cancel, null);
+                .setMessage(getString(R.string.ride_delete_message, LocaleUtil.getDayName(getResources(), date).toLowerCase(LocaleUtil.getLocale()), LocaleUtil.getFormattedTime(date)))
+                .setPositiveButton(R.string.ride_delete_ok, new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        deleteRide(ride.id);
+                    }
+                })
+                .setNegativeButton(R.string.ride_delete_cancel, null);
 
-
-        return builder.create();
+        return builder;
     }
 
     private void deleteRide(final Long id)
