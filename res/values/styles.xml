@@ -5,6 +5,7 @@
         <item name="android:windowBackground">@color/background_color</item>
         <item name="android:actionBarStyle">@style/Prevoz.ActionBar</item>
         <item name="actionBarStyle">@style/Prevoz.ActionBar</item>
+        <item name="sdlDialogStyle">@style/Prevoz.Dialog</item>
     </style>
 
     <style name="Prevoz.ActionBar" parent="@style/Widget.Sherlock.ActionBar">
@@ -36,5 +37,18 @@
 
     <style name="Prevoz.FloatingHintEditText" parent="@style/Prevoz.EditText">
         <item name="android:paddingTop">0dp</item>
+    </style>
+
+    <style name="Prevoz.Dialog" parent="android:Theme.DeviceDefault.Light.Dialog">
+        <item name="titleTextColor">@color/prevoztheme_color</item>
+        <!-- anything can be left out: -->
+        <item name="titleSeparatorColor">@color/prevoztheme_color</item>
+        <item name="messageTextColor">@color/sdl_message_text_light</item>
+        <item name="buttonTextColor">@color/sdl_button_text_light</item>
+        <item name="buttonSeparatorColor">@color/sdl_button_separator_light</item>
+        <item name="buttonBackgroundColorNormal">@color/sdl_button_normal_light</item>
+        <item name="buttonBackgroundColorPressed">@color/prevoztheme_pressed</item>
+        <item name="buttonBackgroundColorFocused">@color/prevoztheme_pressed</item>
+        <item name="dialogBackground">@drawable/sdl_background_light</item>
     </style>
 </resources>
