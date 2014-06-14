@@ -94,7 +94,6 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
             fillInEditRide(editRide);
         }
 
-        textFrom.setFloatingHintColor(Color.RED);
     }
 
     protected void fillInEditRide(RestRide editRide)
@@ -158,6 +157,9 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
     @Click(R.id.newride_button)
     protected void clickSubmit()
     {
+        if (!validateForm())
+            return;
+
         City from = StringUtil.splitStringToCity(textFrom.getText().toString());
         City to = StringUtil.splitStringToCity(textTo.getText().toString());
 
@@ -208,6 +210,96 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
 
         if (time)
             textTime.setText(timeFormat.format(setTime.getTime()));
+    }
+
+    private boolean validateForm()
+    {
+        textPhone.setFloatingHintColor(null);
+        textPeople.setFloatingHintColor(null);
+        textPrice.setFloatingHintColor(null);
+        textTime.setFloatingHintColor(null);
+        textDate.setFloatingHintColor(null);
+        textTo.setFloatingHintColor(null);
+        textFrom.setFloatingHintColor(null);
+
+        String error = null;
+
+        if (textPhone.getText().toString().length() == 0)
+        {
+            error = getActivity().getString(R.string.newride_error_phone);
+            textPhone.setFloatingHintColor(Color.RED);
+        }
+
+        try
+        {
+            int people = Integer.parseInt(textPeople.getText().toString());
+            if (people < 1 || people > 6)
+            {
+                error = getActivity().getString(R.string.newride_error_people_num);
+                textPeople.setFloatingHintColor(Color.RED);
+            }
+        }
+        catch (NumberFormatException e)
+        {
+            textPeople.setFloatingHintColor(Color.RED);
+            error = getActivity().getString(R.string.newride_error_people_missing);
+        }
+
+        try
+        {
+            double price = Double.parseDouble(textPrice.getText().toString());
+            if (price < 0 || price > 100)
+            {
+                error = getActivity().getString(R.string.newride_error_price_invalid);
+                textPrice.setFloatingHintColor(Color.RED);
+            }
+        }
+        catch (NumberFormatException e)
+        {
+            error = getActivity().getString(R.string.newride_error_price_invalid);
+            textPrice.setFloatingHintColor(Color.RED);
+        }
+
+        if (!timeSet)
+        {
+            error = getActivity().getString(R.string.newride_error_time_missing);
+        }
+        else if (!dateSet)
+        {
+            error = getActivity().getString(R.string.newride_error_date_missing);
+        }
+        else if (setTime.getTimeInMillis() < System.currentTimeMillis())
+        {
+            error = getActivity().getString(R.string.newride_error_date_passed);
+            textDate.setFloatingHintColor(Color.RED);
+            textTime.setFloatingHintColor(Color.RED);
+        }
+
+
+        if (textTo.getText().length() == 0)
+        {
+            error = getActivity().getString(R.string.newride_error_to_missing);
+            textTo.setFloatingHintColor(Color.RED);
+        }
+
+        if (textFrom.getText().length() == 0)
+        {
+            error = getActivity().getString(R.string.newride_error_from_missing);
+            textFrom.setFloatingHintColor(Color.RED);
+        }
+
+        if (error != null)
+        {
+            showError(error);
+            return false;
+        }
+
+        return true;
+    }
+
+    private void showError(String message)
+    {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
