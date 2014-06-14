@@ -30,6 +30,8 @@ public class FloatingHintAutocompleteEditText extends AutoCompleteTextView
     private int mAnimationFrame;
     private Animation mAnimation = Animation.NONE;
 
+    private Integer hintColor = null;
+
     public FloatingHintAutocompleteEditText(Context context) {
         this(context, null);
     }
@@ -101,8 +103,16 @@ public class FloatingHintAutocompleteEditText extends AutoCompleteTextView
         }
 
         mFloatingHintPaint.set(getPaint());
-        mFloatingHintPaint.setColor(
-                mHintColors.getColorForState(getDrawableState(), mHintColors.getDefaultColor()));
+
+        if (hintColor == null)
+        {
+            mFloatingHintPaint.setColor(
+                    mHintColors.getColorForState(getDrawableState(), mHintColors.getDefaultColor()));
+        }
+        else
+        {
+            mFloatingHintPaint.setColor(hintColor);
+        }
 
         final float hintPosX = getCompoundPaddingLeft() + getScrollX();
         final float normalHintPosY = getBaseline();
@@ -135,6 +145,12 @@ public class FloatingHintAutocompleteEditText extends AutoCompleteTextView
             mAnimationFrame = 0;
         }
 
+        invalidate();
+    }
+
+    public void setFloatingHintColor(Integer color)
+    {
+        hintColor = color;
         invalidate();
     }
 

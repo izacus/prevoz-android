@@ -31,6 +31,8 @@ public class FloatingHintEditText extends EditText
     private int mAnimationFrame;
     private Animation mAnimation = Animation.NONE;
 
+    private Integer hintColor = null;
+
     public FloatingHintEditText(Context context) {
         this(context, null);
     }
@@ -102,8 +104,16 @@ public class FloatingHintEditText extends EditText
         }
 
         mFloatingHintPaint.set(getPaint());
-        mFloatingHintPaint.setColor(
-                mHintColors.getColorForState(getDrawableState(), mHintColors.getDefaultColor()));
+
+        if (hintColor == null)
+        {
+            mFloatingHintPaint.setColor(
+                    mHintColors.getColorForState(getDrawableState(), mHintColors.getDefaultColor()));
+        }
+        else
+        {
+            mFloatingHintPaint.setColor(hintColor);
+        }
 
         final float hintPosX = getCompoundPaddingLeft() + getScrollX();
         final float normalHintPosY = getBaseline();
@@ -136,6 +146,12 @@ public class FloatingHintEditText extends EditText
             mAnimationFrame = 0;
         }
 
+        invalidate();
+    }
+
+    public void setFloatingHintColor(Integer color)
+    {
+        hintColor = color;
         invalidate();
     }
 

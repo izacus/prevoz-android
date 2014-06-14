@@ -2,6 +2,7 @@ package org.prevoz.android.myrides;
 
 import android.app.ProgressDialog;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
@@ -21,6 +22,8 @@ import org.prevoz.android.model.CityNameTextValidator;
 import org.prevoz.android.ride.RideInfoFragment;
 import org.prevoz.android.ride.RideInfoListener;
 import org.prevoz.android.search.CityAutocompleteAdapter;
+import org.prevoz.android.ui.FloatingHintAutocompleteEditText;
+import org.prevoz.android.ui.FloatingHintEditText;
 import org.prevoz.android.util.Database;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
@@ -40,21 +43,21 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
     private static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", LocaleUtil.getLocale());
 
     @ViewById(R.id.newride_from)
-    protected AutoCompleteTextView textFrom;
+    protected FloatingHintAutocompleteEditText textFrom;
     @ViewById(R.id.newride_to)
-    protected AutoCompleteTextView textTo;
+    protected FloatingHintAutocompleteEditText textTo;
     @ViewById(R.id.newride_date_edit)
-    protected EditText textDate;
+    protected FloatingHintEditText textDate;
     @ViewById(R.id.newride_time_edit)
-    protected EditText textTime;
+    protected FloatingHintEditText textTime;
     @ViewById(R.id.newride_price)
-    protected EditText textPrice;
+    protected FloatingHintEditText textPrice;
     @ViewById(R.id.newride_phone)
-    protected EditText textPhone;
+    protected FloatingHintEditText textPhone;
     @ViewById(R.id.newride_people)
-    protected EditText textPeople;
+    protected FloatingHintEditText textPeople;
     @ViewById(R.id.newride_notes)
-    protected EditText textNotes;
+    protected FloatingHintEditText textNotes;
     @ViewById(R.id.newride_insurance)
     protected CheckBox chkInsurance;
 
@@ -90,6 +93,8 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
             RestRide editRide = getArguments().getParcelable(PARAM_EDIT_RIDE);
             fillInEditRide(editRide);
         }
+
+        textFrom.setFloatingHintColor(Color.RED);
     }
 
     protected void fillInEditRide(RestRide editRide)
