@@ -21,8 +21,6 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import de.greenrobot.event.EventBus;
-import net.hockeyapp.android.CrashManager;
-import net.hockeyapp.android.CrashManagerListener;
 import org.androidannotations.annotations.*;
 import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.events.Events;
@@ -46,6 +44,8 @@ import java.util.Locale;
 public class MainActivity extends SherlockFragmentActivity
 {
     public static final int REQUEST_CODE_AUTHORIZE_MYRIDES = 100;
+    public static final int REQUEST_CODE_AUTHORIZE_NEWRIDE = 101;
+
 
     private static final String SEARCH_FRAGMENT_TAG = "SearchResultsFragment";
     private static final String PUSH_NOTIFICATIONS_FRAGMENT_TAG = "PushNotificationsFragment";
@@ -269,19 +269,33 @@ public class MainActivity extends SherlockFragmentActivity
     @OptionsItem(R.id.menu_myrides_add)
     protected void clickAddRide()
     {
-        showFragment(UiFragment.FRAGMENT_NEW_RIDE, true);
+        if (!authUtils.isAuthenticated())
+        {
+            authUtils.requestAuthentication(this, REQUEST_CODE_AUTHORIZE_NEWRIDE);
+        }
+        else
+        {
+            showFragment(UiFragment.FRAGMENT_NEW_RIDE, true);
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_AUTHORIZE_MYRIDES)
+        if (requestCode == REQUEST_CODE_AUTHORIZE_MYRIDES || requestCode == REQUEST_CODE_AUTHORIZE_NEWRIDE)
         {
             if (resultCode == RESULT_CANCELED)
+            {
                 showFragment(UiFragment.FRAGMENT_SEARCH, false);
+            }
             else if (resultCode == RESULT_OK)
-                showFragment(UiFragment.FRAGMENT_MY_RIDES, false);
+            {
+                if (requestCode == REQUEST_CODE_AUTHORIZE_MYRIDES)
+                    showFragment(UiFragment.FRAGMENT_MY_RIDES, false);
+                else
+                    showFragment(UiFragment.FRAGMENT_NEW_RIDE, true);
+            }
         }
     }
 

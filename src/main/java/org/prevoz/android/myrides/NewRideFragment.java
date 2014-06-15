@@ -17,6 +17,7 @@ import org.prevoz.android.R;
 import org.prevoz.android.UiFragment;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestRide;
+import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.CityNameTextValidator;
 import org.prevoz.android.ride.RideInfoFragment;
@@ -60,6 +61,9 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
     protected FloatingHintEditText textNotes;
     @ViewById(R.id.newride_insurance)
     protected CheckBox chkInsurance;
+
+    @Bean
+    protected AuthenticationUtils authUtils;
 
     @InstanceState
     protected Calendar setTime;

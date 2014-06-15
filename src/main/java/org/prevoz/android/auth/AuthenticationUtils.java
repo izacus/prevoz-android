@@ -1,12 +1,16 @@
 package org.prevoz.android.auth;
 
 import android.accounts.*;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
+import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
 
@@ -30,6 +34,23 @@ public class AuthenticationUtils
             return accounts[0];
 
         return null;
+    }
+
+    @Background
+    public void requestAuthentication(Activity parentActivity, int requestCode)
+    {
+        AccountManager am = AccountManager.get(parentActivity);
+        AccountManagerFuture<Bundle> result = am.addAccount(parentActivity.getString(R.string.account_type), null, null, null, null, null, null);
+
+        try
+        {
+            Intent i = (Intent) result.getResult().get(AccountManager.KEY_INTENT);
+            parentActivity.startActivityForResult(i, requestCode);
+        }
+        catch (Exception e)
+        {
+            Log.e(LOG_TAG, "Error!", e);
+        }
     }
 
     public boolean isAuthenticated()
