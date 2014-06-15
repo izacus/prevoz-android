@@ -100,17 +100,7 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
 
         if (results == null)
         {
-            adapter = new SearchHistoryAdapter(getActivity());
-            resultList.setAdapter(adapter);
-            resultList.setOnItemClickListener(new AdapterView.OnItemClickListener()
-            {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-                {
-                    Route route = (Route) adapter.getItem(position - 1);
-                    EventBus.getDefault().post(new Events.SearchFillWithRoute(route));
-                }
-            });
+            showHistory(false);
         }
         else
         {
@@ -246,6 +236,30 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
         pushManager.setSubscriptionStatus(lastFrom, lastTo, lastDate, !pushManager.isSubscribed(lastFrom, lastTo, lastDate));
     }
 
+    private void showHistory(boolean animate)
+    {
+        if (animate && resultList.getAdapter() != null)
+        {
+            hideNotificationsButton();
+            new ListDisappearAnimation(resultList).animate();
+        }
+
+        adapter = new SearchHistoryAdapter(getActivity());
+        resultList.setAdapter(adapter);
+        resultList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                Route route = (Route) adapter.getItem(position - 1);
+                EventBus.getDefault().post(new Events.SearchFillWithRoute(route));
+            }
+        });
+
+        if (animate)
+            new ListFlyupAnimator(resultList).animate();
+    }
+
     public void onEventMainThread(Events.NewSearchEvent e)
     {
         EventBus.getDefault().removeStickyEvent(e);
@@ -278,5 +292,15 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     {
         if (adapter != null && adapter instanceof SearchResultsAdapter)
             ((SearchResultsAdapter) adapter).removeRide(e.id);
+    }
+
+    public void onEventMainThread(Events.ClearSearchEvent e)
+    {
+        showHistory(true);
+    }
+
+    public boolean showingResults()
+    {
+        return (adapter instanceof SearchResultsAdapter);
     }
 }

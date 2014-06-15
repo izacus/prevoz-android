@@ -31,6 +31,7 @@ import org.prevoz.android.myrides.MyRidesFragment_;
 import org.prevoz.android.myrides.NewRideFragment_;
 import org.prevoz.android.push.PushFragment_;
 import org.prevoz.android.push.PushManager;
+import org.prevoz.android.search.SearchResultsFragment;
 import org.prevoz.android.search.SearchResultsFragment_;
 import org.prevoz.android.util.Database;
 import org.prevoz.android.util.LocaleUtil;
@@ -279,6 +280,20 @@ public class MainActivity extends SherlockFragmentActivity
                 showFragment(UiFragment.FRAGMENT_SEARCH);
             else if (resultCode == RESULT_OK)
                 showFragment(UiFragment.FRAGMENT_MY_RIDES);
+        }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        SearchResultsFragment fragment = (SearchResultsFragment) getSupportFragmentManager().findFragmentByTag(SEARCH_FRAGMENT_TAG);
+        if (fragment != null && fragment.showingResults())
+        {
+            EventBus.getDefault().post(new Events.ClearSearchEvent());
+        }
+        else
+        {
+            super.onBackPressed();
         }
     }
 

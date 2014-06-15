@@ -21,6 +21,8 @@ public class Events
         }
     }
 
+    public static class ClearSearchEvent {}
+
     public static class SearchComplete {}
 
     public static class SearchFillWithRoute
