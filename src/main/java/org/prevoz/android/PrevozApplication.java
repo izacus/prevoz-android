@@ -3,6 +3,8 @@ package org.prevoz.android;
 import android.app.Application;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import net.hockeyapp.android.CrashManager;
+import net.hockeyapp.android.CrashManagerListener;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EApplication;
 import org.prevoz.android.auth.AuthenticationUtils;
@@ -20,6 +22,13 @@ public class PrevozApplication extends Application
     public void onCreate()
     {
         super.onCreate();
+
+        CrashManager.register(this, "bf529dcbb5c656bba1195961d0bffd08", new CrashManagerListener() {
+            @Override
+            public boolean shouldAutoUploadCrashes() {
+                return true;
+            }
+        });
 
         try
         {
