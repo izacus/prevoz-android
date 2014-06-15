@@ -183,12 +183,12 @@ public class MainActivity extends SherlockFragmentActivity
         leftDrawer.setAdapter(adapter);
     }
 
-    public void showFragment(UiFragment fragment)
+    public void showFragment(UiFragment fragment, boolean backstack)
     {
-        showFragment(fragment, null);
+        showFragment(fragment, backstack, null);
     }
 
-    public void showFragment(UiFragment fragment, Bundle params)
+    public void showFragment(UiFragment fragment, boolean backstack, Bundle params)
     {
         FragmentManager fm = getSupportFragmentManager();
 
@@ -233,16 +233,18 @@ public class MainActivity extends SherlockFragmentActivity
             if (params != null)
                 f.setArguments(params);
 
-            replaceFragment(f, tag);
+            replaceFragment(f, tag, backstack);
         }
 
         drawerLayout.closeDrawers();
     }
 
-    private void replaceFragment(Fragment fragment, String tag)
+    private void replaceFragment(Fragment fragment, String tag, boolean backstack)
     {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.main_search_container, fragment, tag);
+        if (backstack)
+            ft.addToBackStack(null);
         ft.commit();
     }
 
@@ -252,14 +254,14 @@ public class MainActivity extends SherlockFragmentActivity
         switch (position)
         {
             case 0:     // SEARCH
-                showFragment(UiFragment.FRAGMENT_SEARCH);
+                showFragment(UiFragment.FRAGMENT_SEARCH, false);
                 break;
             case 1:     // MY RIDES
-                showFragment(UiFragment.FRAGMENT_MY_RIDES);
+                showFragment(UiFragment.FRAGMENT_MY_RIDES, false);
                 break;
 
             case 2:     // PUSH NOTIFICATION LIST
-                showFragment(UiFragment.FRAGMENT_NOTIFICATIONS);
+                showFragment(UiFragment.FRAGMENT_NOTIFICATIONS, false);
                 break;
         }
     }
@@ -267,7 +269,7 @@ public class MainActivity extends SherlockFragmentActivity
     @OptionsItem(R.id.menu_myrides_add)
     protected void clickAddRide()
     {
-        showFragment(UiFragment.FRAGMENT_NEW_RIDE);
+        showFragment(UiFragment.FRAGMENT_NEW_RIDE, true);
     }
 
     @Override
@@ -277,9 +279,9 @@ public class MainActivity extends SherlockFragmentActivity
         if (requestCode == REQUEST_CODE_AUTHORIZE_MYRIDES)
         {
             if (resultCode == RESULT_CANCELED)
-                showFragment(UiFragment.FRAGMENT_SEARCH);
+                showFragment(UiFragment.FRAGMENT_SEARCH, false);
             else if (resultCode == RESULT_OK)
-                showFragment(UiFragment.FRAGMENT_MY_RIDES);
+                showFragment(UiFragment.FRAGMENT_MY_RIDES, false);
         }
     }
 

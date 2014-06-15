@@ -325,7 +325,7 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
 
                 MainActivity activity = (MainActivity) getActivity();
                 if (activity != null)
-                    activity.showFragment(UiFragment.FRAGMENT_MY_RIDES);
+                    activity.showFragment(UiFragment.FRAGMENT_MY_RIDES, false);
             }
 
             @Override
