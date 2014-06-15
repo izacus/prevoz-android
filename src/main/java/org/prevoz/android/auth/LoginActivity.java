@@ -67,8 +67,6 @@ public class LoginActivity extends SherlockFragmentActivity
         authenticatorResponse = getIntent().getParcelableExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE);
         if (authenticatorResponse != null)
             authenticatorResponse.onRequestContinued();
-
-        CookieManager.getInstance().removeAllCookie();
     }
 
     @AfterViews
@@ -88,6 +86,7 @@ public class LoginActivity extends SherlockFragmentActivity
                 .build();
 
 
+        CookieManager.getInstance().removeAllCookie();
         Log.d(LOG_TAG, "Opening login at " + authenticationUrl);
         webview.loadUrl(authenticationUrl);
         setSupportProgressBarIndeterminate(true);
