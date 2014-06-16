@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.nineoldandroids.view.ViewHelper;
 import de.greenrobot.event.EventBus;
 import org.androidannotations.annotations.*;
 import org.prevoz.android.R;
@@ -42,6 +43,8 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
 
     @ViewById(R.id.search_results_list)
     protected StickyListHeadersListView resultList;
+    @ViewById(R.id.search_results_noresults)
+    protected TextView noResultsText;
 
     protected View searchNofityButtonContainer;
     protected View searchNotifyButton;
@@ -177,8 +180,17 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
             }
         });
 
-        showNotificationsButton();
-        new ListFlyupAnimator(resultList).animate();
+        if (results.results != null && results.results.size() > 0)
+        {
+            showNotificationsButton();
+            new ListFlyupAnimator(resultList).animate();
+        }
+        else
+        {
+            noResultsText.setVisibility(View.VISIBLE);
+            ViewHelper.setAlpha(noResultsText, 0.0f);
+            noResultsText.animate().alpha(1.0f).setDuration(200).start();
+        }
     }
 
     private void showNotificationsButton()
@@ -263,6 +275,7 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     public void onEventMainThread(Events.NewSearchEvent e)
     {
         EventBus.getDefault().removeStickyEvent(e);
+        noResultsText.setVisibility(View.INVISIBLE);
 
         if (resultList.getAdapter() != null)
         {
