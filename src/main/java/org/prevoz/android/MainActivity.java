@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
+import com.crashlytics.android.Crashlytics;
 import de.greenrobot.event.EventBus;
 import org.androidannotations.annotations.*;
 import org.prevoz.android.auth.AuthenticationUtils;
