@@ -4,9 +4,7 @@ import android.app.ProgressDialog;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
-import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.Toast;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
@@ -35,7 +33,6 @@ import retrofit.client.Response;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 
 @EFragment(R.layout.fragment_newride)
 public class NewRideFragment extends Fragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, RideInfoListener
@@ -62,6 +59,9 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
     protected FloatingHintEditText textNotes;
     @ViewById(R.id.newride_insurance)
     protected CheckBox chkInsurance;
+
+    @Bean
+    protected AuthenticationUtils authUtils;
 
     @InstanceState
     protected Calendar setTime;
@@ -338,7 +338,7 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
 
                     MainActivity activity = (MainActivity) getActivity();
                     if (activity != null)
-                        activity.showFragment(UiFragment.FRAGMENT_MY_RIDES);
+                        activity.showFragment(UiFragment.FRAGMENT_MY_RIDES, false);
                 }
             }
 

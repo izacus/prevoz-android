@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.nineoldandroids.view.ViewHelper;
 import de.greenrobot.event.EventBus;
 import org.androidannotations.annotations.*;
 import org.prevoz.android.R;
@@ -42,6 +43,8 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
 
     @ViewById(R.id.search_results_list)
     protected StickyListHeadersListView resultList;
+    @ViewById(R.id.search_results_noresults)
+    protected TextView noResultsText;
 
     protected View searchNofityButtonContainer;
     protected View searchNotifyButton;
@@ -100,17 +103,7 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
 
         if (results == null)
         {
-            adapter = new SearchHistoryAdapter(getActivity());
-            resultList.setAdapter(adapter);
-            resultList.setOnItemClickListener(new AdapterView.OnItemClickListener()
-            {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-                {
-                    Route route = (Route) adapter.getItem(position - 1);
-                    EventBus.getDefault().post(new Events.SearchFillWithRoute(route));
-                }
-            });
+            showHistory(false);
         }
         else
         {
@@ -187,8 +180,17 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
             }
         });
 
-        showNotificationsButton();
-        new ListFlyupAnimator(resultList).animate();
+        if (results.results != null && results.results.size() > 0)
+        {
+            showNotificationsButton();
+            new ListFlyupAnimator(resultList).animate();
+        }
+        else
+        {
+            noResultsText.setVisibility(View.VISIBLE);
+            ViewHelper.setAlpha(noResultsText, 0.0f);
+            noResultsText.animate().alpha(1.0f).setDuration(200).start();
+        }
     }
 
     private void showNotificationsButton()
@@ -246,9 +248,34 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
         pushManager.setSubscriptionStatus(lastFrom, lastTo, lastDate, !pushManager.isSubscribed(lastFrom, lastTo, lastDate));
     }
 
+    private void showHistory(boolean animate)
+    {
+        if (animate && resultList.getAdapter() != null)
+        {
+            hideNotificationsButton();
+            new ListDisappearAnimation(resultList).animate();
+        }
+
+        adapter = new SearchHistoryAdapter(getActivity());
+        resultList.setAdapter(adapter);
+        resultList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                Route route = (Route) adapter.getItem(position - 1);
+                EventBus.getDefault().post(new Events.SearchFillWithRoute(route));
+            }
+        });
+
+        if (animate)
+            new ListFlyupAnimator(resultList).animate();
+    }
+
     public void onEventMainThread(Events.NewSearchEvent e)
     {
         EventBus.getDefault().removeStickyEvent(e);
+        noResultsText.setVisibility(View.INVISIBLE);
 
         if (resultList.getAdapter() != null)
         {
@@ -278,5 +305,15 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     {
         if (adapter != null && adapter instanceof SearchResultsAdapter)
             ((SearchResultsAdapter) adapter).removeRide(e.id);
+    }
+
+    public void onEventMainThread(Events.ClearSearchEvent e)
+    {
+        showHistory(true);
+    }
+
+    public boolean showingResults()
+    {
+        return (adapter instanceof SearchResultsAdapter);
     }
 }

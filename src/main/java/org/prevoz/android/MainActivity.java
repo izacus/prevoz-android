@@ -20,8 +20,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
+import com.crashlytics.android.Crashlytics;
 import de.greenrobot.event.EventBus;
-import net.hockeyapp.android.CrashManager;
 import org.androidannotations.annotations.*;
 import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.events.Events;
@@ -31,6 +31,7 @@ import org.prevoz.android.myrides.MyRidesFragment_;
 import org.prevoz.android.myrides.NewRideFragment_;
 import org.prevoz.android.push.PushFragment_;
 import org.prevoz.android.push.PushManager;
+import org.prevoz.android.search.SearchResultsFragment;
 import org.prevoz.android.search.SearchResultsFragment_;
 import org.prevoz.android.util.Database;
 import org.prevoz.android.util.LocaleUtil;
@@ -44,6 +45,8 @@ import java.util.Locale;
 public class MainActivity extends SherlockFragmentActivity
 {
     public static final int REQUEST_CODE_AUTHORIZE_MYRIDES = 100;
+    public static final int REQUEST_CODE_AUTHORIZE_NEWRIDE = 101;
+
 
     private static final String SEARCH_FRAGMENT_TAG = "SearchResultsFragment";
     private static final String PUSH_NOTIFICATIONS_FRAGMENT_TAG = "PushNotificationsFragment";
@@ -121,7 +124,6 @@ public class MainActivity extends SherlockFragmentActivity
     protected void onResume()
     {
         super.onResume();
-        CrashManager.register(this, "bf529dcbb5c656bba1195961d0bffd08");
 
         if (getIntent().hasExtra("from") && getIntent().hasExtra("to"))
         {
@@ -182,12 +184,12 @@ public class MainActivity extends SherlockFragmentActivity
         leftDrawer.setAdapter(adapter);
     }
 
-    public void showFragment(UiFragment fragment)
+    public void showFragment(UiFragment fragment, boolean backstack)
     {
-        showFragment(fragment, null);
+        showFragment(fragment, backstack, null);
     }
 
-    public void showFragment(UiFragment fragment, Bundle params)
+    public void showFragment(UiFragment fragment, boolean backstack, Bundle params)
     {
         FragmentManager fm = getSupportFragmentManager();
 
@@ -232,16 +234,18 @@ public class MainActivity extends SherlockFragmentActivity
             if (params != null)
                 f.setArguments(params);
 
-            replaceFragment(f, tag);
+            replaceFragment(f, tag, backstack);
         }
 
         drawerLayout.closeDrawers();
     }
 
-    private void replaceFragment(Fragment fragment, String tag)
+    private void replaceFragment(Fragment fragment, String tag, boolean backstack)
     {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.main_search_container, fragment, tag);
+        if (backstack)
+            ft.addToBackStack(null);
         ft.commit();
     }
 
@@ -251,14 +255,14 @@ public class MainActivity extends SherlockFragmentActivity
         switch (position)
         {
             case 0:     // SEARCH
-                showFragment(UiFragment.FRAGMENT_SEARCH);
+                showFragment(UiFragment.FRAGMENT_SEARCH, false);
                 break;
             case 1:     // MY RIDES
-                showFragment(UiFragment.FRAGMENT_MY_RIDES);
+                showFragment(UiFragment.FRAGMENT_MY_RIDES, false);
                 break;
 
             case 2:     // PUSH NOTIFICATION LIST
-                showFragment(UiFragment.FRAGMENT_NOTIFICATIONS);
+                showFragment(UiFragment.FRAGMENT_NOTIFICATIONS, false);
                 break;
         }
     }
@@ -266,19 +270,47 @@ public class MainActivity extends SherlockFragmentActivity
     @OptionsItem(R.id.menu_myrides_add)
     protected void clickAddRide()
     {
-        showFragment(UiFragment.FRAGMENT_NEW_RIDE);
+        if (!authUtils.isAuthenticated())
+        {
+            authUtils.requestAuthentication(this, REQUEST_CODE_AUTHORIZE_NEWRIDE);
+        }
+        else
+        {
+            showFragment(UiFragment.FRAGMENT_NEW_RIDE, true);
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_AUTHORIZE_MYRIDES)
+        if (requestCode == REQUEST_CODE_AUTHORIZE_MYRIDES || requestCode == REQUEST_CODE_AUTHORIZE_NEWRIDE)
         {
             if (resultCode == RESULT_CANCELED)
-                showFragment(UiFragment.FRAGMENT_SEARCH);
+            {
+                showFragment(UiFragment.FRAGMENT_SEARCH, false);
+            }
             else if (resultCode == RESULT_OK)
-                showFragment(UiFragment.FRAGMENT_MY_RIDES);
+            {
+                if (requestCode == REQUEST_CODE_AUTHORIZE_MYRIDES)
+                    showFragment(UiFragment.FRAGMENT_MY_RIDES, false);
+                else
+                    showFragment(UiFragment.FRAGMENT_NEW_RIDE, true);
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        SearchResultsFragment fragment = (SearchResultsFragment) getSupportFragmentManager().findFragmentByTag(SEARCH_FRAGMENT_TAG);
+        if (fragment != null && fragment.showingResults())
+        {
+            EventBus.getDefault().post(new Events.ClearSearchEvent());
+        }
+        else
+        {
+            super.onBackPressed();
         }
     }
 

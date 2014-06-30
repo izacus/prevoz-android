@@ -229,7 +229,7 @@ public class RideInfoFragment extends DialogFragment
 
             Bundle params = new Bundle();
             params.putParcelable(NewRideFragment.PARAM_EDIT_RIDE, ride);
-            activity.showFragment(UiFragment.FRAGMENT_NEW_RIDE, params);
+            activity.showFragment(UiFragment.FRAGMENT_NEW_RIDE, false, params);
         }
         else
         {

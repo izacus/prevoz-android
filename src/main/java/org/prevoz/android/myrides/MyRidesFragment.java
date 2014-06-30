@@ -51,7 +51,7 @@ public class MyRidesFragment extends Fragment implements Callback<RestSearchResu
 
         if (!authUtils.isAuthenticated())
         {
-            requestAuthentication();
+            authUtils.requestAuthentication(getActivity(), MainActivity.REQUEST_CODE_AUTHORIZE_MYRIDES);
         }
         else
         {
@@ -72,22 +72,6 @@ public class MyRidesFragment extends Fragment implements Callback<RestSearchResu
         ApiClient.getAdapter().getMyRides(this);
     }
 
-    @Background
-    protected void requestAuthentication()
-    {
-        AccountManager am = AccountManager.get(getActivity());
-        AccountManagerFuture<Bundle> result = am.addAccount(getString(R.string.account_type), null, null, null, null, null, null);
-
-        try
-        {
-            Intent i = (Intent) result.getResult().get(AccountManager.KEY_INTENT);
-            getActivity().startActivityForResult(i, MainActivity.REQUEST_CODE_AUTHORIZE_MYRIDES);
-        }
-        catch (Exception e)
-        {
-            Log.e(LOG_TAG, "Error!", e);
-        }
-    }
 
     @Override
     public void success(RestSearchResults restRide, Response response)

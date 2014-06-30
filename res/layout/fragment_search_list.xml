@@ -4,6 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+              android:id="@+id/search_results_noresults"
+              android:layout_width="match_parent"
+              android:layout_height="300dp"
+              android:layout_gravity="bottom"
+              android:gravity="center"
+              android:textColor="@android:color/darker_gray"
+              android:visibility="invisible"
+              android:text="Za ta dan in relacijo ni objavljenih prevozov."
+    />
+
     <se.emilsjolander.stickylistheaders.StickyListHeadersListView
         android:id="@+id/search_results_list"
         android:layout_width="match_parent"
