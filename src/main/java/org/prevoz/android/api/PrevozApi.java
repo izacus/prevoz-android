@@ -5,6 +5,8 @@ import retrofit.Callback;
 import retrofit.client.Response;
 import retrofit.http.*;
 
+import java.util.HashMap;
+
 public interface PrevozApi
 {
     @GET("/search/shares/")
@@ -35,7 +37,7 @@ public interface PrevozApi
                                      @Field("action") String action, Callback<RestPushStatus> cb);
 
     @POST("/carshare/create/")
-    public void postRide(@Body RestRide ride, Callback<Response> cb);
+    public void postRide(@Body RestRide ride, Callback<RestStatus> cb);
 
     @GET("/carshare/list/")
     public void getMyRides(Callback<RestSearchResults> cb);

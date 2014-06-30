@@ -17,6 +17,7 @@ import org.prevoz.android.R;
 import org.prevoz.android.UiFragment;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestRide;
+import org.prevoz.android.api.rest.RestStatus;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.CityNameTextValidator;
 import org.prevoz.android.ride.RideInfoFragment;
@@ -34,6 +35,7 @@ import retrofit.client.Response;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 
 @EFragment(R.layout.fragment_newride)
 public class NewRideFragment extends Fragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, RideInfoListener
@@ -315,24 +317,36 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
         dialog.setMessage("Oddajam prevoz...");
         dialog.show();
 
-        ApiClient.getAdapter().postRide(r, new Callback<Response>()
+        ApiClient.getAdapter().postRide(r, new Callback<RestStatus>()
         {
             @Override
-            public void success(Response response, Response response2)
+            public void success(RestStatus status, Response response)
             {
                 dialog.dismiss();
-                Toast.makeText(getActivity(), "Prevoz je bil oddan.", Toast.LENGTH_SHORT).show();
 
-                MainActivity activity = (MainActivity) getActivity();
-                if (activity != null)
-                    activity.showFragment(UiFragment.FRAGMENT_MY_RIDES);
+                if (!("created".equals(status.status)))
+                {
+                    if (status.error != null && status.error.size() > 0)
+                    {
+                        String firstKey = status.error.keySet().iterator().next();
+                        Toast.makeText(getActivity(), status.error.get(firstKey).get(0), Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else
+                {
+                    Toast.makeText(getActivity(), "Prevoz je bil oddan.", Toast.LENGTH_SHORT).show();
+
+                    MainActivity activity = (MainActivity) getActivity();
+                    if (activity != null)
+                        activity.showFragment(UiFragment.FRAGMENT_MY_RIDES);
+                }
             }
 
             @Override
             public void failure(RetrofitError error)
             {
                 dialog.dismiss();
-                // TODO: Error message.
+                Toast.makeText(getActivity(), "Pri oddajanju je prišlo do napake, ste povezani na internet?", Toast.LENGTH_SHORT).show();
             }
         });
     }
