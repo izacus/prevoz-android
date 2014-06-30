@@ -35,7 +35,7 @@ public class ApiClient
                 .create();
 
         adapter = new RestAdapter.Builder()
-                                 .setEndpoint(BASE_URL + "/api")
+                                 .setEndpoint(BASE_URL)
                                  .setConverter(new GsonConverter(gson))
                                  .setRequestInterceptor(new CookieSetterInterceptor())
                                  .setClient(new OkClient(new OkHttpClient()))

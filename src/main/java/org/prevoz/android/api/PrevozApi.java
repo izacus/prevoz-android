@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public interface PrevozApi
 {
-    @GET("/search/shares/")
+    @GET("/api/search/shares/")
     public void search(@Query("f")  String from,
                        @Query("fc") String fromCountry,
                        @Query("t")  String to,
@@ -17,17 +17,17 @@ public interface PrevozApi
                        @Query("d")  String date,
                        Callback<RestSearchResults> cb);
 
-    @GET("/carshare/{id}/")
+    @GET("/api/carshare/{id}/")
     public void getRide(@Path("id") String id, Callback<RestRide> cb);
 
-    @GET("/accounts/status/")
-    public void getAccountStatus(Callback<RestAccountStatus> cb);
+    @GET("/api/accounts/status/")
+    public RestAccountStatus getAccountStatus();
 
-    @POST("/accounts/login/apikey/")
+    @POST("/api/accounts/login/apikey/")
     public void loginWithApiKey(@Body RestApiKey apiKey, Callback<RestAccountStatus> cb);
 
     @FormUrlEncoded
-    @POST("/c2dm/register/")
+    @POST("/api/c2dm/register/")
     public void setSubscriptionState(@Field("registration_id") String registrationId,
                                      @Field("from") String form,
                                      @Field("fromcountry") String fromCountry,
@@ -36,12 +36,19 @@ public interface PrevozApi
                                      @Field("date") String date,
                                      @Field("action") String action, Callback<RestPushStatus> cb);
 
-    @POST("/carshare/create/")
+    @POST("/api/carshare/create/")
     public void postRide(@Body RestRide ride, Callback<RestStatus> cb);
 
-    @GET("/carshare/list/")
+    @GET("/api/carshare/list/")
     public void getMyRides(Callback<RestSearchResults> cb);
 
-    @DELETE("/carshare/delete/{id}/")
+    @DELETE("/api/carshare/delete/{id}/")
     public void deleteRide(@Path("id") String id, Callback<Response> cb);
+
+    @FormUrlEncoded
+    @POST("/oauth2/access_token/")
+    public RestAuthTokenResponse getAccessToken(@Field("grant_type") String grantType,
+                                                @Field("client_id") String clientId,
+                                                @Field("client_secret") String clientSecret,
+                                                @Field("code") String code);
 }

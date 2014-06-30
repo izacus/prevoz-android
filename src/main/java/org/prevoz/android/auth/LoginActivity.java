@@ -5,6 +5,7 @@ import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +22,8 @@ import org.androidannotations.annotations.*;
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestAccountStatus;
+import org.prevoz.android.api.rest.RestAuthTokenRequest;
+import org.prevoz.android.api.rest.RestAuthTokenResponse;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -53,6 +56,8 @@ public class LoginActivity extends SherlockFragmentActivity
 
     private DeviceAccountLogin autologin;
     private AutologinBar autologinBar;
+
+    private boolean tokenRequestInProgress = false; // Workaround for Android 2.3
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -99,53 +104,40 @@ public class LoginActivity extends SherlockFragmentActivity
     @Background
     protected void requestAccessToken(final ProgressDialog dialog, String code)
     {
-        final NetHttpTransport transport = new NetHttpTransport();
-        final AndroidJsonFactory jsonFactory = new AndroidJsonFactory();
-        final ClientParametersAuthentication authentication = new ClientParametersAuthentication(CLIENT_ID, CLIENT_SECRET);
-
-        AuthorizationCodeTokenRequest tokenRequest = new AuthorizationCodeTokenRequest(transport,
-                                                                                       jsonFactory,
-                                                                                       new GenericUrl(ApiClient.BASE_URL + "/oauth2/access_token/"),
-                                                                                       code);
-
-        tokenRequest.setClientAuthentication(authentication);
-
+        RestAuthTokenResponse retrievedToken = null;
         try
         {
-            final TokenResponse retrievedToken = tokenRequest.execute();
-            ApiClient.setBearer(retrievedToken.getAccessToken());
-
-            ApiClient.getAdapter().getAccountStatus(new Callback<RestAccountStatus>()
-            {
-                @Override
-                public void success(RestAccountStatus restAccountStatus, Response response)
-                {
-                    updateAuthenticatorResult(restAccountStatus, retrievedToken.getAccessToken(), retrievedToken.getRefreshToken());
-                    UpdateAccountInformationTask updateInfoTask = new UpdateAccountInformationTask(LoginActivity.this,
-                                                                                                   authUtils,
-                                                                                                   dialog,
-                                                                                                   restAccountStatus,
-                                                                                                   retrievedToken.getAccessToken(),
-                                                                                                   retrievedToken.getRefreshToken(),
-                                                                                                   System.currentTimeMillis() + (retrievedToken.getExpiresInSeconds() * 1000));
-                    updateInfoTask.execute();
-                }
-
-                @Override
-                public void failure(RetrofitError retrofitError)
-                {
-                    Log.e(LOG_TAG, "Failed to login: " + retrofitError);
-                    dialog.dismiss();
-                }
-            });
+             retrievedToken = ApiClient.getAdapter().getAccessToken("authorization_code", CLIENT_ID, CLIENT_SECRET, code);
         }
-        catch (IOException e)
+        catch (RetrofitError e)
         {
             final Bundle result = new Bundle();
             result.putInt(AccountManager.KEY_ERROR_CODE, AccountManager.ERROR_CODE_BAD_AUTHENTICATION);
             result.putString(AccountManager.KEY_ERROR_MESSAGE, "Failed to confirm authentication.");
             authenticatorResult = result;
             finish();
+            return;
+        }
+
+        ApiClient.setBearer(retrievedToken.accessToken);
+
+        try
+        {
+            RestAccountStatus restAccountStatus = ApiClient.getAdapter().getAccountStatus();
+            updateAuthenticatorResult(restAccountStatus, retrievedToken.accessToken, retrievedToken.refreshToken);
+            UpdateAccountInformationTask updateInfoTask = new UpdateAccountInformationTask(LoginActivity.this,
+                                                                                            authUtils,
+                                                                                            dialog,
+                                                                                            restAccountStatus,
+                                                                                            retrievedToken.accessToken,
+                                                                                            retrievedToken.refreshToken,
+                                                                                            System.currentTimeMillis() + (retrievedToken.expiresIn * 1000));
+            updateInfoTask.execute();
+        }
+        catch (RetrofitError e)
+        {
+            Log.e(LOG_TAG, "Failed to login: " + e.getBody());
+            dialog.dismiss();
         }
     }
 
@@ -241,7 +233,7 @@ public class LoginActivity extends SherlockFragmentActivity
         {
             Log.d(LOG_TAG, "Loading " + url);
 
-            if (url.startsWith(REDIRECT_URL))
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1 && url.startsWith(REDIRECT_URL))
             {
                 AuthorizationCodeResponseUrl authorizationCodeResponseUrl = new AuthorizationCodeResponseUrl(url);
                 // TODO: Error handling.
@@ -256,8 +248,21 @@ public class LoginActivity extends SherlockFragmentActivity
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon)
         {
-            super.onPageStarted(view, url, favicon);
-            setSupportProgressBarIndeterminateVisibility(true);
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1 && url.startsWith(REDIRECT_URL))
+            {
+                if (tokenRequestInProgress)
+                    return;
+
+                tokenRequestInProgress = true;
+                AuthorizationCodeResponseUrl authorizationCodeResponseUrl = new AuthorizationCodeResponseUrl(url);
+                // TODO: Error handling.
+                getAccountUsernameAndApiKey(authorizationCodeResponseUrl.getCode());
+            }
+            else
+            {
+                super.onPageStarted(view, url, favicon);
+                setSupportProgressBarIndeterminateVisibility(true);
+            }
         }
 
         @Override
