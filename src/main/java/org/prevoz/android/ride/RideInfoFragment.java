@@ -118,7 +118,9 @@ public class RideInfoFragment extends DialogFragment
         }
 
         ride = getArguments().getParcelable(ARG_RIDE);
-        action = getArguments().getString(ARG_ACTION, PARAM_ACTION_SHOW);
+        action = getArguments().getString(ARG_ACTION);
+        if (action == null)
+            action = PARAM_ACTION_SHOW;
 
         if (PARAM_ACTION_SHOW.equals(action) && ride.isAuthor)
         {

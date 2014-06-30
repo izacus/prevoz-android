@@ -4,6 +4,7 @@ package org.prevoz.android;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -83,8 +84,8 @@ public class MainActivity extends SherlockFragmentActivity
     {
         drawerLayoutToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_navigation_drawer, 0, 0);
         drawerLayout.setDrawerListener(drawerLayoutToggle);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         prepareDrawer();
         checkAuthenticated();
@@ -103,7 +104,8 @@ public class MainActivity extends SherlockFragmentActivity
     @Background
     protected void checkInitDatabase()
     {
-        Database.getSettingsDatabase(this);
+        SQLiteDatabase db = Database.getSettingsDatabase(this);
+        db.close();
     }
 
     @Background

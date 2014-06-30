@@ -35,6 +35,8 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
+
 
 @EFragment(R.layout.fragment_search_list)
 public class SearchResultsFragment extends Fragment implements Callback<RestSearchResults>
@@ -189,7 +191,7 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
         {
             noResultsText.setVisibility(View.VISIBLE);
             ViewHelper.setAlpha(noResultsText, 0.0f);
-            noResultsText.animate().alpha(1.0f).setDuration(200).start();
+            animate(noResultsText).alpha(1.0f).setDuration(200).start();
         }
     }
 
@@ -201,15 +203,17 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
              searchNofityButtonContainer.getVisibility() == View.VISIBLE ||
             !pushManager.isPushAvailable())
         {
-            searchNofityButtonContainer.setAlpha(1.0f);
+            ViewHelper.setAlpha(searchNofityButtonContainer, 1.0f);
             return;
         }
 
         // Show notifications button
-        searchNofityButtonContainer.setAlpha(0.0f);
+
+        ViewHelper.setAlpha(searchNofityButtonContainer, 0.0f);
         updateNotificationButtonText();
         searchNofityButtonContainer.setVisibility(View.VISIBLE);
-        searchNofityButtonContainer.animate().alpha(1.0f).setDuration(200).setListener(null);
+
+        animate(searchNofityButtonContainer).alpha(1.0f).setDuration(200).setListener(null);
     }
 
     private void updateNotificationButtonText()
@@ -232,10 +236,10 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
             return;
 
         searchNofityButtonContainer.clearAnimation();
-        searchNofityButtonContainer.animate().alpha(0.0f).setDuration(200).setListener(new AnimatorListenerAdapter()
+        animate(searchNofityButtonContainer).alpha(0.0f).setDuration(200).setListener(new com.nineoldandroids.animation.AnimatorListenerAdapter()
         {
             @Override
-            public void onAnimationEnd(Animator animation)
+            public void onAnimationEnd(com.nineoldandroids.animation.Animator animation)
             {
                 searchNofityButtonContainer.setVisibility(View.GONE);
             }
