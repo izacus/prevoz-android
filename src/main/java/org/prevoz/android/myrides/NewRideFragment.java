@@ -16,6 +16,7 @@ import org.prevoz.android.UiFragment;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.api.rest.RestStatus;
+import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.CityNameTextValidator;
 import org.prevoz.android.ride.RideInfoFragment;
