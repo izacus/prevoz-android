@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="@string/search_form_title"
-        style="?android:listSeparatorTextViewStyle"
+        style="@style/Prevoz.Header"
         />
 
     <!-- Search card -->

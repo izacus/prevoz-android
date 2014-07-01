@@ -39,6 +39,18 @@
         <item name="android:paddingTop">0dp</item>
     </style>
 
+    <style name="Prevoz.Header" parent="@android:style/Widget.TextView">
+        <item name="android:background">@drawable/list_section_divider_holo_light</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">8dip</item>
+    </style>
+
     <style name="Prevoz.Dialog" parent="android:Theme.DeviceDefault.Light.Dialog">
         <item name="titleTextColor">@color/prevoztheme_color</item>
         <!-- anything can be left out: -->
