@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="@string/newride_title"
-            style="?android:listSeparatorTextViewStyle"
+            style="@style/Prevoz.Header"
             />
 
         <!-- Search card -->
