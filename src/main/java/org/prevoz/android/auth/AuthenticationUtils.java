@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -104,9 +105,7 @@ public class AuthenticationUtils
         if (acc == null)
             return;
 
-        // Check for expiry
-        final AccountManager am = AccountManager.get(ctx);
-        am.getAuthToken(acc, "default", null, false, new AccountManagerCallback<Bundle>()
+        AccountManagerCallback<Bundle> callback = new AccountManagerCallback<Bundle>()
         {
             @Override
             public void run(AccountManagerFuture<Bundle> future)
@@ -135,6 +134,17 @@ public class AuthenticationUtils
                 }
             }
 
-        }, null);
+        };
+
+        // Check for expiry
+        final AccountManager am = AccountManager.get(ctx);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+        {
+            am.getAuthToken(acc, "default", null, false, callback, null);
+        }
+        else
+        {
+            am.getAuthToken(acc, "default", false, callback, null);
+        }
     }
 }
