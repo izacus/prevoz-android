@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 >
 
                 <ImageView
@@ -249,7 +249,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:paddingLeft="12dp"
+                android:paddingLeft="@dimen/checkbox_padding"
                 android:text="Nezgodno zavarovanje potnikov"
                 style="@style/Prevoz.CheckBox"
                 tools:ignore="TextFields"

@@ -6,6 +6,10 @@
         <item name="android:actionBarStyle">@style/Prevoz.ActionBar</item>
         <item name="actionBarStyle">@style/Prevoz.ActionBar</item>
         <item name="sdlDialogStyle">@style/Prevoz.Dialog</item>
+        <item name="android:textColorHighlight">@color/prevoztheme_pressed</item>
+        <item name="android:textSelectHandleLeft">@drawable/prevoz_text_select_handle_left</item>
+        <item name="android:textSelectHandleRight">@drawable/prevoz_text_select_handle_right</item>
+        <item name="android:textSelectHandle">@drawable/prevoz_text_select_handle_middle</item>
     </style>
 
     <style name="Prevoz.ActionBar" parent="@style/Widget.Sherlock.ActionBar">
