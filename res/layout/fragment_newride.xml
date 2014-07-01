@@ -285,27 +285,14 @@
                 android:background="@drawable/borderless_button"
                 >
 
-                <FrameLayout
+                <ImageView
+                    android:id="@+id/newride_button_img"
                     android:layout_width="32dp"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_action_send"
+                    />
 
-                    <ImageView
-                        android:id="@+id/newride_button_img"
-                        android:layout_width="32dp"
-                        android:layout_height="match_parent"
-                        android:scaleType="center"
-                        android:src="@drawable/ic_action_send"
-                        />
-
-                    <ProgressBar
-                        android:id="@+id/newride_button_progress"
-                        android:layout_width="32dp"
-                        android:layout_height="match_parent"
-                        android:indeterminateOnly="true"
-                        android:visibility="invisible"
-                        />
-
-                </FrameLayout>
 
                 <TextView
                     android:id="@+id/newride_button_text"
