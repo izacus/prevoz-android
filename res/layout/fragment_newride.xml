@@ -160,7 +160,6 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:clickable="true"
                 android:orientation="horizontal"
                 >
 
@@ -173,7 +172,7 @@
 
                 <org.prevoz.android.ui.FloatingHintEditText
                     android:id="@+id/newride_price"
-                    android:layout_width="100dp"
+                    android:layout_width="80dp"
                     android:layout_height="48dp"
                     android:layout_marginLeft="8dp"
                     android:inputType="numberDecimal"
@@ -199,7 +198,7 @@
 
                 <org.prevoz.android.ui.FloatingHintEditText
                     android:id="@+id/newride_people"
-                    android:layout_width="100dp"
+                    android:layout_width="80dp"
                     android:layout_height="48dp"
                     android:inputType="number"
                     android:layout_marginLeft="8dp"
