@@ -67,4 +67,9 @@
         <item name="buttonBackgroundColorFocused">@color/prevoztheme_pressed</item>
         <item name="dialogBackground">@drawable/sdl_background_light</item>
     </style>
+
+    <style name="Prevoz.Dialog.RideInfo" parent="android:Theme.Dialog">
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
 </resources>

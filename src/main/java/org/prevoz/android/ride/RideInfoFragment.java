@@ -107,15 +107,7 @@ public class RideInfoFragment extends DialogFragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-        {
-            setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Holo_Light_Dialog_NoActionBar_MinWidth);
-        }
-        else
-        {
-            setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Dialog);
-        }
+        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Prevoz_Dialog_RideInfo);
 
         ride = getArguments().getParcelable(ARG_RIDE);
         action = getArguments().getString(ARG_ACTION);
