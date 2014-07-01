@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Prevoz.Dialog.RideInfo" parent="android:Theme.Holo.Light.Dialog.NoActionBar.MinWidth" />
+    <style name="Prevoz.Drawer.Item" parent="">
+        <item name="android:textAppearance">?android:attr/textAppearanceListItem</item>
+    </style>
 </resources>
