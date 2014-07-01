@@ -5,6 +5,7 @@ import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,10 +15,7 @@ import android.view.ViewStub;
 import android.webkit.*;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Window;
-import com.google.api.client.auth.oauth2.*;
-import com.google.api.client.extensions.android.json.AndroidJsonFactory;
-import com.google.api.client.http.GenericUrl;
-import com.google.api.client.http.javanet.NetHttpTransport;
+import com.crashlytics.android.Crashlytics;
 import org.androidannotations.annotations.*;
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
@@ -29,6 +27,9 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,11 +83,17 @@ public class LoginActivity extends SherlockFragmentActivity
         // Generate OAuth login URL
         List<String> responseTypes = new ArrayList<String>();
         responseTypes.add("code");
-        String authenticationUrl = new AuthorizationRequestUrl(String.format(ApiClient.BASE_URL + "/oauth2/authorize/%s/code/", CLIENT_ID),
-                CLIENT_ID,
-                responseTypes)
-                .setRedirectUri(REDIRECT_URL)
-                .build();
+
+        String authenticationUrl = null;
+
+        try
+        {
+            authenticationUrl = ApiClient.BASE_URL + String.format("/oauth2/authorize/%s/code/?client_id=%s&response_type=code&redirect_uri=%s", CLIENT_ID, CLIENT_ID, URLEncoder.encode(REDIRECT_URL, "UTF-8"));
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            Crashlytics.logException(e);
+        }
 
 
         CookieManager.getInstance().removeAllCookie();
@@ -235,9 +242,10 @@ public class LoginActivity extends SherlockFragmentActivity
 
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1 && url.startsWith(REDIRECT_URL))
             {
-                AuthorizationCodeResponseUrl authorizationCodeResponseUrl = new AuthorizationCodeResponseUrl(url);
+                Uri uri = Uri.parse(url);
+                String code = uri.getQueryParameter("code");
                 // TODO: Error handling.
-                getAccountUsernameAndApiKey(authorizationCodeResponseUrl.getCode());
+                getAccountUsernameAndApiKey(code);
                 return true;
             }
 
@@ -254,9 +262,10 @@ public class LoginActivity extends SherlockFragmentActivity
                     return;
 
                 tokenRequestInProgress = true;
-                AuthorizationCodeResponseUrl authorizationCodeResponseUrl = new AuthorizationCodeResponseUrl(url);
+                Uri uri = Uri.parse(url);
+                String code = uri.getQueryParameter("code");
                 // TODO: Error handling.
-                getAccountUsernameAndApiKey(authorizationCodeResponseUrl.getCode());
+                getAccountUsernameAndApiKey(code);
             }
             else
             {
