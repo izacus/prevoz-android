@@ -2,5 +2,5 @@
 <resources>
     <item name="floatinghintedittext_hint_scale" type="dimen" format="float">0.6</item>
     <item name="floatinghintedittext_animation_steps" type="dimen" format="integer">6</item>
-    <item name="checkbox_padding" type="dimen" format="integer">36dp</item>
+    <dimen name="checkbox_padding">42dp</dimen>
 </resources>

@@ -21,7 +21,7 @@ public class PrevozApplication extends Application
     public void onCreate()
     {
         super.onCreate();
-        Crashlytics.start(this);
+//        Crashlytics.start(this);
 
         try
         {

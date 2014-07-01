@@ -37,13 +37,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 >
 
                 <ImageView
                     android:id="@+id/newride_ic_from"
                     android:layout_width="32dp"
-                    android:layout_height="40dp"
+                    android:layout_height="48dp"
+                    android:paddingTop="8dp"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
                     android:scaleType="center"
@@ -63,7 +64,7 @@
                     android:id="@+id/newride_ic_to"
                     android:layout_below="@id/newride_ic_dots"
                     android:layout_width="32dp"
-                    android:layout_height="40dp"
+                    android:layout_height="48dp"
                     android:scaleType="center"
                     android:src="@drawable/ic_action_location_to"
                     />
