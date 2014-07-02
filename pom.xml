@@ -145,6 +145,11 @@
             <artifactId>crashlytics</artifactId>
             <version>[1.1.10,)</version>
         </dependency>
+        <dependency>
+            <groupId>edu.mit.mobile</groupId>
+            <artifactId>SimpleContentProvider</artifactId>
+            <version>0.2.0</version>
+        </dependency>
 	</dependencies>
 
 	<build>
