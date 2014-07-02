@@ -1,5 +1,6 @@
 package org.prevoz.android.search;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,23 +9,25 @@ import android.view.View;
 import android.widget.FilterQueryProvider;
 import android.widget.TextView;
 import org.prevoz.android.R;
+import org.prevoz.android.provider.Location;
+import org.prevoz.android.util.ContentUtils;
 import org.prevoz.android.util.Database;
 import org.prevoz.android.util.LocaleUtil;
 
 public class CityAutocompleteAdapter extends SimpleCursorAdapter implements FilterQueryProvider, SimpleCursorAdapter.CursorToStringConverter
 {
-    private final SQLiteDatabase db;
+    private ContentResolver contentResolver;
 
-    public CityAutocompleteAdapter(Context context, SQLiteDatabase db)
+    public CityAutocompleteAdapter(Context context)
     {
         super(context,
               R.layout.item_autocomplete,
-              Database.getCityCursor(db, "", null),
-              new String[] { "name"},
+              ContentUtils.getCityCursor(context, "", null),
+              new String[] { Location.NAME},
               new int[] { R.id.city_name },
               0);
 
-        this.db = db;
+        contentResolver = context.getContentResolver();
         setFilterQueryProvider(this);
         setCursorToStringConverter(this);
     }
@@ -33,7 +36,7 @@ public class CityAutocompleteAdapter extends SimpleCursorAdapter implements Filt
     public void bindView(View view, Context context, Cursor cursor)
     {
         super.bindView(view, context, cursor);
-        int idx = cursor.getColumnIndex("country");
+        int idx = cursor.getColumnIndex(Location.COUNTRY);
 
         TextView countryName = (TextView) view.findViewById(R.id.city_country);
         String countryCode = cursor.getString(idx);
@@ -51,14 +54,14 @@ public class CityAutocompleteAdapter extends SimpleCursorAdapter implements Filt
     @Override
     public Cursor runQuery(CharSequence constraint)
     {
-        return Database.getCityCursor(db, constraint == null ? "" : constraint.toString(), null);
+        return ContentUtils.getCityCursor(mContext, constraint.toString(), null);
     }
 
     @Override
     public CharSequence convertToString(Cursor cursor)
     {
-        int colIndex = cursor.getColumnIndex("name");
-        int ctrIndex = cursor.getColumnIndex("country");
+        int colIndex = cursor.getColumnIndex(Location.NAME);
+        int ctrIndex = cursor.getColumnIndex(Location.COUNTRY);
         return LocaleUtil.getLocalizedCityName(mContext, cursor.getString(colIndex), cursor.getString(ctrIndex));
     }
 }

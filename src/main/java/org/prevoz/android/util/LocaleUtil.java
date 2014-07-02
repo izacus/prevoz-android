@@ -141,7 +141,7 @@ public class LocaleUtil
     {
         if (!localizedCountryNamesCache.containsKey(countryCode))
         {
-            localizedCountryNamesCache.put(countryCode, Database.getLocalCountryName(context, getLocale().getLanguage(), countryCode));
+            localizedCountryNamesCache.put(countryCode, ContentUtils.getLocalCountryName(context, getLocale().getLanguage(), countryCode));
         }
 
         return localizedCountryNamesCache.get(countryCode);
@@ -151,7 +151,7 @@ public class LocaleUtil
     {
         if (!localizedCityNamesCache.containsKey(cityName))
         {
-            localizedCityNamesCache.put(cityName, Database.getLocalCityName(context, cityName) + (countryCode.equals(LocaleUtil.getCurrentCountryCode()) ? "" : " (" + countryCode + ")"));
+            localizedCityNamesCache.put(cityName, ContentUtils.getLocalCityName(context, cityName) + (countryCode.equals(LocaleUtil.getCurrentCountryCode()) ? "" : " (" + countryCode + ")"));
         }
 
         return localizedCityNamesCache.get(cityName);

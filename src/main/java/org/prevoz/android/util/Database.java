@@ -1,5 +1,6 @@
 package org.prevoz.android.util;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -12,6 +13,7 @@ import org.prevoz.android.R;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.NotificationSubscription;
 import org.prevoz.android.model.Route;
+import org.prevoz.android.provider.Location;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -167,7 +169,7 @@ public class Database
     {
         SQLiteDatabase database = new DatabaseHelper(context).getWritableDatabase();
 
-        Cursor results = database.query(true, "search_history", new String[] { "ID" }, null, null, null, null, "date DESC", null);
+        Cursor results = database.query(true, "search_history", new String[]{"ID"}, null, null, null, null, "date DESC", null);
 
         if (results.getCount() > min)
         {
@@ -177,7 +179,7 @@ public class Database
 
             ArrayList<Integer> ids = new ArrayList<Integer>();
 
-            while(!results.isAfterLast())
+            while (!results.isAfterLast())
             {
                 ids.add(results.getInt(0));
                 results.moveToNext();
@@ -185,48 +187,13 @@ public class Database
 
             for (Integer id : ids)
             {
-                database.delete("search_history", "id = ?", new String[] { String.valueOf(id) });
+                database.delete("search_history", "id = ?", new String[]{String.valueOf(id)});
             }
         }
 
         results.close();
 
         database.close();
-    }
-
-
-
-    public static boolean cityExists(SQLiteDatabase database, String city)
-    {
-        Cursor cursor = database.rawQuery("SELECT _id FROM locations WHERE name = ?", new String[] { city });
-        boolean exists = cursor.getCount() > 0;
-        cursor.close();
-        return exists;
-    }
-
-    public static Cursor getCityCursor(SQLiteDatabase database, String what, String country)
-    {
-        // There's an Android bug when using pre-built queries with LIKE so
-        // rawQuery has to be done
-
-        Cursor cursor = null;
-
-        if (what.trim().equals(""))
-        {
-            cursor = database.rawQuery(
-                    "SELECT _id, name, country FROM locations"
-                            + " ORDER BY sort_num DESC", null);
-        }
-        else
-        {
-            cursor = database.rawQuery(
-                    "SELECT _id, name, country FROM locations WHERE (name LIKE '" + what
-                            + "%' " + "OR name_ascii LIKE '" + what + "%') "
-                            + (country != null ? " AND country = '" + country + "' " : "")
-                            + "ORDER BY sort_num DESC", null);
-        }
-
-        return cursor;
     }
 
     public static City getClosestCity(Context context, double latitude,
@@ -249,45 +216,6 @@ public class Database
         return city;
     }
 
-    public static String getLocalCountryName(Context context, String locale, String countryCode)
-    {
-        String name = countryCode;
-
-        SQLiteDatabase database = new DatabaseHelper(context).getReadableDatabase();
-        Cursor result = database.query("countries", new String[] { "name" }, "language = ? AND country_code = ?", new String[] { locale, countryCode }, null, null, null);
-
-        int nameIdx = result.getColumnIndex("name");
-        if (result.moveToFirst())
-        {
-            name = result.getString(nameIdx);
-        }
-        else
-        {
-            Log.e("GetLocalCountryName", "No entry found for " + countryCode + " for language " + locale);
-        }
-
-        result.close();
-        database.close();
-        return name;
-    }
-
-    public static String getLocalCityName(Context context, String city)
-    {
-        SQLiteDatabase database = new DatabaseHelper(context).getReadableDatabase();
-        Cursor result = database.query("locations", new String[] { "name" }, "name_ascii = ?", new String[] { city }, null, null, null);
-
-        String name = city;
-        if (result.moveToFirst())
-        {
-            int ci = result.getColumnIndex("name");
-            name = result.getString(ci);
-        }
-
-        result.close();
-        database.close();
-
-        return name;
-    }
 
     public static boolean isSubscribedForNotification(Context context, City from, City to, Calendar date)
     {

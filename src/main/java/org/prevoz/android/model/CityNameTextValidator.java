@@ -1,8 +1,11 @@
 package org.prevoz.android.model;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.widget.AutoCompleteTextView;
+import org.prevoz.android.provider.Location;
+import org.prevoz.android.util.ContentUtils;
 import org.prevoz.android.util.Database;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
@@ -24,7 +27,7 @@ public class CityNameTextValidator implements AutoCompleteTextView.Validator
     @Override
     public boolean isValid(CharSequence text)
     {
-        return Database.cityExists(Database.getSettingsDatabase(context), text.toString());
+        return ContentUtils.doesCityExist(context, text.toString());
     }
 
     @Override
@@ -34,11 +37,12 @@ public class CityNameTextValidator implements AutoCompleteTextView.Validator
         if (c == null)
             return null;
 
-        Cursor cityCandidates = Database.getCityCursor(Database.getSettingsDatabase(context), c.getDisplayName(), c.getCountryCode());
+
+        Cursor cityCandidates = ContentUtils.getCityCursor(context, c.getDisplayName(), c.getCountryCode());
         if (cityCandidates.moveToNext())
         {
-            int idx = cityCandidates.getColumnIndex("name");
-            int cidx = cityCandidates.getColumnIndex("country");
+            int idx = cityCandidates.getColumnIndex(Location.NAME);
+            int cidx = cityCandidates.getColumnIndex(Location.COUNTRY);
             return LocaleUtil.getLocalizedCityName(context, cityCandidates.getString(idx), cityCandidates.getString(cidx));
         }
 

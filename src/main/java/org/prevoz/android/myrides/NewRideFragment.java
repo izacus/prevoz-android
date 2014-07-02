@@ -86,8 +86,8 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
             setTime.set(Calendar.MINUTE, 30);
 
         SQLiteDatabase db = Database.getSettingsDatabase(getActivity());
-        textFrom.setAdapter(new CityAutocompleteAdapter(getActivity(), db));
-        textTo.setAdapter(new CityAutocompleteAdapter(getActivity(), db));
+        textFrom.setAdapter(new CityAutocompleteAdapter(getActivity()));
+        textTo.setAdapter(new CityAutocompleteAdapter(getActivity()));
         textFrom.setValidator(new CityNameTextValidator(getActivity()));
         textTo.setValidator(new CityNameTextValidator(getActivity()));
 
