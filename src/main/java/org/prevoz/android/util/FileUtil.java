@@ -7,6 +7,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class FileUtil
@@ -20,19 +22,19 @@ public class FileUtil
      *            resource id of .sql file
      * @return string array of SQL statements in file
      */
-    public static String[] readSQLStatements(Context context, int rawResId)
+    public static String[] readLines(Context context, int rawResId)
     {
         InputStream is = context.getResources().openRawResource(rawResId);
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
-        StringBuilder fileContent = new StringBuilder(8192);
-
         String line;
+
+        List<String> lines = new ArrayList<String>();
         try
         {
             while ((line = reader.readLine()) != null)
             {
-                fileContent.append(line);
+                lines.add(line);
             }
         }
         catch (IOException e)
@@ -51,17 +53,6 @@ public class FileUtil
             }
         }
 
-        StringTokenizer tokenizeSQL = new StringTokenizer(
-                fileContent.toString(), ";");
-        String[] SQLStatements = new String[tokenizeSQL.countTokens()];
-
-        int i = 0;
-
-        while (tokenizeSQL.hasMoreTokens())
-        {
-            SQLStatements[i++] = tokenizeSQL.nextToken();
-        }
-
-        return SQLStatements;
+        return lines.toArray(new String[lines.size()]);
     }
 }

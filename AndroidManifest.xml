@@ -50,6 +50,10 @@
 
         </receiver>
 
+        <provider
+            android:authorities="org.prevoz.android.data"
+            android:name=".provider.DataProvider" />
+
         <meta-data android:name="com.crashlytics.ApiKey" android:value="5387e48d80669f4e2a3a0ca327b54e39b9e74e5f"/>
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
 	</application>

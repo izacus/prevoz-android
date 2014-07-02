@@ -1,0 +1,28 @@
+SI,Slovenija,sl-si
+CZ,Češka,sl-si
+DK,Danska,sl-si
+DE,Nemčija,sl-si
+EE,Estonija,sl-si
+ES,Španija,sl-si
+FI,Finska,sl-si
+FR,Francija,sl-si
+GR,Grčija,sl-si
+HR,Hrvaška,sl-si
+HU,Madžarska,sl-si
+IT,Italija,sl-si
+LT,Litva,sl-si
+LV,Latvija,sl-si
+ME,Črna gora,sl-si
+MK,Makedonija,sl-si
+NL,Nizozemska,sl-si
+PL,Poljska,sl-si
+PT,Portugalska,sl-si
+RO,Romunija,sl-si
+RS,Srbija,sl-si
+SE,Švedska,sl-si
+SK,Slovaška,sl-si
+AT,Avstrija,sl-si
+BA,Bosna in Hercegovina,sl-si
+CH,Švica,sl-si
+BE,Belgija,sl-si
+BG,Bolgarija,sl-si

@@ -51,9 +51,9 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
         }
 
         // Setup autocomplete text views
-        SQLiteDatabase db = Database.getSettingsDatabase(getActivity());
-        searchFrom.setAdapter(new CityAutocompleteAdapter(getActivity(), db));
-        searchTo.setAdapter(new CityAutocompleteAdapter(getActivity(), db));
+        //SQLiteDatabase db = Database.getSettingsDatabase(getActivity());
+        //searchFrom.setAdapter(new CityAutocompleteAdapter(getActivity(), db));
+        //searchTo.setAdapter(new CityAutocompleteAdapter(getActivity(), db));
         searchFrom.setValidator(new CityNameTextValidator(getActivity()));
         searchTo.setValidator(new CityNameTextValidator(getActivity()));
     }

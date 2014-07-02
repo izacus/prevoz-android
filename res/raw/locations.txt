@@ -1,0 +1,1203 @@
+360822,Ljubljana,Ljubljana,SI,46.055278,14.514444
+92215,Maribor,Maribor,SI,46.554722,15.646667
+61851,Koper,Koper,SI,45.546944,13.729444
+49889,Celje,Celje,SI,46.236111,15.267500
+29229,Murska Sobota,Murska Sobota,SI,46.662500,16.166389
+29096,Nova Gorica,Nova Gorica,SI,45.961389,13.643611
+22775,Novo mesto,Novo Mesto,SI,45.792500,15.164722
+16914,Velenje,Velenje,SI,46.359167,15.110278
+16739,Portorož,Portoroz,SI,45.516111,13.588333
+15772,Ptuj,Ptuj,SI,46.421389,15.869722
+13488,Ajdovščina,Ajdovscina,SI,45.887500,13.911111
+11858,Slovenj Gradec,Slovenj Gradec,SI,46.510278,15.080556
+9274,Izola,Izola,SI,45.536944,13.661944
+6936,Kranj,Kranj,SI,46.241111,14.361667
+6594,Postojna,Postojna,SI,45.776944,14.216667
+5937,Žalec,Zalec,SI,46.253611,15.167500
+5800,Slovenska Bistrica,Slovenska Bistrica,SI,46.392778,15.574444
+5193,Krško,Krsko,SI,45.953056,15.489444
+4836,Sežana,Sezana,SI,45.706944,13.872222
+4522,Ravne na Koroškem,Ravne na Koroskem,SI,46.543056,14.969167
+4455,Brežice,Brezice,SI,45.903333,15.591111
+4228,Slovenske Konjice,Slovenske Konjice,SI,46.336667,15.425833
+4201,Lendava,Lendava,SI,46.561389,16.450556
+3871,Ljutomer,Ljutomer,SI,46.520833,16.197500
+3463,Benetke,Venice,IT,45.438611,12.326667
+2669,Dunaj,Vienna,AT,48.208488,16.372075
+2654,Gornja Radgona,Gornja Radgona,SI,46.673333,15.992222
+2631,Dravograd,Dravograd,SI,46.588056,15.019167
+2504,Vipava,Vipava,SI,45.846667,13.963056
+2324,Prevalje,Prevalje,SI,46.546944,14.920833
+2321,Radenci,Radenci,SI,46.647222,16.044167
+2232,München,Munchen,DE,48.137433,11.575491
+2016,Mozirje,Mozirje,SI,46.339444,14.963333
+1924,Piran,Piran,SI,45.527778,13.570556
+1845,Tolmin,Tolmin,SI,46.183039,13.733211
+1822,Trebnje,Trebnje,SI,45.904167,15.021667
+1805,Trst,Trieste,IT,45.648611,13.780000
+1776,Črnomelj,Crnomelj,SI,45.571111,15.188889
+1758,Beograd,Belgrade,RS,44.818611,20.468056
+1757,Šentjur,Sentjur,SI,46.217222,15.397500
+1631,Vučja Vas,Vucja Vas,SI,46.599444,16.107500
+1592,Jesenice,Jesenice,SI,46.430556,14.066944
+1505,Lenart v Slovenskih Goricah,Lenart v Slovenskih Goricah,SI,46.576111,15.831389
+1473,Graz,Graz,AT,47.066667,15.450000
+1455,Lucija,Lucija,SI,45.496389,13.613611
+1439,Ormož,Ormoz,SI,46.411389,16.154444
+1394,Bled,Bled,SI,46.369167,14.113611
+1332,Rogaška Slatina,Rogaska Slatina,SI,46.237500,15.639722
+1311,Polzela,Polzela,SI,46.283333,15.066667
+1294,Metlika,Metlika,SI,45.647222,15.314167
+1249,Idrija,Idrija,SI,46.002778,14.030556
+1198,Treviso,Treviso,IT,45.666667,12.245000
+1190,Zagreb,Zagreb,HR,45.800000,16.000000
+1141,Budimpešta,Budapest,HU,47.500000,19.083333
+1119,Radovljica,Radovljica,SI,46.344444,14.174444
+1114,Radlje ob Dravi,Radlje ob Dravi,SI,46.614167,15.226389
+1031,Beltinci,Beltinci,SI,46.605278,16.240556
+1021,Cerknica,Cerknica,SI,45.793056,14.362500
+1000,Šentjernej,Sentjernej,SI,45.840000,15.336111
+890,Ilirska Bistrica,Ilirska Bistrica,SI,45.569722,14.240833
+842,Zreče,Zrece,SI,46.382222,15.379167
+800,Milano,Milano,IT,45.464269,9.189506
+778,Šempeter v Savinjski dolini,Sempeter v Savinjski dolini,SI,46.256389,15.121944
+684,Šmarje pri Jelšah,Smarje pri Jelsah,SI,46.227222,15.519167
+675,Vrhnika,Vrhnika,SI,45.966111,14.295556
+651,Pula,Pula,HR,44.868333,13.848056
+634,Mežica,Mezica,SI,46.521389,14.854444
+630,Ronchi dei Legionari,Ronchi dei Legionari,IT,45.823611,13.509722
+625,Muta,Muta,SI,46.611389,15.166111
+625,Logatec,Logatec,SI,45.914444,14.225833
+593,Turnišče,Turnisce,SI,46.627778,16.320278
+588,Vuzenica,Vuzenica,SI,46.596389,15.167222
+566,Trbovlje,Trbovlje,SI,46.155000,15.053333
+566,Kobarid,Kobarid,SI,46.248056,13.577222
+564,Šentrupert,Sentrupert,SI,46.250000,15.066667
+520,Sevnica,Sevnica,SI,46.007778,15.315556
+513,Laško,Lasko,SI,46.151944,15.236389
+499,Litija,Litija,SI,46.058611,14.822500
+497,Kozina,Kozina,SI,45.610000,13.935556
+490,Luče,Luce,SI,46.356111,14.746667
+484,Kočevje,Kocevje,SI,45.643333,14.863333
+483,Šoštanj,Sostanj,SI,46.380000,15.048611
+479,Križevci pri Ljutomeru,Krizevci pri Ljutomeru,SI,46.568333,16.138611
+440,Škofja Loka,Skofja Loka,SI,46.167222,14.308889
+438,Domžale,Domzale,SI,46.138056,14.597778
+422,Šmartno ob Paki,Smartno ob Paki,SI,46.333333,15.033333
+421,Dornberk,Dornberk,SI,45.889722,13.736944
+408,Črenšovci,Crensovci,SI,46.574444,16.290556
+403,Rijeka,Rijeka,HR,45.343056,14.409167
+402,Šempeter pri Gorici,Sempeter pri Gorici,SI,45.927500,13.641111
+386,Bohinjska Bistrica,Bohinjska Bistrica,SI,46.276944,13.955000
+383,Divača,Divaca,SI,45.684722,13.970278
+373,Praga,Praha,CZ,50.087837,14.424132
+366,Dramlje,Dramlje,SI,46.273611,15.394722
+363,Celovec,Klagenfurt,AT,46.624722,14.305278
+359,Podčetrtek,Podcetrtek,SI,46.156944,15.598611
+351,Črna na Koroškem,Crna na Koroskem,SI,46.466667,15.850000
+349,Novi Sad,Novi Sad,RS,45.251667,19.836944
+342,Grabonoš,Grabonos,SI,46.600000,16.016667
+341,Kranjska Gora,Kranjska Gora,SI,46.483889,13.789444
+340,Tepanje,Tepanje,SI,46.347778,15.476111
+331,Tržič,Trzic,SI,46.366667,14.316667
+331,Pivka,Pivka,SI,45.679444,14.196667
+325,Berlin,Berlin,DE,52.516667,13.400000
+317,Vogrsko,Vogrsko,SI,45.906111,13.700556
+317,Ankaran,Ankaran,SI,45.578611,13.736111
+315,Kamnik,Kamnik,SI,46.219722,14.609444
+307,Bovec,Bovec,SI,46.337500,13.552778
+304,Split,Split,HR,43.508908,16.439152
+302,Lesce,Lesce,SI,46.361111,14.157778
+293,Rakek,Rakek,SI,45.813333,14.311111
+286,Vransko,Vransko,SI,46.243889,14.951389
+281,Brno,Brno,CZ,49.195223,16.607959
+276,Kidričevo,Kidricevo,SI,46.403611,15.791111
+275,Prebold,Prebold,SI,46.236944,15.092500
+272,Bologna,Bologna,IT,44.493811,11.338749
+271,Dolenjske Toplice,Dolenjske Toplice,SI,45.766667,15.066667
+266,Rače,Race,SI,46.451944,15.681389
+265,Hotavlje,Hotavlje,SI,46.112222,14.118611
+265,Godovič,Godovic,SI,45.957778,14.093611
+263,Bratislava,Bratislava,SK,48.150000,17.116667
+254,Mislinja,Mislinja,SI,46.441111,15.195556
+250,Zadar,Zadar,HR,44.119722,15.242222
+242,Zagorje ob Savi,Zagorje ob Savi,SI,46.134167,15.001389
+241,Krk,Krk,HR,45.025833,14.573056
+240,Žiri,Ziri,SI,46.042222,14.107222
+224,Unec,Unec,SI,45.815556,14.293889
+216,Salzburg,Salzburg,AT,47.799406,13.043990
+215,Letuš,Letus,SI,46.315833,15.025000
+209,Bergamo,Bergamo,IT,45.697981,9.668953
+208,Semič,Semic,SI,45.646111,15.182222
+204,Umag,Umag,HR,45.431389,13.523889
+204,Grosuplje,Grosuplje,SI,45.955556,14.658889
+203,Žužemberk,Zuzemberk,SI,45.833889,14.929167
+203,Bič,Bic,SI,46.933333,14.900000
+194,Kostanjevica na Krki,Kostanjevica na Krki,SI,45.846111,15.422222
+191,Železniki,Zelezniki,SI,46.233333,14.166667
+183,Medvode,Medvode,SI,46.133333,14.433333
+178,Pag,Pag,HR,44.445000,15.057500
+177,Šmarješke Toplice,Smarjeske Toplice,SI,45.862416,15.221879
+176,Poreč,Porec,HR,45.225833,13.593889
+169,Sarajevo,Sarajevo,BA,43.850000,18.383333
+160,Brestanica,Brestanica,SI,45.995292,15.477505
+155,Ivančna Gorica,Ivancna Gorica,SI,45.938333,14.804444
+154,Tomaž pri Ormožu,Tomaz pri Ormozu,SI,46.484167,16.083611
+152,Ribnica,Ribnica,SI,45.738611,14.727500
+152,Gornji Grad,Gornji Grad,SI,46.295278,14.808333
+151,Mirna,Mirna,SI,45.955278,15.061944
+146,Skopje,Skopje,MK,42.000000,21.433333
+144,Veržej,Verzej,SI,46.583611,16.165278
+144,Amsterdam,Amsterdam,NL,52.373084,4.899902
+142,Cerkno,Cerkno,SI,46.125556,13.981667
+141,Spodnji Brnik,Spodnji Brnik,SI,46.229722,14.486389
+134,Drnovo,Drnovo,SI,45.917222,15.484722
+131,Stuttgart,Stuttgart,DE,48.782324,9.177017
+130,Selo,Selo,SI,46.707778,16.278889
+130,Hrastnik,Hrastnik,SI,46.146111,15.081389
+127,Braslovče,Braslovce,SI,46.289722,15.038889
+123,Zürich,Zurich,CH,47.366667,8.550000
+121,Vojnik,Vojnik,SI,46.293333,15.303333
+121,Podplat,Podplat,SI,46.250000,15.700000
+120,Trojane,Trojane,SI,46.188333,14.883056
+116,Bučečovci,Bucecovci,SI,46.588333,16.106667
+113,Mokronog,Mokronog,SI,45.934167,15.140833
+111,Miklavž na Dravskem Polju,Miklavz na Dravskem Polju,SI,46.505833,15.697222
+107,Straža,Straza,SI,45.780000,15.072778
+106,Odranci,Odranci,SI,46.586667,16.280278
+105,Rogatec,Rogatec,SI,46.229444,15.700278
+104,Mestinje,Mestinje,SI,46.237778,15.563333
+104,Komen,Komen,SI,45.815278,13.748333
+103,Vinica,Vinica,SI,45.466667,15.250000
+102,Verona,Verona,IT,45.434186,10.997788
+100,Velike Bloke,Velike Bloke,SI,45.784444,14.480556
+100,Rovinj,Rovinj,HR,45.080000,13.640000
+94,Cres,Cres,HR,44.961389,14.407778
+93,Novigrad,Novigrad,HR,45.315000,13.558056
+93,Frankfurt am Main,Frankfurt am Main,DE,50.116667,8.683333
+92,Banja Luka,Banja Luka,BA,44.775833,17.185556
+91,Fram,Fram,SI,46.450556,15.632222
+88,Florence,Florence,IT,43.766667,11.250000
+87,Šenčur,Sencur,SI,46.245556,14.419722
+85,Poljčane,Poljcane,SI,46.311944,15.579167
+83,Kotlje,Kotlje,SI,46.521389,14.986944
+81,Pobrežje,Pobrezje,SI,46.550000,15.683333
+80,Žirovnica,Zirovnica,SI,46.404722,14.140000
+79,Dobruška Vas,Dobruska Vas,SI,45.889167,15.308056
+78,Šibenik,Sibenik,HR,43.727222,15.905833
+78,Zagreb - Centar,Zagreb - Centar,HR,45.813128,15.977533
+78,Videm,Videm,SI,46.571111,16.023333
+78,Opatija,Opatija,HR,45.339167,14.308333
+75,Šentilj,Sentilj,SI,46.681667,15.648056
+75,Bled-Rečica,Bled-Recica,SI,46.383333,14.100000
+74,Radeče,Radece,SI,46.068056,15.183889
+73,Niš,Nis,RS,43.324722,21.903333
+73,Kraków,Krakow,PL,50.083333,19.916667
+72,Kanal,Kanal,SI,46.088611,13.639722
+71,Novalja,Novalja,HR,44.557778,14.886667
+71,Genova,Genova,IT,44.406316,8.933859
+70,Čatež ob Savi,Catez ob Savi,SI,45.889444,15.602500
+69,Ljubno,Ljubno,SI,46.343580,14.833775
+69,Brussels,Brussels,BE,50.846597,4.352775
+68,Strunjan,Strunjan,SI,45.525000,13.605556
+68,Rovte,Rovte,SI,45.985278,14.177500
+68,Mali Lošinj,Mali Losinj,HR,44.530556,14.468611
+63,Izlake,Izlake,SI,46.150000,14.950000
+62,Sečovlje,Secovlje,SI,45.476667,13.623333
+61,Petrovče,Petrovce,SI,46.241667,15.190000
+61,Begunje na Gorenjskem,Begunje na Gorenjskem,SI,46.383333,14.216667
+60,Dobova,Dobova,SI,45.883333,15.666667
+59,Šentjanž pri Dravogradu,Sentjanz pri Dravogradu,SI,46.561111,15.038889
+57,Mengeš,Menges,SI,46.166944,14.575000
+56,Trzin,Trzin,SI,46.133333,14.566667
+55,Beljak,Villach,AT,46.610278,13.855833
+55,Tržišče,Trzisce,SI,45.958889,15.197222
+55,Mirna Peč,Mirna Pec,SI,45.860278,15.083333
+54,Torino,Torino,IT,45.070490,7.686825
+54,Dobrovnik,Dobrovnik,SI,46.651389,16.352500
+52,Udine,Udine,IT,46.061944,13.242222
+52,Pragersko,Pragersko,SI,46.396667,15.660000
+51,Moravske Toplice,Moravske Toplice,SI,46.683128,16.220798
+50,Rogašovci,Rogasovci,SI,46.800000,16.033333
+49,Paris,Paris,FR,48.853410,2.348800
+49,Köln,Koln,DE,50.933333,6.950000
+48,Rim,Roma,IT,41.900000,12.483333
+48,Gorenja Vas,Gorenja Vas,SI,46.107222,14.148056
+47,Senožeče,Senozece,SI,45.721111,14.041111
+46,Višnja Gora,Visnja Gora,SI,45.953889,14.745278
+45,Dolenja Trebuša,Dolenja Trebusa,SI,46.091389,13.840278
+44,Zgornji Brnik,Zgornji Brnik,SI,46.250000,14.483333
+44,Spodnje Hoče,Spodnje Hoce,SI,46.500000,15.650000
+44,Preddvor,Preddvor,SI,46.302500,14.423056
+44,Gorica,Gorica,SI,46.705000,16.145000
+44,Dobrna,Dobrna,SI,46.337500,15.226389
+44,Cankova,Cankova,SI,46.720833,16.022500
+43,Varaždin,Varazdin,HR,46.304444,16.337778
+43,Padova,Padova,IT,45.415194,11.881808
+43,Bistrica ob Sotli,Bistrica ob Sotli,SI,46.058889,15.664167
+42,Rimske Toplice,Rimske Toplice,SI,46.133333,15.200000
+42,Osijek,Osijek,HR,45.551111,18.693889
+42,Nürnberg,Nurnberg,DE,49.447778,11.068333
+42,Ljubečna,Ljubecna,SI,46.241667,15.320833
+42,Frankfurt,Frankfurt,DE,49.683333,10.533333
+41,Šentilj v Slovenskih goricah,Sentilj v Slovenskih goricah,SI,46.679212,15.653243
+41,Raka,Raka,SI,45.929722,15.384167
+41,Latkova Vas,Latkova Vas,SI,46.253889,15.093333
+39,Lyon,Lyon,FR,45.750000,4.850000
+38,Cerklje na Gorenjskem,Cerklje na Gorenjskem,SI,46.254167,14.488611
+38,Bern,Bern,CH,46.948094,7.447443
+37,Col,Col,SI,45.875833,14.005000
+37,Cerkvenjak,Cerkvenjak,SI,46.570556,15.943611
+36,Tuzla,Tuzla,BA,44.542778,18.669444
+36,Savona,Savona,IT,44.309048,8.477154
+36,Otočec,Otocec,SI,45.867500,15.273333
+36,Gorica pri Slivnici,Gorica pri Slivnici,SI,46.187222,15.432500
+36,Biograd na Moru,Biograd na Moru,HR,43.943333,15.451944
+35,Zidani Most,Zidani Most,SI,46.084167,15.178333
+35,Obrežje,Obrezje,SI,45.860278,15.661389
+34,Naklo,Naklo,SI,46.272778,14.317222
+34,Dubrovnik,Dubrovnik,HR,42.648070,18.092165
+33,Most na Soči,Most na Soci,SI,46.146944,13.738889
+32,Spodnje Škofije,Spodnje Skofije,SI,45.571667,13.792500
+31,Spodnji Hotič,Spodnji Hotic,SI,46.100000,14.833333
+31,Razdrto,Razdrto,SI,45.756389,14.058333
+31,Malo Trebeljevo,Malo Trebeljevo,SI,46.016667,14.733333
+31,Karlovac,Karlovac,HR,45.487222,15.547778
+30,Zgornje Hoče,Zgornje Hoce,SI,46.483333,15.633333
+30,Vrtojba,Vrtojba,SI,45.912500,13.634167
+30,Luksemburg,Luxembourg,LU,49.611667,6.130000
+30,Dekani,Dekani,SI,45.549722,13.813611
+30,Brezovica,Brezovica,SI,46.033333,14.400000
+29,Črniče,Crnice,SI,45.910556,13.776667
+29,Gorišnica,Gorisnica,SI,46.414722,16.013889
+28,Ptujska Gora,Ptujska Gora,SI,46.355000,15.760000
+28,Deskle,Deskle,SI,46.052500,13.623611
+28,Bizeljsko,Bizeljsko,SI,46.013333,15.696667
+28,Belluno,Belluno,IT,46.145000,12.221389
+27,Monošter,Szentgotthard,HU,46.952606,16.273584
+27,Leipzig,Leipzig,DE,51.339620,12.371292
+27,Kupšinci,Kupsinci,SI,46.673611,16.119722
+27,Hočko Pohorje,Hocko Pohorje,SI,46.500000,15.583333
+26,Šempas,Sempas,SI,45.930278,13.743611
+26,Mestre,Mestre,IT,45.490278,12.242500
+26,Medulin,Medulin,HR,44.822500,13.935000
+26,Lukovica pri Domžalah,Lukovica pri Domzalah,SI,46.166667,14.700000
+26,Linz,Linz,AT,48.306389,14.286111
+25,Velika Pirešica,Velika Piresica,SI,46.285556,15.179444
+25,Središče ob Dravi,Sredisce ob Dravi,SI,46.394167,16.268056
+25,Pazin,Pazin,HR,45.240278,13.936667
+25,Krmelj,Krmelj,SI,45.984722,15.189444
+25,Crikvenica,Crikvenica,HR,45.177222,14.692778
+25,Barcelona,Barcelona,ES,41.388787,2.158985
+24,Črnuče,Crnuce,SI,46.100000,14.533333
+24,Črni Kal,Crni Kal,SI,45.550000,13.880000
+24,Savudrija,Savudrija,HR,45.500091,13.505588
+24,Komenda,Komenda,SI,46.204844,14.538388
+24,Kisovec,Kisovec,SI,46.139107,14.962950
+24,Budva,Budva,ME,42.286389,18.840000
+23,Zdenska Vas,Zdenska Vas,SI,45.856111,14.705278
+23,Stari Trg pri Ložu,Stari Trg pri Lozu,SI,45.714840,14.470968
+23,Hočevje,Hocevje,SI,45.870278,14.756111
+23,Gorizia,Gorizia,IT,45.945000,13.597778
+22,Ronchi,Ronchi,IT,39.100000,16.400000
+22,Rateče,Ratece,SI,46.497772,13.716302
+22,Kozje,Kozje,SI,46.075000,15.560278
+22,Karlsruhe,Karlsruhe,DE,49.004722,8.385833
+22,Batuje,Batuje,SI,45.896389,13.777778
+21,Strasbourg,Strasbourg,FR,48.583333,7.750000
+21,Rečica ob Savinji,Recica ob Savinji,SI,46.316667,14.916667
+21,Ravenna,Ravenna,IT,44.417500,12.201111
+21,Rab,Rab,HR,44.756944,14.760833
+21,Premantura,Premantura,HR,44.800556,13.908611
+21,Podgorica,Podgorica,ME,42.441111,19.263611
+21,Nova Vas,Nova Vas,SI,45.934722,14.753333
+21,Makarska,Makarska,HR,43.296944,17.017778
+21,Lignano Sabbiadoro,Lignano Sabbiadoro,IT,45.692222,13.148056
+21,Ženeva,Geneve,CH,46.202216,6.145692
+21,Gabrovka,Gabrovka,SI,46.016667,15.000000
+21,Bonn,Bonn,DE,50.733333,7.100000
+20,Videm pri Ptuju,Videm pri Ptuju,SI,46.368611,15.906389
+20,Slivnica pri Mariboru,Slivnica pri Mariboru,SI,46.476389,15.655833
+20,Nova Gora,Nova Gora,SI,45.700000,15.083333
+20,Nickelsdorf,Nickelsdorf,AT,47.940556,17.069444
+20,Monfalcone,Monfalcone,IT,45.807222,13.534167
+20,Mislinjska Dobrava,Mislinjska Dobrava,SI,46.465278,15.123889
+20,Innsbruck,Innsbruck,AT,47.262660,11.394539
+19,Šmarjeta,Smarjeta,SI,45.883333,15.250000
+19,Škofljica,Skofljica,SI,45.983333,14.576667
+19,Zagorje,Zagorje,SI,46.083889,15.483056
+19,Ostrava,Ostrava,CZ,49.834645,18.282044
+19,Olomouc,Olomouc,CZ,49.595524,17.251754
+19,Miren,Miren,SI,45.895556,13.607500
+19,Hannover,Hannover,DE,52.370516,9.733222
+19,Gorje,Gorje,SI,46.155278,13.981667
+19,Gomilsko,Gomilsko,SI,46.252778,15.042222
+19,Branik,Branik,SI,45.857222,13.784167
+18,Vrsar,Vrsar,HR,45.149167,13.605278
+18,Vitanje,Vitanje,SI,46.381667,15.295833
+18,Starše,Starse,SI,46.465833,15.767222
+18,Ribčev Laz,Ribcev Laz,SI,46.266667,14.050000
+18,Palmanova,Palmanova,IT,45.906389,13.311944
+18,Kalsdorf bei Graz,Kalsdorf bei Graz,AT,46.965278,15.480278
+18,Düsseldorf,Dusseldorf,DE,51.221723,6.776161
+17,Sveti Jurij,Sveti Jurij,SI,46.801111,16.038056
+17,Smednik,Smednik,SI,45.900000,15.366667
+17,Rotterdam,Rotterdam,NL,51.922500,4.479167
+17,Opatje Selo,Opatje Selo,SI,45.850833,13.583611
+17,Kromberk,Kromberk,SI,45.960833,13.665556
+17,Borovnica,Borovnica,SI,45.915833,14.363056
+17,Bielsko-Biała,Bielsko-Biala,PL,49.816667,19.033333
+16,Zabukovica,Zabukovica,SI,46.213611,15.153333
+16,Tabor,Tabor,SI,46.236111,15.018333
+16,Solkan,Solkan,SI,45.971389,13.649444
+16,Sofia,Sofia,BG,42.697514,23.324146
+16,Sodražica,Sodrazica,SI,45.761111,14.635556
+16,Nice,Nice,FR,43.703126,7.266083
+16,Madrid,Madrid,ES,40.416502,-3.702564
+16,Livorno,Livorno,IT,43.542636,10.316005
+16,Kostrena,Kostrena,HR,45.301111,14.505556
+16,Doboj,Doboj,BA,44.734722,18.087778
+16,Blejska Dobrava,Blejska Dobrava,SI,46.400000,14.100000
+16,Bihać,Bihac,BA,44.816944,15.870833
+15,Zgornje Gorje,Zgornje Gorje,SI,46.383333,14.083333
+15,Wrocław,Wroclaw,PL,51.100000,17.033333
+15,Vranje,Vranje,RS,42.551389,21.900278
+15,Senovo,Senovo,SI,46.023611,15.476944
+15,Sempeter,Sempeter,SI,45.835278,15.219444
+15,Ruše,Ruse,SI,46.539444,15.515833
+15,Prijedor,Prijedor,BA,44.981389,16.713056
+15,Osp,Osp,SI,45.568333,13.864722
+15,Marseille,Marseille,FR,43.300000,5.400000
+15,Lož,Loz,SI,45.724167,14.468889
+15,Kalce,Kalce,SI,45.895556,14.193611
+15,Ig,Ig,SI,45.960278,14.528889
+15,Fjesa,Fjesa,SI,45.524444,13.581667
+15,Brescia,Brescia,IT,45.524782,10.227269
+15,Bosanska Gradiška,Bosanska Gradiska,BA,45.141111,17.250000
+14,Štore,Store,SI,46.220833,15.313889
+14,Škocjan,Skocjan,SI,45.906667,15.291389
+14,Zgornja Kungota,Zgornja Kungota,SI,46.639167,15.615556
+14,Zell am See,Zell am See,AT,47.325560,12.794437
+14,Velika Polana,Velika Polana,SI,46.571944,16.346944
+14,Regensburg,Regensburg,DE,49.015000,12.095556
+14,Pašman,Pasman,HR,43.957500,15.385000
+14,Hamburg,Hamburg,DE,53.550000,10.000000
+14,Chamonix-Mont-Blanc,Chamonix-Mont-Blanc,FR,45.916667,6.866667
+13,Šentjur na Dolenjskem,Sentjur na Dolenjskem,SI,45.875833,15.115000
+13,Čatež,Catez,SI,45.942778,14.950278
+13,Slovenska Vas,Slovenska Vas,SI,45.668333,14.826111
+13,Pordenone,Pordenone,IT,45.963889,12.657500
+13,Pescara,Pescara,IT,42.460244,14.210207
+13,Majšperk,Majsperk,SI,46.351667,15.733611
+13,Laze v Tuhinju,Laze v Tuhinju,SI,46.219444,14.761111
+13,Krka,Krka,SI,45.881285,14.778070
+13,Košice,Kosice,SK,48.716667,21.250000
+13,Hotiza,Hotiza,SI,46.549444,16.360278
+13,Guča,Guca,RS,43.776667,20.225278
+13,Gradišče nad Prvačino,Gradisce nad Prvacino,SI,45.888889,13.701667
+13,Gomilica,Gomilica,SI,46.603333,16.311944
+13,Dresden,Dresden,DE,51.050891,13.738317
+13,Benedikt v Slovenskih Goricah,Benedikt v Slovenskih Goricah,SI,46.608611,15.888333
+13,Baška,Baska,HR,44.970278,14.753333
+12,Črni Vrh,Crni Vrh,SI,46.083333,14.266667
+12,Reka,Reka,SI,46.121667,13.926389
+12,Ohrid,Ohrid,MK,41.117222,20.801944
+12,Mol,Mol,BE,51.183333,5.100000
+12,Lipovci,Lipovci,SI,46.628333,16.228056
+12,Lienz,Lienz,AT,46.831111,12.759722
+12,Kobilje,Kobilje,SI,46.684722,16.397778
+12,Ingolstadt,Ingolstadt,DE,48.766667,11.433333
+12,Grenoble,Grenoble,FR,45.166667,5.716667
+12,Gračišče,Gracisce,SI,45.505000,13.876944
+11,Velike Lašče,Velike Lasce,SI,45.832222,14.636389
+11,Ulm,Ulm,DE,48.398408,9.991550
+11,Topolšica,Topolsica,SI,46.403333,15.018611
+11,Spodnji Duplek,Spodnji Duplek,SI,46.503056,15.745278
+11,Spodnja Idrija,Spodnja Idrija,SI,46.031944,14.027222
+11,Solčava,Solcava,SI,46.419444,14.693611
+11,Ravne,Ravne,SI,45.962500,15.012778
+11,Podgrad,Podgrad,SI,46.066667,14.650000
+11,Mlaka pri Kranju,Mlaka pri Kranju,SI,46.283333,14.350000
+11,Metz,Metz,FR,49.119108,6.172686
+11,Knittelfeld,Knittelfeld,AT,47.216667,14.816667
+11,Jugorje pri Metliki,Jugorje pri Metliki,SI,45.708889,15.227222
+11,Gozd Martuljek,Gozd Martuljek,SI,46.483333,13.833333
+11,Dutovlje,Dutovlje,SI,45.758056,13.832222
+11,Bohinjska Bela,Bohinjska Bela,SI,46.348889,14.063889
+10,Vodnjan,Vodnjan,HR,44.959444,13.851667
+10,Trogir,Trogir,HR,43.512500,16.251667
+10,Tišina,Tisina,SI,46.658056,16.091667
+10,Tarvisio,Tarvisio,IT,46.510833,13.594167
+10,Razkrižje,Razkrizje,SI,46.521667,16.281111
+10,Paklenica,Paklenica,HR,45.320278,17.028056
+10,Nerezine,Nerezine,HR,44.657500,14.393333
+10,Lebring,Lebring,AT,46.852222,15.538333
+10,Kragujevac,Kragujevac,RS,44.016667,20.916667
+10,Katowice,Katowice,PL,50.266667,19.016667
+10,Kassel,Kassel,DE,51.316667,9.500000
+10,Ivanjkovci,Ivanjkovci,SI,46.462222,16.145833
+10,Hvar,Hvar,HR,43.172500,16.442778
+10,Grobelno,Grobelno,SI,46.211667,15.444722
+10,Eindhoven,Eindhoven,NL,51.440833,5.477778
+10,Ajdovec,Ajdovec,SI,45.833333,15.016667
+9,Šentvid pri Grobelnem,Sentvid pri Grobelnem,SI,46.229167,15.470278
+9,Volčji Potok,Volcji Potok,SI,46.200000,14.616667
+9,Stranice,Stranice,SI,46.363611,15.365278
+9,Renče,Rence,SI,45.890000,13.668611
+9,Punat,Punat,HR,45.014722,14.628889
+9,Passau,Passau,DE,48.571155,13.448982
+9,Mojstrana,Mojstrana,SI,46.461111,13.936944
+9,Mali Kamen,Mali Kamen,SI,46.033333,15.483333
+9,Libeliče,Libelice,SI,46.620000,14.949722
+9,Krašnja,Krasnja,SI,46.166667,14.733333
+9,Heidelberg,Heidelberg,DE,49.407678,8.690786
+9,Gornja Bistrica,Gornja Bistrica,SI,46.566667,16.266667
+9,Golnik,Golnik,SI,46.333333,14.333333
+9,Dvor,Dvor,SI,45.813889,14.971111
+9,Den Haag,Den Haag,NL,52.076667,4.298611
+9,Bolzano - Bozen,Bolzano,IT,46.492716,11.333576
+8,Zenica,Zenica,BA,44.201389,17.906389
+8,Zamárdi,Zamardi,HU,46.883333,17.950000
+8,Wolfsburg,Wolfsburg,DE,52.433333,10.800000
+8,Velika Nedelja,Velika Nedelja,SI,46.417778,16.109722
+8,Utrecht,Utrecht,NL,52.090833,5.122222
+8,Thessaloníki,Thessaloniki,GR,40.640278,22.943889
+8,Siófok,Siofok,HU,46.900000,18.050000
+8,Schwechat,Schwechat,AT,48.133333,16.466667
+8,Prvačina,Prvacina,SI,45.890000,13.718056
+8,Podnanos,Podnanos,SI,45.796944,13.971389
+8,Orebić,Orebic,HR,42.985556,17.174722
+8,Nagykanizsa,Nagykanizsa,HU,46.453470,16.991043
+8,Murski Petrovci,Murski Petrovci,SI,46.666111,16.055556
+8,Martjanci,Martjanci,SI,46.686389,16.197778
+8,Malmö,Malmo,SE,55.605869,13.000731
+8,Malinska,Malinska,HR,45.124171,14.528282
+8,Maastricht,Maastricht,NL,50.848333,5.688889
+8,Lisbon,Lisbon,PT,38.716667,-9.133333
+8,Kropa,Kropa,SI,46.300000,14.200000
+8,Kraljevica,Kraljevica,HR,45.269722,14.570833
+8,Hradec Králové,Hradec Kralove,CZ,50.209228,15.832768
+8,Harmica,Harmica,HR,45.883333,15.700000
+8,Gent,Gent,BE,51.050000,3.716667
+8,Freiburg,Freiburg,DE,47.995895,7.852221
+8,Dortmund,Dortmund,DE,51.516667,7.450000
+8,Cieszyn,Cieszyn,PL,49.751327,18.632126
+8,Bucureşti,Bucuresti,RO,44.433333,26.100000
+8,Bogojina,Bogojina,SI,46.676111,16.283889
+8,Bijeljina,Bijeljina,BA,44.756944,19.216111
+8,Basel,Basel,CH,47.566667,7.600000
+7,Zgornje Škofije,Zgornje Skofije,SI,45.566389,13.799444
+7,Zavratec,Zavratec,SI,45.990000,14.131944
+7,Vilnius,Vilnius,LT,54.683333,25.316667
+7,Veliki Gaber,Veliki Gaber,SI,45.944444,14.912500
+7,Velika Kladuša,Velika Kladusa,BA,45.189444,15.811667
+7,Spittal an der Drau,Spittal an der Drau,AT,46.800000,13.500000
+7,Schladming,Schladming,AT,47.392888,13.686991
+7,Rožna Dolina,Rozna Dolina,SI,45.938056,13.640278
+7,Rabac,Rabac,HR,45.079444,14.157500
+7,Podvelka,Podvelka,SI,46.586944,15.330556
+7,Pisa,Pisa,IT,43.717520,10.396500
+7,Pesnica pri Mariboru,Pesnica pri Mariboru,SI,46.606944,15.676667
+7,Murter,Murter,HR,43.812500,15.606111
+7,Mostar,Mostar,BA,43.343333,17.808056
+7,Lesično,Lesicno,SI,46.102500,15.514167
+7,Krška Vas,Krska Vas,SI,45.900000,15.566667
+7,Knežak,Knezak,SI,45.619444,14.250000
+7,Göppingen,Goppingen,DE,48.702801,9.654880
+7,Dol pri Hrastniku,Dol pri Hrastniku,SI,46.141944,15.112778
+7,Cervignano del Friuli,Cervignano del Friuli,IT,45.821111,13.338056
+7,Buzet,Buzet,HR,45.409444,13.966667
+7,Britof,Britof,SI,46.260238,14.390373
+7,Babno Polje,Babno Polje,SI,45.647778,14.551111
+6,Битола,Bitola,MK,41.031111,21.340278
+6,Šmartno pri Slovenj Gradcu,Smartno pri Slovenj Gradcu,SI,46.489444,15.106667
+6,Červar-Porat,Cervar-Porat,HR,45.271944,13.597222
+6,Čačak,Cacak,RS,43.891389,20.349722
+6,Zwolle,Zwolle,NL,52.512500,6.094444
+6,Würzburg,Wurzburg,DE,49.787778,9.936111
+6,Weimar,Weimar,DE,50.983333,11.316667
+6,Villesse,Villesse,IT,45.860556,13.440833
+6,Straubing,Straubing,DE,48.883333,12.566667
+6,Slap ob Idrijci,Slap ob Idrijci,SI,46.123333,13.804722
+6,Rakičan,Rakican,SI,46.651667,16.204167
+6,Podnart,Podnart,SI,46.300000,14.266667
+6,Planina pri Sevnici,Planina pri Sevnici,SI,46.111389,15.409444
+6,Nuremburg,Nuremburg,DE,49.450327,11.080399
+6,Negotin,Negotin,RS,44.226389,22.530833
+6,Ljubija,Ljubija,SI,46.350000,14.983333
+6,Leibnitz,Leibnitz,AT,46.781607,15.538359
+6,Lefkáda,Lefkada,GR,38.827500,20.701944
+6,Imeno,Imeno,SI,46.131944,15.601667
+6,Hrušica,Hrusica,SI,46.445000,14.017778
+6,Gornji Dolič,Gornji Dolic,SI,46.423333,15.184444
+6,Freising,Freising,DE,48.400000,11.733333
+6,Frankolovo,Frankolovo,SI,46.330556,15.314444
+6,Dragomer,Dragomer,SI,46.016667,14.383333
+6,Debeli Rtič,Debeli Rtic,SI,45.591944,13.712778
+6,Biš,Bis,SI,46.527500,15.886944
+6,Bale,Bale,HR,45.040556,13.783611
+6,Aosta,Aosta,IT,45.737360,7.316601
+6,Annecy,Annecy,FR,45.900000,6.116667
+6,Ancona,Ancona,IT,43.598164,13.510075
+5,Куманово,Kumanovo,MK,42.132222,21.714444
+5,České Budějovice,Ceske Budejovice,CZ,48.974468,14.474341
+5,Zgornja Polskava,Zgornja Polskava,SI,46.425556,15.612222
+5,Zbure,Zbure,SI,45.905556,15.243056
+5,Wels,Wels,AT,48.166667,14.033333
+5,Vicenza,Vicenza,IT,45.557294,11.540898
+5,Velike Lipljene,Velike Lipljene,SI,45.897500,14.649167
+5,Trenta,Trenta,SI,46.383333,13.750000
+5,Traunreut,Traunreut,DE,47.962686,12.592306
+5,Subotica,Subotica,RS,46.100000,19.666667
+5,Stara Fužina,Stara Fuzina,SI,46.287778,13.896111
+5,Sombor,Sombor,RS,45.774167,19.112222
+5,Slavonski Brod,Slavonski Brod,HR,45.160278,18.015556
+5,Ročinj,Rocinj,SI,46.112778,13.670000
+5,Rosenheim,Rosenheim,DE,47.856366,12.122469
+5,Rimini,Rimini,IT,44.063333,12.580833
+5,Poznań,Poznan,PL,52.416667,16.966667
+5,Paška Vas,Paska Vas,SI,46.333333,15.016667
+5,Pardubice,Pardubice,CZ,50.040751,15.776590
+5,Pakoštane,Pakostane,HR,43.912222,15.508889
+5,Ozeljan,Ozeljan,SI,45.943611,13.730278
+5,Novokračine,Novokracine,SI,45.493611,14.310833
+5,Narbonne,Narbonne,FR,43.183333,3.000000
+5,Modena,Modena,IT,44.647834,10.925388
+5,Materija,Materija,SI,45.581389,13.996667
+5,Mannheim,Mannheim,DE,49.488333,8.464722
+5,Mala Nedelja,Mala Nedelja,SI,46.528889,16.055833
+5,Loče pri Poljčanah,Loce pri Poljcanah,SI,46.299722,15.500000
+5,Levec,Levec,SI,46.242778,15.219444
+5,Kuzma,Kuzma,SI,46.836944,16.083333
+5,Kočevska Reka,Kocevska Reka,SI,45.576389,14.796944
+5,Korčula,Korcula,HR,42.962222,17.136944
+5,Kopela,Kopela,SI,46.621944,16.036667
+5,Ivrea,Ivrea,IT,45.458058,7.871919
+5,Hrib-Loški Potok,Hrib-Loski Potok,SI,45.701111,14.591111
+5,Hof,Hof,DE,50.316667,11.916667
+5,Granada,Granada,ES,37.188168,-3.606670
+5,Grad,Grad,SI,46.800000,16.100000
+5,Essen,Essen,DE,51.450000,7.016667
+5,Duplje,Duplje,SI,45.865278,13.949722
+5,Dragonja,Dragonja,SI,45.460556,13.660000
+5,Cerklje ob Krki,Cerklje ob Krki,SI,45.886111,15.530000
+5,Břeclav,Breclav,CZ,48.758969,16.882030
+5,Bosanska Dubica,Bosanska Dubica,BA,45.176667,16.809444
+5,Bilje,Bilje,SI,45.894444,13.632222
+4,Štanjel,Stanjel,SI,45.823333,13.843611
+4,Český Krumlov,Cesky Krumlov,CZ,48.810907,14.315208
+4,Zavrč,Zavrc,SI,46.391667,16.049722
+4,Warszawa,Warszawa,PL,52.250000,21.000000
+4,Vič,Vic,SI,46.050000,14.483333
+4,Trnovska vas,Trnovska vas,SI,46.520190,15.886574
+4,Strahinj,Strahinj,SI,46.283333,14.316667
+4,Sočerga,Socerga,SI,45.464444,13.894722
+4,Slovenja Vas,Slovenja Vas,SI,46.450000,15.800000
+4,Sistiana,Sistiana,IT,45.766111,13.633333
+4,Sion,Sion,CH,46.233333,7.350000
+4,Senožeti,Senozeti,SI,46.091389,14.733056
+4,Santhià,Santhia,IT,45.366259,8.172627
+4,Rimavská Sobota,Rimavska Sobota,SK,48.383333,20.033333
+4,Radomlje,Radomlje,SI,46.173611,14.612222
+4,Radmirje,Radmirje,SI,46.330000,14.851111
+4,Poljane nad Škofjo Loko,Poljane nad Skofjo Loko,SI,46.133333,14.200000
+4,Podlehnik,Podlehnik,SI,46.335278,15.880000
+4,Opuzen,Opuzen,HR,43.015278,17.565556
+4,Nova Vas pri Ptuju,Nova Vas pri Ptuju,SI,46.433333,15.883333
+4,Muggia,Muggia,IT,45.603056,13.767222
+4,Matulji,Matulji,HR,45.361667,14.325000
+4,Martigny-Ville,Martigny-Ville,CH,46.102757,7.072449
+4,Markovec,Markovec,SI,45.712222,14.495556
+4,Markovci,Markovci,SI,46.844444,16.233611
+4,Mainz,Mainz,DE,50.000000,8.271111
+4,Leskovac,Leskovac,RS,44.524167,20.327222
+4,Leoben,Leoben,AT,47.383333,15.100000
+4,Koprivnica,Koprivnica,SI,46.035348,15.540333
+4,Kokrica,Kokrica,SI,46.270278,14.361111
+4,Kleinkirchheim,Kleinkirchheim,AT,46.822778,13.792222
+4,Kladovo,Kladovo,RS,44.606667,22.611944
+4,Kamnica,Kamnica,SI,46.574444,15.614167
+4,Jihlava,Jihlava,CZ,49.396100,15.591245
+4,Jezerce,Jezerce,HR,44.882500,15.620278
+4,Jagodina,Jagodina,RS,43.981389,21.262222
+4,Grgar,Grgar,SI,45.998611,13.673889
+4,Gornji Petrovci,Gornji Petrovci,SI,46.805278,16.222500
+4,Fernetti,Fernetti,IT,45.697222,13.829167
+4,Esslingen,Esslingen,DE,48.739607,9.304733
+4,Dolič,Dolic,SI,46.850000,16.100000
+4,Dobrnič,Dobrnic,SI,45.875000,14.980000
+4,Copenhagen,Copenhagen,DK,55.677681,12.570934
+4,Bremen,Bremen,DE,53.075156,8.807774
+4,Bakovci,Bakovci,SI,46.618889,16.150278
+4,Apače,Apace,SI,46.697222,15.910556
+3,Штип,Shtip,MK,41.745833,22.195833
+3,Šmarje,Smarje,SI,46.016667,15.316667
+3,Šabac,Sabac,RS,44.746667,19.690000
+3,Čakovec,Cakovec,HR,46.384444,16.433889
+3,Århus,Arhus,DK,56.156737,10.210762
+3,Zasavci,Zasavci,SI,46.455000,16.231389
+3,Zalog,Zalog,SI,46.333333,14.350000
+3,Zaječar,Zajecar,RS,43.904167,22.284722
+3,Vuhred,Vuhred,SI,46.594722,15.237500
+3,Vladičin Han,Vladicin Han,RS,42.707778,22.063333
+3,Veniše,Venise,SI,45.933333,15.466667
+3,Ulcinj,Ulcinj,ME,41.928333,19.206389
+3,Trnovec pri Dramljah,Trnovec pri Dramljah,SI,46.254444,15.390000
+3,Trenčín,Trencin,SK,48.894518,18.044357
+3,Tilburg,Tilburg,NL,51.555515,5.091305
+3,Stična,Sticna,SI,45.960556,14.810278
+3,Stari Trg ob Kolpi,Stari Trg ob Kolpi,SI,45.493593,15.077190
+3,Selnica ob Dravi,Selnica ob Dravi,SI,46.550000,15.495000
+3,Sankt Gallen,Sankt Gallen,CH,47.429713,9.376144
+3,Saint-Tropez,Saint-Tropez,FR,43.266667,6.633333
+3,Rovigo,Rovigo,IT,45.079985,11.793012
+3,Ražanac,Razanac,HR,44.281944,15.348056
+3,Prosecco,Prosecco,IT,45.710278,13.729444
+3,Pristava pri Mestinju,Pristava pri Mestinju,SI,46.196667,15.596111
+3,Prievidza,Prievidza,SK,48.766667,18.633333
+3,Polače,Polace,HR,42.783611,17.379722
+3,Podsreda,Podsreda,SI,46.041389,15.590556
+3,Ploče,Ploce,HR,42.640556,18.121667
+3,Ozora,Ozora,HU,46.750000,18.400000
+3,Nova Cerkev,Nova Cerkev,SI,46.312778,15.285556
+3,Milano Due,Milano Due,IT,45.499790,9.265766
+3,Memmingen,Memmingen,DE,47.983333,10.166667
+3,Medveja,Medveja,HR,45.268333,14.266667
+3,Marburg an der Lahn,Marburg an der Lahn,DE,50.816667,8.766667
+3,Liège,Liege,BE,50.641188,5.571785
+3,Kranjski Dol,Kranjski Dol,SI,46.365000,13.978611
+3,Karlsdorf,Karlsdorf,AT,48.700000,16.016667
+3,Kanižarica,Kanizarica,SI,45.550000,15.166667
+3,Juršinci,Jursinci,SI,46.484722,15.971389
+3,Iesolo,Iesolo,IT,45.533109,12.644749
+3,Hotedršica,Hotedrsica,SI,45.930278,14.142222
+3,Hodoš,Hodos,SI,46.823333,16.334167
+3,Gortina,Gortina,SI,46.605833,15.126389
+3,Goriča Vas,Gorica Vas,SI,45.730000,14.738889
+3,Frankfurt (Oder),Frankfurt (Oder),DE,52.347138,14.550619
+3,Fažana,Fazana,HR,44.927500,13.803611
+3,Faenza,Faenza,IT,44.285704,11.883345
+3,Faak am See,Faak am See,AT,46.568056,13.909722
+3,Donje Petrčane,Donje Petrcane,HR,44.185556,15.165556
+3,Dolnja Bistrica,Dolnja Bistrica,SI,46.540000,16.288611
+3,Dijon,Dijon,FR,47.316667,5.016667
+3,Castelnuovo del Garda,Castelnuovo del Garda,IT,45.438784,10.759783
+3,Carpi,Carpi,IT,44.782370,10.877697
+3,Cannes,Cannes,FR,43.550000,7.016667
+3,Budanje,Budanje,SI,45.875556,13.948889
+3,Brunico - Bruneck,Brunico,IT,46.795829,11.936385
+3,Briançon,Briancon,FR,44.900000,6.650000
+3,Brestrnica,Brestrnica,SI,46.569722,15.575000
+3,Bordeaux,Bordeaux,FR,44.833333,-0.566667
+3,Bludenz,Bludenz,AT,47.149722,9.816667
+3,Bloška Polica,Bloska Polica,SI,45.762222,14.469167
+3,Bielefeld,Bielefeld,DE,52.033333,8.533333
+3,Bertoki,Bertoki,SI,45.545556,13.767778
+3,Banská Bystrica,Banska Bystrica,SK,48.733333,19.150000
+3,Bamberg,Bamberg,DE,49.866667,10.866667
+3,Augsburg,Augsburg,DE,48.366667,10.883333
+3,Athens,Athens,GR,37.983333,23.733333
+3,Arco,Arco,IT,45.917721,10.886722
+2,Струмица,Strumica,MK,41.437500,22.643333
+2,Žetale,Zetale,SI,46.275000,15.793889
+2,Šmartno pri Litiji,Smartno pri Litiji,SI,46.044444,14.844167
+2,Šmartno pod Šmarno Goro,Smartno pod Smarno Goro,SI,46.133333,14.483333
+2,Šentvid,Sentvid,SI,46.096389,14.469722
+2,Črmošnjice,Crmosnjice,SI,45.683333,15.100000
+2,Ðakovo,Dakovo,HR,45.308333,18.410556
+2,Zgornje Jezersko,Zgornje Jezersko,SI,46.383333,14.466667
+2,Zapuže,Zapuze,SI,46.366667,14.200000
+2,Zapreval,Zapreval,SI,46.183333,14.200000
+2,Zaplana,Zaplana,SI,45.960833,14.237778
+2,Zalošče,Zalosce,SI,45.887778,13.746944
+2,Zalaegerszeg,Zalaegerszeg,HU,46.840000,16.843889
+2,Zagradec,Zagradec,SI,45.861389,14.834167
+2,Wuppertal,Wuppertal,DE,51.266667,7.183333
+2,Winterswijk,Winterswijk,NL,51.972500,6.719444
+2,Wiesen,Wiesen,AT,47.633333,13.633333
+2,Werfen,Werfen,AT,47.466667,13.183333
+2,Volčja Draga,Volcja Draga,SI,45.906944,13.677500
+2,Volče,Volce,SI,46.175403,13.707848
+2,Voglje,Voglje,SI,46.215556,14.438611
+2,Vitovlje,Vitovlje,SI,45.939167,13.765556
+2,Visoko,Visoko,SI,46.271111,14.418056
+2,Villa Opicina,Villa Opicina,IT,45.687222,13.786944
+2,Viganj,Viganj,HR,42.988611,17.095278
+2,Vevče,Vevce,SI,46.050000,14.600000
+2,Veszprém,Veszprem,HU,47.093267,17.911491
+2,Venice-Lido,Venice-Lido,IT,45.413100,12.374200
+2,Veliki Kamen,Veliki Kamen,SI,46.037500,15.518889
+2,Veli Lošinj,Veli Losinj,HR,44.517287,14.504786
+2,Velesovo,Velesovo,SI,46.266667,14.466667
+2,Vedelago,Vedelago,IT,45.687222,12.016389
+2,Valencia,Valencia,ES,39.469752,-0.377387
+2,Val Thorens,Val Thorens,FR,45.297766,6.583767
+2,Trutnov,Trutnov,CZ,50.561007,15.912704
+2,Trnava,Trnava,SK,48.366667,17.600000
+2,Tolmezzo,Tolmezzo,IT,46.407500,13.017500
+2,Tallinn,Tallinn,EE,59.436958,24.753528
+2,Tainach,Tainach,AT,46.633333,14.533333
+2,Tacen,Tacen,SI,46.120556,14.465556
+2,Supetar,Supetar,HR,43.384167,16.550833
+2,Sukošan,Sukosan,HR,44.046667,15.315556
+2,Stranje,Stranje,SI,46.033333,15.416667
+2,Stockholm,Stockholm,SE,59.332577,18.064903
+2,Stari Grad,Stari Grad,HR,44.430000,15.062222
+2,Sremska Mitrovica,Sremska Mitrovica,RS,44.976389,19.612222
+2,Srednji Dolič,Srednji Dolic,SI,46.420833,15.217778
+2,Spodnja Hajdina,Spodnja Hajdina,SI,46.408889,15.846944
+2,Sladki Vrh,Sladki Vrh,SI,46.707500,15.801111
+2,Sisak,Sisak,HR,45.466111,16.378333
+2,Sindelfingen,Sindelfingen,DE,48.700000,9.016667
+2,Siena,Siena,IT,43.320039,11.332831
+2,Sibiu,Sibiu,RO,45.800000,24.150000
+2,Senj,Senj,HR,44.989444,14.905833
+2,Seline,Seline,HR,44.277778,15.479444
+2,Seiersberg,Seiersberg,AT,47.000000,15.400000
+2,Sanski Most,Sanski Most,BA,44.765278,16.665556
+2,San Gimignano,San Gimignano,IT,43.469240,11.042722
+2,Saarbrücken,Saarbrucken,DE,49.233333,7.000000
+2,Rīga,Riga,LV,56.950000,24.100000
+2,Rottenburg,Rottenburg,DE,48.476293,8.935275
+2,Rothenburg ob der Tauber,Rothenburg ob der Tauber,DE,49.383333,10.183333
+2,Rogoza,Rogoza,SI,46.500000,15.683333
+2,Rakitna,Rakitna,SI,45.888333,14.444167
+2,Radstadt,Radstadt,AT,47.383333,13.450000
+2,Příbram,Pribram,CZ,49.689877,14.010425
+2,Przemyśl,Przemysl,PL,49.783333,22.783333
+2,Prešnica,Presnica,SI,45.570556,13.937778
+2,Prestranek,Prestranek,SI,45.730329,14.186225
+2,Pregarje,Pregarje,SI,45.577778,14.135833
+2,Predoslje,Predoslje,SI,46.265816,14.386082
+2,Požarevac,Pozarevac,RS,44.615278,21.182500
+2,Povir,Povir,SI,45.698611,13.936111
+2,Podbrezje,Podbrezje,SI,46.300000,14.283333
+2,Podbrdo,Podbrdo,SI,46.210000,13.964444
+2,Plzeň,Plzen,CZ,49.747475,13.377587
+2,Pirovac,Pirovac,HR,43.819167,15.672778
+2,Piacenza,Piacenza,IT,45.046765,9.699366
+2,Pesaro,Pesaro,IT,43.903566,12.890256
+2,Pameče,Pamece,SI,46.534167,15.079167
+2,Palau,Palau,IT,41.179365,9.381895
+2,Paderborn,Paderborn,DE,51.719053,8.754387
+2,Otiški Vrh,Otiski Vrh,SI,46.573889,15.032778
+2,Osor,Osor,HR,44.695556,14.393333
+2,Ortnek,Ortnek,SI,45.787500,14.687222
+2,Oplotnica,Oplotnica,SI,46.387778,15.446667
+2,Odense,Odense,DK,55.395938,10.388314
+2,Novigrad Podravski,Novigrad Podravski,HR,46.078056,16.953889
+2,Novi Bečej,Novi Becej,RS,45.598611,20.135556
+2,Noršinci pri Ljutomeru,Norsinci pri Ljutomeru,SI,46.539444,16.179722
+2,Njivice,Njivice,HR,45.158056,14.538611
+2,Neuhausen ob Eck,Neuhausen ob Eck,DE,47.972571,8.927593
+2,Nackenheim,Nackenheim,DE,49.915278,8.338889
+2,Moravče,Moravce,SI,46.136944,14.745000
+2,Montreux,Montreux,CH,46.433006,6.911430
+2,Montpellier,Montpellier,FR,43.600000,3.883333
+2,Montabaur,Montabaur,DE,50.433333,7.833333
+2,Mining,Mining,AT,48.266667,13.150000
+2,Miklavž pri Ormožu,Miklavz pri Ormozu,SI,46.460000,16.213611
+2,Marčana,Marcana,HR,44.955278,13.953889
+2,Martinje,Martinje,SI,46.849444,16.150556
+2,Marija Reka,Marija Reka,SI,46.208333,15.065000
+2,Lugano,Lugano,CH,46.010078,8.960037
+2,Loče,Loce,SI,45.883333,15.666667
+2,Loznica,Loznica,RS,42.555278,20.763333
+2,Loka pri Zidanem Mostu,Loka pri Zidanem Mostu,SI,46.057500,15.207222
+2,Lille,Lille,FR,50.633333,3.066667
+2,Leskovec pri Krškem,Leskovec pri Krskem,SI,45.933333,15.466667
+2,Lausanne,Lausanne,CH,46.515996,6.632824
+2,Labin,Labin,HR,45.095000,14.119722
+2,Kufstein,Kufstein,AT,47.583333,12.166667
+2,Kruševac,Krusevac,RS,43.580000,21.333889
+2,Krtina,Krtina,SI,46.150000,14.666667
+2,Kraljevo,Kraljevo,RS,43.725833,20.689444
+2,Kotor,Kotor,ME,42.425833,18.771944
+2,Koprivnik v Bohinju,Koprivnik v Bohinju,SI,46.313333,13.970000
+2,Kokra,Kokra,SI,46.306944,14.501111
+2,Kog,Kog,SI,46.471667,16.250833
+2,Kobjeglava,Kobjeglava,SI,45.817500,13.805833
+2,Ključ,Kljuc,BA,44.535000,16.772222
+2,Jelsa,Jelsa,HR,43.161389,16.693056
+2,Jarše,Jarse,SI,46.100000,14.933333
+2,Jablanac,Jablanac,HR,44.716667,14.883333
+2,Hrpelje,Hrpelje,SI,45.607222,13.942778
+2,Horjul,Horjul,SI,46.023611,14.299167
+2,Hinje,Hinje,SI,45.765556,14.882222
+2,Helsinki,Helsinki,FI,60.175556,24.934167
+2,Haag,Haag,NL,51.521667,5.925000
+2,Göttingen,Gottingen,DE,51.533333,9.933333
+2,Grčarevec,Grcarevec,SI,45.875278,14.213333
+2,Gruškovje,Gruskovje,SI,46.285833,15.860833
+2,Grado,Grado,IT,45.678611,13.386944
+2,Godešič,Godesic,SI,46.166667,14.354444
+2,Gleisdorf,Gleisdorf,AT,47.100000,15.716667
+2,Foča,Foca,BA,43.505000,18.778611
+2,Fisterra,Fisterra,ES,42.904922,-9.262891
+2,Filovci,Filovci,SI,46.661389,16.305000
+2,Ferrara,Ferrara,IT,44.826777,11.620713
+2,Erlangen,Erlangen,DE,49.589722,11.003889
+2,Empoli,Empoli,IT,43.717545,10.941416
+2,Duplica,Duplica,SI,46.204167,14.598333
+2,Drašići,Drasici,SI,45.666667,15.366667
+2,Dolga Vas,Dolga Vas,SI,46.587778,16.441667
+2,Dol pri Ljubljani,Dol pri Ljubljani,SI,46.088611,14.600833
+2,Dobrovo,Dobrovo,SI,45.996389,13.526389
+2,Dessau,Dessau,DE,51.833333,12.250000
+2,Delft,Delft,NL,52.006667,4.355556
+2,Crveni Vrh,Crveni Vrh,HR,45.490556,13.540833
+2,Conegliano,Conegliano,IT,45.890556,12.292500
+2,Colfosco,Colfosco,IT,46.554021,11.856136
+2,Cinque Terre,Cinque Terre,IT,44.126000,9.709000
+2,Chemnitz,Chemnitz,DE,50.833333,12.916667
+2,Ceršak,Cersak,SI,46.699167,15.669167
+2,Carcassonne,Carcassonne,FR,43.216667,2.350000
+2,Bukovica,Bukovica,SI,46.200000,14.250000
+2,Brčko,Brcko,BA,44.872778,18.808333
+2,Brezje,Brezje,SI,46.328972,14.232295
+2,Bregana,Bregana,HR,45.845556,15.685278
+2,Bol,Bol,HR,43.261944,16.655000
+2,Blois,Blois,FR,47.583333,1.333333
+2,Bilbao,Bilbao,ES,43.262706,-2.925282
+2,Beli Manastir,Beli Manastir,HR,45.770000,18.603611
+2,Bašanija,Basanija,HR,45.482500,13.504444
+2,Bar,Bar,ME,42.093056,19.100278
+2,Banovci,Banovci,SI,46.572500,16.167500
+2,Banjole,Banjole,HR,44.825000,13.866111
+2,Bad Colberg,Bad Colberg,DE,50.266667,10.800000
+2,Antwerp,Antwerp,BE,51.216667,4.416667
+2,Adlešiči,Adlesici,SI,45.533333,15.316667
+1,Велес,Veles,MK,41.715556,21.775556
+1,Žvirče,Zvirce,SI,45.783889,14.825556
+1,Županja,Zupanja,HR,45.077500,18.697500
+1,Žižki,Zizki,SI,46.572500,16.308889
+1,Želimlje,Zelimlje,SI,45.915556,14.571389
+1,Žabljak,Zabljak,ME,43.154722,19.121944
+1,Šujica,Sujica,SI,46.066667,14.416667
+1,Škoflje,Skoflje,SI,45.655000,14.024722
+1,Škofja Vas,Skofja Vas,SI,46.267923,15.291166
+1,Šentvid pri Stični,Sentvid pri Sticni,SI,45.946389,14.830556
+1,Šebrelje,Sebrelje,SI,46.098889,13.919444
+1,Črvar,Crvar,HR,45.263333,13.592500
+1,Črna,Crna,SI,46.471667,14.851944
+1,Črešnjevec ob Dravi,Cresnjevec ob Dravi,SI,46.546389,15.455556
+1,Četena Ravan,Cetena Ravan,SI,46.166667,14.200000
+1,Čepovan,Cepovan,SI,46.049444,13.796944
+1,Znojmo,Znojmo,CZ,48.855499,16.048798
+1,Zlatoličje,Zlatolicje,SI,46.455556,15.791111
+1,Zielona Góra,Zielona Gora,PL,51.933333,15.500000
+1,Zgornja Hajdina,Zgornja Hajdina,SI,46.406111,15.838611
+1,Zgornja Dobrava,Zgornja Dobrava,SI,46.316667,14.216667
+1,Zeulenroda,Zeulenroda,DE,50.650000,11.983333
+1,Zdole,Zdole,SI,46.083333,15.566667
+1,Zapotok,Zapotok,SI,45.876944,14.573056
+1,Zamostec,Zamostec,SI,45.758333,14.647778
+1,Zagrad,Zagrad,HR,44.059722,15.510833
+1,Zagorica,Zagorica,SI,45.849722,14.731944
+1,Worms,Worms,DE,49.635556,8.359722
+1,Wiener Neustadt,Wiener Neustadt,AT,47.800000,16.250000
+1,Völkermarkt,Volkermarkt,AT,46.662222,14.634444
+1,Vrhnika pri Ložu,Vrhnika pri Lozu,SI,45.692222,14.502778
+1,Vremski Britof,Vremski Britof,SI,45.660278,14.030833
+1,Vrbas,Vrbas,RS,45.571389,19.640833
+1,Vižmarje,Vizmarje,SI,46.116667,14.466667
+1,Virovitica,Virovitica,HR,45.831944,17.383889
+1,Vir pri Stični,Vir pri Sticni,SI,45.952500,14.817778
+1,Vir,Vir,HR,44.303056,15.085278
+1,Verd,Verd,SI,45.956667,14.305833
+1,Verbier,Verbier,CH,46.100000,7.216667
+1,Veniera,Veniera,IT,44.983333,12.250000
+1,Velka,Velka,SI,46.676667,15.770556
+1,Veliko Tinje,Veliko Tinje,SI,46.412222,15.512222
+1,Velika Dolina,Velika Dolina,SI,45.850000,15.666667
+1,Vars,Vars,FR,45.766667,0.116667
+1,Vantačići,Vantacici,HR,45.115563,14.503187
+1,Valdoltra,Valdoltra,SI,45.581111,13.730278
+1,Třinec,Trinec,CZ,49.677632,18.670780
+1,Třebíč,Trebic,CZ,49.214923,15.881657
+1,Tübingen,Tubingen,DE,48.522659,9.052219
+1,Târgu-Mureş,Targu-Mures,RO,46.542451,24.557469
+1,Turracher Höhe,Turracher Hohe,AT,46.918655,13.879358
+1,Turiška Vas,Turiska Vas,SI,46.474444,15.149167
+1,Trogir in Croatia,Trogir in Croatia,HR,43.514308,16.251858
+1,Trnovo ob Soči,Trnovo ob Soci,SI,46.280556,13.555833
+1,Trnovo,Trnovo,SI,45.974167,13.743333
+1,Trnje,Trnje,SI,46.587500,16.308333
+1,Treviso Bresciano,Treviso Bresciano,IT,45.712889,10.461371
+1,Treviglio,Treviglio,IT,45.523776,9.589455
+1,Trento,Trento,IT,46.067871,11.121082
+1,Trebija,Trebija,SI,46.098056,14.102778
+1,Trbonje,Trbonje,SI,46.602778,15.107500
+1,Trboje,Trboje,SI,46.200000,14.416667
+1,Travnik,Travnik,SI,45.693611,14.595000
+1,Travesio,Travesio,IT,46.199722,12.864444
+1,Toulon,Toulon,FR,43.116667,5.933333
+1,Toruń,Torun,PL,53.033333,18.600000
+1,Tomaj,Tomaj,SI,45.755833,13.853056
+1,Tolminski Lom,Tolminski Lom,SI,46.128611,13.747222
+1,Tivat,Tivat,ME,42.436389,18.696111
+1,Timau,Timau,IT,46.583583,13.005066
+1,Tihany,Tihany,HU,46.913689,17.889175
+1,Ságvár,Sagvar,HU,46.833333,18.116667
+1,Szeged,Szeged,HU,46.252998,20.148239
+1,Svilengrad,Svilengrad,BG,41.766667,26.200000
+1,Sveti Anton,Sveti Anton,SI,45.525833,13.831944
+1,Sućuraj,Sucuraj,HR,43.125278,17.186111
+1,Starigrad,Starigrad,HR,44.293056,15.443056
+1,Stara Novalja,Stara Novalja,HR,44.598056,14.877222
+1,Stara Baška,Stara Baska,HR,44.958056,14.691667
+1,Srednja Bistrica,Srednja Bistrica,SI,46.554167,16.278889
+1,Spodnji Otok,Spodnji Otok,SI,46.350000,14.200000
+1,Spodnji Ivanjci,Spodnji Ivanjci,SI,46.595556,15.981389
+1,Spodnja Vižinga,Spodnja Vizinga,SI,46.600000,15.250000
+1,Soča,Soca,SI,46.343333,13.656389
+1,Sovodenj,Sovodenj,SI,46.086389,14.043611
+1,Sopron,Sopron,HU,47.683333,16.600000
+1,Sofieni,Sofieni,RO,46.966667,27.616667
+1,Serdica,Serdica,SI,46.826667,16.045278
+1,Sentjurij,Sentjurij,SI,46.073056,14.816944
+1,Semedela,Semedela,SI,45.540278,13.722500
+1,Schorndorf,Schorndorf,DE,48.805365,9.527206
+1,Sava,Sava,SI,46.083333,14.900000
+1,Sarmede,Sarmede,IT,45.979444,12.385556
+1,San Marino,San Marino,IT,44.616667,11.416667
+1,Salerno,Salerno,IT,40.663210,14.803745
+1,Saas-Fee,Saas-Fee,CH,46.113468,7.934875
+1,Rybnik,Rybnik,PL,50.101863,18.546638
+1,Ruma,Ruma,RS,45.008056,19.822222
+1,Rudnik,Rudnik,SI,46.033333,14.566667
+1,Romano di Lombardia,Romano di Lombardia,IT,45.524577,9.748358
+1,Ribno,Ribno,SI,46.350000,14.133333
+1,Ribnica na Pohorju,Ribnica na Pohorju,SI,46.535000,15.272778
+1,Rennes,Rennes,FR,48.083333,-1.683333
+1,Rašica,Rasica,SI,45.855000,14.626389
+1,Ravne nad Šentrupertom,Ravne nad Sentrupertom,SI,46.016667,15.066667
+1,Ravensburg,Ravensburg,DE,47.783333,9.616667
+1,Rapperswil,Rapperswil,CH,47.225572,8.822279
+1,Radvenci,Radvenci,SI,46.616667,15.950000
+1,Pécs,Pecs,HU,46.083333,18.233333
+1,Putte,Putte,BE,51.066667,4.633333
+1,Puconci,Puconci,SI,46.706667,16.156389
+1,Proseniško,Prosenisko,SI,46.239444,15.348056
+1,Pristina,Pristina,RS,42.666667,21.166667
+1,Prešov,Presov,SK,49.000000,21.250000
+1,Prevale,Prevale,SI,46.027500,15.037222
+1,Posedarje,Posedarje,HR,44.213611,15.476667
+1,Porto,Porto,PT,41.150000,-8.616667
+1,Pordašinci,Pordasinci,SI,46.733333,16.333333
+1,Poprad,Poprad,SK,49.050000,20.300000
+1,Ponikva,Ponikva,SI,46.253056,15.446944
+1,Polje,Polje,SI,46.066667,14.583333
+1,Polhov Gradec,Polhov Gradec,SI,46.066944,14.316111
+1,Podturn pri Dolenjskih Toplicah,Podturn pri Dolenjskih Toplicah,SI,45.741111,15.041667
+1,Podpeč,Podpec,SI,45.969722,14.417500
+1,Pobegi,Pobegi,SI,45.539444,13.796111
+1,Plitvički Ljeskovac,Plitvicki Ljeskovac,HR,44.845000,15.602778
+1,Plitvica,Plitvica,HR,44.899167,15.593333
+1,Pleso,Pleso,HR,45.733333,16.083333
+1,Pijava Gorica,Pijava Gorica,SI,45.951111,14.571944
+1,Perugia,Perugia,IT,43.096743,12.382858
+1,Pertoča,Pertoca,SI,46.779444,16.026667
+1,Peroj,Peroj,HR,44.951944,13.796944
+1,Pergine Valsugana,Pergine Valsugana,IT,46.065004,11.237982
+1,Paraćin,Paracin,RS,43.860833,21.407778
+1,Palermo,Palermo,IT,38.115820,13.359761
+1,Otočac,Otocac,HR,44.869444,15.237500
+1,Osnabrück,Osnabruck,DE,52.266667,8.050000
+1,Osluševci,Oslusevci,SI,46.413056,16.051389
+1,Orte,Orte,IT,42.459329,12.385367
+1,Orehek,Orehek,SI,46.140833,13.933056
+1,Orašje,Orasje,BA,45.035556,18.693333
+1,Oraovec,Oraovec,MK,41.635278,21.759444
+1,Omišalj,Omisalj,HR,45.208889,14.556389
+1,Ogulin,Ogulin,HR,45.266111,15.228611
+1,Oberschützen,Oberschutzen,AT,47.350000,16.200000
+1,Numansdorp,Numansdorp,NL,51.731667,4.437500
+1,Novska,Novska,HR,45.340556,16.976944
+1,Novigrad na Savi,Novigrad na Savi,HR,45.108611,18.357500
+1,Novi Vinodolski,Novi Vinodolski,HR,45.128056,14.788889
+1,Novi Grad,Novi Grad,BA,45.090000,18.317778
+1,Nova,Nova,HR,44.566944,14.370000
+1,Notranje Gorice,Notranje Gorice,SI,45.987500,14.398889
+1,Nemška Loka,Nemska Loka,SI,45.558611,15.043889
+1,Nedelica,Nedelica,SI,46.616667,16.333333
+1,Napoli,Napoli,IT,40.833333,14.250000
+1,Münchnerau,Munchnerau,DE,48.533333,12.083333
+1,Münchendorf,Munchendorf,AT,48.033333,16.383333
+1,Mošćenička Draga,Moscenicka Draga,HR,45.237778,14.252222
+1,Moškanjci,Moskanjci,SI,46.420278,15.993333
+1,Moulins,Moulins,FR,46.566667,3.333333
+1,Motovun,Motovun,HR,45.336667,13.828611
+1,Moste,Moste,SI,46.050000,14.550000
+1,Monza,Monza,IT,45.582475,9.274847
+1,Montbéliard,Montbeliard,FR,47.516667,6.800000
+1,Mlino,Mlino,SI,46.359131,14.099064
+1,Migojnice,Migojnice,SI,46.233333,15.166667
+1,Messina,Messina,IT,38.193268,15.549690
+1,Mele,Mele,SI,46.661944,16.020833
+1,Medno,Medno,SI,46.122222,14.436389
+1,Mattersburg,Mattersburg,AT,47.733333,16.400000
+1,Maslenica,Maslenica,HR,44.222778,15.540556
+1,Marolče,Marolce,SI,45.800556,14.647222
+1,Marina Vas,Marina Vas,SI,46.295000,15.771111
+1,Majdanpek,Majdanpek,RS,44.424444,21.935833
+1,Magdeburg,Magdeburg,DE,52.166667,11.666667
+1,Madre de Deus,Madre de Deus,PT,38.816667,-9.400000
+1,Luzern,Luzern,CH,47.050476,8.306351
+1,Lustenau,Lustenau,AT,47.433056,9.650000
+1,Lublin,Lublin,PL,51.250000,22.566667
+1,Lovrenc na Pohorju,Lovrenc na Pohorju,SI,46.540556,15.393056
+1,Lopata,Lopata,SI,45.781944,14.902500
+1,Lom,Lom,SI,46.533333,14.850000
+1,Loke v Tuhinju,Loke v Tuhinju,SI,46.216667,14.700000
+1,Loka pri Žusmu,Loka pri Zusmu,SI,46.157500,15.514722
+1,Ljubnica,Ljubnica,SI,46.391111,15.323333
+1,Ljubinj,Ljubinj,SI,46.171389,13.772778
+1,Ljig,Ljig,RS,44.224444,20.240278
+1,Livorno Ferraris,Livorno Ferraris,IT,45.284056,8.077426
+1,Lipica,Lipica,SI,45.667222,13.882500
+1,Lipa,Lipa,SI,46.606944,16.287500
+1,Lenart pri Gorenjem Gradu,Lenart pri Gorenjem Gradu,SI,46.300000,14.783333
+1,Lelystad,Lelystad,NL,52.508333,5.475000
+1,Leeuwarden,Leeuwarden,NL,53.200000,5.783333
+1,Lavamünd,Lavamund,AT,46.650000,14.933333
+1,Las Palmas de Gran Canaria,Las Palmas de Gran Canaria,ES,28.100000,-15.416667
+1,La Rochelle,La Rochelle,FR,46.166667,-1.150000
+1,Kłodzko,Klodzko,PL,50.433333,16.650000
+1,Kérkyra,Kerkyra,GR,39.620000,19.919722
+1,Kula,Kula,RS,44.511667,21.379444
+1,Kubed,Kubed,SI,45.523056,13.871389
+1,Krkavče,Krkavce,SI,45.462778,13.694444
+1,Križe,Krize,SI,46.342778,14.301389
+1,Kranjče,Kranjce,SI,45.836944,14.432500
+1,Kołobrzeg,Kolobrzeg,PL,54.175648,15.583420
+1,Koroška-Bela,Koroska-Bela,SI,46.430278,14.103333
+1,Klaipėda,Klaipeda,LT,55.717222,21.117500
+1,Kitzbühel,Kitzbuhel,AT,47.446375,12.392149
+1,Kikinda,Kikinda,RS,45.829722,20.465278
+1,Kiel,Kiel,DE,54.321329,10.134888
+1,Keszthely,Keszthely,HU,46.766667,17.250000
+1,Karlobag,Karlobag,HR,44.527500,15.073889
+1,Kapele,Kapele,SI,45.933333,15.683333
+1,Kančevci,Kancevci,SI,46.756389,16.269444
+1,Kanjiža,Kanjiza,RS,46.066667,20.050000
+1,Kanfanar,Kanfanar,HR,45.121944,13.839167
+1,Kamovci,Kamovci,SI,46.628889,16.383611
+1,Kamniška Bistrica,Kamniska Bistrica,SI,46.333333,14.600000
+1,Kaltenbach,Kaltenbach,AT,48.750000,15.183333
+1,Jurovski Dol,Jurovski Dol,SI,46.606389,15.784722
+1,Jelšane,Jelsane,SI,45.502778,14.271667
+1,Jaroměř,Jaromer,CZ,50.356196,15.921365
+1,Jarocin,Jarocin,PL,51.966667,17.516667
+1,Jakob pri Šentjurju,Jakob pri Sentjurju,SI,46.182778,15.399444
+1,Ihan,Ihan,SI,46.120833,14.620000
+1,Idanha-a-Nova,Idanha-a-Nova,PT,39.916667,-7.233333
+1,Huelva,Huelva,ES,37.258333,-6.950833
+1,Hrastovlje,Hrastovlje,SI,45.512222,13.899722
+1,Holzkirchen,Holzkirchen,DE,47.876635,11.701813
+1,Hollabrunn,Hollabrunn,AT,48.550000,16.083333
+1,Herceg-Novi,Herceg-Novi,ME,42.453056,18.537500
+1,Heidenheim an der Brenz,Heidenheim an der Brenz,DE,48.677984,10.151625
+1,Hartberg,Hartberg,AT,47.283333,15.966667
+1,Grünau,Grunau,AT,48.783333,15.250000
+1,Griblje,Griblje,SI,45.574167,15.291111
+1,Grades,Grades,AT,46.966667,14.250000
+1,Gozd,Gozd,SI,46.333333,14.333333
+1,Gospić,Gospic,HR,44.546111,15.374722
+1,Gornja Težka Voda,Gornja Tezka Voda,SI,45.766667,15.200000
+1,Gorjansko,Gorjansko,SI,45.804167,13.712500
+1,Gorica pri Šmartnem,Gorica pri Smartnem,SI,46.274444,15.230833
+1,Gorenji Novaki,Gorenji Novaki,SI,46.150000,14.033333
+1,Goczałkowice Zdrój,Goczalkowice Zdroj,PL,49.950000,18.966667
+1,Gießen,Giessen,DE,50.583333,8.650000
+1,Ghedi,Ghedi,IT,45.401079,10.279272
+1,Genk,Genk,BE,50.966667,5.500000
+1,Garda,Garda,IT,45.577787,10.712379
+1,Fürstenfeld,Furstenfeld,AT,47.050000,16.083333
+1,Fužine,Fuzine,SI,46.083333,14.116667
+1,Friedrichshafen,Friedrichshafen,DE,47.650000,9.483333
+1,Fribourg,Fribourg,CH,46.802366,7.151284
+1,Forlì,Forli,IT,44.223611,12.052778
+1,Fonyód,Fonyod,HU,46.733333,17.550000
+1,Flensburg,Flensburg,DE,54.783333,9.433333
+1,Eschweiler,Eschweiler,DE,50.816667,6.283333
+1,Erfurt,Erfurt,DE,50.983333,11.033333
+1,Emmen,Emmen,NL,52.779167,6.906944
+1,Elst,Elst,NL,51.919167,5.841667
+1,Dvorjane,Dvorjane,SI,46.499722,15.754722
+1,Durrës,Durres,AL,41.323056,19.441389
+1,Dunajská Streda,Dunajska Streda,SK,47.992679,17.612114
+1,Dubica,Dubica,BA,44.517500,16.983333
+1,Drvenik,Drvenik,HR,43.157500,17.266111
+1,Drežnik Grad,Dreznik Grad,HR,44.949167,15.674167
+1,Drenov Grič,Drenov Gric,SI,45.997778,14.332778
+1,Dovže,Dovze,SI,46.461944,15.166111
+1,Dovje,Dovje,SI,46.468056,13.944722
+1,Dornava,Dornava,SI,46.436667,15.953611
+1,Dordrecht,Dordrecht,NL,51.810000,4.673611
+1,Dolž,Dolz,SI,45.761111,15.251667
+1,Dolsko,Dolsko,SI,46.091944,14.677222
+1,Dolnji Suhor pri Metliki,Dolnji Suhor pri Metliki,SI,45.183333,15.266667
+1,Dolenja Vas,Dolenja Vas,SI,46.216667,14.233333
+1,Dokležovje,Doklezovje,SI,46.603333,16.178056
+1,Dobrova,Dobrova,SI,46.055000,14.417222
+1,Dobravlje,Dobravlje,SI,45.883889,13.845278
+1,Dobliče,Doblice,SI,45.550000,15.150000
+1,Dobje pri Planini,Dobje pri Planini,SI,46.136667,15.408889
+1,Dobbiaco - Toblach,Dobbiaco,IT,46.742500,12.231389
+1,Dingolfing,Dingolfing,DE,48.633333,12.500000
+1,Destrnik,Destrnik,SI,46.500556,15.875000
+1,Desenzano del Garda,Desenzano del Garda,IT,45.467983,10.533977
+1,Derventa,Derventa,BA,44.977222,17.910278
+1,Den Bosch,Den Bosch,NL,52.183333,4.950000
+1,Darmstadt,Darmstadt,DE,49.870556,8.649444
+1,Cuneo,Cuneo,IT,44.397330,7.544531
+1,Cottbus,Cottbus,DE,51.766667,14.333333
+1,Cortina d'Ampezzo,Cortina d'Ampezzo,IT,46.536111,12.148889
+1,Cluj-Napoca / Kolozsvár,Cluj-Napoca / Kolozsvar,RO,46.766667,23.600000
+1,Civitavecchia,Civitavecchia,IT,42.093255,11.796741
+1,Cirkulane,Cirkulane,SI,46.344084,15.994720
+1,Charleroi,Charleroi,BE,50.416667,4.433333
+1,Champex,Champex,CH,46.026528,7.120171
+1,Cesta,Cesta,SI,45.966667,15.466667
+1,Canazei,Canazei,IT,46.475920,11.771487
+1,Calais,Calais,FR,50.958102,1.852055
+1,Békéscsaba,Bekescsaba,HU,46.683333,21.100000
+1,Burgos,Burgos,ES,42.350000,-3.700000
+1,Burghausen,Burghausen,DE,48.166667,12.833333
+1,Bukovska Vas,Bukovska Vas,SI,46.550000,15.051667
+1,Bukovo,Bukovo,SI,46.154167,13.903333
+1,Brno střed,Brno stred,CZ,49.193428,16.607122
+1,Briše,Brise,SI,46.095000,15.199444
+1,Brezno,Brezno,SI,46.595556,15.320000
+1,Brezina,Brezina,SI,45.931667,15.598056
+1,Braga,Braga,PT,41.550000,-8.433333
+1,Bosanski Novi,Bosanski Novi,BA,45.045833,16.380278
+1,Bosanska Krupa,Bosanska Krupa,BA,44.882500,16.151389
+1,Borgo Grotta Gigante,Borgo Grotta Gigante,IT,45.709167,13.762222
+1,Bohova,Bohova,SI,46.500000,15.666667
+1,Bocholt,Bocholt,DE,51.833333,6.600000
+1,Bistrica pri Tržiču,Bistrica pri Trzicu,SI,46.354722,14.291667
+1,Billund,Billund,DK,55.733487,9.107854
+1,Besançon,Besancon,FR,47.250000,6.033333
+1,Beregsurány,Beregsurany,HU,48.166667,22.550000
+1,Benkovac,Benkovac,HR,44.034444,15.612778
+1,Benicàssim,Benicassim,ES,40.050000,0.066667
+1,Bela Crkva,Bela Crkva,RS,44.897500,21.417222
+1,Begunje pri Cerknici,Begunje pri Cerknici,SI,45.818056,14.382222
+1,Bari,Bari,IT,41.117734,16.851185
+1,Barcis,Barcis,IT,46.192500,12.556944
+1,Balatonalmádi,Balatonalmadi,HU,47.033333,18.016667
+1,Balaton,Balaton,HU,48.100000,20.316667
+1,Baden-Baden,Baden-Baden,DE,48.750000,8.250000
+1,Baden,Baden,AT,48.016667,16.233333
+1,Bad Wildbad im Schwarzwald,Bad Wildbad im Schwarzwald,DE,48.750000,8.550000
+1,Avignon,Avignon,FR,43.950000,4.816667
+1,Arvieux,Arvieux,FR,44.766667,6.733333
+1,Arezzo,Arezzo,IT,43.461392,11.876907
+1,Arcen,Arcen,NL,51.476667,6.180556
+1,Arad,Arad,RO,46.183333,21.316667
+1,Aquileia,Aquileia,IT,45.770278,13.368333
+1,Amstetten,Amstetten,AT,48.122903,14.872055
+1,Amsterdam-Zuidoost,Amsterdam-Zuidoost,NL,52.307500,4.972222
+1,Aleksinac,Aleksinac,RS,43.541667,21.707778

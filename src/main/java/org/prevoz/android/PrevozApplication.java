@@ -7,6 +7,7 @@ import com.crashlytics.android.Crashlytics;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EApplication;
 import org.prevoz.android.auth.AuthenticationUtils;
+import org.prevoz.android.util.ContentUtils;
 import org.prevoz.android.util.Database;
 
 @EApplication
@@ -41,9 +42,11 @@ public class PrevozApplication extends Application
         @Override
         protected Void doInBackground(Void... params)
         {
+            ContentUtils.importDatabase(PrevozApplication.this);
+
             authUtils.updateRetrofitAuthenticationCookie();
-            Database.deleteHistoryEntries(PrevozApplication.this, 10);
-            Database.pruneOldNotifications(PrevozApplication.this);
+            //Database.deleteHistoryEntries(PrevozApplication.this, 10);
+            //Database.pruneOldNotifications(PrevozApplication.this);
             return null;
         }
     }

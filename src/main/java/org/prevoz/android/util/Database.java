@@ -67,12 +67,12 @@ public class Database
 
             // Load SQL location script from raw folder and insert all relevant
             // data into database
-            String[] locationSQL = FileUtil.readSQLStatements(storedContext, R.raw.locations);
+            String[] locationSQL = FileUtil.readLines(storedContext, R.raw.locations);
 
             for (String statement : locationSQL)
             {
-                Log.d(this.toString(), "SQL: " + statement);
-                db.execSQL(statement);
+                //Log.d(this.toString(), "SQL: " + statement);
+                //db.execSQL(statement);
             }
         }
 
@@ -84,11 +84,11 @@ public class Database
 
             // Load SQL location script from raw folder and insert all relevant
             // data into database
-            String[] locationSQL = FileUtil.readSQLStatements(storedContext, R.raw.countries);
+            String[] locationSQL = FileUtil.readLines(storedContext, R.raw.countries);
 
             for (String statement : locationSQL)
             {
-                db.execSQL(statement);
+                //db.execSQL(statement);
             }
         }
 
