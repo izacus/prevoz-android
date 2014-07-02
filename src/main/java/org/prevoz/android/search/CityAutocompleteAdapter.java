@@ -54,7 +54,7 @@ public class CityAutocompleteAdapter extends SimpleCursorAdapter implements Filt
     @Override
     public Cursor runQuery(CharSequence constraint)
     {
-        return ContentUtils.getCityCursor(mContext, constraint.toString(), null);
+        return ContentUtils.getCityCursor(mContext, constraint == null ? null : constraint.toString(), null);
     }
 
     @Override
