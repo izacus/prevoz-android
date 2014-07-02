@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import org.prevoz.android.R;
 import org.prevoz.android.model.Route;
+import org.prevoz.android.util.ContentUtils;
 import org.prevoz.android.util.Database;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
@@ -20,7 +21,7 @@ public class SearchHistoryAdapter extends BaseAdapter implements StickyListHeade
 
     public SearchHistoryAdapter(Context ctx)
     {
-        this.searchHistory = Database.getLastSearches(ctx, 3);
+        this.searchHistory = ContentUtils.getLastSearches(ctx, 5);
         this.inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 

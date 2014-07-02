@@ -5,18 +5,23 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import org.prevoz.android.R;
 import org.prevoz.android.model.City;
+import org.prevoz.android.model.NotificationSubscription;
 import org.prevoz.android.model.Route;
 import org.prevoz.android.provider.Country;
 import org.prevoz.android.provider.Location;
+import org.prevoz.android.provider.Notification;
 import org.prevoz.android.provider.SearchHistoryItem;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class ContentUtils
@@ -176,8 +181,6 @@ public class ContentUtils
 
     public static void addSearchToHistory(Context context, City from, City to, Date date)
     {
-        Log.i("Database","Adding search to history " + from + " - " + to);
-
         ContentResolver resolver = context.getContentResolver();
         ContentValues values = new ContentValues();
         values.put(SearchHistoryItem.FROM_CITY, from == null ? null : from.getDisplayName());
@@ -228,7 +231,6 @@ public class ContentUtils
 
         if (results.getCount() > min)
         {
-            Log.i("Database", "Deleting old last search entries.");
             results.move(min);
 
             ArrayList<Integer> ids = new ArrayList<Integer>();
@@ -246,5 +248,85 @@ public class ContentUtils
         }
 
         results.close();
+    }
+
+    public static boolean isSubscribedForNotification(Context context, City from, City to, Calendar date)
+    {
+        ContentResolver resolver = context.getContentResolver();
+
+        Cursor results = resolver.query(Notification.CONTENT_URI,
+                                        new String[] { "COUNT(" + SearchHistoryItem._ID + ") AS count" },
+                                        Notification.FROM_CITY + " = ? AND " + Notification.FROM_COUNTRY + " = ? AND" +
+                                        Notification.TO_CITY + " = ? AND " + Notification.TO_COUNTRY + " = ? AND " +
+                                        Notification.DATE + " = ?",
+                                        new String[] { from.getDisplayName(), from.getCountryCode(),
+                                                       to.getDisplayName(), to.getCountryCode(),
+                                                       String.valueOf(date.getTime())},
+                                        null);
+
+        results.moveToFirst();
+        return results.getInt(0) > 0;
+    }
+
+    public static ArrayList<NotificationSubscription> getNotificationSubscriptions(Context context)
+    {
+        ContentResolver resolver = context.getContentResolver();
+        Cursor results = resolver.query(Notification.CONTENT_URI, null, null, null, Notification.REGISTERED_DATE + " DESC");
+        int idIndex = results.getColumnIndex(Notification._ID);
+        int fromIndex = results.getColumnIndex(Notification.FROM_CITY);
+        int fromCountryIndex = results.getColumnIndex(Notification.FROM_COUNTRY);
+        int toIndex = results.getColumnIndex(Notification.TO_CITY);
+        int toCountryIndex = results.getColumnIndex(Notification.TO_COUNTRY);
+        int dateIndex = results.getColumnIndex(Notification.DATE);
+
+        ArrayList<NotificationSubscription> subscriptions = new ArrayList<NotificationSubscription>();
+        while (results.moveToNext())
+        {
+            Calendar date = Calendar.getInstance(LocaleUtil.getLocalTimezone());
+            date.setTimeInMillis(results.getLong(dateIndex));
+            NotificationSubscription subscription = new NotificationSubscription(results.getInt(idIndex),
+                    new City(results.getString(fromIndex), results.getString(fromCountryIndex)),
+                    new City(results.getString(toIndex), results.getString(toCountryIndex)),
+                    date);
+            subscriptions.add(subscription);
+        }
+
+        return subscriptions;
+    }
+
+    public static void addNotificationSubscription(Context context, City from, City to, Calendar date)
+    {
+        ContentResolver resolver = context.getContentResolver();
+        ContentValues values  = new ContentValues();
+
+        values.put(Notification.FROM_CITY, from.getDisplayName());
+        values.put(Notification.FROM_COUNTRY, from.getCountryCode());
+        values.put(Notification.TO_CITY, to.getDisplayName());
+        values.put(Notification.TO_COUNTRY, to.getCountryCode());
+        values.put(Notification.DATE, date.getTimeInMillis());
+        resolver.insert(Notification.CONTENT_URI, values);
+    }
+
+    public static void deleteNotificationSubscription(Context context, City from, City to, Calendar date)
+    {
+        ContentResolver resolver = context.getContentResolver();
+        resolver.delete(Notification.CONTENT_URI,
+                        Notification.FROM_CITY + " = ? AND " + Notification.FROM_COUNTRY + " = ? AND" +
+                        Notification.TO_CITY + " = ? AND " + Notification.TO_COUNTRY + " = ? AND " +
+                        Notification.DATE + " = ?",
+                        new String[] { from.getDisplayName(), from.getCountryCode(),
+                                to.getDisplayName(), to.getCountryCode(),
+                                String.valueOf(date.getTime())});
+    }
+
+    public static void pruneOldNotifications(Context context)
+    {
+        ContentResolver resolver = context.getContentResolver();
+
+        Calendar time = Calendar.getInstance(LocaleUtil.getLocalTimezone());
+        time.set(Calendar.HOUR_OF_DAY, 0);
+        time.set(Calendar.MINUTE, 0);
+        time.set(Calendar.SECOND, 0);
+        resolver.delete(Notification.CONTENT_URI, Notification.DATE + " < ?", new String[] { String.valueOf(time.getTimeInMillis()) });
     }
 }

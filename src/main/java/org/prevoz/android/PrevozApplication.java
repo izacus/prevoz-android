@@ -44,10 +44,8 @@ public class PrevozApplication extends Application
         {
             ContentUtils.importDatabase(PrevozApplication.this);
             ContentUtils.deleteOldHistoryEntries(PrevozApplication.this, 5);
+            ContentUtils.pruneOldNotifications(PrevozApplication.this);
             authUtils.updateRetrofitAuthenticationCookie();
-
-
-            //Database.pruneOldNotifications(PrevozApplication.this);
             return null;
         }
     }

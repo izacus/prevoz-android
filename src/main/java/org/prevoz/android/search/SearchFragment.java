@@ -12,10 +12,7 @@ import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.CityNameTextValidator;
 import org.prevoz.android.model.Route;
-import org.prevoz.android.util.Database;
-import org.prevoz.android.util.LocaleUtil;
-import org.prevoz.android.util.StringUtil;
-import org.prevoz.android.util.ViewUtils;
+import org.prevoz.android.util.*;
 
 import java.util.Calendar;
 
@@ -100,7 +97,7 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
         City fromCity = StringUtil.splitStringToCity(searchFrom.getText().toString());
         City toCity = StringUtil.splitStringToCity(searchTo.getText().toString());
 
-        Database.addSearchToHistory(getActivity(), fromCity, toCity, selectedDate.getTime());
+        ContentUtils.addSearchToHistory(getActivity(), fromCity, toCity, selectedDate.getTime());
         EventBus.getDefault().post(new Events.NewSearchEvent(fromCity, toCity, selectedDate));
     }
 

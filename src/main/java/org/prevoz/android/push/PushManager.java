@@ -18,6 +18,7 @@ import org.prevoz.android.api.rest.RestPushStatus;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.NotificationSubscription;
+import org.prevoz.android.util.ContentUtils;
 import org.prevoz.android.util.Database;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -94,7 +95,7 @@ public class PushManager
 
     public List<NotificationSubscription> getSubscriptions()
     {
-        return Database.getNotificationSubscriptions(context);
+        return ContentUtils.getNotificationSubscriptions(context);
     }
 
     public void setSubscriptionStatus(final City from, final City to, final Calendar date, final boolean subscribed)
@@ -113,9 +114,9 @@ public class PushManager
             public void success(RestPushStatus restPushStatus, Response response)
             {
                 if (subscribed)
-                    Database.addNotificationSubscription(context, from, to, date);
+                    ContentUtils.addNotificationSubscription(context, from, to, date);
                 else
-                    Database.deleteNotificationSubscription(context, from, to, date);
+                    ContentUtils.deleteNotificationSubscription(context, from, to, date);
 
                 Toast.makeText(context, subscribed ? "Prijava uspela." : "Odjava uspela.", Toast.LENGTH_SHORT).show();
                 EventBus.getDefault().post(new Events.NotificationSubscriptionStatusChanged());
@@ -132,7 +133,7 @@ public class PushManager
 
     public boolean isSubscribed(City from, City to, Calendar date)
     {
-        return Database.isSubscribedForNotification(context, from, to, date);
+        return ContentUtils.isSubscribedForNotification(context, from, to, date);
     }
 
     public String getGcmId()

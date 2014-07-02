@@ -76,7 +76,6 @@ public class MainActivity extends SherlockFragmentActivity
     {
         LocaleUtil.checkSetLocale(this, getResources().getConfiguration());
         super.onCreate(savedInstanceState);
-        checkInitDatabase();
     }
 
     @AfterViews
