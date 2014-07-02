@@ -43,9 +43,10 @@ public class PrevozApplication extends Application
         protected Void doInBackground(Void... params)
         {
             ContentUtils.importDatabase(PrevozApplication.this);
-
+            ContentUtils.deleteOldHistoryEntries(PrevozApplication.this, 5);
             authUtils.updateRetrofitAuthenticationCookie();
-            //Database.deleteHistoryEntries(PrevozApplication.this, 10);
+
+
             //Database.pruneOldNotifications(PrevozApplication.this);
             return null;
         }

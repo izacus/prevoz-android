@@ -5,11 +5,19 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import org.prevoz.android.R;
+import org.prevoz.android.model.City;
+import org.prevoz.android.model.Route;
 import org.prevoz.android.provider.Country;
 import org.prevoz.android.provider.Location;
+import org.prevoz.android.provider.SearchHistoryItem;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class ContentUtils
 {
@@ -164,5 +172,79 @@ public class ContentUtils
                     params,
                     Location.SORT_NUMBER + " DESC");
         }
+    }
+
+    public static void addSearchToHistory(Context context, City from, City to, Date date)
+    {
+        Log.i("Database","Adding search to history " + from + " - " + to);
+
+        ContentResolver resolver = context.getContentResolver();
+        ContentValues values = new ContentValues();
+        values.put(SearchHistoryItem.FROM_CITY, from == null ? null : from.getDisplayName());
+        values.put(SearchHistoryItem.FROM_COUNTRY, from == null ? null : from.getCountryCode());
+        values.put(SearchHistoryItem.TO_CITY, to == null ? null : to.getDisplayName());
+        values.put(SearchHistoryItem.TO_COUNTRY, to == null ? null : to.getCountryCode());
+        values.put(SearchHistoryItem.DATE, date.getTime());
+        resolver.insert(SearchHistoryItem.CONTENT_URI, values);
+    }
+
+    public static ArrayList<Route> getLastSearches(Context context, int count)
+    {
+        ContentResolver resolver = context.getContentResolver();
+        Cursor results = resolver.query(SearchHistoryItem.CONTENT_URI,
+                                        new String[] { SearchHistoryItem.FROM_CITY, SearchHistoryItem.FROM_COUNTRY, SearchHistoryItem.TO_CITY, SearchHistoryItem.TO_COUNTRY },
+                                        null,
+                                        null,
+                                        SearchHistoryItem.DATE + " DESC");
+
+        ArrayList<Route> searches = new ArrayList<Route>();
+
+        int fromIndex = results.getColumnIndex(SearchHistoryItem.FROM_CITY);
+        int fromCountry = results.getColumnIndex(SearchHistoryItem.FROM_COUNTRY);
+        int toIndex = results.getColumnIndex(SearchHistoryItem.TO_CITY);
+        int toCountry = results.getColumnIndex(SearchHistoryItem.TO_COUNTRY);
+
+        for (int i = 0; i < count; i++)
+        {
+            if (!results.moveToNext())
+                break;
+
+            Route route = new Route(new City(results.getString(fromIndex), results.getString(fromCountry)), new City(results.getString(toIndex), results.getString(toCountry)));
+            searches.add(route);
+        }
+
+        results.close();
+        return searches;
+    }
+
+    public static void deleteOldHistoryEntries(Context context, int min)
+    {
+        ContentResolver resolver = context.getContentResolver();
+        Cursor results = resolver.query(SearchHistoryItem.CONTENT_URI,
+                                        new String[] { SearchHistoryItem._ID },
+                                        null,
+                                        null,
+                                        SearchHistoryItem.DATE + " DESC");
+
+        if (results.getCount() > min)
+        {
+            Log.i("Database", "Deleting old last search entries.");
+            results.move(min);
+
+            ArrayList<Integer> ids = new ArrayList<Integer>();
+
+            while (!results.isAfterLast())
+            {
+                ids.add(results.getInt(0));
+                results.moveToNext();
+            }
+
+            for (Integer id : ids)
+            {
+                resolver.delete(SearchHistoryItem.CONTENT_URI, "id = ?", new String[] { String.valueOf(id) });
+            }
+        }
+
+        results.close();
     }
 }

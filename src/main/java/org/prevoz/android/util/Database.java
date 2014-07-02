@@ -29,7 +29,7 @@ import java.util.Date;
  */
 public class Database
 {
-    private static class DatabaseHelper extends SQLiteOpenHelper
+/*    private static class DatabaseHelper extends SQLiteOpenHelper
     {
         private final Context storedContext;
 
@@ -57,146 +57,12 @@ public class Database
                     + "date INTEGER NOT NULL, "
                     + "registered_date INTEGER NOT NULL)");
 
-            reloadCities(db);
-            reloadCountries(db);
         }
-
-        private void reloadCities(SQLiteDatabase db)
-        {
-            db.execSQL("DROP TABLE IF EXISTS locations");
-            db.execSQL("DROP INDEX IF EXISTS name_ascii_index");
-            db.execSQL("DROP INDEX IF EXISTS name_index");
-
-            // Load SQL location script from raw folder and insert all relevant
-            // data into database
-            String[] locationSQL = FileUtil.readLines(storedContext, R.raw.locations);
-
-            for (String statement : locationSQL)
-            {
-                //Log.d(this.toString(), "SQL: " + statement);
-                //db.execSQL(statement);
-            }
-        }
-
-        private void reloadCountries(SQLiteDatabase db)
-        {
-            db.execSQL("DROP TABLE IF EXISTS countries");
-            db.execSQL("DROP INDEX IF EXISTS country_code_index");
-            db.execSQL("DROP INDEX IF EXISTS country_language_index");
-
-            // Load SQL location script from raw folder and insert all relevant
-            // data into database
-            String[] locationSQL = FileUtil.readLines(storedContext, R.raw.countries);
-
-            for (String statement : locationSQL)
-            {
-                //db.execSQL(statement);
-            }
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
-        {
-            if (oldVersion < 14)
-            {
-                if (oldVersion < 13)
-                {
-                    db.execSQL("DROP TABLE IF EXISTS search_history");
-                    db.execSQL("DROP TABLE IF EXISTS notify_subscriptions");
-                }
-
-                db.execSQL("DROP TABLE IF EXISTS favorites");
-                onCreate(db);
-            }
-        }
-    }
+    } */
 
     private static final SimpleDateFormat sqlDateFormatter = LocaleUtil.getSimpleDateFormat("yyyy-MM-dd 00:00:00");
 
-    public static synchronized SQLiteDatabase getSettingsDatabase(Context context)
-    {
-        return new DatabaseHelper(context).getReadableDatabase();
-    }
-
-    public static void addSearchToHistory(Context context, City from, City to, Date date)
-    {
-        Log.i("Database","Adding search to history " + from + " - " + to);
-
-        SimpleDateFormat sqlDateFormatter = LocaleUtil.getSimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        // Reset times to 0
-
-
-        SQLiteDatabase database = new DatabaseHelper(context).getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("from_loc", from == null ? "" : from.getDisplayName());
-        values.put("from_country", from == null ? "" : from.getCountryCode());
-        values.put("to_loc", to == null ? "" : to.getDisplayName());
-        values.put("to_country", to == null ? "" : to.getCountryCode());
-        values.put("date", sqlDateFormatter.format(date));
-        database.insert("search_history", null, values);
-        database.close();
-    }
-
-    public static ArrayList<Route> getLastSearches(Context context, int count)
-    {
-        Log.i("Database", "Retrieving last " + count + " search records...");
-
-        SQLiteDatabase database = new DatabaseHelper(context).getReadableDatabase();
-
-        ArrayList<Route> searches = new ArrayList<Route>();
-        Cursor results = database.query(true, "search_history", new String[] { "from_loc", "from_country", "to_loc", "to_country" }, null, null, null, null, "date DESC", String.valueOf(count));
-
-        int fromIndex = results.getColumnIndex("from_loc");
-        int fromCountry = results.getColumnIndex("from_country");
-        int toIndex = results.getColumnIndex("to_loc");
-        int toCountry = results.getColumnIndex("to_country");
-
-        while(results.moveToNext())
-        {
-            Route route = new Route(new City(results.getString(fromIndex), results.getString(fromCountry)), new City(results.getString(toIndex), results.getString(toCountry)));
-            searches.add(route);
-        }
-
-        results.close();
-        database.close();
-
-        return searches;
-    }
-
-
-    public static void deleteHistoryEntries(Context context, int min)
-    {
-        SQLiteDatabase database = new DatabaseHelper(context).getWritableDatabase();
-
-        Cursor results = database.query(true, "search_history", new String[]{"ID"}, null, null, null, null, "date DESC", null);
-
-        if (results.getCount() > min)
-        {
-            Log.i("Database", "Deleting old last search entries.");
-
-            results.move(min);
-
-            ArrayList<Integer> ids = new ArrayList<Integer>();
-
-            while (!results.isAfterLast())
-            {
-                ids.add(results.getInt(0));
-                results.moveToNext();
-            }
-
-            for (Integer id : ids)
-            {
-                database.delete("search_history", "id = ?", new String[]{String.valueOf(id)});
-            }
-        }
-
-        results.close();
-
-        database.close();
-    }
-
-    public static City getClosestCity(Context context, double latitude,
+/*    public static City getClosestCity(Context context, double latitude,
                                       double longtitude)
     {
         SQLiteDatabase database = new DatabaseHelper(context)
@@ -214,7 +80,7 @@ public class Database
         City city = new City(cursor.getString(nameColumn), cursor.getString(countryColumn));
         database.close();
         return city;
-    }
+    } */
 
 
     public static boolean isSubscribedForNotification(Context context, City from, City to, Calendar date)

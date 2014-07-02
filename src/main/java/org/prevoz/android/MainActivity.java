@@ -102,13 +102,6 @@ public class MainActivity extends SherlockFragmentActivity
     }
 
     @Background
-    protected void checkInitDatabase()
-    {
-        SQLiteDatabase db = Database.getSettingsDatabase(this);
-        db.close();
-    }
-
-    @Background
     protected void checkAuthenticated()
     {
         String username = authUtils.getUsername();
