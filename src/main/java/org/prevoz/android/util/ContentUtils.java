@@ -262,7 +262,7 @@ public class ContentUtils
 
             for (Integer id : ids)
             {
-                resolver.delete(SearchHistoryItem.CONTENT_URI, "id = ?", new String[] { String.valueOf(id) });
+                resolver.delete(SearchHistoryItem.CONTENT_URI, SearchHistoryItem._ID + " = ?", new String[] { String.valueOf(id) });
             }
         }
 

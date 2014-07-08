@@ -5,10 +5,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import com.nineoldandroids.view.ViewHelper;
 import de.greenrobot.event.EventBus;
 import org.androidannotations.annotations.*;
@@ -48,6 +47,8 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
 
     protected View searchNofityButtonContainer;
     protected View searchNotifyButton;
+    protected ImageView searchNotifyButtonIcon;
+    protected ProgressBar searchNotifyButtonProgress;
     protected TextView searchNofityButtonText;
 
     @InstanceState
@@ -78,14 +79,21 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
         headerFragmentView = getLayoutInflater(savedInstanceState).inflate(R.layout.header_search_form, null, false);
         searchNofityButtonContainer = headerFragmentView.findViewById(R.id.search_notify_button_container);
         searchNofityButtonText = (TextView) headerFragmentView.findViewById(R.id.search_notify_button_text);
+        searchNotifyButtonIcon = (ImageView) headerFragmentView.findViewById(R.id.search_notify_button_icon);
+        searchNotifyButtonProgress = (ProgressBar) headerFragmentView.findViewById(R.id.search_notify_button_progress);
         searchNotifyButton = headerFragmentView.findViewById(R.id.search_notify_button);
 
-        searchNotifyButton.setOnClickListener(new View.OnClickListener()
+        searchNotifyButton.setOnTouchListener(new View.OnTouchListener()
         {
             @Override
-            public void onClick(View v)
+            public boolean onTouch(View v, MotionEvent event)
             {
-                clickNotificationButton();
+                if (event.getAction() == MotionEvent.ACTION_UP)
+                {
+                    clickNotificationButton();
+                }
+
+                return false;
             }
         });
     }
@@ -218,12 +226,12 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     {
         if (pushManager.isSubscribed(lastFrom, lastTo, lastDate))
         {
-            searchNofityButtonText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_cancel, 0, 0, 0);
+            searchNotifyButtonIcon.setImageResource(R.drawable.ic_action_cancel);
             searchNofityButtonText.setText("Prenehaj z obveščanjem o prevozih");
         }
         else
         {
-            searchNofityButtonText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_bell, 0, 0, 0);
+            searchNotifyButtonIcon.setImageResource(R.drawable.ic_action_bell);
             searchNofityButtonText.setText("Obveščaj me o novih prevozih");
         }
     }
@@ -247,6 +255,8 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     private void clickNotificationButton()
     {
         searchNotifyButton.setEnabled(false);
+        searchNotifyButtonIcon.setVisibility(View.INVISIBLE);
+        searchNotifyButtonProgress.setVisibility(View.VISIBLE);
         pushManager.setSubscriptionStatus(lastFrom, lastTo, lastDate, !pushManager.isSubscribed(lastFrom, lastTo, lastDate));
     }
 
@@ -301,6 +311,8 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     {
         updateNotificationButtonText();
         searchNotifyButton.setEnabled(true);
+        searchNotifyButtonIcon.setVisibility(View.VISIBLE);
+        searchNotifyButtonProgress.setVisibility(View.INVISIBLE);
     }
 
     public void onEventMainThread(Events.RideDeleted e)

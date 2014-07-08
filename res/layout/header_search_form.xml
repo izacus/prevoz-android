@@ -20,10 +20,11 @@
         android:background="@drawable/card_bg_r4"
         android:visibility="gone"
     >
-        <FrameLayout
+        <LinearLayout
             android:id="@+id/search_notify_button"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="48dp"
+            android:layout_gravity="center"
             android:orientation="horizontal"
             android:clickable="true"
             android:focusable="true"
@@ -31,13 +32,34 @@
             android:background="@drawable/borderless_button"
             >
 
+            <FrameLayout
+                    android:layout_width="32dp"
+                    android:layout_height="48dp"
+                    android:layout_marginRight="12dp"
+                    >
+
+                <ImageView
+                        android:id="@+id/search_notify_button_icon"
+                        android:layout_width="32dp"
+                        android:layout_height="48dp"/>
+
+                <ProgressBar
+                        android:id="@+id/search_notify_button_progress"
+                        android:layout_width="32dp"
+                        android:layout_height="48dp"
+                        android:indeterminateOnly="true"
+                        android:indeterminate="true"
+                        android:visibility="invisible"
+                        style="?android:attr/progressBarStyleSmall"
+                        />
+
+            </FrameLayout>
+
             <TextView
                 android:id="@+id/search_notify_button_text"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:drawableLeft="@drawable/ic_action_bell"
-
                 android:singleLine="true"
                 android:textColor="@color/prevoztheme_color"
                 android:textSize="16sp"
@@ -46,9 +68,6 @@
                 style="?android:attr/textAppearanceButton"
                 />
 
-        </FrameLayout>
-
+        </LinearLayout>
     </FrameLayout>
-
-
 </LinearLayout>

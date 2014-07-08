@@ -50,6 +50,8 @@ public class PushManager
         setup();
     }
 
+
+
     @Background
     protected void setup()
     {
