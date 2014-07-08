@@ -178,13 +178,36 @@ public class ContentUtils
     public static void addSearchToHistory(Context context, City from, City to, Date date)
     {
         ContentResolver resolver = context.getContentResolver();
+
+        String fcity = from == null ? null : from.getDisplayName();
+        String fcountry = from == null ? null : from.getCountryCode();
+        String tcity = to == null ? null : to.getDisplayName();
+        String tcountry = to == null ? null : to.getCountryCode();
+        long time = date.getTime();
+
+        // Check if entry exists
+        Cursor existing = resolver.query(SearchHistoryItem.CONTENT_URI,
+                                         new String[] { SearchHistoryItem._ID },
+                                         SearchHistoryItem.FROM_CITY + " = ? AND " + SearchHistoryItem.FROM_COUNTRY + " = ? AND " +
+                                         SearchHistoryItem.TO_CITY + " = ? AND " + SearchHistoryItem.TO_COUNTRY + " = ? ",
+                                         new String[] { fcity, fcountry, tcity, tcountry }, null);
+
         ContentValues values = new ContentValues();
-        values.put(SearchHistoryItem.FROM_CITY, from == null ? null : from.getDisplayName());
-        values.put(SearchHistoryItem.FROM_COUNTRY, from == null ? null : from.getCountryCode());
-        values.put(SearchHistoryItem.TO_CITY, to == null ? null : to.getDisplayName());
-        values.put(SearchHistoryItem.TO_COUNTRY, to == null ? null : to.getCountryCode());
-        values.put(SearchHistoryItem.DATE, date.getTime());
-        resolver.insert(SearchHistoryItem.CONTENT_URI, values);
+        values.put(SearchHistoryItem.FROM_CITY, fcity);
+        values.put(SearchHistoryItem.FROM_COUNTRY, fcountry);
+        values.put(SearchHistoryItem.TO_CITY, tcity);
+        values.put(SearchHistoryItem.TO_COUNTRY, tcountry);
+        values.put(SearchHistoryItem.DATE, time);
+
+        if (existing.getCount() > 0)
+        {
+            existing.moveToFirst();
+            resolver.update(SearchHistoryItem.CONTENT_URI, values, SearchHistoryItem._ID + " = ?", new String[] { String.valueOf(existing.getLong(0)) });
+        }
+        else
+        {
+            resolver.insert(SearchHistoryItem.CONTENT_URI, values);
+        }
     }
 
     public static ArrayList<Route> getLastSearches(Context context, int count)
@@ -194,7 +217,7 @@ public class ContentUtils
                                         new String[] { SearchHistoryItem.FROM_CITY, SearchHistoryItem.FROM_COUNTRY, SearchHistoryItem.TO_CITY, SearchHistoryItem.TO_COUNTRY },
                                         null,
                                         null,
-                                        SearchHistoryItem.DATE + " DESC");
+                                        SearchHistoryItem.DATE + " ASC");
 
         ArrayList<Route> searches = new ArrayList<Route>();
 
@@ -261,7 +284,10 @@ public class ContentUtils
                                         null);
 
         results.moveToFirst();
-        return results.getInt(0) > 0;
+        boolean isSubscribed = results.getInt(0) > 0;
+        results.close();
+        
+        return isSubscribed;
     }
 
     public static ArrayList<NotificationSubscription> getNotificationSubscriptions(Context context)

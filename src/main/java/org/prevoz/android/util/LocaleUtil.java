@@ -12,10 +12,11 @@ public class LocaleUtil
 {
     private static final HashMap<String, String> localizedCountryNamesCache = new HashMap<String, String>();
     private static final HashMap<String, String> localizedCityNamesCache = new HashMap<String, String>();
-    private static Locale localeCache = null;
     private static final HashMap<String, SimpleDateFormat> dateFormatCache = new HashMap<String, SimpleDateFormat>();
 
     private static final SimpleDateFormat timeFormatter = LocaleUtil.getSimpleDateFormat("HH:mm");
+    private static Locale localeCache = null;
+    private static TimeZone timezoneCache = null;
 
     public static String getFormattedTime(Calendar date)
     {
@@ -118,14 +119,16 @@ public class LocaleUtil
 
     public static TimeZone getLocalTimezone()
     {
-        TimeZone tz = TimeZone.getTimeZone("Europe/Ljubljana");
+        if (timezoneCache == null) {
+            timezoneCache = TimeZone.getTimeZone("Europe/Ljubljana");
 
-        if (tz.getID().equals(TimeZone.getTimeZone("GMT").getID()))
-        {
-            return TimeZone.getDefault();
+            if (timezoneCache.getID().equals(TimeZone.getTimeZone("GMT").getID()))
+            {
+                return TimeZone.getDefault();
+            }
         }
 
-        return tz;
+        return timezoneCache;
     }
 
     public static Locale getLocale()
