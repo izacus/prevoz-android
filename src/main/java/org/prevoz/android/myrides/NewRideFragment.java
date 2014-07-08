@@ -2,6 +2,7 @@ package org.prevoz.android.myrides;
 
 import android.app.ProgressDialog;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
@@ -112,7 +113,8 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
             }
         });
 
-        textPrice.setNextFocusForwardId(R.id.newride_people);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+            textPrice.setNextFocusForwardId(R.id.newride_people);
         textPrice.setNextFocusRightId(R.id.newride_people);
 
         if (getArguments() != null)
