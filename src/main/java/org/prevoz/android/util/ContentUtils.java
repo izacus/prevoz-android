@@ -179,10 +179,10 @@ public class ContentUtils
     {
         ContentResolver resolver = context.getContentResolver();
 
-        String fcity = from == null ? null : from.getDisplayName();
-        String fcountry = from == null ? null : from.getCountryCode();
-        String tcity = to == null ? null : to.getDisplayName();
-        String tcountry = to == null ? null : to.getCountryCode();
+        String fcity = from == null ? "" : from.getDisplayName();
+        String fcountry = from == null ? "" : from.getCountryCode();
+        String tcity = to == null ? "" : to.getDisplayName();
+        String tcountry = to == null ? "" : to.getCountryCode();
         long time = date.getTime();
 
         // Check if entry exists
