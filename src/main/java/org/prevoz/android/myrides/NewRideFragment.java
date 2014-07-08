@@ -128,6 +128,9 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
         textPhone.setBackgroundDrawable(null);
         textPrice.setEnabled(false);
         textPrice.setBackgroundDrawable(null);
+
+        dateSet = true;
+        timeSet = true;
     }
 
     @Click(R.id.newride_date_edit)
@@ -322,7 +325,7 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
             {
                 dialog.dismiss();
 
-                if (!("created".equals(status.status)))
+                if (!("created".equals(status.status) || "updated".equals(status.status)))
                 {
                     if (status.error != null && status.error.size() > 0)
                     {
