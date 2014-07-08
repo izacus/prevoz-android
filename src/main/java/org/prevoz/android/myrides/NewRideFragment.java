@@ -3,7 +3,10 @@ package org.prevoz.android.myrides;
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
@@ -72,6 +75,8 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
     @InstanceState
     protected Long editRideId;
 
+    private boolean shouldGoFromDateToTime = false;
+
     @AfterViews
     protected void initFragment()
     {
@@ -87,6 +92,28 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
         textTo.setAdapter(new CityAutocompleteAdapter(getActivity()));
         textFrom.setValidator(new CityNameTextValidator(getActivity()));
         textTo.setValidator(new CityNameTextValidator(getActivity()));
+
+        // Setup IME actions
+        textTo.setOnEditorActionListener(new TextView.OnEditorActionListener()
+        {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
+            {
+                if (actionId == EditorInfo.IME_ACTION_NEXT)
+                {
+                    shouldGoFromDateToTime = true;
+                    clickDate();
+                    textTo.clearFocus();
+                    textPrice.requestFocus();
+                    return true;
+                }
+
+                return false;
+            }
+        });
+
+        textPrice.setNextFocusForwardId(R.id.newride_people);
+        textPrice.setNextFocusRightId(R.id.newride_people);
 
         if (getArguments() != null)
         {
@@ -194,6 +221,12 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
 
         dateSet = true;
         updateDateTimeDisplay(true, false);
+
+        if (shouldGoFromDateToTime)
+        {
+            shouldGoFromDateToTime = false;
+            clickTime();
+        }
     }
 
     @Override
@@ -204,6 +237,7 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
 
         timeSet = true;
         updateDateTimeDisplay(false, true);
+        textPrice.requestFocus();
     }
 
     protected void updateDateTimeDisplay(boolean date, boolean time)

@@ -1,7 +1,9 @@
 package org.prevoz.android.search;
 
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.*;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import de.greenrobot.event.EventBus;
@@ -54,6 +56,24 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
         searchTo.setAdapter(new CityAutocompleteAdapter(getActivity()));
         searchFrom.setValidator(new CityNameTextValidator(getActivity()));
         searchTo.setValidator(new CityNameTextValidator(getActivity()));
+
+        // Handle input action for next on to
+        searchTo.setOnEditorActionListener(new TextView.OnEditorActionListener()
+        {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
+            {
+                if (actionId == EditorInfo.IME_ACTION_NEXT)
+                {
+                    clickDate();
+                    searchTo.clearFocus();
+                    searchButton.requestFocus();
+                    return true;
+                }
+
+                return false;
+            }
+        });
     }
 
 
