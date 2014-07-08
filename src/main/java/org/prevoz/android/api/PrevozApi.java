@@ -5,8 +5,6 @@ import retrofit.Callback;
 import retrofit.client.Response;
 import retrofit.http.*;
 
-import java.util.HashMap;
-
 public interface PrevozApi
 {
     @GET("/api/search/shares/")

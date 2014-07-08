@@ -1,6 +1,5 @@
 package org.prevoz.android.search;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.*;
@@ -12,7 +11,10 @@ import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.CityNameTextValidator;
 import org.prevoz.android.model.Route;
-import org.prevoz.android.util.*;
+import org.prevoz.android.util.ContentUtils;
+import org.prevoz.android.util.LocaleUtil;
+import org.prevoz.android.util.StringUtil;
+import org.prevoz.android.util.ViewUtils;
 
 import java.util.Calendar;
 

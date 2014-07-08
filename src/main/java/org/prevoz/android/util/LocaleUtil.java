@@ -178,4 +178,16 @@ public class LocaleUtil
         String[] dayNames = res.getStringArray(R.array.notify_day_names);
         return dayNames[date.get(Calendar.DAY_OF_WEEK) - 1];
     }
+
+    public static Calendar getMidnightCalendar(Calendar date)
+    {
+        Calendar newCalendar = Calendar.getInstance(LocaleUtil.getLocalTimezone());
+        newCalendar.setTime(date.getTime());
+        newCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        newCalendar.set(Calendar.MINUTE, 0);
+        newCalendar.set(Calendar.SECOND, 0);
+        newCalendar.set(Calendar.MILLISECOND, 0);
+
+        return newCalendar;
+    }
 }

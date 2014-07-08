@@ -3,7 +3,6 @@ package org.prevoz.android.search;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.widget.FilterQueryProvider;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 import org.prevoz.android.R;
 import org.prevoz.android.provider.Location;
 import org.prevoz.android.util.ContentUtils;
-import org.prevoz.android.util.Database;
 import org.prevoz.android.util.LocaleUtil;
 
 public class CityAutocompleteAdapter extends SimpleCursorAdapter implements FilterQueryProvider, SimpleCursorAdapter.CursorToStringConverter

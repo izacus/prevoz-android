@@ -1,12 +1,10 @@
 package org.prevoz.android.model;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.widget.AutoCompleteTextView;
 import org.prevoz.android.provider.Location;
 import org.prevoz.android.util.ContentUtils;
-import org.prevoz.android.util.Database;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
 

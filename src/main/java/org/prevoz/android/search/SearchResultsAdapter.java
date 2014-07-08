@@ -11,7 +11,6 @@ import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.util.LocaleUtil;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
-import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;

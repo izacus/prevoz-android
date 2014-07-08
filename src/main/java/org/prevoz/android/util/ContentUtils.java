@@ -5,8 +5,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import org.prevoz.android.R;
@@ -18,8 +16,6 @@ import org.prevoz.android.provider.Location;
 import org.prevoz.android.provider.Notification;
 import org.prevoz.android.provider.SearchHistoryItem;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -256,12 +252,12 @@ public class ContentUtils
 
         Cursor results = resolver.query(Notification.CONTENT_URI,
                                         new String[] { "COUNT(" + SearchHistoryItem._ID + ") AS count" },
-                                        Notification.FROM_CITY + " = ? AND " + Notification.FROM_COUNTRY + " = ? AND" +
+                                        Notification.FROM_CITY + " = ? AND " + Notification.FROM_COUNTRY + " = ? AND " +
                                         Notification.TO_CITY + " = ? AND " + Notification.TO_COUNTRY + " = ? AND " +
                                         Notification.DATE + " = ?",
                                         new String[] { from.getDisplayName(), from.getCountryCode(),
                                                        to.getDisplayName(), to.getCountryCode(),
-                                                       String.valueOf(date.getTime())},
+                                                       String.valueOf(LocaleUtil.getMidnightCalendar(date).getTimeInMillis())},
                                         null);
 
         results.moveToFirst();
@@ -303,7 +299,7 @@ public class ContentUtils
         values.put(Notification.FROM_COUNTRY, from.getCountryCode());
         values.put(Notification.TO_CITY, to.getDisplayName());
         values.put(Notification.TO_COUNTRY, to.getCountryCode());
-        values.put(Notification.DATE, date.getTimeInMillis());
+        values.put(Notification.DATE, LocaleUtil.getMidnightCalendar(date).getTimeInMillis());
         resolver.insert(Notification.CONTENT_URI, values);
     }
 
@@ -311,22 +307,19 @@ public class ContentUtils
     {
         ContentResolver resolver = context.getContentResolver();
         resolver.delete(Notification.CONTENT_URI,
-                        Notification.FROM_CITY + " = ? AND " + Notification.FROM_COUNTRY + " = ? AND" +
+                        Notification.FROM_CITY + " = ? AND " + Notification.FROM_COUNTRY + " = ? AND " +
                         Notification.TO_CITY + " = ? AND " + Notification.TO_COUNTRY + " = ? AND " +
                         Notification.DATE + " = ?",
                         new String[] { from.getDisplayName(), from.getCountryCode(),
                                 to.getDisplayName(), to.getCountryCode(),
-                                String.valueOf(date.getTime())});
+                                String.valueOf(LocaleUtil.getMidnightCalendar(date).getTimeInMillis())});
     }
 
     public static void pruneOldNotifications(Context context)
     {
         ContentResolver resolver = context.getContentResolver();
 
-        Calendar time = Calendar.getInstance(LocaleUtil.getLocalTimezone());
-        time.set(Calendar.HOUR_OF_DAY, 0);
-        time.set(Calendar.MINUTE, 0);
-        time.set(Calendar.SECOND, 0);
+        Calendar time = LocaleUtil.getMidnightCalendar(Calendar.getInstance(LocaleUtil.getLocalTimezone()));
         resolver.delete(Notification.CONTENT_URI, Notification.DATE + " < ?", new String[] { String.valueOf(time.getTimeInMillis()) });
     }
 }

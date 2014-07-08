@@ -9,7 +9,6 @@ import android.widget.TextView;
 import org.prevoz.android.R;
 import org.prevoz.android.model.Route;
 import org.prevoz.android.util.ContentUtils;
-import org.prevoz.android.util.Database;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 import java.util.List;

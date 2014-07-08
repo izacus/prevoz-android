@@ -1,7 +1,6 @@
 package org.prevoz.android.myrides;
 
 import android.app.ProgressDialog;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.widget.CheckBox;
@@ -24,7 +23,6 @@ import org.prevoz.android.ride.RideInfoListener;
 import org.prevoz.android.search.CityAutocompleteAdapter;
 import org.prevoz.android.ui.FloatingHintAutocompleteEditText;
 import org.prevoz.android.ui.FloatingHintEditText;
-import org.prevoz.android.util.Database;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
 import org.prevoz.android.util.ViewUtils;

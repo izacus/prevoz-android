@@ -1,7 +1,5 @@
 package org.prevoz.android.search;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

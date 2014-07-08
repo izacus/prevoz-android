@@ -19,7 +19,6 @@ import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.NotificationSubscription;
 import org.prevoz.android.util.ContentUtils;
-import org.prevoz.android.util.Database;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;

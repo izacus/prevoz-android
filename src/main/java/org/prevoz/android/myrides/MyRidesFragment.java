@@ -1,16 +1,15 @@
 package org.prevoz.android.myrides;
 
-import android.accounts.AccountManager;
-import android.accounts.AccountManagerFuture;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import de.greenrobot.event.EventBus;
-import org.androidannotations.annotations.*;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ItemClick;
+import org.androidannotations.annotations.ViewById;
 import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;

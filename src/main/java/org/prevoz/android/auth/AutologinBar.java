@@ -20,13 +20,7 @@ import android.util.AttributeSet;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.Spinner;
-import android.widget.TextView;
-
+import android.widget.*;
 import org.prevoz.android.R;
 
 public class AutologinBar extends LinearLayout implements OnClickListener, DeviceAccountLogin.AutoLoginCallback

@@ -3,6 +3,7 @@ package org.prevoz.android.provider;
 import edu.mit.mobile.android.content.GenericDBHelper;
 import edu.mit.mobile.android.content.QuerystringWrapper;
 import edu.mit.mobile.android.content.SimpleContentProvider;
+import org.prevoz.android.model.NotificationSubscription;
 
 public class DataProvider extends SimpleContentProvider
 {
@@ -27,6 +28,11 @@ public class DataProvider extends SimpleContentProvider
         final GenericDBHelper historyHelper = new GenericDBHelper(SearchHistoryItem.class);
         final QuerystringWrapper historyWrapper = new QuerystringWrapper(historyHelper);
         addDirAndItemUri(historyWrapper, SearchHistoryItem.PATH);
+
+        // Notifications
+        final GenericDBHelper notificationHelper = new GenericDBHelper(Notification.class);
+        final QuerystringWrapper notificationWrapper = new QuerystringWrapper(notificationHelper);
+        addDirAndItemUri(notificationWrapper, Notification.PATH);
     }
 
 }

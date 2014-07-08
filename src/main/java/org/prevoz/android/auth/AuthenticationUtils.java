@@ -11,7 +11,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
-import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
 
