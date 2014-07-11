@@ -80,6 +80,7 @@
                     android:singleLine="true"
                     android:imeOptions="actionNext"
                     android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
+                    android:dropDownSelector="@android:drawable/list_selector_background"
                     android:hint="@string/search_form_from_hint"
 
                     style="@style/Prevoz.FloatingHintEditText"
@@ -95,6 +96,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
                     android:singleLine="true"
+                    android:dropDownSelector="@android:drawable/list_selector_background"
                     android:hint="@string/search_form_to_hint"
 
                     style="@style/Prevoz.FloatingHintEditText"
@@ -173,13 +175,16 @@
 
                 <org.prevoz.android.ui.FloatingHintEditText
                     android:id="@+id/newride_price"
-                    android:layout_width="80dp"
+                    android:layout_width="100dp"
                     android:layout_height="48dp"
                     android:layout_marginLeft="8dp"
                     android:inputType="numberDecimal"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:hint="Stroški"
+                    android:imeOptions="actionNext"
+                    android:nextFocusRight="@+id/newride_people"
+                    android:nextFocusForward="@id/newride_people"
                     style="@style/Prevoz.FloatingHintEditText"
                     tools:ignore="TextFields"
                     />
@@ -198,13 +203,15 @@
                     />
 
                 <org.prevoz.android.ui.FloatingHintEditText
-                    android:id="@+id/newride_people"
-                    android:layout_width="80dp"
+                    android:id="@id/newride_people"
+                    android:layout_width="100dp"
                     android:layout_height="48dp"
                     android:inputType="number"
                     android:layout_marginLeft="8dp"
                     android:ellipsize="end"
                     android:singleLine="true"
+                    android:nextFocusForward="@+id/newride_phone"
+                    android:nextFocusDown="@id/newride_phone"
                     android:hint="Oseb"
                     style="@style/Prevoz.FloatingHintEditText"
                     tools:ignore="TextFields"
@@ -230,13 +237,16 @@
                     />
 
                 <org.prevoz.android.ui.FloatingHintEditText
-                    android:id="@+id/newride_phone"
+                    android:id="@id/newride_phone"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginLeft="8dp"
                     android:inputType="phone"
                     android:singleLine="true"
                     android:hint="Telefonska številka"
+                    android:imeOptions="actionNext"
+                    android:nextFocusForward="@+id/newride_insurance"
+                    android:nextFocusDown="@id/newride_insurance"
                     style="@style/Prevoz.FloatingHintEditText"
                     tools:ignore="TextFields"
                     />
@@ -244,7 +254,7 @@
             </LinearLayout>
 
             <CheckBox
-                android:id="@+id/newride_insurance"
+                android:id="@id/newride_insurance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -252,12 +262,14 @@
                 android:layout_marginRight="16dp"
                 android:paddingLeft="@dimen/checkbox_padding"
                 android:text="Nezgodno zavarovanje potnikov"
+                android:nextFocusForward="@+id/newride_notes"
+                android:nextFocusDown="@id/newride_notes"
                 style="@style/Prevoz.CheckBox"
                 tools:ignore="TextFields"
                 />
 
             <org.prevoz.android.ui.FloatingHintEditText
-                android:id="@+id/newride_notes"
+                android:id="@id/newride_notes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
@@ -265,6 +277,7 @@
                 android:inputType="textMultiLine"
                 android:scrollbars="none"
                 android:hint="Opombe"
+                android:imeOptions="actionSend"
                 style="@style/Prevoz.FloatingHintEditText"
                 tools:ignore="TextFields"
                 />

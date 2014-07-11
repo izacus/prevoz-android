@@ -113,9 +113,20 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
             }
         });
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-            textPrice.setNextFocusForwardId(R.id.newride_people);
-        textPrice.setNextFocusRightId(R.id.newride_people);
+        textNotes.setOnEditorActionListener(new TextView.OnEditorActionListener()
+        {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent)
+            {
+                if (actionId == EditorInfo.IME_ACTION_SEND)
+                {
+                    clickSubmit();
+                    return true;
+                }
+
+                return false;
+            }
+        });
 
         if (getArguments() != null)
         {
