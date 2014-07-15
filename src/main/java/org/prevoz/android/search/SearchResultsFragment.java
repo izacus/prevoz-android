@@ -227,7 +227,7 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
         if (pushManager.isSubscribed(lastFrom, lastTo, lastDate))
         {
             searchNotifyButtonIcon.setImageResource(R.drawable.ic_action_cancel);
-            searchNofityButtonText.setText("Prenehaj z obveščanjem o prevozih");
+            searchNofityButtonText.setText("Prenehaj z obveščanjem");
         }
         else
         {

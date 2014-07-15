@@ -99,6 +99,7 @@ public class LoginActivity extends SherlockFragmentActivity
     private void getAccountUsernameAndApiKey(final String code)
     {
         final ProgressDialog dialog = ProgressDialog.show(this, "Prijava", "Prijavljam....", true, false);
+        webview.setVisibility(View.INVISIBLE);
         requestAccessToken(dialog, code);
     }
 
