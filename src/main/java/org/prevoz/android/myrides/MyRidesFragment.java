@@ -1,5 +1,6 @@
 package org.prevoz.android.myrides;
 
+import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
@@ -79,8 +80,10 @@ public class MyRidesFragment extends Fragment implements Callback<RestSearchResu
         ViewUtils.setupEmptyView(myridesList, emptyView, "Nimate objavljenih prevozov.");
         setListVisibility(true);
 
+        Activity activity = getActivity();
+        if (activity == null) return;
 
-        SearchResultsAdapter adapter = new SearchResultsAdapter(getActivity(), restRide.results);
+        SearchResultsAdapter adapter = new SearchResultsAdapter(activity, restRide.results);
         myridesList.setAdapter(adapter);
     }
 

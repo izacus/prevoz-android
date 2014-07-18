@@ -71,6 +71,7 @@ public class LoginActivity extends SherlockFragmentActivity
     protected void initActivity()
     {
         webview.setWebViewClient(new WebViewController());
+        webview.setVisibility(View.VISIBLE);
         WebSettings settings = webview.getSettings();
         settings.setJavaScriptEnabled(true);
 

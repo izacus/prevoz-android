@@ -236,7 +236,15 @@ public class MainActivity extends SherlockFragmentActivity
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.main_search_container, fragment, tag);
         if (backstack)
+        {
             ft.addToBackStack(null);
+        }
+        else
+        {
+            for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++)
+                getSupportFragmentManager().popBackStack();
+        }
+
         ft.commit();
     }
 

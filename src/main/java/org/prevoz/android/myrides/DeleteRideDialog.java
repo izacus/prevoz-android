@@ -48,7 +48,12 @@ public class DeleteRideDialog extends BaseDialogFragment
                         deleteRide(ride.id);
                     }
                 })
-                .setNegativeButton(R.string.ride_delete_cancel, null);
+                .setNegativeButton(R.string.ride_delete_cancel, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dismiss();
+                    }
+                });
 
         return builder;
     }
