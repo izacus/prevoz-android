@@ -1,8 +1,10 @@
 package org.prevoz.android.myrides;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
@@ -40,6 +42,9 @@ import java.util.Calendar;
 @EFragment(R.layout.fragment_newride)
 public class NewRideFragment extends Fragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, RideInfoListener
 {
+    private static final String PREF_PHONE_NO = "org.prevoz.phoneno";
+    private static final String PREF_HAS_INSURANCE = "org.prevoz.hasinsurance";
+
     public static String PARAM_EDIT_RIDE = "EditRide";
 
     private static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", LocaleUtil.getLocale());
@@ -133,6 +138,13 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
             RestRide editRide = getArguments().getParcelable(PARAM_EDIT_RIDE);
             fillInEditRide(editRide);
         }
+        else
+        {
+            // Load defaults from preferences
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            textPhone.setText(prefs.getString(PREF_PHONE_NO, ""));
+            chkInsurance.setChecked(prefs.getBoolean(PREF_HAS_INSURANCE, false));
+        }
 
     }
 
@@ -216,6 +228,9 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
                                       textPhone.getText().toString(),
                                       chkInsurance.isChecked(),
                                       textNotes.getText().toString());
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        prefs.edit().putString(PREF_PHONE_NO, textPhone.getText().toString()).putBoolean(PREF_HAS_INSURANCE, chkInsurance.isChecked()).apply();
 
         if (editRideId != null)
             ride.id = editRideId;
