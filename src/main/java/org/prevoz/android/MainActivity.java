@@ -73,6 +73,18 @@ public class MainActivity extends SherlockFragmentActivity
     {
         LocaleUtil.checkSetLocale(this, getResources().getConfiguration());
         super.onCreate(savedInstanceState);
+
+        // Attach search fragment if it's missing
+        if (savedInstanceState == null)
+        {
+            FragmentManager fm = getSupportFragmentManager();
+
+            if (fm.findFragmentByTag(SEARCH_FRAGMENT_TAG) == null) {
+                FragmentTransaction transaction = fm.beginTransaction();
+                transaction.replace(R.id.main_search_container, new SearchResultsFragment_(), SEARCH_FRAGMENT_TAG);
+                transaction.commit();
+            }
+        }
     }
 
     @AfterViews
@@ -85,16 +97,6 @@ public class MainActivity extends SherlockFragmentActivity
 
         prepareDrawer();
         checkAuthenticated();
-
-        // Attach search fragment if it's missing
-        FragmentManager fm = getSupportFragmentManager();
-
-        if (fm.findFragmentByTag(SEARCH_FRAGMENT_TAG) == null)
-        {
-            FragmentTransaction transaction = fm.beginTransaction();
-            transaction.replace(R.id.main_search_container, new SearchResultsFragment_(), SEARCH_FRAGMENT_TAG);
-            transaction.commit();
-        }
     }
 
     @Background
