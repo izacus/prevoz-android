@@ -27,6 +27,7 @@ import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.Route;
 import org.prevoz.android.myrides.MyRidesFragment_;
+import org.prevoz.android.myrides.NewRideFragment;
 import org.prevoz.android.myrides.NewRideFragment_;
 import org.prevoz.android.push.PushFragment_;
 import org.prevoz.android.push.PushManager;
@@ -305,7 +306,8 @@ public class MainActivity extends SherlockFragmentActivity
     public void onBackPressed()
     {
         SearchResultsFragment fragment = (SearchResultsFragment) getSupportFragmentManager().findFragmentByTag(SEARCH_FRAGMENT_TAG);
-        if (fragment != null && fragment.showingResults())
+        NewRideFragment newRideFragment = (NewRideFragment) getSupportFragmentManager().findFragmentByTag(NEW_RIDE_FRAGMENT_TAG);
+        if (fragment != null && newRideFragment == null && fragment.showingResults())
         {
             EventBus.getDefault().post(new Events.ClearSearchEvent());
         }
