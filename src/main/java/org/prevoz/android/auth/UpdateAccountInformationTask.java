@@ -56,7 +56,7 @@ class UpdateAccountInformationTask extends AsyncTask<Void, Void, Void>
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         sp.edit().putBoolean(PrevozAccountAuthenticator.PREF_OAUTH2, true)
                  .putLong(PrevozAccountAuthenticator.PREF_KEY_EXPIRES, expires)
-                 .commit();
+                 .apply();
         return null;
     }
 

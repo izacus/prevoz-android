@@ -75,7 +75,7 @@ public class PushManager
             {
                 GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
                 gcmId = gcm.register(GCM_PROJECT_ID);
-                prefs.edit().putString(PREF_KEY, gcmId).commit();
+                prefs.edit().putString(PREF_KEY, gcmId).apply();
             }
 
             available = true;

@@ -84,7 +84,7 @@
     <string name="ride_delete_message">Ali želite izbrisati prevoz v %1$s ob %2$s?</string>
     <string name="ride_delete_ok">Izbriši</string>
     <string name="ride_delete_cancel">Prekliči</string>
-    <string name="ride_delete_progress">Brišem...</string>
+    <string name="ride_delete_progress">Brišem…</string>
     <string name="ride_delete_success">Prevoz izbrisan.</string>
     <string name="ride_delete_failure">Prevoza ni bilo mogoče izbrisati.</string>
     <string name="newride_error_phone">Vnesite telefonsko številko.</string>
@@ -96,4 +96,15 @@
     <string name="newride_error_date_passed">Datum in čas prevoza je že minil.</string>
     <string name="newride_error_to_missing">Vnesite kraj prihoda.</string>
     <string name="newride_error_from_missing">Vnesite kraj odhoda.</string>
+    <string name="menu_newride">Nov prevoz</string>
+    <string name="notifications_subscribed_title">Naročena obvestila</string>
+    <string name="search_noresults">Za ta dan in relacijo ni objavljenih prevozov.</string>
+    <string name="myrides_title">Moji prevozi</string>
+    <string name="newride_time">Čas</string>
+    <string name="newride_price">Stroški</string>
+    <string name="newride_people">Oseb</string>
+    <string name="newride_phone_number">Telefonska številka</string>
+    <string name="newride_insurance">Nezgodno zavarovanje potnikov</string>
+    <string name="newride_notes">Opombe</string>
+    <string name="newride_button_submit">Oddaj prevoz</string>
 </resources>

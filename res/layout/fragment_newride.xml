@@ -150,7 +150,7 @@
                     android:clickable="true"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:hint="Čas"
+                    android:hint="@string/newride_time"
                     style="@style/Prevoz.FloatingHintEditText"
                     tools:ignore="TextFields"
                     />
@@ -182,7 +182,7 @@
                     android:inputType="numberDecimal"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:hint="Stroški"
+                    android:hint="@string/newride_price"
                     android:imeOptions="actionNext"
                     android:nextFocusRight="@+id/newride_people"
                     android:nextFocusForward="@id/newride_people"
@@ -213,7 +213,7 @@
                     android:singleLine="true"
                     android:nextFocusForward="@+id/newride_phone"
                     android:nextFocusDown="@id/newride_phone"
-                    android:hint="Oseb"
+                    android:hint="@string/newride_people"
                     style="@style/Prevoz.FloatingHintEditText"
                     tools:ignore="TextFields"
                     />
@@ -244,7 +244,7 @@
                     android:layout_marginLeft="8dp"
                     android:inputType="phone"
                     android:singleLine="true"
-                    android:hint="Telefonska številka"
+                    android:hint="@string/newride_phone_number"
                     android:imeOptions="actionNext"
                     android:nextFocusForward="@+id/newride_insurance"
                     android:nextFocusDown="@id/newride_insurance"
@@ -262,7 +262,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:paddingLeft="@dimen/checkbox_padding"
-                android:text="Nezgodno zavarovanje potnikov"
+                android:text="@string/newride_insurance"
                 android:nextFocusForward="@+id/newride_notes"
                 android:nextFocusDown="@id/newride_notes"
                 style="@style/Prevoz.CheckBox"
@@ -277,7 +277,7 @@
                 android:layout_marginRight="16dp"
                 android:inputType="textMultiLine"
                 android:scrollbars="none"
-                android:hint="Opombe"
+                android:hint="@string/newride_notes"
                 android:imeOptions="actionSend"
                 style="@style/Prevoz.FloatingHintEditText"
                 tools:ignore="TextFields"
@@ -316,7 +316,7 @@
                     android:paddingLeft="16dp"
 
                     android:textColor="@color/prevoztheme_color"
-                    android:text="Oddaj prevoz"
+                    android:text="@string/newride_button_submit"
                     style="?android:textAppearanceButton"
                     />
             </LinearLayout>

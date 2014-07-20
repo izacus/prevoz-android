@@ -12,7 +12,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="12dp"
-        android:text="Naročena obvestila"
+        android:text="@string/notifications_subscribed_title"
         style="@style/Prevoz.Header"
         />
 

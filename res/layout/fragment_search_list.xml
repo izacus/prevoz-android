@@ -12,7 +12,7 @@
               android:gravity="center"
               android:textColor="@android:color/darker_gray"
               android:visibility="invisible"
-              android:text="Za ta dan in relacijo ni objavljenih prevozov."
+              android:text="@string/search_noresults"
     />
 
     <se.emilsjolander.stickylistheaders.StickyListHeadersListView

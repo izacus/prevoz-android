@@ -22,7 +22,7 @@
     <style name="Prevoz.ActionBar.TitleText" parent="@style/TextAppearance.Sherlock.Widget.ActionBar.Title">
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">22sp</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="Prevoz.EditText" parent="android:Widget.EditText">

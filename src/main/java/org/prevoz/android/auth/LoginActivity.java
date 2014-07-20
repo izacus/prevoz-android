@@ -68,6 +68,7 @@ public class LoginActivity extends SherlockFragmentActivity
     }
 
     @AfterViews
+    @SuppressLint("SetJavaScriptEnabled")
     protected void initActivity()
     {
         webview.setWebViewClient(new WebViewController());

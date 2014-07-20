@@ -15,7 +15,9 @@
  */
 package org.prevoz.android.auth;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.ContextThemeWrapper;
 import android.view.View;
@@ -23,6 +25,7 @@ import android.view.View.OnClickListener;
 import android.widget.*;
 import org.prevoz.android.R;
 
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class AutologinBar extends LinearLayout implements OnClickListener, DeviceAccountLogin.AutoLoginCallback
 {
     protected LoginActivity mActivity;
