@@ -51,7 +51,7 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
     private static final String PREF_PHONE_NO = "org.prevoz.phoneno";
     private static final String PREF_HAS_INSURANCE = "org.prevoz.hasinsurance";
 
-    public static String PARAM_EDIT_RIDE = "EditRide";
+    public static final String PARAM_EDIT_RIDE = "EditRide";
 
     @ViewById(R.id.newride_from)
     protected FloatingHintAutocompleteEditText textFrom;

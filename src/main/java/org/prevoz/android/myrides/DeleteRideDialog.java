@@ -20,7 +20,7 @@ import retrofit.client.Response;
 
 public class DeleteRideDialog extends BaseDialogFragment
 {
-    private static String ARG_RIDE = "ride";
+    private static final String ARG_RIDE = "ride";
 
     public static DeleteRideDialog newInstance(RestRide ride)
     {

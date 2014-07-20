@@ -88,9 +88,6 @@ public class LoginActivity extends SherlockFragmentActivity
         settings.setJavaScriptEnabled(true);
 
         // Generate OAuth login URL
-        List<String> responseTypes = new ArrayList<String>();
-        responseTypes.add("code");
-
         String authenticationUrl = null;
 
         try
@@ -119,7 +116,7 @@ public class LoginActivity extends SherlockFragmentActivity
     @Background
     protected void requestAccessToken(final ProgressDialog dialog, String code)
     {
-        RestAuthTokenResponse retrievedToken = null;
+        RestAuthTokenResponse retrievedToken;
         try
         {
              retrievedToken = ApiClient.getAdapter().getAccessToken("authorization_code", CLIENT_ID, CLIENT_SECRET, code);

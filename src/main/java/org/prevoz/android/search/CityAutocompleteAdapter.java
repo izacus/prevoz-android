@@ -25,7 +25,6 @@ public class CityAutocompleteAdapter extends SimpleCursorAdapter implements Filt
               new int[] { R.id.city_name },
               0);
 
-        ContentResolver contentResolver = context.getContentResolver();
         setFilterQueryProvider(this);
         setCursorToStringConverter(this);
     }

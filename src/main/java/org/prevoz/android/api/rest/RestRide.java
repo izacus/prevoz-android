@@ -80,7 +80,7 @@ public class RestRide implements Comparable, Parcelable, Serializable
         if (!(o instanceof RestRide)) return false;
 
         RestRide restRide = (RestRide) o;
-        return id == restRide.id;
+        return id.equals(restRide.id);
     }
 
     @Override

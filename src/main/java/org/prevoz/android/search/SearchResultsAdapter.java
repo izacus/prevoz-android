@@ -142,7 +142,7 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
         RestRide ride = null;
         for (RestRide r : results)
         {
-            if (r.id == id)
+            if (r.id.equals(id))
             {
                 ride = r;
                 break;
