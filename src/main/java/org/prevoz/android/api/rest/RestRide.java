@@ -4,7 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
+import org.prevoz.android.util.LocaleUtil;
+
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 public class RestRide implements Comparable, Parcelable, Serializable
@@ -34,7 +37,7 @@ public class RestRide implements Comparable, Parcelable, Serializable
     public boolean isFull;
 
     @SerializedName("date_iso8601")
-    public Date date;
+    public Calendar date;
 
     /*@SerializedName("added")
     public Date published; */
@@ -53,7 +56,7 @@ public class RestRide implements Comparable, Parcelable, Serializable
     @SerializedName("is_author")
     public boolean isAuthor;
 
-    public RestRide(String fromCity, String fromCountry, String toCity, String toCountry, Float price, Integer numPeople, Date date, String phoneNumber, boolean insured, String comment)
+    public RestRide(String fromCity, String fromCountry, String toCity, String toCountry, Float price, Integer numPeople, Calendar date, String phoneNumber, boolean insured, String comment)
     {
         this.id = null;
         this.fromCity = fromCity;
@@ -113,7 +116,7 @@ public class RestRide implements Comparable, Parcelable, Serializable
         dest.writeValue(this.price);
         dest.writeValue(this.numPeople);
         dest.writeByte(isFull ? (byte) 1 : (byte) 0);
-        dest.writeLong(date != null ? date.getTime() : -1);
+        dest.writeLong(date != null ? date.getTimeInMillis() : -1);
         dest.writeString(this.phoneNumber);
         dest.writeByte(phoneNumberConfirmed ? (byte) 1 : (byte) 0);
         dest.writeByte(insured ? (byte) 1 : (byte) 0);
@@ -132,7 +135,14 @@ public class RestRide implements Comparable, Parcelable, Serializable
         this.numPeople = (Integer) in.readValue(Integer.class.getClassLoader());
         this.isFull = in.readByte() != 0;
         long tmpDate = in.readLong();
-        this.date = tmpDate == -1 ? null : new Date(tmpDate);
+
+        if (tmpDate > 0)
+        {
+            Calendar calendar = Calendar.getInstance(LocaleUtil.getLocalTimezone());
+            calendar.setTimeInMillis(tmpDate);
+            this.date = calendar;
+        }
+
         this.phoneNumber = in.readString();
         this.phoneNumberConfirmed = in.readByte() != 0;
         this.insured = in.readByte() != 0;

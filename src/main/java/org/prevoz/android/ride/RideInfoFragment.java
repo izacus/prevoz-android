@@ -124,7 +124,7 @@ public class RideInfoFragment extends DialogFragment
     {
         txtFrom.setText(LocaleUtil.getLocalizedCityName(getActivity(), ride.fromCity, ride.fromCountry));
         txtTo.setText(LocaleUtil.getLocalizedCityName(getActivity(), ride.toCity, ride.toCountry));
-        txtTime.setText(timeFormatter.format(ride.date));
+        txtTime.setText(timeFormatter.format(ride.date.getTime()));
 
         if (ride.price == null || ride.price == 0)
         {
@@ -135,9 +135,7 @@ public class RideInfoFragment extends DialogFragment
             txtPrice.setText(String.format(LocaleUtil.getLocale(), "%1.1f €", ride.price));
         }
 
-        Calendar cal = new GregorianCalendar();
-        cal.setTime(ride.date);
-        txtDate.setText(LocaleUtil.localizeDate(getResources(), cal));
+        txtDate.setText(LocaleUtil.localizeDate(getResources(), ride.date));
 
         vProgress.setVisibility(View.GONE);
         vDetails.setVisibility(View.VISIBLE);

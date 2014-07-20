@@ -47,8 +47,6 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
 
     public static String PARAM_EDIT_RIDE = "EditRide";
 
-    private static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", LocaleUtil.getLocale());
-
     @ViewById(R.id.newride_from)
     protected FloatingHintAutocompleteEditText textFrom;
     @ViewById(R.id.newride_to)
@@ -86,7 +84,7 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
     @AfterViews
     protected void initFragment()
     {
-        setTime = Calendar.getInstance(LocaleUtil.getLocale());
+        setTime = Calendar.getInstance(LocaleUtil.getLocalTimezone());
 
         // Round time to nearest 30 mins
         if (setTime.get(Calendar.MINUTE) >= 45 || setTime.get(Calendar.MINUTE) <= 15)
@@ -163,8 +161,7 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
         textNotes.setText(editRide.comment);
         textPhone.setText(editRide.phoneNumber);
         chkInsurance.setChecked(editRide.insured);
-        setTime = Calendar.getInstance(LocaleUtil.getLocale());
-        setTime.setTime(editRide.date);
+        setTime = editRide.date;
         updateDateTimeDisplay(true, true);
         editRideId = editRide.id;
 
@@ -224,7 +221,7 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
                                       to.getCountryCode(),
                                       Float.parseFloat(textPrice.getText().toString()),
                                       Integer.parseInt(textPeople.getText().toString()),
-                                      setTime.getTime(),
+                                      setTime,
                                       textPhone.getText().toString(),
                                       chkInsurance.isChecked(),
                                       textNotes.getText().toString());
@@ -274,7 +271,7 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
             textDate.setText(LocaleUtil.getShortFormattedDate(getResources(), setTime));
 
         if (time)
-            textTime.setText(timeFormat.format(setTime.getTime()));
+            textTime.setText(LocaleUtil.getFormattedTime(setTime));
     }
 
     private boolean validateForm()
@@ -380,6 +377,8 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
         dialog.setMessage("Oddajam prevoz...");
         dialog.show();
 
+        // TODO: remove when server timezone parsing is fixed
+        r.date.setTimeZone(LocaleUtil.getLocalTimezone());
         ApiClient.getAdapter().postRide(r, new Callback<RestStatus>()
         {
             @Override

@@ -38,8 +38,6 @@ import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
 @EFragment(R.layout.fragment_search_list)
 public class SearchResultsFragment extends Fragment implements Callback<RestSearchResults>
 {
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", LocaleUtil.getLocale());
-
     @ViewById(R.id.search_results_list)
     protected StickyListHeadersListView resultList;
     @ViewById(R.id.search_results_noresults)
@@ -157,6 +155,8 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     public void failure(RetrofitError retrofitError)
     {
         Log.d("Prevoz", "Response: " + retrofitError);
+
+        Toast.makeText(getActivity(), "Napaka pri iskanju - ali je na voljo internetna povezava?", Toast.LENGTH_SHORT).show();
         EventBus.getDefault().post(new Events.SearchComplete());
     }
 
@@ -300,7 +300,7 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
                                       e.from == null ? null : e.from.getCountryCode(),
                                       e.to == null ? null : e.to.getDisplayName(),
                                       e.to == null ? null : e.to.getCountryCode(),
-                                      sdf.format(e.date.getTime()), this);
+                                      LocaleUtil.getSimpleDateFormat("yyyy-MM-dd").format(e.date.getTime()), this);
 
         lastFrom = e.from;
         lastTo = e.to;

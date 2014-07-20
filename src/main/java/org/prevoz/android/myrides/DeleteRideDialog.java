@@ -35,11 +35,8 @@ public class DeleteRideDialog extends BaseDialogFragment
     protected Builder build(Builder builder)
     {
         final RestRide ride = getArguments().getParcelable(ARG_RIDE);
-        Calendar date = Calendar.getInstance(LocaleUtil.getLocale());
-        date.setTime(ride.date);
-
         builder.setTitle(ride.fromCity + " - " + ride.toCity)
-                .setMessage(getString(R.string.ride_delete_message, LocaleUtil.getDayName(getResources(), date).toLowerCase(LocaleUtil.getLocale()), LocaleUtil.getFormattedTime(date)))
+                .setMessage(getString(R.string.ride_delete_message, LocaleUtil.getDayName(getResources(), ride.date).toLowerCase(LocaleUtil.getLocale()), LocaleUtil.getFormattedTime(ride.date)))
                 .setPositiveButton(R.string.ride_delete_ok, new View.OnClickListener()
                 {
                     @Override
