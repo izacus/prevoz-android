@@ -1,9 +1,23 @@
 package org.prevoz.android.api;
 
-import org.prevoz.android.api.rest.*;
+import org.prevoz.android.api.rest.RestAccountStatus;
+import org.prevoz.android.api.rest.RestApiKey;
+import org.prevoz.android.api.rest.RestAuthTokenResponse;
+import org.prevoz.android.api.rest.RestPushStatus;
+import org.prevoz.android.api.rest.RestRide;
+import org.prevoz.android.api.rest.RestSearchResults;
+import org.prevoz.android.api.rest.RestStatus;
+
 import retrofit.Callback;
 import retrofit.client.Response;
-import retrofit.http.*;
+import retrofit.http.Body;
+import retrofit.http.DELETE;
+import retrofit.http.Field;
+import retrofit.http.FormUrlEncoded;
+import retrofit.http.GET;
+import retrofit.http.POST;
+import retrofit.http.Path;
+import retrofit.http.Query;
 
 public interface PrevozApi
 {

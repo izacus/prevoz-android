@@ -3,7 +3,6 @@ package org.prevoz.android.myrides;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
@@ -11,10 +10,17 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
-import org.androidannotations.annotations.*;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.InstanceState;
+import org.androidannotations.annotations.ViewById;
 import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.UiFragment;
@@ -32,12 +38,12 @@ import org.prevoz.android.ui.FloatingHintEditText;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
 import org.prevoz.android.util.ViewUtils;
+
+import java.util.Calendar;
+
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 @EFragment(R.layout.fragment_newride)
 public class NewRideFragment extends Fragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, RideInfoListener

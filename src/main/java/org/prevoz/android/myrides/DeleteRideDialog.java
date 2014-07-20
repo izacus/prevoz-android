@@ -5,18 +5,18 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-import de.greenrobot.event.EventBus;
-import eu.inmite.android.lib.dialogs.BaseDialogFragment;
+
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.util.LocaleUtil;
+
+import de.greenrobot.event.EventBus;
+import eu.inmite.android.lib.dialogs.BaseDialogFragment;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-
-import java.util.Calendar;
 
 public class DeleteRideDialog extends BaseDialogFragment
 {

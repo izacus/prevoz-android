@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.EditText;
+
 import org.prevoz.android.R;
 
 public class FloatingHintEditText extends EditText

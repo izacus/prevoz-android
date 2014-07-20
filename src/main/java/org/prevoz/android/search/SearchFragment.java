@@ -4,10 +4,19 @@ import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.*;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import com.fourmob.datetimepicker.date.DatePickerDialog;
-import de.greenrobot.event.EventBus;
-import org.androidannotations.annotations.*;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.InstanceState;
+import org.androidannotations.annotations.ViewById;
 import org.prevoz.android.R;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
@@ -19,6 +28,8 @@ import org.prevoz.android.util.StringUtil;
 import org.prevoz.android.util.ViewUtils;
 
 import java.util.Calendar;
+
+import de.greenrobot.event.EventBus;
 
 @EFragment(R.layout.fragment_search)
 public class SearchFragment extends Fragment implements DatePickerDialog.OnDateSetListener

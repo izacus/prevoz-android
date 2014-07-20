@@ -6,10 +6,12 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ListView;
+
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorListenerAdapter;
 import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
+
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class ListFlyupAnimator implements ViewTreeObserver.OnPreDrawListener

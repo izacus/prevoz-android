@@ -18,10 +18,19 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
-import de.greenrobot.event.EventBus;
-import org.androidannotations.annotations.*;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ItemClick;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
 import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
@@ -37,6 +46,8 @@ import org.prevoz.android.util.LocaleUtil;
 
 import java.util.Calendar;
 import java.util.Locale;
+
+import de.greenrobot.event.EventBus;
 
 @SuppressLint("Registered")          // AndroidAnnotated activity is registered.
 @EActivity(R.layout.activity_main)

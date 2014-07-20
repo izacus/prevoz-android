@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
 import org.prevoz.android.R;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.NotificationSubscription;

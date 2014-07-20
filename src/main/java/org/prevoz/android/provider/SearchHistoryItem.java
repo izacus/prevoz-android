@@ -1,6 +1,7 @@
 package org.prevoz.android.provider;
 
 import android.net.Uri;
+
 import edu.mit.mobile.android.content.ContentItem;
 import edu.mit.mobile.android.content.ProviderUtils;
 import edu.mit.mobile.android.content.column.DBColumn;

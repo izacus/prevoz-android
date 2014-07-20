@@ -6,14 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
 import org.prevoz.android.R;
 import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.util.LocaleUtil;
-import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+
+import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 public class SearchResultsAdapter extends BaseAdapter implements StickyListHeadersAdapter
 {

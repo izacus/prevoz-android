@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.AutoCompleteTextView;
+
 import org.prevoz.android.R;
 
 public class FloatingHintAutocompleteEditText extends AutoCompleteTextView

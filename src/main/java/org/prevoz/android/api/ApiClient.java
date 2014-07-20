@@ -1,6 +1,7 @@
 package org.prevoz.android.api;
 
 import android.os.Build;
+
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -8,13 +9,9 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.squareup.okhttp.OkHttpClient;
+
 import org.prevoz.android.PrevozApplication_;
 import org.prevoz.android.util.LocaleUtil;
-
-import retrofit.RequestInterceptor;
-import retrofit.RestAdapter;
-import retrofit.client.OkClient;
-import retrofit.converter.GsonConverter;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -23,7 +20,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
-import java.util.TimeZone;
+
+import retrofit.RequestInterceptor;
+import retrofit.RestAdapter;
+import retrofit.client.OkClient;
+import retrofit.converter.GsonConverter;
 
 public class ApiClient
 {

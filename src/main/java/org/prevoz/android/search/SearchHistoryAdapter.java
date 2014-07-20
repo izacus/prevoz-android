@@ -6,12 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
 import org.prevoz.android.R;
 import org.prevoz.android.model.Route;
 import org.prevoz.android.util.ContentUtils;
-import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 import java.util.List;
+
+import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 public class SearchHistoryAdapter extends BaseAdapter implements StickyListHeadersAdapter
 {

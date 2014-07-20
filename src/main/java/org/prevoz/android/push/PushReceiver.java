@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
 import org.prevoz.android.MainActivity_;
 import org.prevoz.android.R;
 import org.prevoz.android.model.City;

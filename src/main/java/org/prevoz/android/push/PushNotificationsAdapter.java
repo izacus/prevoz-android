@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
 import org.prevoz.android.R;
 import org.prevoz.android.model.NotificationSubscription;
 import org.prevoz.android.util.LocaleUtil;

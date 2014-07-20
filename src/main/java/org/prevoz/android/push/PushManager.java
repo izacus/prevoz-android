@@ -7,10 +7,11 @@ import android.os.ConditionVariable;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import de.greenrobot.event.EventBus;
+
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
 import org.prevoz.android.api.ApiClient;
@@ -19,15 +20,17 @@ import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.NotificationSubscription;
 import org.prevoz.android.util.ContentUtils;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+
+import de.greenrobot.event.EventBus;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 @EBean(scope = EBean.Scope.Singleton)
 public class PushManager

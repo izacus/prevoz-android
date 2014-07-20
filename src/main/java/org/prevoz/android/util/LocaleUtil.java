@@ -3,10 +3,15 @@ package org.prevoz.android.util;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+
 import org.prevoz.android.R;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class LocaleUtil
 {

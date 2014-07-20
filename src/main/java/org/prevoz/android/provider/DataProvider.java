@@ -3,7 +3,6 @@ package org.prevoz.android.provider;
 import edu.mit.mobile.android.content.GenericDBHelper;
 import edu.mit.mobile.android.content.QuerystringWrapper;
 import edu.mit.mobile.android.content.SimpleContentProvider;
-import org.prevoz.android.model.NotificationSubscription;
 
 public class DataProvider extends SimpleContentProvider
 {

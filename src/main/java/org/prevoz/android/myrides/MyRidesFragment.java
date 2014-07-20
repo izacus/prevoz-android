@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import de.greenrobot.event.EventBus;
+
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ItemClick;
@@ -21,6 +21,8 @@ import org.prevoz.android.events.Events;
 import org.prevoz.android.ride.RideInfoFragment;
 import org.prevoz.android.search.SearchResultsAdapter;
 import org.prevoz.android.util.ViewUtils;
+
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;

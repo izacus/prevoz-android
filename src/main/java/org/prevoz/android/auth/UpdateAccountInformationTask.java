@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+
 import org.prevoz.android.R;
 import org.prevoz.android.api.rest.RestAccountStatus;
 

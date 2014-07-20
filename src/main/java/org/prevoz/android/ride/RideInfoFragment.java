@@ -15,7 +15,12 @@ import android.text.style.TypefaceSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import org.androidannotations.annotations.*;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.InstanceState;
+import org.androidannotations.annotations.ViewById;
 import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.UiFragment;
@@ -25,8 +30,6 @@ import org.prevoz.android.myrides.NewRideFragment;
 import org.prevoz.android.util.LocaleUtil;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 @EFragment(R.layout.fragment_rideinfo)
 public class RideInfoFragment extends DialogFragment

@@ -7,6 +7,7 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.widget.FilterQueryProvider;
 import android.widget.TextView;
+
 import org.prevoz.android.R;
 import org.prevoz.android.provider.Location;
 import org.prevoz.android.util.ContentUtils;
@@ -14,7 +15,6 @@ import org.prevoz.android.util.LocaleUtil;
 
 public class CityAutocompleteAdapter extends SimpleCursorAdapter implements FilterQueryProvider, SimpleCursorAdapter.CursorToStringConverter
 {
-    private ContentResolver contentResolver;
 
     public CityAutocompleteAdapter(Context context)
     {
@@ -25,7 +25,7 @@ public class CityAutocompleteAdapter extends SimpleCursorAdapter implements Filt
               new int[] { R.id.city_name },
               0);
 
-        contentResolver = context.getContentResolver();
+        ContentResolver contentResolver = context.getContentResolver();
         setFilterQueryProvider(this);
         setCursorToStringConverter(this);
     }

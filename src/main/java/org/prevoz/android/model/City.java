@@ -3,6 +3,7 @@ package org.prevoz.android.model;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import org.prevoz.android.util.LocaleUtil;
 
 public class City implements Comparable<City>, Parcelable
