@@ -1,6 +1,5 @@
 package org.prevoz.android.search;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.SimpleCursorAdapter;

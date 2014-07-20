@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.InstanceState;
@@ -62,12 +63,6 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
             updateShownDate();
         }
 
-        // Setup autocomplete text views
-        searchFrom.setAdapter(new CityAutocompleteAdapter(getActivity()));
-        searchTo.setAdapter(new CityAutocompleteAdapter(getActivity()));
-        searchFrom.setValidator(new CityNameTextValidator(getActivity()));
-        searchTo.setValidator(new CityNameTextValidator(getActivity()));
-
         // Handle input action for next on to
         searchTo.setOnEditorActionListener(new TextView.OnEditorActionListener()
         {
@@ -85,6 +80,10 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
                 return false;
             }
         });
+
+        searchFrom.setValidator(new CityNameTextValidator(getActivity()));
+        searchTo.setValidator(new CityNameTextValidator(getActivity()));
+        setupAdapters();
     }
 
 
@@ -125,7 +124,28 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
         updateShownDate();
     }
 
-    private void startSearch()
+    @Background
+    public void setupAdapters()
+    {
+        // Initialization requres DB access that's why this is here.
+        final CityAutocompleteAdapter fromAdapter = new CityAutocompleteAdapter(getActivity());
+        final CityAutocompleteAdapter toAdapter = new CityAutocompleteAdapter(getActivity());
+
+        // Setup autocomplete text views
+        getActivity().runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                searchFrom.setAdapter(fromAdapter);
+                searchTo.setAdapter(toAdapter);
+            }
+        });
+
+    }
+
+    @Background
+    protected void startSearch()
     {
         City fromCity = StringUtil.splitStringToCity(searchFrom.getText().toString());
         City toCity = StringUtil.splitStringToCity(searchTo.getText().toString());

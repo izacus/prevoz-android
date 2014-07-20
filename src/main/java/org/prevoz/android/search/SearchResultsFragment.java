@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.nineoldandroids.view.ViewHelper;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.InstanceState;
@@ -270,28 +271,36 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
         pushManager.setSubscriptionStatus(lastFrom, lastTo, lastDate, !pushManager.isSubscribed(lastFrom, lastTo, lastDate));
     }
 
-    private void showHistory(boolean animate)
+    @Background
+    protected void showHistory(final boolean animate)
     {
-        if (animate && resultList.getAdapter() != null)
-        {
-            hideNotificationsButton();
-            new ListDisappearAnimation(resultList).animate();
-        }
-
         adapter = new SearchHistoryAdapter(getActivity());
-        resultList.setAdapter(adapter);
-        resultList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        getActivity().runOnUiThread(new Runnable()
         {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            public void run()
             {
-                Route route = (Route) adapter.getItem(position - 1);
-                EventBus.getDefault().post(new Events.SearchFillWithRoute(route));
+                if (animate && resultList.getAdapter() != null)
+                {
+                    hideNotificationsButton();
+                    new ListDisappearAnimation(resultList).animate();
+                }
+
+                resultList.setAdapter(adapter);
+                resultList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+                {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                    {
+                        Route route = (Route) adapter.getItem(position - 1);
+                        EventBus.getDefault().post(new Events.SearchFillWithRoute(route));
+                    }
+                });
+
+                if (animate)
+                    new ListFlyupAnimator(resultList).animate();
             }
         });
-
-        if (animate)
-            new ListFlyupAnimator(resultList).animate();
     }
 
     public void onEventMainThread(Events.NewSearchEvent e)

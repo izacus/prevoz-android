@@ -4,6 +4,9 @@ import android.app.Application;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.os.StrictMode;
+
+import com.crashlytics.android.Crashlytics;
 
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EApplication;
@@ -24,7 +27,7 @@ public class PrevozApplication extends Application
     public void onCreate()
     {
         super.onCreate();
-//        Crashlytics.start(this);
+        Crashlytics.start(this);
 
         try
         {
