@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:padding="8dp"
-        android:layout_margin="4dp"
         android:background="@drawable/card_bg_r4"
         >
 
