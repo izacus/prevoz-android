@@ -145,7 +145,7 @@ public class ContentUtils
     {
         ContentResolver contentResolver = ctx.getContentResolver();
 
-        if (constraint == null || constraint.toString().trim().length() == 0)
+        if (constraint == null || constraint.trim().length() == 0)
         {
             return contentResolver.query(Location.CONTENT_URI,
                     CITY_CURSOR_COLUMNS,
@@ -155,10 +155,8 @@ public class ContentUtils
         }
         else
         {
-            String cs = constraint.toString();
-
             // Unforunately arguments do not work with LIKE filter
-            String query = Location.NAME + " LIKE '" + cs + "%' OR " + Location.NAME_ASCII + " LIKE '" + cs + "%'";
+            String query = Location.NAME + " LIKE '" + constraint + "%' OR " + Location.NAME_ASCII + " LIKE '" + constraint + "%'";
             String[] params = null;
 
             if (country != null)
@@ -208,6 +206,8 @@ public class ContentUtils
         {
             resolver.insert(SearchHistoryItem.CONTENT_URI, values);
         }
+
+        existing.close();
     }
 
     public static ArrayList<Route> getLastSearches(Context context, int count)
@@ -313,6 +313,7 @@ public class ContentUtils
             subscriptions.add(subscription);
         }
 
+        results.close();
         return subscriptions;
     }
 

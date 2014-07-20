@@ -21,6 +21,7 @@
         android:layout_height="match_parent"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
+        android:cacheColorHint="@color/background_color"
         android:scrollbarStyle="outsideOverlay"
         />
 

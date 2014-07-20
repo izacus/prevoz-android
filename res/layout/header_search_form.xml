@@ -27,8 +27,8 @@
             android:layout_gravity="center"
             android:orientation="horizontal"
             android:clickable="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:background="@drawable/borderless_button"
             >
 

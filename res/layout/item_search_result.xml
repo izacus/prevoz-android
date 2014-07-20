@@ -16,7 +16,7 @@
         android:layout_height="60dp"
         android:layout_margin="4dp"
         android:padding="8dp"
-        android:background="@drawable/card_bg_r4"
+        android:background="@android:color/white"
         android:orientation="horizontal"
         >
 
