@@ -98,12 +98,17 @@
         <dependency>
             <groupId>com.squareup.retrofit</groupId>
             <artifactId>retrofit</artifactId>
-            <version>1.5.1</version>
+            <version>1.6.1</version>
         </dependency>
         <dependency>
             <groupId>com.squareup.okhttp</groupId>
             <artifactId>okhttp</artifactId>
-            <version>1.5.1</version>
+            <version>2.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp</groupId>
+            <artifactId>okhttp-urlconnection</artifactId>
+            <version>2.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.nineoldandroids</groupId>
@@ -167,35 +172,45 @@
 					</sdk>
 					<!-- Proguard is not skipped by default -->
 					<proguard>
-						<skip>true</skip>
+						<skip>false</skip>
+                        <config>proguard.cfg</config>
 					</proguard>
 				</configuration>
 			</plugin>
 			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 
             <plugin>
                 <groupId>com.crashlytics</groupId>
                 <artifactId>crashlytics-maven</artifactId>
-                <version>1.7.0</version>
+                <version>1.9.1</version>
                 <executions>
                     <execution>
                         <id>GenerateResources</id>
                         <goals>
                             <goal>GenerateResources</goal>
                         </goals>
+                        <configuration>
+                            <androidResPath>${project.basedir}/res</androidResPath>
+                            <androidManifestPath>${project.basedir}/AndroidManifest.xml</androidManifestPath>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>CleanupResources</id>
                         <goals>
                             <goal>CleanupResources</goal>
                         </goals>
+                        <configuration>
+                            <androidResPath>${project.basedir}/res</androidResPath>
+                            <androidManifestPath>${project.basedir}/AndroidManifest.xml</androidManifestPath>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
