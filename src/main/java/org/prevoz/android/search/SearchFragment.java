@@ -1,5 +1,6 @@
 package org.prevoz.android.search;
 
+import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.View;
@@ -128,11 +129,14 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
     public void setupAdapters()
     {
         // Initialization requres DB access that's why this is here.
-        final CityAutocompleteAdapter fromAdapter = new CityAutocompleteAdapter(getActivity());
-        final CityAutocompleteAdapter toAdapter = new CityAutocompleteAdapter(getActivity());
+        Activity activity = getActivity();
+        if (activity == null) return;   // Happens when fragment is detached
+
+        final CityAutocompleteAdapter fromAdapter = new CityAutocompleteAdapter(activity);
+        final CityAutocompleteAdapter toAdapter = new CityAutocompleteAdapter(activity);
 
         // Setup autocomplete text views
-        getActivity().runOnUiThread(new Runnable()
+        activity.runOnUiThread(new Runnable()
         {
             @Override
             public void run()

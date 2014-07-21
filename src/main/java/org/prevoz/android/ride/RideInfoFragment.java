@@ -161,7 +161,7 @@ public class RideInfoFragment extends DialogFragment
 
         // Hide call/SMS buttons on devices without telephony support
         PackageManager pm = getActivity().getPackageManager();
-        if (!pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY))
+        if (PARAM_ACTION_SHOW.equals(action) && !pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY))
         {
             leftButton.setVisibility(View.GONE);
             rightButton.setVisibility(View.GONE);
