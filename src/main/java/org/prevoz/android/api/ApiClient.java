@@ -10,6 +10,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.squareup.okhttp.OkHttpClient;
 
+import org.prevoz.android.BuildConfig;
 import org.prevoz.android.PrevozApplication_;
 import org.prevoz.android.util.LocaleUtil;
 
@@ -47,7 +48,7 @@ public class ApiClient
                                  .setConverter(new GsonConverter(gson))
                                  .setRequestInterceptor(new CookieSetterInterceptor())
                                  .setClient(new OkClient(new OkHttpClient()))
-                                 .setLogLevel(RestAdapter.LogLevel.FULL)
+                                 .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
                                  .build();
     }
 
