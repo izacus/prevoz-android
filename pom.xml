@@ -36,7 +36,7 @@
 
 		<!-- Plugins -->
 		<android-maven-plugin.version>3.8.2</android-maven-plugin.version>
-		<maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
+		<maven-compiler-plugin.version>2.5.1</maven-compiler-plugin.version>
 		<api.platform>19</api.platform>
 
 		<!-- Dependencies -->
@@ -170,20 +170,25 @@
 					<sdk>
 						<platform>${api.platform}</platform>
 					</sdk>
+                    <release>true</release>
 					<!-- Proguard is not skipped by default -->
 					<proguard>
 						<skip>false</skip>
                         <config>proguard.cfg</config>
 					</proguard>
+                    <zipalign>
+                        <verbose>true</verbose>
+                    </zipalign>
 				</configuration>
 			</plugin>
 			<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven-compiler-plugin.version}</version>
+                <extensions>true</extensions>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.6</source>
+					<target>1.6</target>
 				</configuration>
 			</plugin>
 
@@ -210,6 +215,33 @@
                         <configuration>
                             <androidResPath>${project.basedir}/res</androidResPath>
                             <androidManifestPath>${project.basedir}/AndroidManifest.xml</androidManifestPath>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jarsigner-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>prevoz-sign</id>
+                        <goals>
+                            <goal>sign</goal>
+                            <goal>verify</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <inherited>true</inherited>
+                        <configuration>
+                            <removeExistingSignatures>true</removeExistingSignatures>
+                            <archiveDirectory/>
+                            <includes>
+                                <include>${project.build.directory}/${project.artifactId}.apk</include>
+                            </includes>
+                            <keystore>${sign.keystore}</keystore>
+                            <alias>${sign.alias}</alias>
+                            <storepass>${sign.storepass}</storepass>
+                            <keypass>${sign.keypass}</keypass>
+                            <verbose>true</verbose>
                         </configuration>
                     </execution>
                 </executions>

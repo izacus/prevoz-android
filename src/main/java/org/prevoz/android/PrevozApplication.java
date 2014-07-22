@@ -7,6 +7,9 @@ import android.os.Environment;
 import android.os.StrictMode;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Logger;
+import com.google.android.gms.analytics.Tracker;
 
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EApplication;
@@ -18,6 +21,8 @@ import java.io.File;
 @EApplication
 public class PrevozApplication extends Application
 {
+    private Tracker analyticsTracker;
+
     public static int VERSION = -1;
 
     @Bean
@@ -38,7 +43,17 @@ public class PrevozApplication extends Application
             e.printStackTrace();
         }
 
+        GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+        analyticsTracker = analytics.newTracker(R.xml.analytics);
+        analyticsTracker.setUseSecure(true);
+        analytics.getLogger().setLogLevel(Logger.LogLevel.VERBOSE);
+
         new PruneHistory().execute();
+    }
+
+    public synchronized Tracker getTracker()
+    {
+        return analyticsTracker;
     }
 
     private class PruneHistory extends AsyncTask<Void, Void, Void>
