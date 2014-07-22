@@ -25,6 +25,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.ViewById;
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
@@ -74,6 +75,8 @@ public class LoginActivity extends SherlockFragmentActivity
         authenticatorResponse = getIntent().getParcelableExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE);
         if (authenticatorResponse != null)
             authenticatorResponse.onRequestContinued();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @AfterViews
@@ -294,6 +297,12 @@ public class LoginActivity extends SherlockFragmentActivity
             //autologin = new DeviceAccountLogin(LoginActivity.this, view);
             //autologin.handleLogin(realm, account, args);
         }
+    }
+
+    @OptionsItem(android.R.id.home)
+    public void clickHome()
+    {
+        finish();
     }
 
     @Override
