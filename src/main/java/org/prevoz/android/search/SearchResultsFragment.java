@@ -1,5 +1,6 @@
 package org.prevoz.android.search;
 
+import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -168,7 +169,9 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     {
         Log.d("Prevoz", "Response: " + retrofitError);
 
-        Toast.makeText(getActivity(), "Napaka pri iskanju - ali je na voljo internetna povezava?", Toast.LENGTH_SHORT).show();
+        Activity activity = getActivity();
+        if (activity != null)
+            Toast.makeText(activity, "Napaka pri iskanju - ali je na voljo internetna povezava?", Toast.LENGTH_SHORT).show();
         EventBus.getDefault().post(new Events.SearchComplete());
     }
 
@@ -196,7 +199,9 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
             {
                 RestRide ride = (RestRide) adapter.getItem(position - 1);
                 RideInfoFragment rideInfo = RideInfoFragment.newInstance(ride);
-                rideInfo.show(getActivity().getSupportFragmentManager(), "RideInfo");
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.add(rideInfo, null);
+                ft.commitAllowingStateLoss();
             }
         });
 
@@ -275,8 +280,11 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     @Background
     protected void showHistory(final boolean animate)
     {
-        adapter = new SearchHistoryAdapter(getActivity());
-        getActivity().runOnUiThread(new Runnable()
+        final Activity activity = getActivity();
+        if (activity == null) return;
+
+        adapter = new SearchHistoryAdapter(activity);
+        activity.runOnUiThread(new Runnable()
         {
             @Override
             public void run()

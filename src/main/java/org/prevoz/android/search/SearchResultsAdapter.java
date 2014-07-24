@@ -132,6 +132,9 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
     @Override
     public long getHeaderId(int position)
     {
+        // Guard for some rare corner-cases
+        if (position >= results.size()) return -1;
+
         RestRide ride = results.get(position);
         return (ride.fromCity.hashCode() + ride.fromCountry.hashCode()) * (ride.toCity.hashCode() + ride.toCountry.hashCode());
     }

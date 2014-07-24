@@ -258,6 +258,10 @@ public class RideInfoFragment extends DialogFragment
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState)
+    {}
+
     public void setRideInfoListener(RideInfoListener listener)
     {
         this.listener = listener;

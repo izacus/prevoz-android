@@ -1,5 +1,6 @@
 package org.prevoz.android.myrides;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -383,6 +384,9 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
         dialog.setMessage("Oddajam prevoz...");
         dialog.show();
 
+        final MainActivity activity = (MainActivity) getActivity();
+        if (activity == null) return;
+
         // TODO: remove when server timezone parsing is fixed
         r.date.setTimeZone(LocaleUtil.getLocalTimezone());
         ApiClient.getAdapter().postRide(r, new Callback<RestStatus>()
@@ -397,16 +401,13 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
                     if (status.error != null && status.error.size() > 0)
                     {
                         String firstKey = status.error.keySet().iterator().next();
-                        Toast.makeText(getActivity(), status.error.get(firstKey).get(0), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, status.error.get(firstKey).get(0), Toast.LENGTH_SHORT).show();
                     }
                 }
                 else
                 {
-                    Toast.makeText(getActivity(), "Prevoz je bil oddan.", Toast.LENGTH_SHORT).show();
-
-                    MainActivity activity = (MainActivity) getActivity();
-                    if (activity != null)
-                        activity.showFragment(UiFragment.FRAGMENT_MY_RIDES, false);
+                    Toast.makeText(activity, "Prevoz je bil oddan.", Toast.LENGTH_SHORT).show();
+                    activity.showFragment(UiFragment.FRAGMENT_MY_RIDES, false);
                 }
             }
 

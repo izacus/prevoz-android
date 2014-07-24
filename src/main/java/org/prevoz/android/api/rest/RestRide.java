@@ -108,7 +108,7 @@ public class RestRide implements Comparable, Parcelable, Serializable
     @Override
     public void writeToParcel(Parcel dest, int flags)
     {
-        dest.writeLong(this.id);
+        dest.writeLong(this.id == null ? -1 : this.id);
         dest.writeString(this.fromCity);
         dest.writeString(this.fromCountry);
         dest.writeString(this.toCity);
@@ -127,6 +127,8 @@ public class RestRide implements Comparable, Parcelable, Serializable
     private RestRide(Parcel in)
     {
         this.id = in.readLong();
+        if (id == -1) id = null;
+
         this.fromCity = in.readString();
         this.fromCountry = in.readString();
         this.toCity = in.readString();
