@@ -21,6 +21,9 @@ import retrofit.http.Query;
 
 public interface PrevozApi
 {
+    public static final String FULL_STATE_AVAILABLE = "available";
+    public static final String FULL_STATE_FULL = "full";
+
     @GET("/api/search/shares/")
     public void search(@Query("f")  String from,
                        @Query("fc") String fromCountry,
@@ -56,6 +59,10 @@ public interface PrevozApi
 
     @DELETE("/api/carshare/delete/{id}/")
     public void deleteRide(@Path("id") String id, Callback<Response> cb);
+
+    @FormUrlEncoded
+    @POST("/api/carshare/full/{id}/")
+    public void setFull(@Path("id") String id, @Field("state") String state, Callback<Response> cb);
 
     @FormUrlEncoded
     @POST("/oauth2/access_token/")

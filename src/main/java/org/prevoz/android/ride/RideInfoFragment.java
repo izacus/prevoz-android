@@ -1,5 +1,6 @@
 package org.prevoz.android.ride;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
@@ -14,9 +15,12 @@ import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.InstanceState;
@@ -24,12 +28,18 @@ import org.androidannotations.annotations.ViewById;
 import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.UiFragment;
+import org.prevoz.android.api.ApiClient;
+import org.prevoz.android.api.PrevozApi;
 import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.myrides.DeleteRideDialog;
 import org.prevoz.android.myrides.NewRideFragment;
 import org.prevoz.android.util.LocaleUtil;
 
 import java.text.SimpleDateFormat;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 @EFragment(R.layout.fragment_rideinfo)
 public class RideInfoFragment extends DialogFragment
@@ -91,6 +101,11 @@ public class RideInfoFragment extends DialogFragment
     protected TextView txtDriver;
     @ViewById(R.id.rideinfo_comment)
     protected TextView txtComment;
+
+    @ViewById(R.id.rideinfo_full_box)
+    protected View vFull;
+    @ViewById(R.id.rideinfo_ridefull)
+    protected CheckBox chkFull;
 
     @ViewById(R.id.rideinfo_button_call)
     protected Button leftButton;
@@ -165,6 +180,10 @@ public class RideInfoFragment extends DialogFragment
         {
             leftButton.setVisibility(View.GONE);
             rightButton.setVisibility(View.GONE);
+        }
+        else if (PARAM_ACTION_EDIT.equals(action))
+        {
+            vFull.setVisibility(View.VISIBLE);
         }
 
         setupActionButtons(action);
@@ -256,6 +275,34 @@ public class RideInfoFragment extends DialogFragment
             if (listener != null)
                 listener.onRightButtonClicked(ride);
         }
+    }
+
+    @CheckedChange(R.id.rideinfo_ridefull)
+    protected void clickFull()
+    {
+        chkFull.setEnabled(false);
+        final boolean rideFull = chkFull.isChecked();
+
+        final Activity activity = getActivity();
+        if (activity == null) return;
+
+        ApiClient.getAdapter().setFull(String.valueOf(ride.id), rideFull ? PrevozApi.FULL_STATE_FULL : PrevozApi.FULL_STATE_AVAILABLE, new Callback<Response>()
+        {
+            @Override
+            public void success(Response response, Response response2)
+            {
+                ride.isFull = rideFull;
+                chkFull.setEnabled(true);
+            }
+
+            @Override
+            public void failure(RetrofitError retrofitError)
+            {
+                chkFull.setChecked(!rideFull);
+                Toast.makeText(activity, "Stanja prevoza ni bilo mogoče spremeniti ... ali internet deluje?", Toast.LENGTH_SHORT).show();
+                chkFull.setEnabled(true);
+            }
+        });
     }
 
     @Override
