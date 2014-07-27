@@ -65,7 +65,15 @@ class UpdateAccountInformationTask extends AsyncTask<Void, Void, Void>
     protected void onPostExecute(Void aVoid)
     {
         super.onPostExecute(aVoid);
-        dialog.dismiss();
-        context.finish();
+
+        try
+        {
+            dialog.dismiss();
+            context.finish();
+        }
+        catch (IllegalArgumentException e)
+        {
+            // TODO: Fix this!
+        }
     }
 }

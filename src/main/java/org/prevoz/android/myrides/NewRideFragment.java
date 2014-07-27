@@ -394,7 +394,15 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
             @Override
             public void success(RestStatus status, Response response)
             {
-                dialog.dismiss();
+                try
+                {
+                    dialog.dismiss();
+                }
+                catch (IllegalArgumentException e)
+                {
+                    // Why does this happen?
+                    return;
+                }
 
                 if (!("created".equals(status.status) || "updated".equals(status.status)))
                 {
