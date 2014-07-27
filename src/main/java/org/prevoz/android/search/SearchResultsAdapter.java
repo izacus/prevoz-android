@@ -95,7 +95,7 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
         return false;
     }
 
-    public void setResults(List<RestRide> rides)
+    public synchronized void setResults(List<RestRide> rides)
     {
         buildResults(rides);
         notifyDataSetChanged();
@@ -110,6 +110,8 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
     @Override
     public View getHeaderView(int position, View convertView, ViewGroup parent)
     {
+
+
         View v = convertView;
         if (v == null)
         {
@@ -118,13 +120,19 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
             v.setTag(titleView);
         }
 
-        RestRide item = results.get(position);
+        TextView titleView = (TextView) v.getTag();
+        if (position >= results.size())
+        {
+            titleView.setText("");
+            return v;
+        }
 
+
+        RestRide item = results.get(position);
         String titleText = LocaleUtil.getLocalizedCityName(context, item.fromCity, item.fromCountry) +
                            " - " +
                            LocaleUtil.getLocalizedCityName(context, item.toCity, item.toCountry);
 
-        TextView titleView = (TextView) v.getTag();
         titleView.setText(titleText);
         return v;
     }
