@@ -159,7 +159,7 @@ public class RideInfoFragment extends DialogFragment
         vDetails.setVisibility(View.VISIBLE);
 
         txtPhone.setText(getPhoneNumberString(ride.phoneNumber, ride.phoneNumberConfirmed));
-        txtPeople.setText(String.valueOf(ride.numPeople) + (ride.isFull ? " (Ni mest)" : ""));
+        setPeopleText();
         txtComment.setText(ride.comment);
 
         if (ride.author == null || ride.author.length() == 0)
@@ -184,9 +184,15 @@ public class RideInfoFragment extends DialogFragment
         else if (PARAM_ACTION_EDIT.equals(action))
         {
             vFull.setVisibility(View.VISIBLE);
+            chkFull.setChecked(ride.isFull);
         }
 
         setupActionButtons(action);
+    }
+
+    private void setPeopleText()
+    {
+        txtPeople.setText(String.valueOf(ride.numPeople) + (ride.isFull ? " (Polno)" : ""));
     }
 
     private SpannableString getPhoneNumberString(String phoneNumber, boolean confirmed)
@@ -293,6 +299,7 @@ public class RideInfoFragment extends DialogFragment
             {
                 ride.isFull = rideFull;
                 chkFull.setEnabled(true);
+                setPeopleText();
             }
 
             @Override
