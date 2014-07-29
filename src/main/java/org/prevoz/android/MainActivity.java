@@ -132,17 +132,33 @@ public class MainActivity extends SherlockFragmentActivity
 
         if (getIntent().hasExtra("from") && getIntent().hasExtra("to"))
         {
-            City from = getIntent().getParcelableExtra("from");
-            City to = getIntent().getParcelableExtra("to");
-
-            Calendar date = Calendar.getInstance();
-            date.setTimeInMillis(getIntent().getLongExtra("when", 0));
-
-            EventBus.getDefault().postSticky(new Events.NewSearchEvent(from, to, date));
-            Route route = new Route(from, to);
-            EventBus.getDefault().postSticky(new Events.SearchFillWithRoute(route, date));
-
+            triggerSearchFromIntent(getIntent());
         }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent)
+    {
+        super.onNewIntent(intent);
+        if (intent.hasExtra("from") && intent.hasExtra("to"))
+        {
+            triggerSearchFromIntent(intent);
+        }
+    }
+
+    protected void triggerSearchFromIntent(Intent intent)
+    {
+        City from = intent.getParcelableExtra("from");
+        City to = intent.getParcelableExtra("to");
+
+        Calendar date = Calendar.getInstance();
+        date.setTimeInMillis(intent.getLongExtra("when", 0));
+
+        int[] highlights = intent.getIntArrayExtra("highlights");
+
+        EventBus.getDefault().postSticky(new Events.NewSearchEvent(from, to, date, highlights));
+        Route route = new Route(from, to);
+        EventBus.getDefault().postSticky(new Events.SearchFillWithRoute(route, date));
     }
 
     @Override

@@ -85,7 +85,7 @@ public class MyRidesFragment extends Fragment implements Callback<RestSearchResu
         Activity activity = getActivity();
         if (activity == null) return;
 
-        SearchResultsAdapter adapter = new SearchResultsAdapter(activity, restRide.results);
+        SearchResultsAdapter adapter = new SearchResultsAdapter(activity, restRide.results, new int[0]);
         myridesList.setAdapter(adapter);
     }
 

@@ -12,12 +12,22 @@ public class Events
         public final City from;
         public final City to;
         public final Calendar date;
+        public final int[] rideIds;
 
         public NewSearchEvent(City from, City to, Calendar date)
         {
             this.from = from;
             this.to = to;
             this.date = date;
+            this.rideIds = new int[0];
+        }
+
+        public NewSearchEvent(City from, City to, Calendar date, int[] rideIds)
+        {
+            this.from = from;
+            this.to = to;
+            this.date = date;
+            this.rideIds = rideIds == null ? new int[0] : rideIds;
         }
     }
 

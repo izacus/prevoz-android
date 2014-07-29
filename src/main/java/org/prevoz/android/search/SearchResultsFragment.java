@@ -82,6 +82,8 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     protected City lastTo;
     @InstanceState
     protected Calendar lastDate;
+    @InstanceState
+    protected int[] highlightRides;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -179,13 +181,13 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     {
         if (resultList.getAdapter() == null || !(resultList.getAdapter() instanceof SearchResultsAdapter))
         {
-            adapter = new SearchResultsAdapter(getActivity(), results.results);
+            adapter = new SearchResultsAdapter(getActivity(), results.results, highlightRides);
             resultList.setAdapter(adapter);
         }
         else
         {
             final SearchResultsAdapter adapter = (SearchResultsAdapter) resultList.getAdapter();
-            adapter.setResults(results.results);
+            adapter.setResults(results.results, highlightRides);
 
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
                 resultList.smoothScrollToPosition(1);
@@ -333,6 +335,7 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
         lastFrom = e.from;
         lastTo = e.to;
         lastDate = e.date;
+        highlightRides = e.rideIds;
     }
 
     public void onEventMainThread(Events.NotificationSubscriptionStatusChanged e)
