@@ -25,6 +25,7 @@ import com.actionbarsherlock.view.MenuItem;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.OptionsItem;
@@ -48,11 +49,13 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import de.greenrobot.event.EventBus;
+import eu.inmite.android.lib.dialogs.ISimpleDialogListener;
+import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 
 @SuppressLint("Registered")          // AndroidAnnotated activity is registered.
 @EActivity(R.layout.activity_main)
 @OptionsMenu(R.menu.fragment_myrides)
-public class MainActivity extends SherlockFragmentActivity
+public class MainActivity extends SherlockFragmentActivity implements ISimpleDialogListener
 {
     public static final int REQUEST_CODE_AUTHORIZE_MYRIDES = 100;
     public static final int REQUEST_CODE_AUTHORIZE_NEWRIDE = 101;
@@ -73,6 +76,8 @@ public class MainActivity extends SherlockFragmentActivity
 
     @ViewById(R.id.main_left_drawer_username)
     protected TextView leftUsername;
+    @ViewById(R.id.main_left_drawer_logout)
+    protected TextView leftLogout;
 
     @Bean
     protected AuthenticationUtils authUtils;
@@ -114,26 +119,41 @@ public class MainActivity extends SherlockFragmentActivity
     @Background
     protected void checkAuthenticated()
     {
-        String username = authUtils.getUsername();
-        if (username != null)
-            setDrawerUsername(username);
+        setDrawerUsername(authUtils.getUsername());
     }
 
     @UiThread
     protected void setDrawerUsername(String username)
     {
-        leftUsername.setText(username);
+        if (username == null)
+        {
+            leftUsername.setText(getString(R.string.app_name));
+            leftLogout.setVisibility(View.GONE);
+        }
+        else
+        {
+            leftUsername.setText(username);
+            leftLogout.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     protected void onResume()
     {
         super.onResume();
+        EventBus.getDefault().registerSticky(this);
 
         if (getIntent().hasExtra("from") && getIntent().hasExtra("to"))
         {
             triggerSearchFromIntent(getIntent());
         }
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -144,6 +164,20 @@ public class MainActivity extends SherlockFragmentActivity
         {
             triggerSearchFromIntent(intent);
         }
+    }
+
+    @Click(R.id.main_left_user_box)
+    protected void logoutClick()
+    {
+        if (authUtils.getUsername() == null)
+            return;
+
+        SimpleDialogFragment.createBuilder(this, getSupportFragmentManager())
+                .setTitle("Odjava")
+                .setMessage("Se res želite odjaviti?")
+                .setPositiveButtonText("Odjavi")
+                .setNegativeButtonText("Prekliči")
+                .show();
     }
 
     protected void triggerSearchFromIntent(Intent intent)
@@ -595,5 +629,25 @@ public class MainActivity extends SherlockFragmentActivity
                 return null;
             }
         };
+    }
+
+
+    // LOGOUT LISTENERS
+    @Override
+    public void onPositiveButtonClicked(int requestCode)
+    {
+        authUtils.logout();
+    }
+
+    @Override
+    public void onNegativeButtonClicked(int requestCode)
+    {
+
+    }
+
+    public void onEventMainThread(Events.LoginStateChanged e)
+    {
+        checkAuthenticated();
+        EventBus.getDefault().removeStickyEvent(Events.LoginStateChanged.class);
     }
 }

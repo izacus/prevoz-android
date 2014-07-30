@@ -19,8 +19,11 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
+import org.prevoz.android.events.Events;
 
 import java.io.IOException;
+
+import de.greenrobot.event.EventBus;
 
 @EBean(scope = EBean.Scope.Singleton)
 public class AuthenticationUtils
@@ -151,5 +154,12 @@ public class AuthenticationUtils
         {
             am.getAuthToken(acc, "default", false, callback, null);
         }
+    }
+
+    @Background
+    public void logout()
+    {
+        removeExistingAccounts();
+        EventBus.getDefault().post(new Events.LoginStateChanged());
     }
 }

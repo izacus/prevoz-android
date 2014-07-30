@@ -10,6 +10,9 @@ import android.preference.PreferenceManager;
 
 import org.prevoz.android.R;
 import org.prevoz.android.api.rest.RestAccountStatus;
+import org.prevoz.android.events.Events;
+
+import de.greenrobot.event.EventBus;
 
 /**
 * ${FILE_NAME}
@@ -70,6 +73,7 @@ class UpdateAccountInformationTask extends AsyncTask<Void, Void, Void>
         {
             dialog.dismiss();
             context.finish();
+            EventBus.getDefault().postSticky(new Events.LoginStateChanged());
         }
         catch (IllegalArgumentException e)
         {

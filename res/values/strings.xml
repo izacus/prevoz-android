@@ -107,4 +107,5 @@
     <string name="newride_insurance">Nezgodno zavarovanje potnikov</string>
     <string name="newride_notes">Opombe</string>
     <string name="newride_button_submit">Oddaj prevoz</string>
+    <string name="main_logout">Odjava</string>
 </resources>
