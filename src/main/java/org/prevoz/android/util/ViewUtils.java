@@ -20,6 +20,8 @@ public class ViewUtils
 
     public static void hideKeyboard(Activity ctx)
     {
+        if (ctx == null) return;
+
         InputMethodManager inputManager = (InputMethodManager)ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
         View currentFocus = ctx.getCurrentFocus();
         if (currentFocus != null)
