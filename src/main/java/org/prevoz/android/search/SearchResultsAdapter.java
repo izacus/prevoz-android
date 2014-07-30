@@ -122,7 +122,7 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
     {
         Collections.sort(rides);
         highlights = new HashSet<Integer>();
-        for (int id : highlights)
+        for (int id : highlightIds)
             highlights.add(id);
         this.results = rides;
     }

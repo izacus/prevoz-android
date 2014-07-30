@@ -195,6 +195,9 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
             updateShownDate();
         }
 
+        if (e.searchInProgress)
+            updateSearchButtonProgress(true);
+
         EventBus.getDefault().removeStickyEvent(e);
     }
 

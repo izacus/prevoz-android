@@ -150,7 +150,6 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     public void success(RestSearchResults restSearchResults, Response response)
     {
         if (getActivity() == null) return;
-        Log.d("Prevoz", "Response: " + response.getBody().toString());
 
         if (restSearchResults == null || restSearchResults.results == null)
         {

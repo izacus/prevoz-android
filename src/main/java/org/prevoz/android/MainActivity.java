@@ -182,6 +182,7 @@ public class MainActivity extends SherlockFragmentActivity implements ISimpleDia
 
     protected void triggerSearchFromIntent(Intent intent)
     {
+        showFragment(UiFragment.FRAGMENT_SEARCH, false);
         City from = intent.getParcelableExtra("from");
         City to = intent.getParcelableExtra("to");
 
@@ -192,7 +193,7 @@ public class MainActivity extends SherlockFragmentActivity implements ISimpleDia
 
         EventBus.getDefault().postSticky(new Events.NewSearchEvent(from, to, date, highlights));
         Route route = new Route(from, to);
-        EventBus.getDefault().postSticky(new Events.SearchFillWithRoute(route, date));
+        EventBus.getDefault().postSticky(new Events.SearchFillWithRoute(route, date, true));
     }
 
     @Override

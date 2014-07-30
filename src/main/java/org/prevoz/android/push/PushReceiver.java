@@ -27,19 +27,16 @@ public class PushReceiver extends BroadcastReceiver
     public void onReceive(Context context, Intent intent)
     {
         Log.i(this.toString(), "GCM Message received.");
+        final Bundle extras = intent.getExtras();
 
-        Bundle extras = intent.getExtras();
-        for (String key : extras.keySet())
-        {
-            Log.d(this.toString(), key + ":" + extras.get(key));
-        }
+        final int[] rideIds = parseRideIds(extras.getString("rides"));
+        if (rideIds.length == 0) return;
 
-        int[] rideIds = parseRideIds(intent.getExtras().getString("rides"));
-        if (rideIds.length == 0)
+        if (!(extras.containsKey("fromcity") && extras.containsKey("tocity") && extras.containsKey("from_country") && extras.containsKey("to_country")))
             return;
 
-        City from = new City(intent.getExtras().getString("fromcity"), intent.getExtras().getString("from_country"));
-        City to = new City(intent.getExtras().getString("tocity"), intent.getExtras().getString("to_country"));
+        final City from = new City(extras.getString("fromcity"), extras.getString("from_country"));
+        final City to = new City(extras.getString("tocity"), extras.getString("to_country"));
 
         // Create notification message:
         android.app.NotificationManager notifyManager = (android.app.NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -51,7 +48,7 @@ public class PushReceiver extends BroadcastReceiver
 
         try
         {
-            when.setTime(format.parse(intent.getExtras().getString("date")));
+            when.setTime(format.parse(extras.getString("date")));
         }
         catch (ParseException e)
         {

@@ -39,17 +39,20 @@ public class Events
     {
         public final Route route;
         public final Calendar date;
+        public final boolean searchInProgress;
 
         public SearchFillWithRoute(Route route)
         {
             this.route = route;
             this.date = null;
+            this.searchInProgress = false;
         }
 
-        public SearchFillWithRoute(Route route, Calendar date)
+        public SearchFillWithRoute(Route route, Calendar date, boolean inProgress)
         {
             this.route = route;
             this.date = date;
+            this.searchInProgress = inProgress;
         }
     }
 
