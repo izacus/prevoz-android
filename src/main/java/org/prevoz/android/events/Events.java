@@ -1,5 +1,8 @@
 package org.prevoz.android.events;
 
+import android.os.Bundle;
+
+import org.prevoz.android.UiFragment;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.Route;
 
@@ -69,4 +72,22 @@ public class Events
     }
 
     public static class LoginStateChanged{}
+
+    public static class ShowFragment {
+        public final UiFragment fragment;
+        public final boolean backstack;
+        public final Bundle params;
+
+        public ShowFragment(UiFragment fragment, boolean backstack) {
+            this.fragment = fragment;
+            this.backstack = backstack;
+            this.params = null;
+        }
+
+        public ShowFragment(UiFragment fragment, boolean backstack, Bundle params) {
+            this.fragment = fragment;
+            this.backstack = backstack;
+            this.params = params;
+        }
+    }
 }

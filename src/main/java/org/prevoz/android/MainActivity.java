@@ -241,12 +241,12 @@ public class MainActivity extends SherlockFragmentActivity implements ISimpleDia
         leftDrawer.setAdapter(adapter);
     }
 
-    public void showFragment(UiFragment fragment, boolean backstack)
+    protected void showFragment(UiFragment fragment, boolean backstack)
     {
         showFragment(fragment, backstack, null);
     }
 
-    public void showFragment(UiFragment fragment, boolean backstack, Bundle params)
+    protected void showFragment(UiFragment fragment, boolean backstack, Bundle params)
     {
         FragmentManager fm = getSupportFragmentManager();
 
@@ -651,6 +651,11 @@ public class MainActivity extends SherlockFragmentActivity implements ISimpleDia
     {
         checkAuthenticated();
         EventBus.getDefault().removeStickyEvent(Events.LoginStateChanged.class);
+    }
+
+    public void onEventMainThread(Events.ShowFragment e)
+    {
+        showFragment(e.fragment, e.backstack, e.params);
     }
 
     @Override

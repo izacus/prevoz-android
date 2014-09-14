@@ -11,5 +11,6 @@
     android:paddingRight="16dp"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:fontFamily="sans-serif-light"
+    android:background="@drawable/search_list_selector"
     style="@android:style/TextAppearance.Large"
     />

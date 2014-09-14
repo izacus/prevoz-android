@@ -124,14 +124,14 @@ public class PushManager
                 else
                     ContentUtils.deleteNotificationSubscription(context, from, to, date);
 
-                ViewUtils.showMessage(context, subscribed ? "Prijava uspela." : "Odjava uspela.", false);
+                ViewUtils.showMessage(context, subscribed ? "Prijavljeni ste na obvestila." : "Obveščanje preklicano.", false);
                 EventBus.getDefault().post(new Events.NotificationSubscriptionStatusChanged());
             }
 
             @Override
             public void failure(RetrofitError retrofitError)
             {
-                Toast.makeText(context, "Registracija neuspešna.", Toast.LENGTH_SHORT).show();
+                ViewUtils.showMessage(context, "Obveščanja ni bilo mogoče vklopiti.", true);
                 EventBus.getDefault().post(new Events.NotificationSubscriptionStatusChanged());
             }
         });

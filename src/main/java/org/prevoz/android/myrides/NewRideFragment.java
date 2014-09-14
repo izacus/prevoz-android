@@ -29,6 +29,7 @@ import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.api.rest.RestStatus;
 import org.prevoz.android.auth.AuthenticationUtils;
+import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.CityNameTextValidator;
 import org.prevoz.android.ride.RideInfoFragment;
@@ -42,6 +43,7 @@ import org.prevoz.android.util.ViewUtils;
 
 import java.util.Calendar;
 
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -415,7 +417,7 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
                 else
                 {
                     ViewUtils.showMessage(activity, R.string.newride_publish_success, false);
-                    activity.showFragment(UiFragment.FRAGMENT_MY_RIDES, false);
+                    EventBus.getDefault().post(new Events.ShowFragment(UiFragment.FRAGMENT_MY_RIDES, false));
                 }
             }
 

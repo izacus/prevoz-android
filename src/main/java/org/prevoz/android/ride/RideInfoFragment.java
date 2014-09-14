@@ -31,6 +31,7 @@ import org.prevoz.android.UiFragment;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.PrevozApi;
 import org.prevoz.android.api.rest.RestRide;
+import org.prevoz.android.events.Events;
 import org.prevoz.android.myrides.DeleteRideDialog;
 import org.prevoz.android.myrides.NewRideFragment;
 import org.prevoz.android.util.LocaleUtil;
@@ -38,6 +39,7 @@ import org.prevoz.android.util.ViewUtils;
 
 import java.text.SimpleDateFormat;
 
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -249,7 +251,7 @@ public class RideInfoFragment extends DialogFragment
 
             Bundle params = new Bundle();
             params.putParcelable(NewRideFragment.PARAM_EDIT_RIDE, ride);
-            activity.showFragment(UiFragment.FRAGMENT_NEW_RIDE, false, params);
+            EventBus.getDefault().post(new Events.ShowFragment(UiFragment.FRAGMENT_NEW_RIDE, false, params));
         }
         else
         {

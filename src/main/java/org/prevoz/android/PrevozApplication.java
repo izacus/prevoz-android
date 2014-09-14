@@ -43,11 +43,6 @@ public class PrevozApplication extends Application
             e.printStackTrace();
         }
 
-        GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-        analyticsTracker = analytics.newTracker(R.xml.analytics);
-        analyticsTracker.setUseSecure(true);
-        analytics.getLogger().setLogLevel(Logger.LogLevel.VERBOSE);
-
         new PruneHistory().execute();
     }
 
