@@ -36,6 +36,7 @@ public class ViewUtils
     }
 
     public static void showMessage(Activity context, String messageText, boolean failure) {
+        if (context == null) return;
         Crouton.makeText(context, messageText, failure ? Style.ALERT : Style.CONFIRM).show();
     }
 }

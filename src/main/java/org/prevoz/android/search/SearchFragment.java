@@ -2,6 +2,7 @@ package org.prevoz.android.search;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -91,14 +92,15 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
     @Click(R.id.search_date)
     protected void clickDate()
     {
-        ViewUtils.hideKeyboard(getActivity());
+        FragmentActivity activity = getActivity();
+        ViewUtils.hideKeyboard(activity);
         final Calendar calendar = Calendar.getInstance(LocaleUtil.getLocale());
         DatePickerDialog dialog = DatePickerDialog.newInstance(this,
                                                                calendar.get(Calendar.YEAR),
                                                                calendar.get(Calendar.MONTH),
                                                                calendar.get(Calendar.DAY_OF_MONTH),
                                                                false);
-        dialog.show(getActivity().getSupportFragmentManager(), "SearchDate");
+        dialog.show(activity.getSupportFragmentManager(), "SearchDate");
     }
 
     // This is duplicated to allow clicking on logo or edittext
@@ -165,6 +167,7 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
 
     private void updateSearchButtonProgress(boolean progressShown)
     {
+        if (!isAdded()) return;
         searchButton.setEnabled(!progressShown);
         searchButtonImage.setVisibility(progressShown ? View.INVISIBLE : View.VISIBLE);
         searchButtonProgress.setVisibility(progressShown ? View.VISIBLE : View.INVISIBLE);
