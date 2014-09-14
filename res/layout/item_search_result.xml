@@ -4,7 +4,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/card_padding"
+    android:paddingTop="2dp"
+    android:paddingBottom="2dp"
     android:background="@drawable/search_list_selector"
     >
     <!-- Background is set because android:listSelector is buggy on 2.3 -->
