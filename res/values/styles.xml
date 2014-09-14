@@ -3,7 +3,6 @@
     <style name="Prevoz.Theme" parent="Prevoz.Theme.Base" />
     <style name="Prevoz.Theme.Base" parent="@style/Theme.Sherlock.Light.DarkActionBar">
         <item name="android:windowBackground">@color/background_color</item>
-        <item name="android:actionBarStyle">@style/Prevoz.ActionBar</item>
         <item name="actionBarStyle">@style/Prevoz.ActionBar</item>
         <item name="sdlDialogStyle">@style/Prevoz.Dialog</item>
         <item name="android:textColorHighlight">@color/prevoztheme_pressed</item>

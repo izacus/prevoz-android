@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="@string/search_form_title"
-        style="?android:listSeparatorTextViewStyle"
+        style="@style/Prevoz.Header"
         />
 
     <!-- Search card -->
@@ -164,7 +164,8 @@
                     <ProgressBar
                         android:id="@+id/search_button_progress"
                         android:layout_width="32dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center_vertical"
                         android:indeterminateOnly="true"
                         android:visibility="invisible"
                         />
