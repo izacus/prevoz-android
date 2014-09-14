@@ -15,173 +15,175 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="@string/search_form_title"
-        style="@style/Prevoz.Header"
+        style="?android:listSeparatorTextViewStyle"
         />
 
     <!-- Search card -->
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/card_bg_r4"
-        android:orientation="vertical"
         >
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp"
-            >
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/search_ic_from"
-                android:layout_width="32dp"
-                android:layout_height="40dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:scaleType="center"
-                android:src="@drawable/ic_action_location_from"
-                />
-            
-            <ImageView
-                android:id="@+id/search_ic_dots"
-                android:layout_width="32dp"
-                android:layout_height="16dp"
-                android:layout_below="@id/search_ic_from"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_action_overflow"
-                />
-
-            <ImageView
-                android:id="@+id/search_ic_to"
-                android:layout_below="@id/search_ic_dots"
-                android:layout_width="32dp"
-                android:layout_height="40dp"
-                android:scaleType="center"
-                android:src="@drawable/ic_action_location_to"
-                />
-
-            <AutoCompleteTextView
-                android:id="@+id/search_from"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_toRightOf="@id/search_ic_from"
-                android:layout_alignBottom="@id/search_ic_from"
-                android:layout_height="48dp"
-                android:layout_marginLeft="8dp"
-                android:singleLine="true"
-                android:imeOptions="actionNext"
-                android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
-                android:hint="@string/search_form_from_hint"
-
-                style="@style/Prevoz.AutoCompleteTextView"
-                />
-
-            <AutoCompleteTextView
-                android:id="@+id/search_to"
-                android:layout_width="match_parent"
-                android:layout_toRightOf="@id/search_ic_to"
-                android:layout_alignBottom="@id/search_ic_to"
-                android:layout_height="48dp"
-                android:layout_marginLeft="8dp"
-                android:imeOptions="actionNext"
-                android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
-                android:singleLine="true"
-                android:hint="@string/search_form_to_hint"
-
-                style="@style/Prevoz.AutoCompleteTextView"
-                />
-            
-        </RelativeLayout>
-
-
-        <LinearLayout
-            android:id="@+id/search_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:clickable="true"
-            android:orientation="horizontal"
-            >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_action_calendar_day"
-                android:scaleType="center"
-                />
-
-            <EditText
-                android:id="@+id/search_date_edit"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginLeft="8dp"
-                android:inputType="textNoSuggestions"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:clickable="true"
-                android:hint="@string/search_form_date"
-                style="@style/Prevoz.EditText"
-                tools:ignore="TextFields" />
-
-         </LinearLayout>
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_marginTop="16dp"
-            android:layout_height="1dp"
-
-            android:background="#DDDDDD" />
-
-        <LinearLayout
-            android:id="@+id/search_button"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:paddingLeft="16dp"
-            android:orientation="horizontal"
-            android:background="@drawable/borderless_button"
-            >
-
-            <FrameLayout
-                android:layout_width="32dp"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                >
 
                 <ImageView
-                    android:id="@+id/search_button_img"
+                    android:id="@+id/search_ic_from"
                     android:layout_width="32dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
                     android:scaleType="center"
-                    android:src="@drawable/ic_action_send"
+                    android:src="@drawable/ic_action_location_from"
                     />
 
-                <ProgressBar
-                    android:id="@+id/search_button_progress"
+                <ImageView
+                    android:id="@+id/search_ic_dots"
                     android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="center"
-                    android:indeterminateOnly="true"
-                    android:visibility="invisible"
+                    android:layout_height="16dp"
+                    android:layout_below="@id/search_ic_from"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_action_overflow"
                     />
 
-            </FrameLayout>
-            
-            <TextView
-                android:id="@+id/search_button_text"
+                <ImageView
+                    android:id="@+id/search_ic_to"
+                    android:layout_below="@id/search_ic_dots"
+                    android:layout_width="32dp"
+                    android:layout_height="40dp"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_action_location_to"
+                    />
+
+                <AutoCompleteTextView
+                    android:id="@+id/search_from"
+                    android:layout_width="match_parent"
+                    android:layout_toRightOf="@id/search_ic_from"
+                    android:layout_alignBottom="@id/search_ic_from"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="8dp"
+                    android:singleLine="true"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
+                    android:hint="@string/search_form_from_hint"
+
+                    style="@style/Prevoz.AutoCompleteTextView"
+                    />
+
+                <AutoCompleteTextView
+                    android:id="@+id/search_to"
+                    android:layout_width="match_parent"
+                    android:layout_toRightOf="@id/search_ic_to"
+                    android:layout_alignBottom="@id/search_ic_to"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="8dp"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
+                    android:singleLine="true"
+                    android:hint="@string/search_form_to_hint"
+
+                    style="@style/Prevoz.AutoCompleteTextView"
+                    />
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:id="@+id/search_date"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="left|center_vertical"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:clickable="true"
+                android:orientation="horizontal"
+                >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_action_calendar_day"
+                    android:scaleType="center"
+                    />
+
+                <EditText
+                    android:id="@+id/search_date_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="8dp"
+                    android:inputType="textNoSuggestions"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:clickable="true"
+                    android:hint="@string/search_form_date"
+                    style="@style/Prevoz.EditText"
+                    tools:ignore="TextFields" />
+
+             </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_marginTop="16dp"
+                android:layout_height="1dp"
+
+                android:background="#DDDDDD" />
+
+            <LinearLayout
+                android:id="@+id/search_button"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
                 android:paddingLeft="16dp"
+                android:orientation="horizontal"
+                android:background="@drawable/borderless_button"
+                >
 
-                android:textColor="@color/prevoztheme_color"
-                android:text="@string/search_form_button_search"
-                style="?android:textAppearanceButton"
-                />
+                <FrameLayout
+                    android:layout_width="32dp"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/search_button_img"
+                        android:layout_width="32dp"
+                        android:layout_height="match_parent"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_action_send"
+                        />
+
+                    <ProgressBar
+                        android:id="@+id/search_button_progress"
+                        android:layout_width="32dp"
+                        android:layout_height="match_parent"
+                        android:indeterminateOnly="true"
+                        android:visibility="invisible"
+                        />
+
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/search_button_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"
+                    android:paddingLeft="16dp"
+
+                    android:textColor="@color/prevoztheme_color"
+                    android:text="@string/search_form_button_search"
+                    style="?android:textAppearanceButton"
+                    />
+            </LinearLayout>
         </LinearLayout>
-
-    </LinearLayout>
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>

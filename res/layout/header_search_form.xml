@@ -13,11 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <FrameLayout
+    <android.support.v7.widget.CardView
         android:id="@+id/search_notify_button_container"
         android:layout_height="48dp"
         android:layout_width="match_parent"
-        android:background="@drawable/card_bg_r4"
         android:visibility="gone"
     >
         <LinearLayout
@@ -70,5 +69,5 @@
                 />
 
         </LinearLayout>
-    </FrameLayout>
+    </android.support.v7.widget.CardView>
 </LinearLayout>

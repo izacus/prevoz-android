@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class FileUtil
 {
@@ -26,9 +27,8 @@ public class FileUtil
         InputStream is = context.getResources().openRawResource(rawResId);
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
-        String line;
-
         List<String> lines = new ArrayList<String>();
+        String line;
         try
         {
             while ((line = reader.readLine()) != null)

@@ -5,63 +5,65 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="@dimen/card_padding"
-    android:paddingBottom="@dimen/card_padding"
     android:background="@drawable/search_list_selector"
     >
     <!-- Background is set because android:listSelector is buggy on 2.3 -->
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:padding="8dp"
-        android:background="@drawable/card_bg_r4"
-        android:orientation="horizontal"
-        >
-
-        <TextView
-            android:id="@+id/item_result_time"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:fontFamily="sans-serif-condensed"
-            android:textSize="32sp"
-            android:gravity="center"
-            android:includeFontPadding="false"
-            style="?android:attr/textAppearanceLarge"
-            />
+        android:layout_height="60dp">
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:layout_marginLeft="16dp"
-            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:padding="8dp"
+            android:orientation="horizontal"
             >
 
             <TextView
-                android:id="@+id/item_result_driver"
-                android:layout_width="match_parent"
-                android:layout_height="22dp"
-                android:gravity="top|right"
-                android:textColor="@android:color/darker_gray"
-                android:textStyle="bold"
-                android:textSize="12sp"
-                android:includeFontPadding="true"
-                style="?android:attr/textAppearanceSmall"
-                />
-
-            <TextView
-                android:id="@+id/item_result_price"
-                android:layout_width="match_parent"
-                android:layout_height="22dp"
-                android:textStyle="bold"
-                android:gravity="bottom|right"
-                android:textColor="@color/prevoztheme_color"
+                android:id="@+id/item_result_time"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="sans-serif-condensed"
+                android:textSize="32sp"
+                android:gravity="center"
                 android:includeFontPadding="false"
-                android:textSize="16sp"
-                style="?android:attr/textAppearanceListItemSmall"
+                style="?android:attr/textAppearanceLarge"
                 />
 
-         </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="16dp"
+                android:orientation="vertical"
+                >
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/item_result_driver"
+                    android:layout_width="match_parent"
+                    android:layout_height="22dp"
+                    android:gravity="top|right"
+                    android:textColor="@android:color/darker_gray"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:includeFontPadding="true"
+                    style="?android:attr/textAppearanceSmall"
+                    />
+
+                <TextView
+                    android:id="@+id/item_result_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="22dp"
+                    android:textStyle="bold"
+                    android:gravity="bottom|right"
+                    android:textColor="@color/prevoztheme_color"
+                    android:includeFontPadding="false"
+                    android:textSize="16sp"
+                    style="?android:attr/textAppearanceListItemSmall"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 </FrameLayout>

@@ -406,11 +406,11 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
 
                 if (!("created".equals(status.status) || "updated".equals(status.status)))
                 {
-                    if (status.error != null && status.error.size() > 0)
+                    /*if (status.error != null && status.error.size() > 0)
                     {
                         String firstKey = status.error.keySet().iterator().next();
                         Toast.makeText(activity, status.error.get(firstKey).get(0), Toast.LENGTH_SHORT).show();
-                    }
+                    }*/
                 }
                 else
                 {
