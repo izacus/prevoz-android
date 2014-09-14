@@ -13,7 +13,7 @@
     <string name="search_form_button_search">Išči</string>
     <string name="search_form_button_searching">Iščem…</string>
     <string name="login_title">Prijava</string>
-    <string name="search_no_results">Noben prevoz ni bil najden.</string>
+    <string name="search_no_results">Najden ni bil noben prevoz.</string>
 
     <string name="notify_statusbar">Novi prevozi na relaciji</string>
     <string name="rideinfo_call">Pokliči</string>
@@ -108,4 +108,6 @@
     <string name="newride_notes">Opombe</string>
     <string name="newride_button_submit">Oddaj prevoz</string>
     <string name="main_logout">Odjava</string>
+    <string name="newride_publish_success">Prevoz je bil oddan.</string>
+    <string name="newride_publish_failure">Pri oddajanju je prišlo do napake :(</string>
 </resources>

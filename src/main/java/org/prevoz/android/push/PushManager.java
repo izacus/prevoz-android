@@ -1,5 +1,6 @@
 package org.prevoz.android.push;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -20,6 +21,7 @@ import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.NotificationSubscription;
 import org.prevoz.android.util.ContentUtils;
+import org.prevoz.android.util.ViewUtils;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -102,7 +104,7 @@ public class PushManager
         return ContentUtils.getNotificationSubscriptions(context);
     }
 
-    public void setSubscriptionStatus(final City from, final City to, final Calendar date, final boolean subscribed)
+    public void setSubscriptionStatus(final Activity context, final City from, final City to, final Calendar date, final boolean subscribed)
     {
         final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
@@ -122,7 +124,7 @@ public class PushManager
                 else
                     ContentUtils.deleteNotificationSubscription(context, from, to, date);
 
-                Toast.makeText(context, subscribed ? "Prijava uspela." : "Odjava uspela.", Toast.LENGTH_SHORT).show();
+                ViewUtils.showMessage(context, subscribed ? "Prijava uspela." : "Odjava uspela.", false);
                 EventBus.getDefault().post(new Events.NotificationSubscriptionStatusChanged());
             }
 

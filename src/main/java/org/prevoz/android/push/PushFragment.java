@@ -85,7 +85,7 @@ public class PushFragment extends Fragment implements ISimpleDialogListener
     {
         if (clickedSubscription != null)
         {
-            pushManager.setSubscriptionStatus(clickedSubscription.getFrom(), clickedSubscription.getTo(), clickedSubscription.getDate(), false);
+            pushManager.setSubscriptionStatus(getActivity(), clickedSubscription.getFrom(), clickedSubscription.getTo(), clickedSubscription.getDate(), false);
         }
     }
 

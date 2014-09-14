@@ -49,6 +49,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import de.greenrobot.event.EventBus;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
 import eu.inmite.android.lib.dialogs.ISimpleDialogListener;
 import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 
@@ -650,5 +651,11 @@ public class MainActivity extends SherlockFragmentActivity implements ISimpleDia
     {
         checkAuthenticated();
         EventBus.getDefault().removeStickyEvent(Events.LoginStateChanged.class);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Crouton.cancelAllCroutons();
     }
 }

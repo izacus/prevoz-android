@@ -368,7 +368,7 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
 
     private void showError(String message)
     {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        ViewUtils.showMessage(getActivity(), message, true);
     }
 
     @Override
@@ -406,15 +406,15 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
 
                 if (!("created".equals(status.status) || "updated".equals(status.status)))
                 {
-                    /*if (status.error != null && status.error.size() > 0)
+                    if (status.error != null && status.error.size() > 0)
                     {
                         String firstKey = status.error.keySet().iterator().next();
-                        Toast.makeText(activity, status.error.get(firstKey).get(0), Toast.LENGTH_SHORT).show();
-                    }*/
+                        ViewUtils.showMessage(activity, status.error.get(firstKey).get(0), true);
+                    }
                 }
                 else
                 {
-                    Toast.makeText(activity, "Prevoz je bil oddan.", Toast.LENGTH_SHORT).show();
+                    ViewUtils.showMessage(activity, R.string.newride_publish_success, false);
                     activity.showFragment(UiFragment.FRAGMENT_MY_RIDES, false);
                 }
             }
@@ -423,7 +423,7 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
             public void failure(RetrofitError error)
             {
                 dialog.dismiss();
-                Toast.makeText(getActivity(), "Pri oddajanju je prišlo do napake, ste povezani na internet?", Toast.LENGTH_SHORT).show();
+                ViewUtils.showMessage(activity, R.string.newride_publish_failure, true);
             }
         });
     }

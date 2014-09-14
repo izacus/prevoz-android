@@ -11,6 +11,7 @@ import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.util.LocaleUtil;
+import org.prevoz.android.util.ViewUtils;
 
 import de.greenrobot.event.EventBus;
 import eu.inmite.android.lib.dialogs.BaseDialogFragment;
@@ -70,7 +71,7 @@ public class DeleteRideDialog extends BaseDialogFragment
             public void success(Response response, Response response2)
             {
                 deleteDialog.dismiss();
-                Toast.makeText(context, R.string.ride_delete_success, Toast.LENGTH_SHORT).show();
+                ViewUtils.showMessage(context, R.string.ride_delete_success, false);
                 EventBus.getDefault().post(new Events.RideDeleted(id));
             }
 
@@ -78,7 +79,7 @@ public class DeleteRideDialog extends BaseDialogFragment
             public void failure(RetrofitError error)
             {
                 deleteDialog.dismiss();
-                Toast.makeText(context, R.string.ride_delete_failure, Toast.LENGTH_SHORT).show();
+                ViewUtils.showMessage(context, R.string.ride_delete_failure, true);
             }
         });
     }

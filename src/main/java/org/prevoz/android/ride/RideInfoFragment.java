@@ -34,6 +34,7 @@ import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.myrides.DeleteRideDialog;
 import org.prevoz.android.myrides.NewRideFragment;
 import org.prevoz.android.util.LocaleUtil;
+import org.prevoz.android.util.ViewUtils;
 
 import java.text.SimpleDateFormat;
 
@@ -306,7 +307,7 @@ public class RideInfoFragment extends DialogFragment
             public void failure(RetrofitError retrofitError)
             {
                 chkFull.setChecked(!rideFull);
-                Toast.makeText(activity, "Stanja prevoza ni bilo mogoče spremeniti ... ali internet deluje?", Toast.LENGTH_SHORT).show();
+                ViewUtils.showMessage(getActivity(), "Stanja prevoza ni bilo mogoče spremeniti :(", true);
                 chkFull.setEnabled(true);
             }
         });

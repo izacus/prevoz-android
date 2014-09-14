@@ -35,6 +35,7 @@ import org.prevoz.android.ride.RideInfoFragment;
 import org.prevoz.android.ui.ListDisappearAnimation;
 import org.prevoz.android.ui.ListFlyupAnimator;
 import org.prevoz.android.util.LocaleUtil;
+import org.prevoz.android.util.ViewUtils;
 
 import java.util.Calendar;
 
@@ -151,10 +152,10 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     {
         if (getActivity() == null) return;
 
-        if (restSearchResults == null || restSearchResults.results == null)
+        if (restSearchResults == null || restSearchResults.results == null || restSearchResults.results.size() == 0)
         {
             results = null;
-            Toast.makeText(getActivity(), R.string.search_no_results, Toast.LENGTH_SHORT).show();
+            ViewUtils.showMessage(getActivity(), R.string.search_no_results, true);
         }
         else
         {
@@ -172,7 +173,7 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
 
         Activity activity = getActivity();
         if (activity != null)
-            Toast.makeText(activity, "Napaka pri iskanju - ali je na voljo internetna povezava?", Toast.LENGTH_SHORT).show();
+            ViewUtils.showMessage(activity, "Napaka med iskanjem, a internet deluje?", true);
         EventBus.getDefault().post(new Events.SearchComplete());
     }
 
@@ -275,7 +276,7 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
         searchNotifyButton.setEnabled(false);
         searchNotifyButtonIcon.setVisibility(View.INVISIBLE);
         searchNotifyButtonProgress.setVisibility(View.VISIBLE);
-        pushManager.setSubscriptionStatus(lastFrom, lastTo, lastDate, !pushManager.isSubscribed(lastFrom, lastTo, lastDate));
+        pushManager.setSubscriptionStatus(getActivity(), lastFrom, lastTo, lastDate, !pushManager.isSubscribed(lastFrom, lastTo, lastDate));
     }
 
     @Background
