@@ -647,6 +647,12 @@ public class MainActivity extends SherlockFragmentActivity implements ISimpleDia
 
     }
 
+    @Override
+    public void onNeutralButtonClicked(int requestCode)
+    {
+
+    }
+
     public void onEventMainThread(Events.LoginStateChanged e)
     {
         checkAuthenticated();

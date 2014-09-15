@@ -1,0 +1,84 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url 'http://download.crashlytics.com/maven' }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.12.2'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4+'
+        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
+    }
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
+apply plugin: 'crashlytics'
+
+repositories {
+    mavenCentral()
+    maven { url 'http://download.crashlytics.com/maven' }
+    maven {
+            url 'http://mvn.virag.si/content/groups/public'
+            credentials {
+                username mvnViragUsername
+                password mvnViragPassword
+            }
+   }
+}
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "20.0.0"
+    defaultConfig {
+        minSdkVersion 9
+        targetSdkVersion 19
+        versionCode 28
+        versionName "3.0.3"
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+    buildTypes {
+        release {
+            runProguard true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.txt'
+        }
+    }
+    dexOptions {
+        incremental false
+    }
+    productFlavors {
+    }
+}
+
+apt {
+    arguments {
+        androidManifestFile variant.processResources.manifestFile 
+        resourcePackageName 'org.prevoz.android'
+    }
+}
+
+dependencies {
+    compile 'com.squareup.retrofit:retrofit:1.6.1'
+    compile 'com.google.android.gms:play-services:5.+'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
+    compile 'com.android.support:support-v4:20.0.0'
+    compile 'com.android.support:cardview-v7:+'
+    compile 'se.emilsjolander:stickylistheaders:2.5.0'
+    compile 'de.greenrobot:eventbus:2.2.1'
+    compile 'com.crashlytics.android:crashlytics:1.+'
+    compile('de.keyboardsurfer.android.widget:crouton:1.8.4@aar') {
+        // exclusion is not neccessary, but generally a good idea.
+        exclude group: 'com.google.android', module: 'support-v4'
+    }
+    apt "org.androidannotations:androidannotations:3.1"
+    compile 'com.github.flavienlaurent.datetimepicker:library:0.0.2'
+    compile "org.androidannotations:androidannotations-api:3.1"
+    compile 'com.nineoldandroids:parent:2.2.0'
+    compile('com.actionbarsherlock:actionbarsherlock:4.4.0@aar') {
+        exclude group: 'com.google.android', module: 'support-v4'
+    }
+    compile 'eu.inmite.android.lib:android-styled-dialogs:1.2.0'
+    compile 'edu.mit.mobile:SimpleContentProvider:0.2.0'
+}

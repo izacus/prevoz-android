@@ -94,4 +94,9 @@ public class PushFragment extends Fragment implements ISimpleDialogListener
     {
         clickedSubscription = null;
     }
+
+    @Override
+    public void onNeutralButtonClicked(int requestCode) {
+
+    }
 }

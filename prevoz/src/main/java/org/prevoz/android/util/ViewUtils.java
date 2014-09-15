@@ -14,6 +14,8 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class ViewUtils
 {
+    private static Style confirmStyle = null;
+
     public static void setupEmptyView(ListView listView, View emptyView, String text)
     {
         TextView textView = (TextView) emptyView.findViewById(R.id.empty_text);
@@ -37,6 +39,10 @@ public class ViewUtils
 
     public static void showMessage(Activity context, String messageText, boolean failure) {
         if (context == null) return;
-        Crouton.makeText(context, messageText, failure ? Style.ALERT : Style.CONFIRM).show();
+
+        if (confirmStyle == null)
+            confirmStyle = new Style.Builder().setBackgroundColor(R.color.prevoztheme_color).build();
+
+        Crouton.makeText(context, messageText, failure ? Style.ALERT : confirmStyle).show();
     }
 }

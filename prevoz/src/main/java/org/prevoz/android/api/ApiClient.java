@@ -48,7 +48,6 @@ public class ApiClient
                                  .setConverter(new GsonConverter(gson))
                                  .setRequestInterceptor(new CookieSetterInterceptor())
                                  .setClient(new OkClient(new OkHttpClient()))
-                                 .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
                                  .build();
     }
 

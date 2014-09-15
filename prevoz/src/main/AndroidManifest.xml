@@ -1,8 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
 	package="org.prevoz.android"
-	android:versionCode="28"
-	android:versionName="3.0.3" >
+	>
 
+    <uses-sdk tools:node="replace" />
 	<uses-sdk android:minSdkVersion="9" android:targetSdkVersion="19" />
     <permission android:name="org.prevoz.permission.ACCESS_DATA" android:protectionLevel="signature" />
 
