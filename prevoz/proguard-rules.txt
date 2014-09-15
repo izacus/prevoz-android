@@ -106,3 +106,4 @@
 }
 
 -dontwarn java.lang.AutoClosable
+-dontwarn com.actionbarsherlock.internal.**
