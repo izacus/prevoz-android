@@ -69,11 +69,13 @@ public class PushReceiver extends BroadcastReceiver
                 .setContentTitle(title)
                 .setContentText(rideIds.length + " " + LocaleUtil.getStringNumberForm(context.getResources(), R.array.ride_forms, rideIds.length) + " v " + LocaleUtil.getNotificationDayName(context.getResources(), when).toLowerCase())
                 .setContentIntent(pIntent)
+                .setCategory(NotificationCompat.CATEGORY_SOCIAL)
+                .setAutoCancel(true)
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setOngoing(false)
                 .getNotification();
 
-        notification.flags |= (Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
-        notification.flags &= ~Notification.FLAG_ONGOING_EVENT;	// Clear ongoing flag
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
         notification.number = rideIds.length;
         notifyManager.notify(1, notification);
     }
