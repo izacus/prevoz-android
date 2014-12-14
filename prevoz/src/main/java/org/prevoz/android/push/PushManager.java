@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.os.ConditionVariable;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;

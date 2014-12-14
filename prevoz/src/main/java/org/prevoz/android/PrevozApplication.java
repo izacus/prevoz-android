@@ -4,12 +4,8 @@ import android.app.Application;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.os.StrictMode;
 
 import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.Logger;
-import com.google.android.gms.analytics.Tracker;
 
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EApplication;

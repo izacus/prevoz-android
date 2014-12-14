@@ -10,7 +10,6 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.squareup.okhttp.OkHttpClient;
 
-import org.prevoz.android.BuildConfig;
 import org.prevoz.android.PrevozApplication_;
 import org.prevoz.android.util.LocaleUtil;
 
