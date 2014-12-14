@@ -1,5 +1,6 @@
 package org.prevoz.android.myrides;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -390,12 +391,12 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
     @Override
     public void onRightButtonClicked(RestRide r)
     {
-        final ProgressDialog dialog = new ProgressDialog(getActivity());
+        final Activity activity = getActivity();
+        if (activity == null) return;
+
+        final ProgressDialog dialog = new ProgressDialog(activity);
         dialog.setMessage("Oddajam prevoz...");
         dialog.show();
-
-        final MainActivity activity = (MainActivity) getActivity();
-        if (activity == null) return;
 
         // TODO: remove when server timezone parsing is fixed
         r.date.setTimeZone(LocaleUtil.getLocalTimezone());
@@ -419,11 +420,15 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
                     if (status.error != null && status.error.size() > 0)
                     {
                         String firstKey = status.error.keySet().iterator().next();
+                        final MainActivity activity = (MainActivity) getActivity();
+                        if (activity == null) return;
                         ViewUtils.showMessage(activity, status.error.get(firstKey).get(0), true);
                     }
                 }
                 else
                 {
+                    final MainActivity activity = (MainActivity) getActivity();
+                    if (activity == null) return;
                     ViewUtils.showMessage(activity, R.string.newride_publish_success, false);
                     EventBus.getDefault().post(new Events.ShowFragment(UiFragment.FRAGMENT_MY_RIDES, false));
                 }
@@ -432,7 +437,9 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
             @Override
             public void failure(RetrofitError error)
             {
-                dialog.dismiss();
+                if (dialog.isShowing()) dialog.dismiss();
+                final MainActivity activity = (MainActivity) getActivity();
+                if (activity == null) return;
                 ViewUtils.showMessage(activity, R.string.newride_publish_failure, true);
             }
         });

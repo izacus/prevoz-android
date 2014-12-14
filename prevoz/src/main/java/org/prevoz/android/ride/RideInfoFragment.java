@@ -2,6 +2,7 @@ package org.prevoz.android.ride;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -269,7 +271,13 @@ public class RideInfoFragment extends DialogFragment
         {
             Intent intent = new Intent(Intent.ACTION_SENDTO);
             intent.setData(Uri.parse("smsto:" + ride.phoneNumber));
-            startActivity(intent);
+
+            try {
+                startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(getActivity(), "Nimate nameščene nobene aplikacije za pošiljanje SMS sporočil.", Toast.LENGTH_SHORT).show();
+            }
+
         }
         else if (PARAM_ACTION_EDIT.equals(action))
         {
