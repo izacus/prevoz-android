@@ -1,6 +1,7 @@
 package org.prevoz.android.search;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,11 +9,13 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import org.prevoz.android.R;
+import org.prevoz.android.events.Events;
 import org.prevoz.android.model.Route;
 import org.prevoz.android.util.ContentUtils;
 
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 public class SearchHistoryAdapter extends BaseAdapter implements StickyListHeadersAdapter
@@ -74,8 +77,18 @@ public class SearchHistoryAdapter extends BaseAdapter implements StickyListHeade
             v = inflater.inflate(R.layout.item_search_history, parent, false);
         }
 
+        final Route route = searchHistory.get(position);
+        CardView c = (CardView) v.findViewById(R.id.item_history_card);
+        c.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(new Events.SearchFillWithRoute(route));
+
+            }
+        });
+
         TextView txt = (TextView) v.findViewById(R.id.item_history_text);
-        txt.setText(searchHistory.get(position).toString());
+        txt.setText(route.toString());
         return v;
     }
 }

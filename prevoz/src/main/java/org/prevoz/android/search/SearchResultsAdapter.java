@@ -1,6 +1,9 @@
 package org.prevoz.android.search;
 
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.CardView;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -14,6 +17,7 @@ import android.widget.TextView;
 
 import org.prevoz.android.R;
 import org.prevoz.android.api.rest.RestRide;
+import org.prevoz.android.ride.RideInfoFragment;
 import org.prevoz.android.util.LocaleUtil;
 
 import java.util.Collections;
@@ -26,13 +30,13 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 public class SearchResultsAdapter extends BaseAdapter implements StickyListHeadersAdapter
 {
-    private final Context context;
+    private final FragmentActivity context;
 
     private List<RestRide> results;
     private Set<Integer> highlights;
     private final LayoutInflater inflater;
 
-    public SearchResultsAdapter(Context context, List<RestRide> results, int[] highlights)
+    public SearchResultsAdapter(FragmentActivity context, List<RestRide> results, int[] highlights)
     {
         this.context = context;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -65,15 +69,16 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
         if (v == null)
         {
             v = inflater.inflate(R.layout.item_search_result, parent, false);
+            CardView c = (CardView)v.findViewById(R.id.item_result_card);
             TextView time = (TextView) v.findViewById(R.id.item_result_time);
             TextView price = (TextView) v.findViewById(R.id.item_result_price);
             TextView driver = (TextView) v.findViewById(R.id.item_result_driver);
 
-            v.setTag(new ResultsViewHolder(time, price, driver));
+            v.setTag(new ResultsViewHolder(c, time, price, driver));
         }
 
-        ResultsViewHolder holder = (ResultsViewHolder) v.getTag();
-        RestRide ride = results.get(position);
+        final ResultsViewHolder holder = (ResultsViewHolder) v.getTag();
+        final RestRide ride = results.get(position);
 
         SpannableStringBuilder time = new SpannableStringBuilder(LocaleUtil.getFormattedTime(ride.date));
         if (highlights.contains(ride.id.intValue()))
@@ -97,6 +102,17 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
         }
 
         holder.driver.setText(ride.author);
+        holder.card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RideInfoFragment rideInfo = RideInfoFragment.newInstance(ride);
+                FragmentTransaction ft = context.getSupportFragmentManager().beginTransaction();
+                ft.add(rideInfo, null);
+                ft.commitAllowingStateLoss();
+            }
+        });
+
+
         return v;
     }
 
@@ -186,12 +202,14 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
 
     private static class ResultsViewHolder
     {
+        final CardView card;
         final TextView time;
         final TextView price;
         final TextView driver;
 
-        private ResultsViewHolder(TextView time, TextView price, TextView driver)
+        private ResultsViewHolder(CardView card, TextView time, TextView price, TextView driver)
         {
+            this.card = card;
             this.time = time;
             this.price = price;
             this.driver = driver;

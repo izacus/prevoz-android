@@ -96,18 +96,10 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
         searchNotifyButtonIcon = (ImageView) headerFragmentView.findViewById(R.id.search_notify_button_icon);
         searchNotifyButtonProgress = (ProgressBar) headerFragmentView.findViewById(R.id.search_notify_button_progress);
         searchNotifyButton = headerFragmentView.findViewById(R.id.search_notify_button);
-
-        searchNotifyButton.setOnTouchListener(new View.OnTouchListener()
-        {
+        searchNofityButtonContainer.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
-                if (event.getAction() == MotionEvent.ACTION_UP)
-                {
-                    clickNotificationButton();
-                }
-
-                return false;
+            public void onClick(View v) {
+                clickNotificationButton();
             }
         });
     }
@@ -193,19 +185,6 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
                 resultList.smoothScrollToPosition(1);
 
         }
-
-        resultList.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                RestRide ride = (RestRide) adapter.getItem(position - 1);
-                RideInfoFragment rideInfo = RideInfoFragment.newInstance(ride);
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.add(rideInfo, null);
-                ft.commitAllowingStateLoss();
-            }
-        });
 
         if (results.results != null && results.results.size() > 0)
         {
@@ -298,16 +277,6 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
                 }
 
                 resultList.setAdapter(adapter);
-                resultList.setOnItemClickListener(new AdapterView.OnItemClickListener()
-                {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-                    {
-                        Route route = (Route) adapter.getItem(position - 1);
-                        EventBus.getDefault().post(new Events.SearchFillWithRoute(route));
-                    }
-                });
-
                 if (animate)
                     new ListFlyupAnimator(resultList).animate();
             }
