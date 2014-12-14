@@ -284,7 +284,7 @@
                      android:layout_height="48dp"
                      android:layout_weight="1"
                      android:textColor="@color/prevoztheme_color"
-                     android:background="@drawable/borderless_button"
+                     android:background="?selectableItemBackground"
                      style="?android:textAppearanceButton"
 
                      android:text="@string/rideinfo_call"
@@ -296,7 +296,7 @@
                      android:layout_height="48dp"
                      android:layout_weight="1"
                      android:textColor="@color/prevoztheme_color"
-                     android:background="@drawable/borderless_button"
+                     android:background="?selectableItemBackground"
                      style="?android:textAppearanceButton"
 
                      android:text="@string/rideinfo_send_sms"

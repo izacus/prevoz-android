@@ -106,6 +106,10 @@ public class ContentUtils
 
     public static String getLocalCountryName(Context context, String locale, String countryCode)
     {
+        // TODO: Update database with proper parameters
+        if (locale.equalsIgnoreCase("sl"))
+            locale = "sl-si";
+
         String name = countryCode;
         ContentResolver resolver = context.getContentResolver();
         Cursor result = resolver.query(Country.CONTENT_URI,

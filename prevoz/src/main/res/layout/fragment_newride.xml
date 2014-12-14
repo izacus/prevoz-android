@@ -78,37 +78,33 @@
                         android:src="@drawable/ic_action_location_to"
                         />
 
-                    <org.prevoz.android.ui.FloatingHintAutocompleteEditText
+                    <AutoCompleteTextView
                         android:id="@+id/newride_from"
                         android:layout_width="match_parent"
                         android:layout_toRightOf="@id/newride_ic_from"
                         android:layout_alignBottom="@id/newride_ic_from"
-                        android:layout_height="48dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="2dp"
                         android:singleLine="true"
                         android:imeOptions="actionNext"
                         android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
-                        android:dropDownSelector="@android:drawable/list_selector_background"
                         android:hint="@string/search_form_from_hint"
-
-                        style="@style/Prevoz.FloatingHintEditText"
+                        style="?android:editTextStyle"
                         />
 
-                    <org.prevoz.android.ui.FloatingHintAutocompleteEditText
+                    <AutoCompleteTextView
                         android:id="@+id/newride_to"
                         android:layout_width="match_parent"
                         android:layout_toRightOf="@id/newride_ic_to"
                         android:layout_alignBottom="@id/newride_ic_to"
-                        android:layout_height="48dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:imeOptions="actionNext"
                         android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
                         android:singleLine="true"
-                        android:dropDownSelector="@android:drawable/list_selector_background"
                         android:hint="@string/search_form_to_hint"
-
-                        style="@style/Prevoz.FloatingHintEditText"
+                        style="?android:editTextStyle"
                         />
 
                 </RelativeLayout>
@@ -136,7 +132,7 @@
                         android:id="@+id/newride_date_edit"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:layout_height="48dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:inputType="textNoSuggestions"
                         android:focusable="false"
@@ -145,13 +141,13 @@
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:hint="@string/search_form_date"
-                        style="@style/Prevoz.FloatingHintEditText"
+                        style="?android:editTextStyle"
                         tools:ignore="TextFields" />
 
                     <org.prevoz.android.ui.FloatingHintEditText
                         android:id="@+id/newride_time_edit"
                         android:layout_width="100dp"
-                        android:layout_height="48dp"
+                        android:layout_height="wrap_content"
                         android:inputType="textNoSuggestions"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
@@ -159,7 +155,7 @@
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:hint="@string/newride_time"
-                        style="@style/Prevoz.FloatingHintEditText"
+                        style="?android:editTextStyle"
                         tools:ignore="TextFields"
                         />
 
@@ -185,7 +181,7 @@
                     <org.prevoz.android.ui.FloatingHintEditText
                         android:id="@+id/newride_price"
                         android:layout_width="80dp"
-                        android:layout_height="48dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:inputType="numberDecimal"
                         android:singleLine="true"
@@ -193,7 +189,7 @@
                         android:imeOptions="actionNext"
                         android:nextFocusRight="@+id/newride_people"
                         android:nextFocusForward="@id/newride_people"
-                        style="@style/Prevoz.FloatingHintEditText"
+                        style="?android:editTextStyle"
                         tools:ignore="TextFields"
                         />
 
@@ -213,7 +209,7 @@
                     <org.prevoz.android.ui.FloatingHintEditText
                         android:id="@id/newride_people"
                         android:layout_width="76dp"
-                        android:layout_height="48dp"
+                        android:layout_height="wrap_content"
                         android:inputType="number"
                         android:layout_marginLeft="8dp"
                         android:ellipsize="end"
@@ -221,7 +217,7 @@
                         android:nextFocusForward="@+id/newride_phone"
                         android:nextFocusDown="@id/newride_phone"
                         android:hint="@string/newride_people"
-                        style="@style/Prevoz.FloatingHintEditText"
+                        style="?android:editTextStyle"
                         tools:ignore="TextFields"
                         />
 
@@ -247,7 +243,7 @@
                     <org.prevoz.android.ui.FloatingHintEditText
                         android:id="@id/newride_phone"
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:inputType="phone"
                         android:singleLine="true"
@@ -255,7 +251,7 @@
                         android:imeOptions="actionNext"
                         android:nextFocusForward="@+id/newride_insurance"
                         android:nextFocusDown="@id/newride_insurance"
-                        style="@style/Prevoz.FloatingHintEditText"
+                        style="?android:editTextStyle"
                         tools:ignore="TextFields"
                         />
 
@@ -285,7 +281,7 @@
                     android:scrollbars="none"
                     android:hint="@string/newride_notes"
                     android:imeOptions="actionSend"
-                    style="@style/Prevoz.FloatingHintEditText"
+                    style="?android:editTextStyle"
                     tools:ignore="TextFields"
                     />
 

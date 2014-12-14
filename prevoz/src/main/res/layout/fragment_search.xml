@@ -77,14 +77,13 @@
                     android:layout_width="match_parent"
                     android:layout_toRightOf="@id/search_ic_from"
                     android:layout_alignBottom="@id/search_ic_from"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:singleLine="true"
                     android:imeOptions="actionNext"
                     android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
                     android:hint="@string/search_form_from_hint"
-
-                    style="@style/Prevoz.AutoCompleteTextView"
+                    style="?android:editTextStyle"
                     />
 
                 <AutoCompleteTextView
@@ -92,14 +91,13 @@
                     android:layout_width="match_parent"
                     android:layout_toRightOf="@id/search_ic_to"
                     android:layout_alignBottom="@id/search_ic_to"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:imeOptions="actionNext"
                     android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
                     android:singleLine="true"
                     android:hint="@string/search_form_to_hint"
-
-                    style="@style/Prevoz.AutoCompleteTextView"
+                    style="?android:editTextStyle"
                     />
 
             </RelativeLayout>
@@ -126,14 +124,14 @@
                 <EditText
                     android:id="@+id/search_date_edit"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:inputType="textNoSuggestions"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:clickable="true"
                     android:hint="@string/search_form_date"
-                    style="@style/Prevoz.EditText"
+                    style="?android:editTextStyle"
                     tools:ignore="TextFields" />
 
              </LinearLayout>
@@ -152,7 +150,7 @@
                 android:layout_height="48dp"
                 android:paddingLeft="16dp"
                 android:orientation="horizontal"
-                android:background="@drawable/borderless_button"
+                android:background="?selectableItemBackground"
                 >
 
                 <FrameLayout
@@ -184,7 +182,6 @@
                     android:layout_height="match_parent"
                     android:gravity="left|center_vertical"
                     android:paddingLeft="16dp"
-
                     android:textColor="@color/prevoztheme_color"
                     android:text="@string/search_form_button_search"
                     style="?android:textAppearanceButton"

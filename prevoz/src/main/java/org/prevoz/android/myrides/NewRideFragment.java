@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
@@ -55,9 +56,9 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
     public static final String PARAM_EDIT_RIDE = "EditRide";
 
     @ViewById(R.id.newride_from)
-    protected FloatingHintAutocompleteEditText textFrom;
+    protected AutoCompleteTextView textFrom;
     @ViewById(R.id.newride_to)
-    protected FloatingHintAutocompleteEditText textTo;
+    protected AutoCompleteTextView textTo;
     @ViewById(R.id.newride_date_edit)
     protected FloatingHintEditText textDate;
     @ViewById(R.id.newride_time_edit)
@@ -288,8 +289,6 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
         textPrice.setFloatingHintColor(null);
         textTime.setFloatingHintColor(null);
         textDate.setFloatingHintColor(null);
-        textTo.setFloatingHintColor(null);
-        textFrom.setFloatingHintColor(null);
 
         String error = null;
 
@@ -348,13 +347,11 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
         if (textTo.getText().length() == 0)
         {
             error = getActivity().getString(R.string.newride_error_to_missing);
-            textTo.setFloatingHintColor(Color.RED);
         }
 
         if (textFrom.getText().length() == 0)
         {
             error = getActivity().getString(R.string.newride_error_from_missing);
-            textFrom.setFloatingHintColor(Color.RED);
         }
 
         if (error != null)

@@ -85,8 +85,8 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
         {
             time.append("*");
             time.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.prevoztheme_color)), time.length() - 1, time.length(), SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE);
-            time.setSpan(new RelativeSizeSpan(0.6f), time.length() - 1, time.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            time.setSpan(new SuperscriptSpan(), time.length() - 1, time.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            time.setSpan(new RelativeSizeSpan(0.6f), time.length() - 1, time.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            time.setSpan(new SuperscriptSpan(), time.length() - 1, time.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
         }
 
         holder.time.setText(time);
