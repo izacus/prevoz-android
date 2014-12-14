@@ -8,17 +8,17 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewStub;
+import android.view.Window;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Window;
 import com.crashlytics.android.Crashlytics;
 
 import org.androidannotations.annotations.AfterViews;
@@ -40,7 +40,7 @@ import retrofit.RetrofitError;
 
 @EActivity(R.layout.activity_login)
 @SuppressLint("Registered")     // AndroidAnnotated activity is registered.
-public class LoginActivity extends SherlockFragmentActivity
+public class LoginActivity extends ActionBarActivity
 {
     private static final String LOG_TAG = "Prevoz.Login";
     private static final String CLIENT_ID = "b89d13d3b102d84963bb";

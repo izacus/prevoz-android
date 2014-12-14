@@ -3,7 +3,6 @@
 	package="org.prevoz.android"
 	>
 
-    <uses-sdk tools:node="replace" />
     <permission android:name="org.prevoz.permission.ACCESS_DATA" android:protectionLevel="signature" />
 
     <uses-permission android:name="android.permission.INTERNET" />

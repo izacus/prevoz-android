@@ -1,28 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Prevoz.Theme" parent="Prevoz.Theme.Base" />
-    <style name="Prevoz.Theme.Base" parent="@style/Theme.Sherlock.Light.DarkActionBar">
+    <style name="Prevoz.Theme.Base" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowBackground">@color/background_color</item>
-        <item name="android:actionBarStyle">@style/Prevoz.ActionBar</item>
-        <item name="actionBarStyle">@style/Prevoz.ActionBar</item>
+        <item name="colorPrimary">@color/prevoztheme_color</item>
+        <item name="colorPrimaryDark">@color/prevoztheme_color_dark</item>
         <item name="sdlDialogStyle">@style/Prevoz.Dialog</item>
         <item name="android:textColorHighlight">@color/prevoztheme_pressed</item>
         <item name="android:textSelectHandleLeft">@drawable/prevoz_text_select_handle_left</item>
         <item name="android:textSelectHandleRight">@drawable/prevoz_text_select_handle_right</item>
         <item name="android:textSelectHandle">@drawable/prevoz_text_select_handle_middle</item>
-    </style>
-
-    <style name="Prevoz.ActionBar" parent="@style/Widget.Sherlock.ActionBar">
-        <item name="android:background">@drawable/ab_solid_prevoz</item>
-        <item name="background">@drawable/ab_solid_prevoz</item>
-        <item name="android:titleTextStyle">@style/Prevoz.ActionBar.TitleText</item>
-        <item name="titleTextStyle">@style/Prevoz.ActionBar.TitleText</item>
-    </style>
-
-    <style name="Prevoz.ActionBar.TitleText" parent="@style/TextAppearance.Sherlock.Widget.ActionBar.Title">
-        <item name="android:textColor">#FFFFFF</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="Prevoz.EditText" parent="android:Widget.EditText">

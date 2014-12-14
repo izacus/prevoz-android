@@ -4,8 +4,8 @@ buildscript {
         maven { url 'http://download.crashlytics.com/maven' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.2'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4+'
+        classpath 'com.android.tools.build:gradle:1.0.0'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
         classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
     }
 }
@@ -27,13 +27,14 @@ repositories {
 }
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion "20.0.0"
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
     defaultConfig {
         minSdkVersion 9
-        targetSdkVersion 19
+        targetSdkVersion 21
         versionCode 28
-        versionName "3.0.3"
+        versionName "3.1"
+        resConfigs "en", "sl"
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -41,7 +42,8 @@ android {
     }
     buildTypes {
         release {
-            runProguard true
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.txt'
         }
     }
@@ -52,19 +54,13 @@ android {
     }
 }
 
-apt {
-    arguments {
-        androidManifestFile variant.processResources.manifestFile 
-        resourcePackageName 'org.prevoz.android'
-    }
-}
-
 dependencies {
     compile 'com.squareup.retrofit:retrofit:1.6.1'
-    compile 'com.google.android.gms:play-services:5.+'
+    compile 'com.google.android.gms:play-services-base:6.5.+'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
-    compile 'com.android.support:support-v4:20.0.0'
-    compile 'com.android.support:cardview-v7:+'
+    compile 'com.android.support:support-v4:21.0.3'
+    compile 'com.android.support:cardview-v7:21.0.3'
+    compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'se.emilsjolander:stickylistheaders:2.5.0'
     compile 'de.greenrobot:eventbus:2.2.1'
     compile 'com.crashlytics.android:crashlytics:1.+'
@@ -72,13 +68,27 @@ dependencies {
         // exclusion is not neccessary, but generally a good idea.
         exclude group: 'com.google.android', module: 'support-v4'
     }
-    apt "org.androidannotations:androidannotations:3.1"
+
     compile 'com.github.flavienlaurent.datetimepicker:library:0.0.2'
+    apt "org.androidannotations:androidannotations:3.1"
     compile "org.androidannotations:androidannotations-api:3.1"
     compile 'com.nineoldandroids:parent:2.2.0'
-    compile('com.actionbarsherlock:actionbarsherlock:4.4.0@aar') {
-        exclude group: 'com.google.android', module: 'support-v4'
-    }
     compile 'eu.inmite.android.lib:android-styled-dialogs:1.2.0'
     compile 'edu.mit.mobile:SimpleContentProvider:0.2.0'
+}
+
+apt {
+    arguments {
+        androidManifestFile variant.outputs[0].processResources.manifestFile
+        // if you have multiple outputs (when using splits), you may want to have other index than 0
+
+        resourcePackageName 'org.prevoz.android'
+
+        // If you're using Android NBS flavors you should use the following line instead of hard-coded packageName
+        // resourcePackageName android.defaultConfig.packageName
+
+        // You can set optional annotation processing options here, like these commented options:
+        // logLevel 'INFO'
+        // logFile '/var/log/aa.log'
+    }
 }
