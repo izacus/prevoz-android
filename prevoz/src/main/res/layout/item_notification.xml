@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="2dp"
-    android:paddingBottom="2dp"
-    android:paddingLeft="@dimen/card_padding_double"
-    android:paddingRight="@dimen/card_padding_double"
-    android:background="@drawable/search_list_selector"
+    android:clickable="false"
+    android:focusable="false"
+    android:focusableInTouchMode="false"
     >
 
     <android.support.v7.widget.CardView
+        android:id="@+id/item_push_card"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:clickable="false"
+        app:cardElevation="2dp"
+        app:cardUseCompatPadding="true"
+        >
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -52,7 +58,6 @@
                 android:layout_width="48dp"
                 android:layout_height="match_parent"
                 android:scaleType="center"
-                android:background="@null"
                 android:src="@drawable/ic_action_cancel"
                 />
 

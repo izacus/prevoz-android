@@ -270,7 +270,6 @@
                     android:text="@string/newride_insurance"
                     android:nextFocusForward="@+id/newride_notes"
                     android:nextFocusDown="@id/newride_notes"
-                    style="@style/Prevoz.CheckBox"
                     tools:ignore="TextFields"
                     />
 

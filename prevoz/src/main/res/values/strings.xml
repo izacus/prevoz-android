@@ -110,4 +110,5 @@
     <string name="main_logout">Odjava</string>
     <string name="newride_publish_success">Prevoz je bil oddan.</string>
     <string name="newride_publish_failure">Pri oddajanju je prišlo do napake :(</string>
+    <string name="rideinfo_ride_full">Prevoz je poln.</string>
 </resources>

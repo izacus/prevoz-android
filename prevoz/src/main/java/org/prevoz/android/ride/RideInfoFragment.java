@@ -127,7 +127,7 @@ public class RideInfoFragment extends DialogFragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Prevoz_Dialog_RideInfo);
+        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Prevoz_RideInfo);
 
         ride = getArguments().getParcelable(ARG_RIDE);
         action = getArguments().getString(ARG_ACTION);

@@ -5,6 +5,7 @@
         <item name="android:windowBackground">@color/background_color</item>
         <item name="colorPrimary">@color/prevoztheme_color</item>
         <item name="colorPrimaryDark">@color/prevoztheme_color_dark</item>
+        <item name="colorAccent">@color/prevoztheme_color_dark</item>
         <item name="sdlDialogStyle">@style/Prevoz.Dialog</item>
         <item name="android:textColorHighlight">@color/prevoztheme_pressed</item>
         <item name="android:textSelectHandleLeft">@drawable/prevoz_text_select_handle_left</item>
@@ -15,11 +16,6 @@
     <style name="Prevoz.EditText" parent="android:Widget.EditText">
         <item name="android:background">@drawable/style_edittext</item>
         <item name="android:textColor">#000000</item>
-    </style>
-
-    <style name="Prevoz.CheckBox" parent="android:Widget.CompoundButton.CheckBox">
-        <item name="android:textColor">#000000</item>
-        <item name="android:button">@drawable/prevoz_checkbox</item>
     </style>
 
     <style name="Prevoz.AutoCompleteTextView" parent="@style/Prevoz.EditText">
@@ -42,7 +38,7 @@
         <item name="android:paddingLeft">8dip</item>
     </style>
 
-    <style name="Prevoz.Dialog" parent="android:Theme.DeviceDefault.Light.Dialog">
+    <style name="Prevoz.Dialog" parent="@style/Theme.AppCompat.Light.Dialog">
         <item name="titleTextColor">@color/prevoztheme_color</item>
         <!-- anything can be left out: -->
         <item name="titleSeparatorColor">@color/prevoztheme_color</item>
@@ -55,9 +51,10 @@
         <item name="dialogBackground">@drawable/sdl_background_light</item>
     </style>
 
-    <style name="Prevoz.Dialog.RideInfo" parent="android:Theme.Dialog">
-        <item name="android:windowBackground">@android:color/white</item>
-        <item name="android:textColor">@android:color/black</item>
+    <style name="Prevoz.RideInfo" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/prevoztheme_color</item>
+        <item name="colorPrimaryDark">@color/prevoztheme_color_dark</item>
+        <item name="colorAccent">@color/prevoztheme_color_dark</item>
     </style>
 
     <style name="Prevoz.Drawer.Item" parent="">
