@@ -2,6 +2,7 @@ package org.prevoz.android.api.rest;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -90,7 +91,7 @@ public class RestRide implements Comparable, Parcelable, Serializable
     }
 
     @Override
-    public int compareTo(Object another)
+    public int compareTo(@Nullable Object another)
     {
         if (!(another instanceof RestRide))
             return 0;

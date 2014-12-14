@@ -20,6 +20,7 @@
         android:logo="@drawable/icon_ab"
         android:icon="@drawable/icon"
         android:allowBackup="true"
+        android:supportsRtl="false"
         >
 
 		<activity android:name="MainActivity_"

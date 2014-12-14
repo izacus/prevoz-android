@@ -93,7 +93,7 @@ public class AutologinBar extends LinearLayout implements OnClickListener, Devic
         if (login != null) {
             mAutoLoginHandler = login;
             ContextThemeWrapper wrapper = new ContextThemeWrapper(mActivity, android.R.style.Theme_Holo_Light);
-            mAccountsAdapter = new ArrayAdapter<String>(wrapper, android.R.layout.simple_spinner_item, login.getAccountNames());
+            mAccountsAdapter = new ArrayAdapter<>(wrapper, android.R.layout.simple_spinner_item, login.getAccountNames());
             mAccountsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             mAutoLoginAccount.setAdapter(mAccountsAdapter);
             mAutoLoginAccount.setSelection(0);

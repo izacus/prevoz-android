@@ -237,10 +237,8 @@ public class MainActivity extends ActionBarActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        if (drawerLayoutToggle.onOptionsItemSelected(item))
-            return true;
+        return drawerLayoutToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
 
-        return super.onOptionsItemSelected(item);
     }
 
     private void prepareDrawer()

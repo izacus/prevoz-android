@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.Spannable;
@@ -220,20 +219,19 @@ public class RideInfoFragment extends DialogFragment
 
     private void setupActionButtons(String currentAction)
     {
-        if (PARAM_ACTION_SUBMIT.equals(currentAction))
-        {
-            leftButton.setText("Prekliči");
-            rightButton.setText("Oddaj");
-        }
-        else if (PARAM_ACTION_EDIT.equals(currentAction))
-        {
-            leftButton.setText("Uredi");
-            rightButton.setText("Izbriši");
-        }
-        else
-        {
-            leftButton.setText(R.string.rideinfo_call);
-            rightButton.setText(R.string.rideinfo_send_sms);
+        switch (currentAction) {
+            case PARAM_ACTION_SUBMIT:
+                leftButton.setText("Prekliči");
+                rightButton.setText("Oddaj");
+                break;
+            case PARAM_ACTION_EDIT:
+                leftButton.setText("Uredi");
+                rightButton.setText("Izbriši");
+                break;
+            default:
+                leftButton.setText(R.string.rideinfo_call);
+                rightButton.setText(R.string.rideinfo_send_sms);
+                break;
         }
     }
 

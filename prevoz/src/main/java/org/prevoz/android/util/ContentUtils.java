@@ -224,7 +224,7 @@ public class ContentUtils
                                         null,
                                         SearchHistoryItem.DATE + " ASC");
 
-        ArrayList<Route> searches = new ArrayList<Route>();
+        ArrayList<Route> searches = new ArrayList<>();
 
         int fromIndex = results.getColumnIndex(SearchHistoryItem.FROM_CITY);
         int fromCountry = results.getColumnIndex(SearchHistoryItem.FROM_COUNTRY);
@@ -257,7 +257,7 @@ public class ContentUtils
         {
             results.move(min);
 
-            ArrayList<Integer> ids = new ArrayList<Integer>();
+            ArrayList<Integer> ids = new ArrayList<>();
 
             while (!results.isAfterLast())
             {
@@ -306,7 +306,7 @@ public class ContentUtils
         int toCountryIndex = results.getColumnIndex(Notification.TO_COUNTRY);
         int dateIndex = results.getColumnIndex(Notification.DATE);
 
-        ArrayList<NotificationSubscription> subscriptions = new ArrayList<NotificationSubscription>();
+        ArrayList<NotificationSubscription> subscriptions = new ArrayList<>();
         while (results.moveToNext())
         {
             Calendar date = Calendar.getInstance(LocaleUtil.getLocalTimezone());

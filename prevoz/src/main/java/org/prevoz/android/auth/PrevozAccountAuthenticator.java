@@ -62,14 +62,6 @@ public class PrevozAccountAuthenticator extends AbstractAccountAuthenticator
                                Bundle options) throws NetworkErrorException
     {
         AccountManager am = AccountManager.get(ctx);
-        String refreshToken = am.getPassword(account);
-
-        if (refreshToken != null)
-        {
-            // TODO TODO TODO TODO
-            // Setup refresh!
-        }
-
         return getLoginIntentBundle(authenticatorResponse);
     }
 

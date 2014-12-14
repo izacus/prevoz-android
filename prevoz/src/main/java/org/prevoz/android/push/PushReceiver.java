@@ -82,7 +82,7 @@ public class PushReceiver extends BroadcastReceiver
 
     private static int[] parseRideIds(String rideIds)
     {
-        ArrayList<Integer> ids = new ArrayList<Integer>();
+        ArrayList<Integer> ids = new ArrayList<>();
         String stripped = rideIds.replaceAll("[^0-9,]", "");
 
         StringTokenizer tokenizer = new StringTokenizer(stripped.trim(), ",");

@@ -15,9 +15,9 @@ import java.util.TimeZone;
 
 public class LocaleUtil
 {
-    private static final HashMap<String, String> localizedCountryNamesCache = new HashMap<String, String>();
-    private static final HashMap<String, String> localizedCityNamesCache = new HashMap<String, String>();
-    private static final HashMap<String, SimpleDateFormat> dateFormatCache = new HashMap<String, SimpleDateFormat>();
+    private static final HashMap<String, String> localizedCountryNamesCache = new HashMap<>();
+    private static final HashMap<String, String> localizedCityNamesCache = new HashMap<>();
+    private static final HashMap<String, SimpleDateFormat> dateFormatCache = new HashMap<>();
 
     private static final SimpleDateFormat timeFormatter = LocaleUtil.getSimpleDateFormat("HH:mm");
     private static Locale localeCache = null;

@@ -30,7 +30,7 @@ public class ApiClient
 {
     public static final String BASE_URL = "https://prevoz.org";
 
-    private static RestAdapter adapter = null;
+    private static final RestAdapter adapter;
     private static String bearer = null;
 
     static

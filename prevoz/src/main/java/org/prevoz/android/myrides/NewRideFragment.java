@@ -37,7 +37,6 @@ import org.prevoz.android.model.CityNameTextValidator;
 import org.prevoz.android.ride.RideInfoFragment;
 import org.prevoz.android.ride.RideInfoListener;
 import org.prevoz.android.search.CityAutocompleteAdapter;
-import org.prevoz.android.ui.FloatingHintAutocompleteEditText;
 import org.prevoz.android.ui.FloatingHintEditText;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;

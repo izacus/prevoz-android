@@ -83,14 +83,7 @@ public class AuthenticationUtils
             try
             {
                 future.getResult();
-            } catch (OperationCanceledException e)
-            {
-                // Nothing TBD
-            } catch (IOException e)
-            {
-                // Nothing TBD
-            } catch (AuthenticatorException e)
-            {
+            } catch (OperationCanceledException | IOException | AuthenticatorException e) {
                 // Nothing TBD
             }
         }
@@ -128,15 +121,7 @@ public class AuthenticationUtils
                     Log.d(LOG_TAG, "Updating authentication bearer to " + cookies);
                     ApiClient.setBearer(cookies);
                 }
-                catch (OperationCanceledException e)
-                {
-                    // Nothing TBD
-                }
-                catch (IOException e)
-                {
-                    // Nothing TBD
-                }
-                catch (AuthenticatorException e)
+                catch (OperationCanceledException | IOException | AuthenticatorException e)
                 {
                     // Nothing TBD
                 }

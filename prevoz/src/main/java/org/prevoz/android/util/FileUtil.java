@@ -16,7 +16,6 @@ public class FileUtil
      * Reads text SQL file and breaks it up on ";" signs to be used separately
      * by execSQL
      *
-     * @param context
      * @param rawResId
      *            resource id of .sql file
      * @return string array of SQL statements in file
@@ -26,7 +25,7 @@ public class FileUtil
         InputStream is = context.getResources().openRawResource(rawResId);
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
-        List<String> lines = new ArrayList<String>();
+        List<String> lines = new ArrayList<>();
         String line;
         try
         {

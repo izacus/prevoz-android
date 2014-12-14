@@ -3,6 +3,7 @@ package org.prevoz.android.auth;
 import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -68,7 +69,7 @@ public class LoginActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
 
         CookieSyncManager.createInstance(this);
@@ -287,13 +288,11 @@ public class LoginActivity extends ActionBarActivity
             setSupportProgressBarIndeterminateVisibility(false);
         }
 
+        @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
         @Override
         public void onReceivedLoginRequest(WebView view, String realm, String account, String args)
         {
             super.onReceivedLoginRequest(view, realm, account, args);
-
-            // TODO TODO TODO TODO : Enable when the site is ready for that
-
             //autologin = new DeviceAccountLogin(LoginActivity.this, view);
             //autologin.handleLogin(realm, account, args);
         }

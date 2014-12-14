@@ -137,7 +137,7 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
     private void buildResults(List<RestRide> rides, int[] highlightIds)
     {
         Collections.sort(rides);
-        highlights = new HashSet<Integer>();
+        highlights = new HashSet<>();
         for (int id : highlightIds)
             highlights.add(id);
         this.results = rides;
