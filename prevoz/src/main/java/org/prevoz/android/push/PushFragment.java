@@ -4,6 +4,8 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ListView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
@@ -18,11 +20,9 @@ import org.prevoz.android.util.ViewUtils;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-import eu.inmite.android.lib.dialogs.ISimpleDialogListener;
-import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 
 @EFragment(R.layout.fragment_notifications)
-public class PushFragment extends Fragment implements ISimpleDialogListener
+public class PushFragment extends Fragment
 {
     public static final String DIALOG_ARG_SUB = "subscription";
 
@@ -50,14 +50,22 @@ public class PushFragment extends Fragment implements ISimpleDialogListener
     protected void itemClick(NotificationSubscription item)
     {
         clickedSubscription = item;
-        SimpleDialogFragment.createBuilder(getActivity(), getActivity().getSupportFragmentManager())
-                            .setTitle(item.getFrom().toString() + " - " + item.getTo().toString())
-                            .setMessage(String.format("Ali se res želite odjaviti od obveščanja v %s?", LocaleUtil.getNotificationDayName(getResources(), item.getDate()).toLowerCase()))
-                            .setPositiveButtonText("Odjavi")
-                            .setNegativeButtonText("Prekliči")
-                            .setTargetFragment(this, 0)
-
-                            .show();
+        new MaterialDialog.Builder(getActivity())
+                          .title(item.getFrom().toString() + " - " + item.getTo().toString())
+                          .titleColorRes(R.color.prevoztheme_color_dark)
+                          .content(String.format("Ali se res želite odjaviti od obveščanja v %s?", LocaleUtil.getNotificationDayName(getResources(), item.getDate()).toLowerCase()))
+                          .positiveText("Odjavi")
+                          .negativeText("Prekliči")
+                          .callback(new MaterialDialog.SimpleCallback() {
+                              @Override
+                              public void onPositive(MaterialDialog materialDialog) {
+                                  if (clickedSubscription != null)
+                                  {
+                                      pushManager.setSubscriptionStatus(getActivity(), clickedSubscription.getFrom(), clickedSubscription.getTo(), clickedSubscription.getDate(), false);
+                                  }
+                              }
+                          })
+                          .show();
     }
 
     @Override
@@ -78,25 +86,5 @@ public class PushFragment extends Fragment implements ISimpleDialogListener
     {
         List<NotificationSubscription> notifications = pushManager.getSubscriptions();
         notificationList.setAdapter(new PushNotificationsAdapter(getActivity(), notifications));
-    }
-
-    @Override
-    public void onPositiveButtonClicked(int requestCode)
-    {
-        if (clickedSubscription != null)
-        {
-            pushManager.setSubscriptionStatus(getActivity(), clickedSubscription.getFrom(), clickedSubscription.getTo(), clickedSubscription.getDate(), false);
-        }
-    }
-
-    @Override
-    public void onNegativeButtonClicked(int requestCode)
-    {
-        clickedSubscription = null;
-    }
-
-    @Override
-    public void onNeutralButtonClicked(int requestCode) {
-
     }
 }

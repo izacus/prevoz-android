@@ -21,6 +21,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
@@ -49,13 +51,11 @@ import java.util.Locale;
 
 import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
-import eu.inmite.android.lib.dialogs.ISimpleDialogListener;
-import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 
 @SuppressLint("Registered")          // AndroidAnnotated activity is registered.
 @EActivity(R.layout.activity_main)
 @OptionsMenu(R.menu.fragment_myrides)
-public class MainActivity extends ActionBarActivity implements ISimpleDialogListener
+public class MainActivity extends ActionBarActivity
 {
     public static final int REQUEST_CODE_AUTHORIZE_MYRIDES = 100;
     public static final int REQUEST_CODE_AUTHORIZE_NEWRIDE = 101;
@@ -178,12 +178,19 @@ public class MainActivity extends ActionBarActivity implements ISimpleDialogList
         if (authUtils.getUsername() == null)
             return;
 
-        SimpleDialogFragment.createBuilder(this, getSupportFragmentManager())
-                .setTitle("Odjava")
-                .setMessage("Se res želite odjaviti?")
-                .setPositiveButtonText("Odjavi")
-                .setNegativeButtonText("Prekliči")
-                .show();
+        new MaterialDialog.Builder(this)
+                          .title("Odjava")
+                          .titleColorRes(R.color.prevoztheme_color_dark)
+                          .content("Se res želite odjaviti?")
+                          .positiveText("Odjavi")
+                          .negativeText("Prekliči")
+                          .callback(new MaterialDialog.SimpleCallback() {
+                              @Override
+                              public void onPositive(MaterialDialog materialDialog) {
+                                  authUtils.logout();
+                              }
+                          })
+                          .show();
     }
 
     protected void triggerSearchFromIntent(Intent intent)
@@ -383,26 +390,6 @@ public class MainActivity extends ActionBarActivity implements ISimpleDialogList
         {
             super.onBackPressed();
         }
-    }
-
-
-    // LOGOUT LISTENERS
-    @Override
-    public void onPositiveButtonClicked(int requestCode)
-    {
-        authUtils.logout();
-    }
-
-    @Override
-    public void onNegativeButtonClicked(int requestCode)
-    {
-
-    }
-
-    @Override
-    public void onNeutralButtonClicked(int requestCode)
-    {
-
     }
 
     public void onEventMainThread(Events.LoginStateChanged e)

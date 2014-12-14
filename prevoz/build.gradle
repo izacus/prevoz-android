@@ -1,6 +1,6 @@
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
         maven { url 'http://download.crashlytics.com/maven' }
     }
     dependencies {
@@ -15,7 +15,7 @@ apply plugin: 'android-apt'
 apply plugin: 'crashlytics'
 
 repositories {
-    mavenCentral()
+    jcenter()
     maven { url 'http://download.crashlytics.com/maven' }
     maven {
             url 'http://mvn.virag.si/content/groups/public'
@@ -73,7 +73,7 @@ dependencies {
     apt "org.androidannotations:androidannotations:3.1"
     compile "org.androidannotations:androidannotations-api:3.1"
     compile 'com.nineoldandroids:parent:2.2.0'
-    compile 'eu.inmite.android.lib:android-styled-dialogs:1.2.0'
+    compile 'com.afollestad:material-dialogs:0.4.4'
     compile 'edu.mit.mobile:SimpleContentProvider:0.2.0'
 }
 

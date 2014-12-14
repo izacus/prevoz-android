@@ -6,7 +6,6 @@
         <item name="colorPrimary">@color/prevoztheme_color</item>
         <item name="colorPrimaryDark">@color/prevoztheme_color_dark</item>
         <item name="colorAccent">@color/prevoztheme_color_dark</item>
-        <item name="sdlDialogStyle">@style/Prevoz.Dialog</item>
         <item name="android:textColorHighlight">@color/prevoztheme_pressed</item>
         <item name="android:textSelectHandleLeft">@drawable/prevoz_text_select_handle_left</item>
         <item name="android:textSelectHandleRight">@drawable/prevoz_text_select_handle_right</item>
@@ -36,19 +35,6 @@
         <item name="android:textSize">14sp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:paddingLeft">8dip</item>
-    </style>
-
-    <style name="Prevoz.Dialog" parent="@style/Theme.AppCompat.Light.Dialog">
-        <item name="titleTextColor">@color/prevoztheme_color</item>
-        <!-- anything can be left out: -->
-        <item name="titleSeparatorColor">@color/prevoztheme_color</item>
-        <item name="messageTextColor">@color/sdl_message_text_light</item>
-        <item name="buttonTextColor">@color/sdl_button_text_light</item>
-        <item name="buttonSeparatorColor">@color/sdl_button_separator_light</item>
-        <item name="buttonBackgroundColorNormal">@color/sdl_button_normal_light</item>
-        <item name="buttonBackgroundColorPressed">@color/prevoztheme_pressed</item>
-        <item name="buttonBackgroundColorFocused">@color/prevoztheme_pressed</item>
-        <item name="dialogBackground">@drawable/sdl_background_light</item>
     </style>
 
     <style name="Prevoz.RideInfo" parent="@style/Theme.AppCompat.Light.Dialog">
