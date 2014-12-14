@@ -9,10 +9,10 @@
         android:id="@+id/item_result_card"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        app:cardElevation="2dp"
+        app:cardElevation="1dp"
         app:cardUseCompatPadding="true"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:clickable="true"
         android:foreground="?selectableItemBackground"
         >

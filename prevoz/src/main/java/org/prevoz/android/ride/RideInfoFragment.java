@@ -274,9 +274,10 @@ public class RideInfoFragment extends DialogFragment
         }
         else if (PARAM_ACTION_EDIT.equals(action))
         {
+            final Activity activity = getActivity();
             dismiss();
 
-            new MaterialDialog.Builder(getActivity())
+            new MaterialDialog.Builder(activity)
                               .title(ride.fromCity + " - " + ride.toCity)
                               .titleColorRes(R.color.prevoztheme_color_dark)
                               .content(getString(R.string.ride_delete_message, LocaleUtil.getDayName(getResources(), ride.date).toLowerCase(LocaleUtil.getLocale()), LocaleUtil.getFormattedTime(ride.date)))
@@ -285,10 +286,8 @@ public class RideInfoFragment extends DialogFragment
                               .callback(new MaterialDialog.SimpleCallback() {
                                   @Override
                                   public void onPositive(MaterialDialog materialDialog) {
-                                      final Activity context = getActivity();
-                                      if (context == null) return;
-                                      final ProgressDialog deleteDialog = new ProgressDialog(getActivity());
-                                      deleteDialog.setMessage(context.getString(R.string.ride_delete_progress));
+                                      final ProgressDialog deleteDialog = new ProgressDialog(activity);
+                                      deleteDialog.setMessage(activity.getString(R.string.ride_delete_progress));
                                       deleteDialog.show();
 
                                       ApiClient.getAdapter().deleteRide(String.valueOf(ride.id), new Callback<Response>()
@@ -297,7 +296,7 @@ public class RideInfoFragment extends DialogFragment
                                           public void success(Response response, Response response2)
                                           {
                                               deleteDialog.dismiss();
-                                              ViewUtils.showMessage(context, R.string.ride_delete_success, false);
+                                              ViewUtils.showMessage(activity, R.string.ride_delete_success, false);
                                               EventBus.getDefault().post(new Events.RideDeleted(ride.id));
                                           }
 
@@ -305,7 +304,7 @@ public class RideInfoFragment extends DialogFragment
                                           public void failure(RetrofitError error)
                                           {
                                               deleteDialog.dismiss();
-                                              ViewUtils.showMessage(context, R.string.ride_delete_failure, true);
+                                              ViewUtils.showMessage(activity, R.string.ride_delete_failure, true);
                                           }
                                       });
                                   }

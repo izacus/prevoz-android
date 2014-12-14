@@ -12,10 +12,10 @@
         android:id="@+id/item_push_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="14dp"
-        android:layout_marginRight="14dp"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="13dp"
         android:clickable="false"
-        app:cardElevation="2dp"
+        app:cardElevation="1dp"
         app:cardUseCompatPadding="true"
         >
 
