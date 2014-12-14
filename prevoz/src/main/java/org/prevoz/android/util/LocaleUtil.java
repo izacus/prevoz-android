@@ -140,7 +140,7 @@ public class LocaleUtil
     {
         if (localeCache == null)
         {
-            localeCache = new Locale("sl-SI");
+            localeCache = new Locale("sl");
         }
         return localeCache;
     }

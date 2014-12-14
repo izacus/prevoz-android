@@ -21,8 +21,6 @@ import java.io.File;
 @EApplication
 public class PrevozApplication extends Application
 {
-    private Tracker analyticsTracker;
-
     public static int VERSION = -1;
 
     @Bean
@@ -44,11 +42,6 @@ public class PrevozApplication extends Application
         }
 
         new PruneHistory().execute();
-    }
-
-    public synchronized Tracker getTracker()
-    {
-        return analyticsTracker;
     }
 
     private class PruneHistory extends AsyncTask<Void, Void, Void>

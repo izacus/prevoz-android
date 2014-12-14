@@ -55,7 +55,7 @@ android {
 }
 
 dependencies {
-    compile 'com.squareup.retrofit:retrofit:1.6.1'
+    compile 'com.squareup.retrofit:retrofit:1.8.0'
     compile 'com.google.android.gms:play-services-base:6.5.+'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
     compile 'com.android.support:support-v4:21.0.3'
@@ -69,7 +69,8 @@ dependencies {
         exclude group: 'com.google.android', module: 'support-v4'
     }
 
-    compile 'com.github.flavienlaurent.datetimepicker:library:0.0.2'
+    compile 'si.virag.flavienlaurent.datetimepicker:library:0.1.2'
+    compile 'com.nineoldandroids:library:2.4.0'
     apt "org.androidannotations:androidannotations:3.1"
     compile "org.androidannotations:androidannotations-api:3.1"
     compile 'com.nineoldandroids:parent:2.2.0'
