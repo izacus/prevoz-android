@@ -3,13 +3,16 @@ package org.prevoz.android.myrides;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
@@ -48,8 +51,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 @EFragment(R.layout.fragment_newride)
-public class NewRideFragment extends Fragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, RideInfoListener
-{
+public class NewRideFragment extends Fragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, RideInfoListener, android.app.DatePickerDialog.OnDateSetListener, android.app.TimePickerDialog.OnTimeSetListener {
     private static final String PREF_PHONE_NO = "org.prevoz.phoneno";
     private static final String PREF_HAS_INSURANCE = "org.prevoz.hasinsurance";
 
@@ -194,24 +196,36 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
     protected void clickDate()
     {
         ViewUtils.hideKeyboard(getActivity());
-        DatePickerDialog dialog = DatePickerDialog.newInstance(this,
-                                                                setTime.get(Calendar.YEAR),
-                                                                setTime.get(Calendar.MONTH),
-                                                                setTime.get(Calendar.DAY_OF_MONTH),
-                                                                false);
-        dialog.show(getActivity().getSupportFragmentManager(), "NewDate");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            DatePickerDialog dialog = DatePickerDialog.newInstance(this,
+                    setTime.get(Calendar.YEAR),
+                    setTime.get(Calendar.MONTH),
+                    setTime.get(Calendar.DAY_OF_MONTH),
+                    false);
+            dialog.show(getActivity().getSupportFragmentManager(), "NewDate");
+        } else {
+            android.app.DatePickerDialog dialog = new android.app.DatePickerDialog(getActivity(), this, setTime.get(Calendar.YEAR), setTime.get(Calendar.MONTH), setTime.get(Calendar.DAY_OF_MONTH));
+            dialog.show();
+        }
     }
 
     @Click(R.id.newride_time_edit)
     protected void clickTime()
     {
         ViewUtils.hideKeyboard(getActivity());
-        TimePickerDialog dialog = TimePickerDialog.newInstance(this,
-                                                                setTime.get(Calendar.HOUR_OF_DAY),
-                                                                setTime.get(Calendar.MINUTE),
-                                                                true,
-                                                                false);
-        dialog.show(getActivity().getSupportFragmentManager(), "NewTime");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            TimePickerDialog dialog = TimePickerDialog.newInstance(this,
+                    setTime.get(Calendar.HOUR_OF_DAY),
+                    setTime.get(Calendar.MINUTE),
+                    true,
+                    false);
+            dialog.show(getActivity().getSupportFragmentManager(), "NewTime");
+        } else {
+            android.app.TimePickerDialog dialog = new android.app.TimePickerDialog(getActivity(), this, setTime.get(Calendar.HOUR_OF_DAY), setTime.get(Calendar.MINUTE), true);
+            dialog.show();
+        }
     }
 
     @Click(R.id.newride_button)
@@ -423,5 +437,15 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
                 ViewUtils.showMessage(activity, R.string.newride_publish_failure, true);
             }
         });
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        onDateSet((DatePickerDialog)null, year, monthOfYear, dayOfMonth);
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        onTimeSet((RadialPickerLayout)null, hourOfDay, minute);
     }
 }

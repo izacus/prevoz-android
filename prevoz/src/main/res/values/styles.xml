@@ -41,6 +41,7 @@
         <item name="colorPrimary">@color/prevoztheme_color</item>
         <item name="colorPrimaryDark">@color/prevoztheme_color_dark</item>
         <item name="colorAccent">@color/prevoztheme_color_dark</item>
+        <item name="android:windowBackground">@color/background_color</item>
     </style>
 
     <style name="Prevoz.Drawer.Item" parent="">
