@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.Spannable;
@@ -177,8 +178,11 @@ public class RideInfoFragment extends DialogFragment
             txtDriver.setText(ride.author);
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+            txtInsurance.setText(ride.insured ? "\u2713 Ima zavarovanje." : "\u2717 Nima zavarovanja.");
+        else
+            txtInsurance.setText(ride.insured ? "Ima zavarovanje." : "Nima zavarovanja.");
 
-        txtInsurance.setText(ride.insured ? "\u2713 Ima zavarovanje." : "\u2717 Nima zavarovanja.");
 
         // Hide call/SMS buttons on devices without telephony support
         PackageManager pm = getActivity().getPackageManager();
