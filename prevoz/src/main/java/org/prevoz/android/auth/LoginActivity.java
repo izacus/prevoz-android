@@ -125,6 +125,7 @@ public class LoginActivity extends ActionBarActivity
         }
         catch (RetrofitError e)
         {
+            Crashlytics.logException(e.getCause());
             final Bundle result = new Bundle();
             result.putInt(AccountManager.KEY_ERROR_CODE, AccountManager.ERROR_CODE_BAD_AUTHENTICATION);
             result.putString(AccountManager.KEY_ERROR_MESSAGE, "Failed to confirm authentication.");
@@ -150,6 +151,7 @@ public class LoginActivity extends ActionBarActivity
         }
         catch (RetrofitError e)
         {
+            Crashlytics.logException(e.getCause());
             Log.e(LOG_TAG, "Failed to login: " + e.getBody());
             dialog.dismiss();
         }

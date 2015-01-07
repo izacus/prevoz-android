@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.nineoldandroids.view.ViewHelper;
 
 import org.androidannotations.annotations.AfterViews;
@@ -155,6 +156,7 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     public void failure(RetrofitError retrofitError)
     {
         Log.d("Prevoz", "Response: " + retrofitError);
+        Crashlytics.logException(retrofitError.getCause());
 
         Activity activity = getActivity();
         if (activity != null)

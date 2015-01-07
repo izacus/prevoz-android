@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ItemClick;
@@ -92,6 +94,7 @@ public class MyRidesFragment extends Fragment implements Callback<RestSearchResu
     @Override
     public void failure(RetrofitError error)
     {
+        Crashlytics.logException(error.getCause());
         Log.e(LOG_TAG, "Ride load failed!");
         ViewUtils.setupEmptyView(myridesList, emptyView, "Pri nalaganju vaših prevozov je prišlo do napake.");
         setListVisibility(true);

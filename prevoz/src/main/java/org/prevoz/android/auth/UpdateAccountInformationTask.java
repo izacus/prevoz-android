@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.prevoz.android.R;
 import org.prevoz.android.api.rest.RestAccountStatus;
 import org.prevoz.android.events.Events;
@@ -75,8 +77,9 @@ class UpdateAccountInformationTask extends AsyncTask<Void, Void, Void>
             context.finish();
             EventBus.getDefault().postSticky(new Events.LoginStateChanged());
         }
-        catch (IllegalArgumentException e)
+        catch (IllegalArgumentException|IllegalStateException e)
         {
+            Crashlytics.logException(e);
             // TODO: Fix this!
         }
     }

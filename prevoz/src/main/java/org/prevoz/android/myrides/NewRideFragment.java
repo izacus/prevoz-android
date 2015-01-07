@@ -15,6 +15,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.crashlytics.android.Crashlytics;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
@@ -437,6 +438,8 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
             @Override
             public void failure(RetrofitError error)
             {
+                Crashlytics.logException(error.getCause());
+
                 if (dialog.isShowing()) dialog.dismiss();
                 final MainActivity activity = (MainActivity) getActivity();
                 if (activity == null) return;
