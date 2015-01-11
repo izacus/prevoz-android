@@ -38,6 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:textColor="@android:color/black"
                     style="?android:attr/textAppearanceSmall"
                     />
 
@@ -49,6 +50,7 @@
                     android:textSize="32sp"
                     android:gravity="center"
                     android:includeFontPadding="false"
+                    android:textColor="@android:color/black"
                     style="?android:attr/textAppearanceLarge"
                     />
             </LinearLayout>
