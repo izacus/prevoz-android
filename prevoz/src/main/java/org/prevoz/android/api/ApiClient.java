@@ -72,7 +72,11 @@ public class ApiClient
         @Override
         public void write(JsonWriter out, Calendar value) throws IOException
         {
-            out.value(sdf.format(value.getTime()));
+            if (value == null) {
+                out.nullValue();
+            } else {
+                out.value(sdf.format(value.getTime()));
+            }
         }
 
         @Override

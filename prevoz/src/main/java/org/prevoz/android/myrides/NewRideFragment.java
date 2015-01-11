@@ -439,6 +439,7 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
             public void failure(RetrofitError error)
             {
                 Crashlytics.logException(error.getCause());
+                error.printStackTrace();
 
                 if (dialog.isShowing()) dialog.dismiss();
                 final MainActivity activity = (MainActivity) getActivity();

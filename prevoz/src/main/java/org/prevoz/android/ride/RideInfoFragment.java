@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
@@ -107,8 +109,6 @@ public class RideInfoFragment extends DialogFragment
     protected TextView txtInsurance;
     @ViewById(R.id.rideinfo_driver)
     protected TextView txtDriver;
-    @ViewById(R.id.rideinfo_published)
-    protected TextView txtPublished;
     @ViewById(R.id.rideinfo_comment)
     protected TextView txtComment;
 
@@ -172,22 +172,19 @@ public class RideInfoFragment extends DialogFragment
         setPeopleText();
         txtComment.setText(ride.comment);
 
-        if (ride.author == null || ride.author.length() == 0)
-        {
+        if ((ride.author == null || ride.author.length() == 0) && ride.published == null) {
             txtDriver.setVisibility(View.GONE);
-        }
-        else
-        {
-            txtDriver.setText(ride.author);
-        }
-
-        if (ride.published == null)
-        {
-            txtPublished.setVisibility(View.GONE);
-        }
-        else
-        {
-            txtPublished.setText(FuzzyDateTimeFormatter.getTimeAgo(getActivity(), ride.published.getTime()));
+        } else {
+            if (ride.author == null || ride.author.length() == 0) {
+                txtDriver.setText(FuzzyDateTimeFormatter.getTimeAgo(getActivity(), ride.published.getTime()));
+            } else {
+                SpannableStringBuilder ssb = new SpannableStringBuilder();
+                ssb.append(ride.author);
+                ssb.append(", ");
+                ssb.append(FuzzyDateTimeFormatter.getTimeAgo(getActivity(), ride.published.getTime()));
+                ssb.setSpan(new StyleSpan(Typeface.BOLD), 0, ride.author.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                txtDriver.setText(ssb);
+            }
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)

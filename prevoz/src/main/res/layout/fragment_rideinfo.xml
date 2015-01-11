@@ -238,20 +238,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:textColor="@android:color/darker_gray"
-                android:textStyle="italic|bold"
-                style="?android:attr/textAppearanceSmall"
-                />
-
-            <TextView
-                android:id="@+id/rideinfo_published"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="top|right"
                 android:textStyle="italic"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="8dp"
-                android:textColor="@android:color/darker_gray"
                 style="?android:attr/textAppearanceSmall"
                 />
 
