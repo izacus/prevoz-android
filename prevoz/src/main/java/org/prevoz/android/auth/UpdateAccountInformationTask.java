@@ -73,9 +73,9 @@ class UpdateAccountInformationTask extends AsyncTask<Void, Void, Void>
 
         try
         {
+            EventBus.getDefault().postSticky(new Events.LoginStateChanged());
             dialog.dismiss();
             context.finish();
-            EventBus.getDefault().postSticky(new Events.LoginStateChanged());
         }
         catch (IllegalArgumentException|IllegalStateException e)
         {

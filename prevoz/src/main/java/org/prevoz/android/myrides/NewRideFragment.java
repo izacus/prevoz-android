@@ -214,6 +214,7 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
     @Click(R.id.newride_time_edit)
     protected void clickTime()
     {
+        if (getActivity() == null | !isAdded()) return;
         ViewUtils.hideKeyboard(getActivity());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
@@ -442,9 +443,10 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
                 Crashlytics.logException(error.getCause());
                 error.printStackTrace();
 
-                if (dialog.isShowing()) dialog.dismiss();
                 final MainActivity activity = (MainActivity) getActivity();
-                if (activity == null) return;
+                if (activity == null || !isAdded()) return;
+
+                if (dialog.isShowing()) dialog.dismiss();
                 ViewUtils.showMessage(activity, R.string.newride_publish_failure, true);
             }
         });

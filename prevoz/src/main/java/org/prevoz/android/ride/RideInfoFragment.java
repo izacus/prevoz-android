@@ -315,14 +315,16 @@ public class RideInfoFragment extends DialogFragment
                                           @Override
                                           public void success(Response response, Response response2)
                                           {
+                                              EventBus.getDefault().post(new Events.RideDeleted(ride.id));
+                                              if (!isAdded()) return;
                                               deleteDialog.dismiss();
                                               ViewUtils.showMessage(activity, R.string.ride_delete_success, false);
-                                              EventBus.getDefault().post(new Events.RideDeleted(ride.id));
                                           }
 
                                           @Override
                                           public void failure(RetrofitError error)
                                           {
+                                              if (!isAdded()) return;
                                               deleteDialog.dismiss();
                                               ViewUtils.showMessage(activity, R.string.ride_delete_failure, true);
                                           }
