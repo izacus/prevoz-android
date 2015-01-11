@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="org.prevoz.permission.ACCESS_DATA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
 	<application
         android:name=".PrevozApplication_"
