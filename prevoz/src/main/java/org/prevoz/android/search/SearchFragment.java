@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 
 import org.androidannotations.annotations.AfterViews;
@@ -165,11 +166,17 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
     @Background
     protected void startSearch()
     {
-        City fromCity = StringUtil.splitStringToCity(searchFrom.getText().toString());
-        City toCity = StringUtil.splitStringToCity(searchTo.getText().toString());
+        try
+        {
+            City fromCity = StringUtil.splitStringToCity(searchFrom.getText().toString());
+            City toCity = StringUtil.splitStringToCity(searchTo.getText().toString());
 
-        ContentUtils.addSearchToHistory(getActivity(), fromCity, toCity, selectedDate.getTime());
-        EventBus.getDefault().post(new Events.NewSearchEvent(fromCity, toCity, selectedDate));
+            ContentUtils.addSearchToHistory(getActivity(), fromCity, toCity, selectedDate.getTime());
+            EventBus.getDefault().post(new Events.NewSearchEvent(fromCity, toCity, selectedDate));
+        } catch (Exception e) {
+            Crashlytics.logException(e);
+            throw e;
+        }
     }
 
     private void updateShownDate()

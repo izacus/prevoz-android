@@ -47,6 +47,7 @@ import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import si.virag.fuzzydateformatter.FuzzyDateTimeFormatter;
 
 @EFragment(R.layout.fragment_rideinfo)
 public class RideInfoFragment extends DialogFragment
@@ -106,6 +107,8 @@ public class RideInfoFragment extends DialogFragment
     protected TextView txtInsurance;
     @ViewById(R.id.rideinfo_driver)
     protected TextView txtDriver;
+    @ViewById(R.id.rideinfo_published)
+    protected TextView txtPublished;
     @ViewById(R.id.rideinfo_comment)
     protected TextView txtComment;
 
@@ -176,6 +179,15 @@ public class RideInfoFragment extends DialogFragment
         else
         {
             txtDriver.setText(ride.author);
+        }
+
+        if (ride.published == null)
+        {
+            txtPublished.setVisibility(View.GONE);
+        }
+        else
+        {
+            txtPublished.setText(FuzzyDateTimeFormatter.getTimeAgo(getActivity(), ride.published.getTime()));
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)

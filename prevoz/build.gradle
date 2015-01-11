@@ -63,6 +63,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'se.emilsjolander:stickylistheaders:2.5.2'
     compile 'de.greenrobot:eventbus:2.4.0'
+    compile 'si.virag:fuzzydateformatter:1.0.0'
     compile 'com.crashlytics.android:crashlytics:1.+'
     compile('de.keyboardsurfer.android.widget:crouton:1.8.4@aar') {
         // exclusion is not neccessary, but generally a good idea.

@@ -40,8 +40,8 @@ public class RestRide implements Comparable, Parcelable, Serializable
     @SerializedName("date_iso8601")
     public Calendar date;
 
-    /*@SerializedName("added")
-    public Date published; */
+    @SerializedName("added")
+    public Calendar published;
 
     @SerializedName("contact")
     public String phoneNumber;
