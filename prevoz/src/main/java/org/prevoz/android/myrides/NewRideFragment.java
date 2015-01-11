@@ -248,6 +248,7 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
                                       textPhone.getText().toString(),
                                       chkInsurance.isChecked(),
                                       textNotes.getText().toString());
+        ride.published = Calendar.getInstance(LocaleUtil.getLocale());
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         prefs.edit().putString(PREF_PHONE_NO, textPhone.getText().toString()).putBoolean(PREF_HAS_INSURANCE, chkInsurance.isChecked()).apply();

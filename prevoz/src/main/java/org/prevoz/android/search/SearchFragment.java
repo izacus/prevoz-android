@@ -95,7 +95,7 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
     protected void clickDate()
     {
         FragmentActivity activity = getActivity();
-        if (activity == null) return;
+        if (activity == null || !isAdded()) return;
 
         ViewUtils.hideKeyboard(activity);
         final Calendar calendar = Calendar.getInstance(LocaleUtil.getLocale());
