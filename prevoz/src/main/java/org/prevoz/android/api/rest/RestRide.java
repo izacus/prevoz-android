@@ -16,6 +16,7 @@ public class RestRide implements Comparable, Parcelable, Serializable
     @SerializedName("type")
     public int type = 0;        // 0 - share, 1 - seek
 
+    @Nullable
     @SerializedName("id")
     public Long id;
 
@@ -29,9 +30,11 @@ public class RestRide implements Comparable, Parcelable, Serializable
     @SerializedName("to_country")
     public String toCountry;
 
+    @Nullable
     @SerializedName("price")
     public Float price;
 
+    @Nullable
     @SerializedName("num_people")
     public Integer numPeople;
     @SerializedName("full")
@@ -40,24 +43,31 @@ public class RestRide implements Comparable, Parcelable, Serializable
     @SerializedName("date_iso8601")
     public Calendar date;
 
+    @Nullable
     @SerializedName("added")
     public Calendar published;
 
+    @Nullable
     @SerializedName("contact")
     public String phoneNumber;
+
     @SerializedName("confirmed_contact")
     public boolean phoneNumberConfirmed;
     @SerializedName("insured")
     public boolean insured;
+
+    @Nullable
     @SerializedName("author")
     public String author;
+
+    @Nullable
     @SerializedName("comment")
     public String comment;
 
     @SerializedName("is_author")
     public boolean isAuthor;
 
-    public RestRide(String fromCity, String fromCountry, String toCity, String toCountry, Float price, Integer numPeople, Calendar date, String phoneNumber, boolean insured, String comment)
+    public RestRide(String fromCity, String fromCountry, String toCity, String toCountry, @Nullable Float price, @Nullable Integer numPeople, Calendar date, @Nullable String phoneNumber, boolean insured, @Nullable String comment)
     {
         this.id = null;
         this.fromCity = fromCity;
