@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background_color">#fff3f3f3</color>
+    <color name="background_color">#EEEEEE</color>
     <color name="prevoztheme_color">#F57C00</color>
     <color name="prevoztheme_color_dark">#E65100</color>
     <color name="prevoztheme_color_soft">#44FFCC80</color>

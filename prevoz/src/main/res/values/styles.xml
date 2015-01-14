@@ -2,7 +2,6 @@
 <resources>
     <style name="Prevoz.Theme" parent="Prevoz.Theme.Base" />
     <style name="Prevoz.Theme.Base" parent="@style/Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:windowBackground">@color/background_color</item>
         <item name="colorPrimary">@color/prevoztheme_color</item>
         <item name="colorPrimaryDark">@color/prevoztheme_color_dark</item>
         <item name="colorAccent">@color/prevoztheme_color_dark</item>
