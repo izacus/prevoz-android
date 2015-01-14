@@ -88,6 +88,24 @@ public class LoginActivity extends ActionBarActivity
         webview.setVisibility(View.VISIBLE);
         WebSettings settings = webview.getSettings();
         settings.setJavaScriptEnabled(true);
+        settings.setAppCachePath(getCacheDir().getAbsolutePath());
+        settings.setAppCacheEnabled(true);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            settings.setSavePassword(false);
+            settings.setPluginState(WebSettings.PluginState.OFF);
+        }
+
+        settings.setDefaultTextEncodingName("UTF-8");
+        settings.setGeolocationEnabled(false);
+        settings.setAllowFileAccess(false);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            settings.setAllowFileAccessFromFileURLs(false);
+            settings.setAllowUniversalAccessFromFileURLs(false);
+            settings.setAllowContentAccess(false);
+        }
+
+        settings.setJavaScriptCanOpenWindowsAutomatically(false);
 
         // Generate OAuth login URL
         String authenticationUrl = null;

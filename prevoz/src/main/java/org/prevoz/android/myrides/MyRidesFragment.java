@@ -21,7 +21,6 @@ import org.prevoz.android.api.rest.RestSearchResults;
 import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.ride.RideInfoFragment;
-import org.prevoz.android.search.SearchResultsAdapter;
 import org.prevoz.android.util.ViewUtils;
 
 import de.greenrobot.event.EventBus;

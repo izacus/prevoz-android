@@ -118,7 +118,6 @@ public class AuthenticationUtils
                         return;
 
                     String cookies = b.getString(AccountManager.KEY_AUTHTOKEN);
-                    Log.d(LOG_TAG, "Updating authentication bearer to " + cookies);
                     ApiClient.setBearer(cookies);
                 }
                 catch (OperationCanceledException | IOException | AuthenticatorException e)

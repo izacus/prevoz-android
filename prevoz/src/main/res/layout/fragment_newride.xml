@@ -193,6 +193,14 @@
                         tools:ignore="TextFields"
                         />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:textSize="18sp"
+                        android:text="€"
+                        />
+
                     <View
                         android:layout_width="0dp"
                         android:layout_height="48dp"

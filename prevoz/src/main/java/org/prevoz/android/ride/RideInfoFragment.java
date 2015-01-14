@@ -174,15 +174,18 @@ public class RideInfoFragment extends DialogFragment
 
         if ((ride.author == null || ride.author.length() == 0) && ride.published == null) {
             txtDriver.setVisibility(View.GONE);
+        } else if (ride.published == null) {
+            txtDriver.setText(ride.author + "\u00A0");
         } else {
             if (ride.author == null || ride.author.length() == 0) {
-                txtDriver.setText(FuzzyDateTimeFormatter.getTimeAgo(getActivity(), ride.published.getTime()));
+                txtDriver.setText(FuzzyDateTimeFormatter.getTimeAgo(getActivity(), ride.published.getTime()) + "\u00A0");   // Add non-breaking space at the end to prevent italic letter clipping
             } else {
                 SpannableStringBuilder ssb = new SpannableStringBuilder();
                 ssb.append(ride.author);
                 ssb.append(", ");
                 ssb.append(FuzzyDateTimeFormatter.getTimeAgo(getActivity(), ride.published.getTime()));
                 ssb.setSpan(new StyleSpan(Typeface.BOLD), 0, ride.author.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                ssb.append("\u00A0");
                 txtDriver.setText(ssb);
             }
         }
@@ -316,7 +319,6 @@ public class RideInfoFragment extends DialogFragment
                                           public void success(Response response, Response response2)
                                           {
                                               EventBus.getDefault().post(new Events.RideDeleted(ride.id));
-                                              if (!isAdded()) return;
                                               deleteDialog.dismiss();
                                               ViewUtils.showMessage(activity, R.string.ride_delete_success, false);
                                           }
@@ -324,7 +326,6 @@ public class RideInfoFragment extends DialogFragment
                                           @Override
                                           public void failure(RetrofitError error)
                                           {
-                                              if (!isAdded()) return;
                                               deleteDialog.dismiss();
                                               ViewUtils.showMessage(activity, R.string.ride_delete_failure, true);
                                           }
