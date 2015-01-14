@@ -440,9 +440,14 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
             @Override
             public void failure(RetrofitError error)
             {
-                Crashlytics.logException(error.getCause());
-                error.printStackTrace();
+                if (error.getResponse() != null && error.getResponse().getStatus() == 403) {
+                    ViewUtils.showMessage(activity, "Vaša prijava ni več veljavna, prosimo ponovno se prijavite.", true);
+                    authUtils.logout();
+                    ApiClient.setBearer(null);
+                    return;
+                }
 
+                if (dialog.isShowing()) dialog.dismiss();
                 final MainActivity activity = (MainActivity) getActivity();
                 if (activity == null || !isAdded()) return;
 

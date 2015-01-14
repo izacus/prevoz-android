@@ -94,6 +94,11 @@ public class MyRidesFragment extends Fragment implements Callback<RestSearchResu
     public void failure(RetrofitError error)
     {
         Crashlytics.logException(error.getCause());
+        if (error.getResponse() != null && error.getResponse().getStatus() == 403) {
+            authUtils.logout();
+            ApiClient.setBearer(null);
+        }
+        
         Log.e(LOG_TAG, "Ride load failed!");
         ViewUtils.setupEmptyView(myridesList, emptyView, "Pri nalaganju vaših prevozov je prišlo do napake.");
         setListVisibility(true);

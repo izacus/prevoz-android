@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.nineoldandroids.view.ViewHelper;
@@ -23,6 +24,7 @@ import org.androidannotations.annotations.ViewById;
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestSearchResults;
+import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.push.PushManager;
@@ -68,6 +70,8 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
 
     @Bean
     protected PushManager pushManager;
+    @Bean
+    protected AuthenticationUtils authUtils;
 
     // Needed to keep track of last searches
     // TODO: find a better solution
@@ -155,10 +159,18 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     @Override
     public void failure(RetrofitError retrofitError)
     {
-        Log.d("Prevoz", "Response: " + retrofitError);
-        Crashlytics.logException(retrofitError.getCause());
-
         Activity activity = getActivity();
+        if (retrofitError.getResponse() != null && retrofitError.getResponse().getStatus() == 403) {
+            if (activity != null) {
+                Toast.makeText(activity, "Prijava ni več veljavna, odjavljam...", Toast.LENGTH_SHORT).show();
+            }
+
+            authUtils.logout();
+            ApiClient.setBearer(null);
+            EventBus.getDefault().post(new Events.NewSearchEvent(lastFrom, lastTo, lastDate));
+            return;
+        }
+
         if (activity != null)
             ViewUtils.showMessage(activity, "Napaka med iskanjem, a internet deluje?", true);
         EventBus.getDefault().post(new Events.SearchComplete());
