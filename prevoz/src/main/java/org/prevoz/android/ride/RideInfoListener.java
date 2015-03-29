@@ -4,7 +4,7 @@ import org.prevoz.android.api.rest.RestRide;
 
 public interface RideInfoListener
 {
-    public void onLeftButtonClicked(RestRide r);
+    void onLeftButtonClicked(RestRide r);
 
-    public void onRightButtonClicked(RestRide r);
+    void onRightButtonClicked(RestRide r);
 }

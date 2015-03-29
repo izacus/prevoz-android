@@ -54,14 +54,8 @@ public class LoginActivity extends ActionBarActivity
     @ViewById(R.id.login_webview)
     protected WebView webview;
 
-    @ViewById(R.id.login_autologin_stub)
-    protected ViewStub autologinStub;
-
     @Bean
     protected AuthenticationUtils authUtils;
-
-    private DeviceAccountLogin autologin;
-    private AutologinBar autologinBar;
 
     private boolean tokenRequestInProgress = false; // Workaround for Android 2.3
 
@@ -195,69 +189,6 @@ public class LoginActivity extends ActionBarActivity
 
             authenticatorResult = result;
         }
-    }
-
-    private void inflateAutoLoginBar()
-    {
-        if (autologinBar != null)
-        {
-            return;
-        }
-
-        autologinBar = (AutologinBar) autologinStub.inflate();
-        autologinBar.setActivity(this);
-    }
-
-    public void hideAutoLogin()
-    {
-        updateAutoLogin(false);
-    }
-
-    public void showAutoLogin()
-    {
-        updateAutoLogin(false);
-    }
-
-    public void hideAutoLogin(boolean animate)
-    {
-        autologinBar.setVisibility(View.GONE);
-        webview.invalidate();
-    }
-
-    public void showAutoLogin(boolean animate)
-    {
-        if (autologinBar == null)
-        {
-            inflateAutoLoginBar();
-        }
-
-        autologinBar.setVisibility(View.VISIBLE);
-    }
-
-    private void updateAutoLogin(boolean animate)
-    {
-        if(autologinBar == null)
-        {
-            if(getDeviceAccountLogin() == null)
-            {
-                return;
-            }
-
-            inflateAutoLoginBar();
-        }
-
-        autologinBar.updateAutoLogin(this, animate);
-    }
-
-    // Used for Google authentication
-    public void setDeviceAccountLogin(DeviceAccountLogin login)
-    {
-        this.autologin = login;
-    }
-
-    public DeviceAccountLogin getDeviceAccountLogin()
-    {
-        return autologin;
     }
 
     private class WebViewController extends WebViewClient
