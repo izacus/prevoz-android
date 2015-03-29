@@ -1,11 +1,17 @@
 package org.prevoz.android.ride;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,15 +24,19 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.crashlytics.android.Crashlytics;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
@@ -38,7 +48,9 @@ import org.prevoz.android.UiFragment;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.PrevozApi;
 import org.prevoz.android.api.rest.RestRide;
+import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.events.Events;
+import org.prevoz.android.model.Bookmark;
 import org.prevoz.android.myrides.NewRideFragment;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.ViewUtils;
@@ -80,6 +92,9 @@ public class RideInfoFragment extends DialogFragment
         fragment.setArguments(args);
         return fragment;
     }
+
+    @ViewById(R.id.rideinfo_favorite)
+    protected ImageView imgFavorite;
 
     @ViewById(R.id.rideinfo_from)
     protected TextView txtFrom;
@@ -128,6 +143,9 @@ public class RideInfoFragment extends DialogFragment
     @InstanceState
     protected String action = null;
 
+    @Bean
+    protected AuthenticationUtils authUtils;
+
     private RideInfoListener listener;
 
     @Override
@@ -150,6 +168,9 @@ public class RideInfoFragment extends DialogFragment
     @AfterViews
     protected void initFragment()
     {
+        imgFavorite.setVisibility(authUtils.isAuthenticated() ? View.VISIBLE : View.INVISIBLE);
+        updateFavoriteIcon();
+
         txtFrom.setText(LocaleUtil.getLocalizedCityName(getActivity(), ride.fromCity, ride.fromCountry));
         txtTo.setText(LocaleUtil.getLocalizedCityName(getActivity(), ride.toCity, ride.toCountry));
         txtTime.setText(timeFormatter.format(ride.date.getTime()));
@@ -253,6 +274,12 @@ public class RideInfoFragment extends DialogFragment
         }
     }
 
+    protected void updateFavoriteIcon() {
+        Drawable drawable = getResources().getDrawable(Bookmark.shouldShow(ride.bookmark) ? R.drawable.ic_favorite : R.drawable.ic_favorite_outline);
+        drawable.setColorFilter(new PorterDuffColorFilter(getResources().getColor(R.color.prevoztheme_color), PorterDuff.Mode.SRC_ATOP));
+        imgFavorite.setImageDrawable(drawable);
+    }
+
     @Click(R.id.rideinfo_button_call)
     protected void clickCall()
     {
@@ -313,19 +340,16 @@ public class RideInfoFragment extends DialogFragment
                                       deleteDialog.setMessage(activity.getString(R.string.ride_delete_progress));
                                       deleteDialog.show();
 
-                                      ApiClient.getAdapter().deleteRide(String.valueOf(ride.id), new Callback<Response>()
-                                      {
+                                      ApiClient.getAdapter().deleteRide(String.valueOf(ride.id), new Callback<Response>() {
                                           @Override
-                                          public void success(Response response, Response response2)
-                                          {
+                                          public void success(Response response, Response response2) {
                                               EventBus.getDefault().post(new Events.RideDeleted(ride.id));
                                               deleteDialog.dismiss();
                                               ViewUtils.showMessage(activity, R.string.ride_delete_success, false);
                                           }
 
                                           @Override
-                                          public void failure(RetrofitError error)
-                                          {
+                                          public void failure(RetrofitError error) {
                                               deleteDialog.dismiss();
                                               ViewUtils.showMessage(activity, R.string.ride_delete_failure, true);
                                           }
@@ -341,6 +365,42 @@ public class RideInfoFragment extends DialogFragment
             if (listener != null)
                 listener.onRightButtonClicked(ride);
         }
+    }
+
+    @Click(R.id.rideinfo_favorite)
+    protected void clickFavorite() {
+        if (Bookmark.shouldShow(ride.bookmark)) {
+            ride.bookmark = null;
+        } else {
+            ride.bookmark = Bookmark.BOOKMARK;
+        }
+
+        updateFavoriteIcon();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            imgFavorite.animate().scaleX(2.0f).scaleY(2.0f).alpha(0.2f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                @Override
+                @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    imgFavorite.setAlpha(1.0f);
+                    imgFavorite.setScaleX(1);
+                    imgFavorite.setScaleY(1);
+                }
+            });
+        }
+
+        ApiClient.getAdapter().setRideBookmark(String.valueOf(ride.id), Bookmark.shouldShow(ride.bookmark) ? "bookmark" : "erase", new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Log.i("Prevoz", "Bookmark set OK.");
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("Prevoz", "Failed to set bookmark status.", error);
+                Crashlytics.logException(error);
+            }
+        });
     }
 
     @CheckedChange(R.id.rideinfo_ridefull)

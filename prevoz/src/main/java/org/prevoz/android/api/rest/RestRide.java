@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.prevoz.android.model.Bookmark;
 import org.prevoz.android.util.LocaleUtil;
 
 import java.io.Serializable;
@@ -59,6 +60,10 @@ public class RestRide implements Comparable, Parcelable, Serializable
     @Nullable
     @SerializedName("author")
     public String author;
+
+    @Nullable
+    @SerializedName("bookmark")
+    public Bookmark bookmark;
 
     @Nullable
     @SerializedName("comment")

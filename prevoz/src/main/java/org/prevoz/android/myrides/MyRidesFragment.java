@@ -21,6 +21,7 @@ import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.api.rest.RestSearchResults;
 import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.events.Events;
+import org.prevoz.android.model.Bookmark;
 import org.prevoz.android.ride.RideInfoFragment;
 import org.prevoz.android.util.ViewUtils;
 
@@ -82,16 +83,33 @@ public class MyRidesFragment extends Fragment
     private void loadRides()
     {
         setListVisibility(false);
-        Observable<RestSearchResults> myRides = ApiClient.getAdapter().getMyRides();
-        Observable<RestSearchResults> bookmarkedRides = ApiClient.getAdapter().getBookmarkedRides();
+        Observable<RestRide> myRides = ApiClient.getAdapter().getMyRides()
+                .flatMap(new Func1<RestSearchResults, Observable<RestRide>>() {
+                    @Override
+                    public Observable<RestRide> call(RestSearchResults restSearchResults) {
+                        if (restSearchResults == null || restSearchResults.results == null)
+                            return Observable.empty();
+                        return Observable.from(restSearchResults.results);
+                    }
+                });
+
+        Observable<RestRide> bookmarkedRides = ApiClient.getAdapter().getBookmarkedRides()
+                .flatMap(new Func1<RestSearchResults, Observable<RestRide>>() {
+                    @Override
+                    public Observable<RestRide> call(RestSearchResults restSearchResults) {
+                        if (restSearchResults == null || restSearchResults.results == null)
+                            return Observable.empty();
+                        return Observable.from(restSearchResults.results);
+                    }
+                })
+                .filter(new Func1<RestRide, Boolean>() {
+                    @Override
+                    public Boolean call(RestRide restRide) {
+                        return Bookmark.shouldShow(restRide.bookmark);
+                    }
+                });
 
         myRides.mergeWith(bookmarkedRides)
-               .flatMap(new Func1<RestSearchResults, Observable<RestRide>>() {
-            @Override
-            public Observable<RestRide> call(RestSearchResults restSearchResults) {
-                return Observable.from(restSearchResults.results);
-            }
-        })
                .toList()
                .observeOn(AndroidSchedulers.mainThread())
                .subscribe(new Subscriber<List<RestRide>>() {

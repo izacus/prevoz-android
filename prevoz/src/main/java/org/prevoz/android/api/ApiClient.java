@@ -7,10 +7,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import com.squareup.okhttp.OkHttpClient;
 
 import org.prevoz.android.PrevozApplication_;
+import org.prevoz.android.model.Bookmark;
 import org.prevoz.android.util.LocaleUtil;
 
 import java.io.IOException;
@@ -40,6 +42,7 @@ public class ApiClient
                 .registerTypeAdapter(Date.class, new Iso8601DateAdapter())
                 .registerTypeAdapter(Calendar.class, new Iso8601CalendarAdapter())
                 .registerTypeAdapter(GregorianCalendar.class, new Iso8601CalendarAdapter())
+                .registerTypeAdapter(Bookmark.class, new BookmarkAdapter())
                 .create();
 
         adapter = new RestAdapter.Builder()
@@ -117,6 +120,50 @@ public class ApiClient
             {
                 throw new IOException("Invalid date encountered: " + e.getMessage());
             }
+        }
+    }
+
+    private static class BookmarkAdapter extends TypeAdapter<Bookmark>
+    {
+        @Override
+        public void write(JsonWriter out, Bookmark value) throws IOException {
+            switch (value) {
+                case GOING_WITH:
+                    out.value("going_with");
+                    break;
+                case OUT_OF_SEATS:
+                    out.value("out_of_seats");
+                    break;
+                case NOT_GOING_WITH:
+                    out.value("not_going_with");
+                    break;
+                case BOOKMARK:
+                    out.value("bookmark");
+                default:
+                    out.nullValue();
+            }
+        }
+
+        @Override
+        public Bookmark read(JsonReader in) throws IOException {
+            if (in.peek() == JsonToken.NULL) {
+                in.nextNull();
+                return null;
+            }
+
+            String info = in.nextString();
+            switch (info) {
+                case "going_with":
+                    return Bookmark.GOING_WITH;
+                case "out_of_seats":
+                    return Bookmark.OUT_OF_SEATS;
+                case "not_going_with":
+                    return Bookmark.NOT_GOING_WITH;
+                case "bookmark":
+                    return Bookmark.BOOKMARK;
+            }
+
+            return null;
         }
     }
 

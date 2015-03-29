@@ -74,4 +74,7 @@ public interface PrevozApi
                                          @Field("client_id") String clientId,
                                          @Field("client_secret") String clientSecret,
                                          @Field("code") String code);
+    @FormUrlEncoded
+    @POST("/api/carshare/bookmark/{id}/")
+    void setRideBookmark(@Path("id") String id, @Field("state") String state, Callback<Response> cb);
 }
