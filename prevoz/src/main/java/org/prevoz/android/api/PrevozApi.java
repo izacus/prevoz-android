@@ -18,56 +18,60 @@ import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.Path;
 import retrofit.http.Query;
+import rx.Observable;
 
 public interface PrevozApi
 {
-    public static final String FULL_STATE_AVAILABLE = "available";
-    public static final String FULL_STATE_FULL = "full";
+    String FULL_STATE_AVAILABLE = "available";
+    String FULL_STATE_FULL = "full";
 
     @GET("/api/search/shares/")
-    public void search(@Query("f")  String from,
-                       @Query("fc") String fromCountry,
-                       @Query("t")  String to,
-                       @Query("tc") String toCountry,
-                       @Query("d")  String date,
-                       Callback<RestSearchResults> cb);
+    void search(@Query("f") String from,
+                @Query("fc") String fromCountry,
+                @Query("t") String to,
+                @Query("tc") String toCountry,
+                @Query("d") String date,
+                Callback<RestSearchResults> cb);
 
     @GET("/api/carshare/{id}/")
-    public void getRide(@Path("id") String id, Callback<RestRide> cb);
+    void getRide(@Path("id") String id, Callback<RestRide> cb);
 
     @GET("/api/accounts/status/")
-    public RestAccountStatus getAccountStatus();
+    RestAccountStatus getAccountStatus();
 
     @POST("/api/accounts/login/apikey/")
-    public void loginWithApiKey(@Body RestApiKey apiKey, Callback<RestAccountStatus> cb);
+    void loginWithApiKey(@Body RestApiKey apiKey, Callback<RestAccountStatus> cb);
 
     @FormUrlEncoded
     @POST("/api/c2dm/register/")
-    public void setSubscriptionState(@Field("registration_id") String registrationId,
-                                     @Field("from") String form,
-                                     @Field("fromcountry") String fromCountry,
-                                     @Field("to") String to,
-                                     @Field("tocountry") String toCountry,
-                                     @Field("date") String date,
-                                     @Field("action") String action, Callback<RestPushStatus> cb);
+    void setSubscriptionState(@Field("registration_id") String registrationId,
+                              @Field("from") String form,
+                              @Field("fromcountry") String fromCountry,
+                              @Field("to") String to,
+                              @Field("tocountry") String toCountry,
+                              @Field("date") String date,
+                              @Field("action") String action, Callback<RestPushStatus> cb);
 
     @POST("/api/carshare/create/")
-    public void postRide(@Body RestRide ride, Callback<RestStatus> cb);
+    void postRide(@Body RestRide ride, Callback<RestStatus> cb);
 
     @GET("/api/carshare/list/")
-    public void getMyRides(Callback<RestSearchResults> cb);
+    Observable<RestSearchResults> getMyRides();
+
+    @GET("/api/search/bookmarks/")
+    Observable<RestSearchResults> getBookmarkedRides();
 
     @DELETE("/api/carshare/delete/{id}/")
-    public void deleteRide(@Path("id") String id, Callback<Response> cb);
+    void deleteRide(@Path("id") String id, Callback<Response> cb);
 
     @FormUrlEncoded
     @POST("/api/carshare/full/{id}/")
-    public void setFull(@Path("id") String id, @Field("state") String state, Callback<Response> cb);
+    void setFull(@Path("id") String id, @Field("state") String state, Callback<Response> cb);
 
     @FormUrlEncoded
     @POST("/oauth2/access_token/")
-    public RestAuthTokenResponse getAccessToken(@Field("grant_type") String grantType,
-                                                @Field("client_id") String clientId,
-                                                @Field("client_secret") String clientSecret,
-                                                @Field("code") String code);
+    RestAuthTokenResponse getAccessToken(@Field("grant_type") String grantType,
+                                         @Field("client_id") String clientId,
+                                         @Field("client_secret") String clientSecret,
+                                         @Field("code") String code);
 }

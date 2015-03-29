@@ -11,10 +11,17 @@ import org.prevoz.android.R;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class ViewUtils
 {
     private static Style confirmStyle = null;
+
+    public static void setupEmptyView(StickyListHeadersListView listView, View emptyView, String text) {
+        TextView textView = (TextView) emptyView.findViewById(R.id.empty_text);
+        textView.setText(text);
+        listView.setEmptyView(emptyView);
+    }
 
     public static void setupEmptyView(ListView listView, View emptyView, String text)
     {

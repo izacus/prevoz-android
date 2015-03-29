@@ -5,35 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <se.emilsjolander.stickylistheaders.StickyListHeadersListView
+        android:id="@+id/myrides_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <!-- 8 dp for listview padding and 5dp for card padding -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="13dp"
-            android:layout_marginRight="13dp"
-            android:layout_marginTop="12dp"
-            android:text="@string/myrides_title"
-            style="@style/Prevoz.Header"
-            />
-
-
-        <ListView
-            android:id="@+id/myrides_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:divider="@null"
-            android:scrollbarStyle="outsideOverlay"
-            >
-        </ListView>
-
-    </LinearLayout>
+        android:layout_height="match_parent" />
 
     <include layout="@layout/empty_view" />
 

@@ -1,6 +1,7 @@
 package org.prevoz.android.myrides;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
@@ -28,32 +29,39 @@ public class MyRidesAdapter extends BaseAdapter implements StickyListHeadersAdap
 {
     private final FragmentActivity context;
 
-    private List<RestRide> results;
+    @Nullable
+    private List<RestRide> publishedRides;
+    @Nullable
+    private List<RestRide> bookmarkedRides;
+
     private final LayoutInflater inflater;
 
-    public MyRidesAdapter(FragmentActivity context, List<RestRide> results)
+    public MyRidesAdapter(FragmentActivity context)
     {
         this.context = context;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        buildResults(results);
     }
 
     @Override
     public int getCount()
     {
-        return results.size();
+        return getBookmarkedRidesSize() + getPublishedRidesSize();
     }
 
     @Override
     public Object getItem(int position)
     {
-        return results.get(position);
+        if (position < getBookmarkedRidesSize())
+            return bookmarkedRides.get(position);
+        return publishedRides.get(position - getBookmarkedRidesSize());
     }
 
     @Override
     public long getItemId(int position)
     {
-        return results.get(position).id;
+        if (position < getBookmarkedRidesSize())
+            return bookmarkedRides.get(position).id;
+        return publishedRides.get(position - getBookmarkedRidesSize()).id;
     }
 
     @Override
@@ -74,7 +82,9 @@ public class MyRidesAdapter extends BaseAdapter implements StickyListHeadersAdap
         }
 
         final ResultsViewHolder holder = (ResultsViewHolder) v.getTag();
-        final RestRide ride = results.get(position);
+
+        assert publishedRides != null;
+        final RestRide ride = (RestRide) getItem(position);
 
         SpannableStringBuilder time = new SpannableStringBuilder(LocaleUtil.getFormattedTime(ride.date));
 
@@ -120,10 +130,24 @@ public class MyRidesAdapter extends BaseAdapter implements StickyListHeadersAdap
         return false;
     }
 
-    private void buildResults(List<RestRide> rides)
-    {
-        Collections.sort(rides);
-        this.results = rides;
+    private int getBookmarkedRidesSize() {
+        return bookmarkedRides == null ? 0 : bookmarkedRides.size();
+    }
+
+    private int getPublishedRidesSize() {
+        return publishedRides == null ? 0 : publishedRides.size();
+    }
+
+    public void setPublishedRides(List<RestRide> publishedRides) {
+        Collections.sort(publishedRides);
+        this.publishedRides = publishedRides;
+        notifyDataSetChanged();
+    }
+
+    public void setBookmarkedRides(List<RestRide> bookmarkedRides) {
+        Collections.sort(bookmarkedRides);
+        this.bookmarkedRides = bookmarkedRides;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -138,30 +162,17 @@ public class MyRidesAdapter extends BaseAdapter implements StickyListHeadersAdap
         }
 
         TextView titleView = (TextView) v.getTag();
-        if (position >= results.size())
-        {
-            titleView.setText("");
-            return v;
-        }
-
-
-        RestRide item = results.get(position);
-        String titleText = LocaleUtil.getLocalizedCityName(context, item.fromCity, item.fromCountry) +
-                           " - " +
-                           LocaleUtil.getLocalizedCityName(context, item.toCity, item.toCountry);
-
-        titleView.setText(titleText);
+        titleView.setText(position < getBookmarkedRidesSize() ? "Zaznamki" : "Objavljeni prevozi");
         return v;
     }
 
     @Override
     public long getHeaderId(int position)
     {
-        // Guard for some rare corner-cases
-        if (position >= results.size()) return -1;
-
-        RestRide ride = results.get(position);
-        return (ride.fromCity.hashCode() + ride.fromCountry.hashCode()) * (ride.toCity.hashCode() + ride.toCountry.hashCode());
+        if (position < getBookmarkedRidesSize())
+            return 0;
+        else
+            return 1;
     }
 
     private static class ResultsViewHolder
