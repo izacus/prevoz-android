@@ -20,6 +20,7 @@ import org.prevoz.android.ride.RideInfoFragment;
 import org.prevoz.android.util.LocaleUtil;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -29,39 +30,47 @@ public class MyRidesAdapter extends BaseAdapter implements StickyListHeadersAdap
 {
     private final FragmentActivity context;
 
-    @Nullable
-    private List<RestRide> publishedRides;
-    @Nullable
-    private List<RestRide> bookmarkedRides;
+    private List<RestRide> myrides;
 
     private final LayoutInflater inflater;
 
-    public MyRidesAdapter(FragmentActivity context)
+    public MyRidesAdapter(FragmentActivity context, List<RestRide> myrides)
     {
         this.context = context;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        Collections.sort(myrides, new Comparator<RestRide>() {
+            @Override
+            public int compare(RestRide r1, RestRide r2) {
+                if (r1.isAuthor && !r2.isAuthor)
+                    return 1;
+
+                if (r2.isAuthor && !r1.isAuthor)
+                    return -1;
+
+                return r1.compareTo(r2);
+            }
+        });
+
+        this.myrides = myrides;
     }
 
     @Override
     public int getCount()
     {
-        return getBookmarkedRidesSize() + getPublishedRidesSize();
+        return myrides.size();
     }
 
     @Override
     public Object getItem(int position)
     {
-        if (position < getBookmarkedRidesSize())
-            return bookmarkedRides.get(position);
-        return publishedRides.get(position - getBookmarkedRidesSize());
+        return myrides.get(position);
     }
 
     @Override
     public long getItemId(int position)
     {
-        if (position < getBookmarkedRidesSize())
-            return bookmarkedRides.get(position).id;
-        return publishedRides.get(position - getBookmarkedRidesSize()).id;
+        return myrides.get(position).id;
     }
 
     @Override
@@ -83,7 +92,6 @@ public class MyRidesAdapter extends BaseAdapter implements StickyListHeadersAdap
 
         final ResultsViewHolder holder = (ResultsViewHolder) v.getTag();
 
-        assert publishedRides != null;
         final RestRide ride = (RestRide) getItem(position);
 
         SpannableStringBuilder time = new SpannableStringBuilder(LocaleUtil.getFormattedTime(ride.date));
@@ -130,26 +138,6 @@ public class MyRidesAdapter extends BaseAdapter implements StickyListHeadersAdap
         return false;
     }
 
-    private int getBookmarkedRidesSize() {
-        return bookmarkedRides == null ? 0 : bookmarkedRides.size();
-    }
-
-    private int getPublishedRidesSize() {
-        return publishedRides == null ? 0 : publishedRides.size();
-    }
-
-    public void setPublishedRides(List<RestRide> publishedRides) {
-        Collections.sort(publishedRides);
-        this.publishedRides = publishedRides;
-        notifyDataSetChanged();
-    }
-
-    public void setBookmarkedRides(List<RestRide> bookmarkedRides) {
-        Collections.sort(bookmarkedRides);
-        this.bookmarkedRides = bookmarkedRides;
-        notifyDataSetChanged();
-    }
-
     @Override
     public View getHeaderView(int position, View convertView, ViewGroup parent)
     {
@@ -162,14 +150,14 @@ public class MyRidesAdapter extends BaseAdapter implements StickyListHeadersAdap
         }
 
         TextView titleView = (TextView) v.getTag();
-        titleView.setText(position < getBookmarkedRidesSize() ? "Zaznamki" : "Objavljeni prevozi");
+        titleView.setText(!((RestRide)getItem(position)).isAuthor ? "Zaznamki" : "Objavljeni prevozi");
         return v;
     }
 
     @Override
     public long getHeaderId(int position)
     {
-        if (position < getBookmarkedRidesSize())
+        if (((RestRide)getItem(position)).isAuthor)
             return 0;
         else
             return 1;

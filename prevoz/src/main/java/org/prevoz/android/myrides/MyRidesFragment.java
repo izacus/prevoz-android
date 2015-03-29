@@ -24,12 +24,16 @@ import org.prevoz.android.events.Events;
 import org.prevoz.android.ride.RideInfoFragment;
 import org.prevoz.android.util.ViewUtils;
 
+import java.util.List;
+
 import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 @EFragment(R.layout.fragment_myrides)
@@ -78,62 +82,40 @@ public class MyRidesFragment extends Fragment
     private void loadRides()
     {
         setListVisibility(false);
+        Observable<RestSearchResults> myRides = ApiClient.getAdapter().getMyRides();
+        Observable<RestSearchResults> bookmarkedRides = ApiClient.getAdapter().getBookmarkedRides();
 
-        ApiClient.getAdapter().getMyRides()
-                              .observeOn(AndroidSchedulers.mainThread())
-                              .subscribe(new Subscriber<RestSearchResults>() {
-                                  @Override
-                                  public void onCompleted() {
-                                  }
+        myRides.mergeWith(bookmarkedRides)
+               .flatMap(new Func1<RestSearchResults, Observable<RestRide>>() {
+            @Override
+            public Observable<RestRide> call(RestSearchResults restSearchResults) {
+                return Observable.from(restSearchResults.results);
+            }
+        })
+               .toList()
+               .observeOn(AndroidSchedulers.mainThread())
+               .subscribe(new Subscriber<List<RestRide>>() {
+                   @Override
+                   public void onCompleted() {
 
-                                  @Override
-                                  public void onError(Throwable e) {
-                                      showLoadFailureError(e);
-                                  }
+                   }
 
-                                  @Override
-                                  public void onNext(RestSearchResults restSearchResults) {
-                                      ViewUtils.setupEmptyView(myridesList, emptyView, "Nimate objavljenih ali zaznamovanih prevozov.");
-                                      Activity activity = getActivity();
-                                      if (activity == null) return;
+                   @Override
+                   public void onError(Throwable e) {
+                       showLoadFailureError(e);
+                   }
 
-                                      if (adapter == null) {
-                                          adapter = new MyRidesAdapter((FragmentActivity) activity);
-                                          myridesList.setAdapter(adapter);
-                                      }
+                   @Override
+                   public void onNext(List<RestRide> rides) {
+                       ViewUtils.setupEmptyView(myridesList, emptyView, "Nimate objavljenih ali zaznamovanih prevozov.");
+                       Activity activity = getActivity();
+                       if (activity == null) return;
 
-                                      adapter.setPublishedRides(restSearchResults.results);
-                                      setListVisibility(true);
-                                  }
-                              });
-
-        ApiClient.getAdapter().getBookmarkedRides()
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Subscriber<RestSearchResults>() {
-                                @Override
-                                public void onCompleted() {
-                                }
-
-                                @Override
-                                public void onError(Throwable e) {
-                                    showLoadFailureError(e);
-                                }
-
-                                @Override
-                                public void onNext(RestSearchResults restSearchResults) {
-                                    ViewUtils.setupEmptyView(myridesList, emptyView, "Nimate objavljenih ali zaznamovanih prevozov.");
-                                    Activity activity = getActivity();
-                                    if (activity == null) return;
-
-                                    if (adapter == null) {
-                                        adapter = new MyRidesAdapter((FragmentActivity) activity);
-                                        myridesList.setAdapter(adapter);
-                                    }
-
-                                    adapter.setBookmarkedRides(restSearchResults.results);
-                                    setListVisibility(true);
-                                }
-                            });
+                       adapter = new MyRidesAdapter((FragmentActivity) activity, rides);
+                       myridesList.setAdapter(adapter);
+                       setListVisibility(true);
+                   }
+               });
     }
 
     private void showLoadFailureError(Throwable error) {
@@ -161,12 +143,13 @@ public class MyRidesFragment extends Fragment
     {
 
         if (listVisible) {
-            emptyView.setVisibility(adapter.getCount() == 0 ? View.VISIBLE : View.INVISIBLE);
-            myridesList.setVisibility(adapter.getCount() != 0 ? View.VISIBLE : View.INVISIBLE);
+            emptyView.setVisibility(adapter == null || adapter.getCount() == 0 ? View.VISIBLE : View.INVISIBLE);
+            myridesList.setVisibility(adapter == null || adapter.getCount() != 0 ? View.VISIBLE : View.INVISIBLE);
         } else {
             emptyView.setVisibility(View.INVISIBLE);
             myridesList.setVisibility(View.INVISIBLE);
         }
+
 
         throbber.setVisibility(listVisible ? View.INVISIBLE : View.VISIBLE);
     }
