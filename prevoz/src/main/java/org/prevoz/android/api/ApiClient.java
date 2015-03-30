@@ -11,6 +11,7 @@ import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import com.squareup.okhttp.OkHttpClient;
 
+import org.prevoz.android.BuildConfig;
 import org.prevoz.android.PrevozApplication_;
 import org.prevoz.android.model.Bookmark;
 import org.prevoz.android.util.LocaleUtil;
@@ -48,6 +49,7 @@ public class ApiClient
         adapter = new RestAdapter.Builder()
                                  .setEndpoint(BASE_URL)
                                  .setConverter(new GsonConverter(gson))
+                                 .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
                                  .setRequestInterceptor(new CookieSetterInterceptor())
                                  .setClient(new OkClient(new OkHttpClient()))
                                  .build();
@@ -174,8 +176,11 @@ public class ApiClient
         {
             requestFacade.addHeader("User-Agent", String.format("Prevoz/%d Android/%d", PrevozApplication_.VERSION, Build.VERSION.SDK_INT));
 
-            if (bearer != null)
+            if (bearer != null) {
                 requestFacade.addHeader("Authorization", String.format("Bearer %s", bearer));
+                // Server caches requests too enthusiasticly so append this to parameter list
+                requestFacade.addEncodedQueryParam("nocache", String.valueOf(System.currentTimeMillis()));
+            }
         }
     }
 }
