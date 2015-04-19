@@ -55,6 +55,7 @@ import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import rx.schedulers.Schedulers;
 
 public class NewRideFragment extends PrevozFragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, RideInfoListener, android.app.DatePickerDialog.OnDateSetListener, android.app.TimePickerDialog.OnTimeSetListener {
     private static final String PREF_PHONE_NO = "org.prevoz.phoneno";
@@ -449,8 +450,7 @@ public class NewRideFragment extends PrevozFragment implements DatePickerDialog.
             {
                 if (error.getResponse() != null && error.getResponse().getStatus() == 403) {
                     ViewUtils.showMessage(activity, "Vaša prijava ni več veljavna, prosimo ponovno se prijavite.", true);
-                    authUtils.logout();
-                    ApiClient.setBearer(null);
+                    authUtils.logout().subscribeOn(Schedulers.io()).subscribe();
                     return;
                 }
 

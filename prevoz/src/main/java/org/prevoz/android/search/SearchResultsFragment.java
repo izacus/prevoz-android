@@ -39,6 +39,7 @@ import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import rx.schedulers.Schedulers;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
@@ -150,7 +151,7 @@ public class SearchResultsFragment extends PrevozFragment implements Callback<Re
                 Toast.makeText(activity, "Prijava ni več veljavna, odjavljam...", Toast.LENGTH_SHORT).show();
             }
 
-            authUtils.logout();
+            authUtils.logout().subscribeOn(Schedulers.io()).subscribe();
             ApiClient.setBearer(null);
             EventBus.getDefault().post(new Events.NewSearchEvent(lastFrom, lastTo, lastDate));
             return;

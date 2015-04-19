@@ -37,6 +37,7 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class MyRidesFragment extends PrevozFragment
@@ -161,7 +162,7 @@ public class MyRidesFragment extends PrevozFragment
         Crashlytics.logException(error.getCause());
         if (error instanceof RetrofitError) {
             if (((RetrofitError)error).getResponse() != null && ((RetrofitError)error).getResponse().getStatus() == 403) {
-                authUtils.logout();
+                authUtils.logout().subscribeOn(Schedulers.io()).subscribe();
                 ApiClient.setBearer(null);
             }
         }

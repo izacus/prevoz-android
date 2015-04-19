@@ -34,7 +34,7 @@ public interface PrevozApi
                 Callback<RestSearchResults> cb);
 
     @GET("/api/accounts/status/")
-    RestAccountStatus getAccountStatus();
+    Observable<RestAccountStatus> getAccountStatus();
 
     @FormUrlEncoded
     @POST("/api/c2dm/register/")
@@ -64,10 +64,10 @@ public interface PrevozApi
 
     @FormUrlEncoded
     @POST("/oauth2/access_token/")
-    RestAuthTokenResponse getAccessToken(@Field("grant_type") String grantType,
-                                         @Field("client_id") String clientId,
-                                         @Field("client_secret") String clientSecret,
-                                         @Field("code") String code);
+    Observable<RestAuthTokenResponse> getAccessToken(@Field("grant_type") String grantType,
+                                                     @Field("client_id") String clientId,
+                                                     @Field("client_secret") String clientSecret,
+                                                     @Field("code") String code);
     @FormUrlEncoded
     @POST("/api/carshare/bookmark/{id}/")
     void setRideBookmark(@Path("id") String id, @Field("state") String state, Callback<Response> cb);

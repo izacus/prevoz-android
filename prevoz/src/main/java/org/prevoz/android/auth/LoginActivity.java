@@ -1,19 +1,21 @@
 package org.prevoz.android.auth;
 
+import android.accounts.Account;
 import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.preference.PreferenceManager;
+import android.support.v4.util.Pair;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewStub;
 import android.view.Window;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -27,16 +29,22 @@ import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestAccountStatus;
 import org.prevoz.android.api.rest.RestAuthTokenResponse;
+import org.prevoz.android.events.Events;
 import org.prevoz.android.util.PrevozActivity;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import javax.inject.Inject;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.greenrobot.event.EventBus;
 import retrofit.RetrofitError;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+import rx.functions.Action1;
+import rx.functions.Func2;
+import rx.schedulers.Schedulers;
 
 public class LoginActivity extends PrevozActivity
 {
@@ -116,49 +124,46 @@ public class LoginActivity extends PrevozActivity
     {
         final ProgressDialog dialog = ProgressDialog.show(this, "Prijava", "Prijavljam....", true, false);
         webview.setVisibility(View.INVISIBLE);
-        requestAccessToken(dialog, code);
-    }
 
-    // TODO TODO: Move to background
-    protected void requestAccessToken(final ProgressDialog dialog, String code)
-    {
-        RestAuthTokenResponse retrievedToken;
-        try
-        {
-             retrievedToken = ApiClient.getAdapter().getAccessToken("authorization_code", CLIENT_ID, CLIENT_SECRET, code);
-        }
-        catch (RetrofitError e)
-        {
-            Crashlytics.logException(e.getCause());
-            final Bundle result = new Bundle();
-            result.putInt(AccountManager.KEY_ERROR_CODE, AccountManager.ERROR_CODE_BAD_AUTHENTICATION);
-            result.putString(AccountManager.KEY_ERROR_MESSAGE, "Failed to confirm authentication.");
-            authenticatorResult = result;
-            finish();
-            return;
-        }
+        Observable<RestAuthTokenResponse> accessToken = ApiClient.getAdapter().getAccessToken("authorization_code", CLIENT_ID, CLIENT_SECRET, code)
+                                                        .cache();
 
-        ApiClient.setBearer(retrievedToken.accessToken);
+        Observable<RestAccountStatus> accountStatus = accessToken.flatMap(restAuthTokenResponse -> {
+            ApiClient.setBearer(restAuthTokenResponse.accessToken);
+            return ApiClient.getAdapter().getAccountStatus();
+        });
 
-        try
-        {
-            RestAccountStatus restAccountStatus = ApiClient.getAdapter().getAccountStatus();
-            updateAuthenticatorResult(restAccountStatus, retrievedToken.accessToken, retrievedToken.refreshToken);
-            UpdateAccountInformationTask updateInfoTask = new UpdateAccountInformationTask(LoginActivity.this,
-                                                                                            authUtils,
-                                                                                            dialog,
-                                                                                            restAccountStatus,
-                                                                                            retrievedToken.accessToken,
-                                                                                            retrievedToken.refreshToken,
-                                                                                            System.currentTimeMillis() + (retrievedToken.expiresIn * 1000));
-            updateInfoTask.execute();
-        }
-        catch (RetrofitError e)
-        {
-            Crashlytics.logException(e.getCause());
-            Log.e(LOG_TAG, "Failed to login: " + e.getBody());
-            dialog.dismiss();
-        }
+        Observable.zip(accessToken, accountStatus, (token, status) -> new Pair<>(token, status))
+                  .doOnNext(authInfoPair -> {
+                      updateAuthenticatorResult(authInfoPair.second, authInfoPair.first.accessToken, authInfoPair.first.refreshToken);
+                      AccountManager am = AccountManager.get(LoginActivity.this);
+                      authUtils.removeExistingAccounts();
+                      Account acc = new Account(authInfoPair.second.username, getString(R.string.account_type));
+                      am.addAccountExplicitly(acc, authInfoPair.first.refreshToken, null);
+                      am.setAuthToken(acc, "default", authInfoPair.first.accessToken);
+
+                      SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+                      sp.edit().putBoolean(PrevozAccountAuthenticator.PREF_OAUTH2, true)
+                              .putLong(PrevozAccountAuthenticator.PREF_KEY_EXPIRES, System.currentTimeMillis() + (authInfoPair.first.expiresIn * 1000))
+                              .apply();
+                  })
+                  .subscribeOn(Schedulers.io())
+                  .observeOn(AndroidSchedulers.mainThread())
+                  .subscribe(authInfoPair -> {},
+                          throwable -> {
+                              Crashlytics.logException(throwable.getCause());
+                              ApiClient.setBearer(null);
+                              final Bundle result = new Bundle();
+                              result.putInt(AccountManager.KEY_ERROR_CODE, AccountManager.ERROR_CODE_BAD_AUTHENTICATION);
+                              result.putString(AccountManager.KEY_ERROR_MESSAGE, "Failed to confirm authentication.");
+                              authenticatorResult = result;
+                          },
+                          () -> {
+                              EventBus.getDefault().postSticky(new Events.LoginStateChanged());
+                              dialog.dismiss();
+                              finish();
+                          });
+
     }
 
     private void updateAuthenticatorResult(RestAccountStatus restAccountStatus, String accessToken, String refreshToken)

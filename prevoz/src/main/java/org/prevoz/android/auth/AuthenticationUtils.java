@@ -15,6 +15,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.events.Events;
@@ -22,6 +24,12 @@ import org.prevoz.android.events.Events;
 import java.io.IOException;
 
 import de.greenrobot.event.EventBus;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.exceptions.OnErrorThrowable;
+import rx.functions.Func0;
+import rx.schedulers.Schedulers;
 
 public class AuthenticationUtils
 {
@@ -44,18 +52,36 @@ public class AuthenticationUtils
 
     public void requestAuthentication(Activity parentActivity, int requestCode)
     {
-        AccountManager am = AccountManager.get(parentActivity);
-        AccountManagerFuture<Bundle> result = am.addAccount(parentActivity.getString(R.string.account_type), null, null, null, null, null, null);
+        Observable.defer(() -> {
+            AccountManager am = AccountManager.get(parentActivity);
+            AccountManagerFuture<Bundle> result = am.addAccount(parentActivity.getString(R.string.account_type), null, null, null, null, null, null);
 
-        try
-        {
-            Intent i = (Intent) result.getResult().get(AccountManager.KEY_INTENT);
-            parentActivity.startActivityForResult(i, requestCode);
-        }
-        catch (Exception e)
-        {
-            Log.e(LOG_TAG, "Error!", e);
-        }
+            try {
+                return Observable.just(result.getResult());
+            } catch (OperationCanceledException | IOException | AuthenticatorException e) {
+                throw OnErrorThrowable.from(e);
+            }
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Subscriber<Bundle>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Crashlytics.logException(e);
+                Log.e(LOG_TAG, "Something went very wrong when trying to authenticate!", e);
+            }
+
+            @Override
+            public void onNext(Bundle bundle) {
+                Intent i = (Intent) bundle.get(AccountManager.KEY_INTENT);
+                parentActivity.startActivityForResult(i, requestCode);
+            }
+        });
     }
 
     public boolean isAuthenticated()
@@ -136,10 +162,13 @@ public class AuthenticationUtils
         }
     }
 
-    // TODO TODO TODO TODO Move to background
-    public void logout()
+    public Observable<Void> logout()
     {
-        removeExistingAccounts();
-        EventBus.getDefault().post(new Events.LoginStateChanged());
+        return Observable.defer(() -> {
+            removeExistingAccounts();
+            ApiClient.setBearer(null);
+            EventBus.getDefault().post(new Events.LoginStateChanged());
+            return Observable.empty();
+        });
     }
 }

@@ -48,6 +48,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
+import rx.schedulers.Schedulers;
 
 @SuppressLint("Registered")
 public class MainActivity extends PrevozActivity
@@ -194,12 +195,7 @@ public class MainActivity extends PrevozActivity
                           .content("Se res želite odjaviti?")
                           .positiveText("Odjavi")
                           .negativeText("Prekliči")
-                          .callback(new MaterialDialog.SimpleCallback() {
-                              @Override
-                              public void onPositive(MaterialDialog materialDialog) {
-                                  authUtils.logout();
-                              }
-                          })
+                          .callback(materialDialog -> authUtils.logout().subscribeOn(Schedulers.io()).subscribe())
                           .show();
     }
 
