@@ -79,13 +79,7 @@ public class SearchHistoryAdapter extends BaseAdapter implements StickyListHeade
 
         final Route route = searchHistory.get(position);
         CardView c = (CardView) v.findViewById(R.id.item_history_card);
-        c.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventBus.getDefault().post(new Events.SearchFillWithRoute(route));
-
-            }
-        });
+        c.setOnClickListener(view -> EventBus.getDefault().post(new Events.SearchFillWithRoute(route)));
 
         TextView txt = (TextView) v.findViewById(R.id.item_history_text);
         txt.setText(route.toString());

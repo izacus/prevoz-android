@@ -1,6 +1,8 @@
 package org.prevoz.android.search;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
@@ -36,7 +38,7 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
     private Set<Integer> highlights;
     private final LayoutInflater inflater;
 
-    public SearchResultsAdapter(FragmentActivity context, List<RestRide> results, int[] highlights)
+    public SearchResultsAdapter(@NonNull FragmentActivity context, @NonNull List<RestRide> results, @NonNull int[] highlights)
     {
         this.context = context;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -50,7 +52,7 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
     }
 
     @Override
-    public Object getItem(int position)
+    public RestRide getItem(int position)
     {
         return results.get(position);
     }
@@ -128,13 +130,13 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
         return false;
     }
 
-    public synchronized void setResults(List<RestRide> rides, int[] highlights)
+    public synchronized void setResults(@NonNull List<RestRide> rides, @NonNull int[] highlights)
     {
         buildResults(rides, highlights);
         notifyDataSetChanged();
     }
 
-    private void buildResults(List<RestRide> rides, int[] highlightIds)
+    private void buildResults(@NonNull List<RestRide> rides, @NonNull int[] highlightIds)
     {
         Collections.sort(rides);
         highlights = new HashSet<>();

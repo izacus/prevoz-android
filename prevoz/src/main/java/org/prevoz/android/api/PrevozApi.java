@@ -38,13 +38,13 @@ public interface PrevozApi
 
     @FormUrlEncoded
     @POST("/api/c2dm/register/")
-    void setSubscriptionState(@Field("registration_id") String registrationId,
+    Observable<RestPushStatus> setSubscriptionState(@Field("registration_id") String registrationId,
                               @Field("from") String form,
                               @Field("fromcountry") String fromCountry,
                               @Field("to") String to,
                               @Field("tocountry") String toCountry,
                               @Field("date") String date,
-                              @Field("action") String action, Callback<RestPushStatus> cb);
+                              @Field("action") String action);
 
     @POST("/api/carshare/create/")
     void postRide(@Body RestRide ride, Callback<RestStatus> cb);

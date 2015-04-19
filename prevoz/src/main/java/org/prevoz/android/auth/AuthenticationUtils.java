@@ -89,10 +89,12 @@ public class AuthenticationUtils
         return getUserAccount() != null;
     }
 
-    public String getUsername()
+    public Observable<String> getUsername()
     {
-        Account acc = getUserAccount();
-        return acc == null ? null : acc.name;
+        return Observable.defer(() -> {
+            Account acc = getUserAccount();
+            return Observable.just(acc == null ? null : acc.name);
+        });
     }
 
     public void removeExistingAccounts()

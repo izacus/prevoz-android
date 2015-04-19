@@ -36,6 +36,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
+import rx.schedulers.Schedulers;
 
 public class SearchFragment extends Fragment implements DatePickerDialog.OnDateSetListener, android.app.DatePickerDialog.OnDateSetListener {
     @InjectView(R.id.search_date_edit)
@@ -142,7 +143,6 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
         updateShownDate();
     }
 
-    // TODO: Move to background
     public void setupAdapters()
     {
         // Initialization requres DB access that's why this is here.
@@ -151,34 +151,19 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
 
         final CityAutocompleteAdapter fromAdapter = new CityAutocompleteAdapter(activity);
         final CityAutocompleteAdapter toAdapter = new CityAutocompleteAdapter(activity);
-
-        // Setup autocomplete text views
-        activity.runOnUiThread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                searchFrom.setAdapter(fromAdapter);
-                searchTo.setAdapter(toAdapter);
-            }
-        });
-
+        searchFrom.setAdapter(fromAdapter);
+        searchTo.setAdapter(toAdapter);
     }
 
-    // TODO: Move to background
     protected void startSearch()
     {
-        try
-        {
+        Schedulers.io().createWorker().schedule(() -> {
             City fromCity = StringUtil.splitStringToCity(searchFrom.getText().toString());
             City toCity = StringUtil.splitStringToCity(searchTo.getText().toString());
 
             ContentUtils.addSearchToHistory(getActivity(), fromCity, toCity, selectedDate.getTime());
             EventBus.getDefault().post(new Events.NewSearchEvent(fromCity, toCity, selectedDate));
-        } catch (Exception e) {
-            Crashlytics.logException(e);
-            throw e;
-        }
+        });
     }
 
     private void updateShownDate()

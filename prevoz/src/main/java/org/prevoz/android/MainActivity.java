@@ -48,6 +48,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 @SuppressLint("Registered")
@@ -109,13 +110,14 @@ public class MainActivity extends PrevozActivity
         }
     }
 
-    // TODO TODO Move to background
     protected void checkAuthenticated()
     {
-        setDrawerUsername(authUtils.getUsername());
+        authUtils.getUsername()
+                 .subscribeOn(Schedulers.io())
+                 .observeOn(AndroidSchedulers.mainThread())
+                 .subscribe(this::setDrawerUsername);
     }
 
-    // TODO TODO Invoke on main thread
     protected void setDrawerUsername(String username)
     {
         if (username == null)
