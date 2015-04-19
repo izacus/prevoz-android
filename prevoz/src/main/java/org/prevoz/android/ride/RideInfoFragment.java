@@ -60,6 +60,8 @@ import butterknife.InjectView;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
+import icepick.Icepick;
+import icepick.Icicle;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -141,9 +143,8 @@ public class RideInfoFragment extends DialogFragment
     @Inject
     protected AuthenticationUtils authUtils;
 
-    // TODO TODO TODO: Store to instance state
-    protected RestRide ride = null;
-    protected String action = null;
+    @Icicle protected RestRide ride = null;
+    @Icicle protected String action = null;
 
     private RideInfoListener listener;
 
@@ -151,7 +152,8 @@ public class RideInfoFragment extends DialogFragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        ((PrevozActivity)getActivity()).getApplicationComponent().inject(this);
+        Icepick.restoreInstanceState(this, savedInstanceState);
+        ((PrevozActivity) getActivity()).getApplicationComponent().inject(this);
 
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Prevoz_RideInfo);
 
@@ -439,7 +441,9 @@ public class RideInfoFragment extends DialogFragment
 
     @Override
     public void onSaveInstanceState(Bundle outState)
-    {}
+    {
+        Icepick.saveInstanceState(this, outState);
+    }
 
     public void setRideInfoListener(RideInfoListener listener)
     {

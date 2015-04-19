@@ -52,6 +52,8 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
+import icepick.Icepick;
+import icepick.Icicle;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -82,13 +84,18 @@ public class NewRideFragment extends PrevozFragment implements DatePickerDialog.
     @InjectView(R.id.newride_insurance)
     protected CheckBox chkInsurance;
 
-    // TODO: Store to instance state
-    protected Calendar setTime;
-    protected boolean dateSet;
-    protected boolean timeSet;
-    protected Long editRideId;
+    @Icicle protected Calendar setTime;
+    @Icicle protected boolean dateSet;
+    @Icicle protected boolean timeSet;
+    @Icicle protected Long editRideId;
 
     private boolean shouldGoFromDateToTime = false;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Icepick.restoreInstanceState(this, savedInstanceState);
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -472,5 +479,11 @@ public class NewRideFragment extends PrevozFragment implements DatePickerDialog.
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         onTimeSet((RadialPickerLayout)null, hourOfDay, minute);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(this, outState);
     }
 }

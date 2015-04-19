@@ -38,6 +38,8 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
+import icepick.Icepick;
+import icepick.Icicle;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -67,30 +69,26 @@ public class SearchResultsFragment extends PrevozFragment implements Callback<Re
 
     // Needed to keep track of last searches
     // TODO: find a better solution
-    // TODO: store all to instance state
-    protected RestSearchResults results;
-    protected boolean shouldShowNotificationButton = false;
-    protected City lastFrom;
-    protected City lastTo;
-    protected Calendar lastDate;
-    protected int[] highlightRides;
+    @Icicle protected RestSearchResults results;
+    @Icicle protected boolean shouldShowNotificationButton = false;
+    @Icicle protected City lastFrom;
+    @Icicle protected City lastTo;
+    @Icicle protected Calendar lastDate;
+    @Icicle protected int[] highlightRides;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        Icepick.restoreInstanceState(this, savedInstanceState);
+
         headerFragmentView = getLayoutInflater(savedInstanceState).inflate(R.layout.header_search_form, null, false);
         searchNofityButtonContainer = headerFragmentView.findViewById(R.id.search_notify_button_container);
         searchNofityButtonText = (TextView) headerFragmentView.findViewById(R.id.search_notify_button_text);
         searchNotifyButtonIcon = (ImageView) headerFragmentView.findViewById(R.id.search_notify_button_icon);
         searchNotifyButtonProgress = (ProgressBar) headerFragmentView.findViewById(R.id.search_notify_button_progress);
         searchNotifyButton = headerFragmentView.findViewById(R.id.search_notify_button);
-        searchNofityButtonContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clickNotificationButton();
-            }
-        });
+        searchNofityButtonContainer.setOnClickListener(v -> clickNotificationButton());
     }
 
     @Override
@@ -328,5 +326,11 @@ public class SearchResultsFragment extends PrevozFragment implements Callback<Re
     public boolean showingResults()
     {
         return (adapter instanceof SearchResultsAdapter);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(this, outState);
     }
 }

@@ -36,6 +36,8 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
+import icepick.Icepick;
+import icepick.Icicle;
 import rx.schedulers.Schedulers;
 
 public class SearchFragment extends Fragment implements DatePickerDialog.OnDateSetListener, android.app.DatePickerDialog.OnDateSetListener {
@@ -55,8 +57,13 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
     @InjectView(R.id.search_button_progress)
     protected ProgressBar searchButtonProgress;
 
-    // TODO: Store to instance state
-    protected Calendar selectedDate;
+    @Icicle protected Calendar selectedDate;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Icepick.restoreInstanceState(this, savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -222,5 +229,11 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         onDateSet((DatePickerDialog)null, year, monthOfYear, dayOfMonth);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(this, outState);
     }
 }

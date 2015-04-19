@@ -88,15 +88,6 @@
 -dontwarn org.codehaus.mojo.**
 -dontwarn java.nio.file.**
 
-# AndroidAnnotations
--dontwarn org.springframework.**
-
-# ActionbarSherlock
--keep class android.support.v4.app.** { *; }
--keep interface android.support.v4.app.** { *; }
--keep class com.actionbarsherlock.** { *; }
--keep interface com.actionbarsherlock.** { *; }
-
 # DateTimePicker
 -dontwarn com.fourmob.**
 
@@ -106,4 +97,8 @@
 }
 
 -dontwarn java.lang.AutoClosable
--dontwarn com.actionbarsherlock.internal.**
+
+# IcePick
+-dontwarn icepick.**
+-keep class **$$Icicle { *; }
+-keepnames class * { @icepick.Icicle *;}
