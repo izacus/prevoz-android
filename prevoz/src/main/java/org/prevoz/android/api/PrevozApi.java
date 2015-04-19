@@ -33,14 +33,8 @@ public interface PrevozApi
                 @Query("d") String date,
                 Callback<RestSearchResults> cb);
 
-    @GET("/api/carshare/{id}/")
-    void getRide(@Path("id") String id, Callback<RestRide> cb);
-
     @GET("/api/accounts/status/")
     RestAccountStatus getAccountStatus();
-
-    @POST("/api/accounts/login/apikey/")
-    void loginWithApiKey(@Body RestApiKey apiKey, Callback<RestAccountStatus> cb);
 
     @FormUrlEncoded
     @POST("/api/c2dm/register/")
