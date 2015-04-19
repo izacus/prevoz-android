@@ -15,51 +15,45 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ItemClick;
-import org.androidannotations.annotations.OptionsItem;
-import org.androidannotations.annotations.OptionsMenu;
-import org.androidannotations.annotations.UiThread;
-import org.androidannotations.annotations.ViewById;
 import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.Route;
-import org.prevoz.android.myrides.MyRidesFragment_;
+import org.prevoz.android.myrides.MyRidesFragment;
 import org.prevoz.android.myrides.NewRideFragment;
-import org.prevoz.android.myrides.NewRideFragment_;
-import org.prevoz.android.push.PushFragment_;
+import org.prevoz.android.push.PushFragment;
 import org.prevoz.android.push.PushManager;
 import org.prevoz.android.search.SearchResultsFragment;
-import org.prevoz.android.search.SearchResultsFragment_;
 import org.prevoz.android.util.LocaleUtil;
+import org.prevoz.android.util.PrevozActivity;
 
 import java.util.Calendar;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
-@SuppressLint("Registered")          // AndroidAnnotated activity is registered.
-@EActivity(R.layout.activity_main)
-@OptionsMenu(R.menu.fragment_myrides)
-public class MainActivity extends ActionBarActivity
+@SuppressLint("Registered")
+public class MainActivity extends PrevozActivity
 {
     public static final int REQUEST_CODE_AUTHORIZE_MYRIDES = 100;
     public static final int REQUEST_CODE_AUTHORIZE_NEWRIDE = 101;
-
 
     private static final String SEARCH_FRAGMENT_TAG = "SearchResultsFragment";
     private static final String PUSH_NOTIFICATIONS_FRAGMENT_TAG = "PushNotificationsFragment";
@@ -67,35 +61,39 @@ public class MainActivity extends ActionBarActivity
     private static final String NEW_RIDE_FRAGMENT_TAG = "NewRideFragment";
 
 
-    @ViewById(R.id.main_drawer)
+    @InjectView(R.id.main_drawer)
     protected DrawerLayout drawerLayout;
     protected ActionBarDrawerToggle drawerLayoutToggle;
 
-    @ViewById(R.id.main_left_drawer_list)
+    @InjectView(R.id.main_left_drawer_list)
     protected ListView leftDrawer;
 
-    @ViewById(R.id.main_left_drawer_username)
+    @InjectView(R.id.main_left_drawer_username)
     protected TextView leftUsername;
-    @ViewById(R.id.main_left_drawer_logout)
+    @InjectView(R.id.main_left_drawer_logout)
     protected TextView leftLogout;
-
-    @Bean
-    protected AuthenticationUtils authUtils;
-
-    @Bean
-    protected PushManager pushManager;  // This is here for initialization at startup
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         LocaleUtil.checkSetLocale(this, getResources().getConfiguration());
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        ButterKnife.inject(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.icon_ab);
             ActivityManager.TaskDescription td = new ActivityManager.TaskDescription(getString(R.string.app_name), icon, getResources().getColor(R.color.prevoztheme_color_dark));
             setTaskDescription(td);
         }
+
+        drawerLayoutToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_navigation_drawer, 0, 0);
+        drawerLayout.setDrawerListener(drawerLayoutToggle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        prepareDrawer();
+        checkAuthenticated();
 
         // Attach search fragment if it's missing
         if (savedInstanceState == null)
@@ -104,31 +102,19 @@ public class MainActivity extends ActionBarActivity
 
             if (fm.findFragmentByTag(SEARCH_FRAGMENT_TAG) == null) {
                 FragmentTransaction transaction = fm.beginTransaction();
-                transaction.replace(R.id.main_search_container, new SearchResultsFragment_(), SEARCH_FRAGMENT_TAG);
+                transaction.replace(R.id.main_search_container, new SearchResultsFragment(), SEARCH_FRAGMENT_TAG);
                 transaction.commit();
             }
         }
     }
 
-    @AfterViews
-    protected void initActivity()
-    {
-        drawerLayoutToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_navigation_drawer, 0, 0);
-        drawerLayout.setDrawerListener(drawerLayoutToggle);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
-        prepareDrawer();
-        checkAuthenticated();
-    }
-
-    @Background
+    // TODO TODO Move to background
     protected void checkAuthenticated()
     {
         setDrawerUsername(authUtils.getUsername());
     }
 
-    @UiThread
+    // TODO TODO Invoke on main thread
     protected void setDrawerUsername(String username)
     {
         if (username == null)
@@ -172,7 +158,31 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
-    @Click(R.id.main_left_user_box)
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater mi = getMenuInflater();
+        mi.inflate(R.menu.fragment_myrides, menu);
+
+        menu.findItem(R.id.menu_myrides_add).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (!authUtils.isAuthenticated())
+                {
+                    authUtils.requestAuthentication(MainActivity.this, REQUEST_CODE_AUTHORIZE_NEWRIDE);
+                }
+                else
+                {
+                    showFragment(UiFragment.FRAGMENT_NEW_RIDE, true);
+                }
+
+                return true;
+            }
+        });
+
+        return true;
+    }
+
+    @OnClick(R.id.main_left_user_box)
     protected void logoutClick()
     {
         if (authUtils.getUsername() == null)
@@ -249,6 +259,23 @@ public class MainActivity extends ActionBarActivity
         adapter.add("Obvestila");
 
         leftDrawer.setAdapter(adapter);
+        leftDrawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
+                switch (position) {
+                    case 0:     // SEARCH
+                        showFragment(UiFragment.FRAGMENT_SEARCH, false);
+                        break;
+                    case 1:     // MY RIDES
+                        showFragment(UiFragment.FRAGMENT_MY_RIDES, false);
+                        break;
+
+                    case 2:     // PUSH NOTIFICATION LIST
+                        showFragment(UiFragment.FRAGMENT_NOTIFICATIONS, false);
+                        break;
+                }
+            }
+        });
     }
 
     protected void showFragment(UiFragment fragment, boolean backstack)
@@ -268,21 +295,21 @@ public class MainActivity extends ActionBarActivity
             case FRAGMENT_SEARCH:
                 if (fm.findFragmentByTag(SEARCH_FRAGMENT_TAG) == null)
                 {
-                    f = new SearchResultsFragment_();
+                    f = new SearchResultsFragment();
                     tag = SEARCH_FRAGMENT_TAG;
                 }
                 break;
             case FRAGMENT_MY_RIDES:
                 if (fm.findFragmentByTag(MY_RIDES_FRAGMENT_TAG) == null)
                 {
-                    f = new MyRidesFragment_();
+                    f = new MyRidesFragment();
                     tag = MY_RIDES_FRAGMENT_TAG;
                 }
                 break;
             case FRAGMENT_NOTIFICATIONS:
                 if (fm.findFragmentByTag(PUSH_NOTIFICATIONS_FRAGMENT_TAG) == null)
                 {
-                    f = new PushFragment_();
+                    f = new PushFragment();
                     tag = PUSH_NOTIFICATIONS_FRAGMENT_TAG;
                 }
                 break;
@@ -290,7 +317,7 @@ public class MainActivity extends ActionBarActivity
             case FRAGMENT_NEW_RIDE:
                 if (fm.findFragmentByTag(NEW_RIDE_FRAGMENT_TAG) == null)
                 {
-                    f = new NewRideFragment_();
+                    f = new NewRideFragment();
                     tag = NEW_RIDE_FRAGMENT_TAG;
                 }
                 break;
@@ -322,37 +349,6 @@ public class MainActivity extends ActionBarActivity
         }
 
         ft.commit();
-    }
-
-    @ItemClick(R.id.main_left_drawer_list)
-    protected void clickDrawerOption(int position)
-    {
-        switch (position)
-        {
-            case 0:     // SEARCH
-                showFragment(UiFragment.FRAGMENT_SEARCH, false);
-                break;
-            case 1:     // MY RIDES
-                showFragment(UiFragment.FRAGMENT_MY_RIDES, false);
-                break;
-
-            case 2:     // PUSH NOTIFICATION LIST
-                showFragment(UiFragment.FRAGMENT_NOTIFICATIONS, false);
-                break;
-        }
-    }
-
-    @OptionsItem(R.id.menu_myrides_add)
-    protected void clickAddRide()
-    {
-        if (!authUtils.isAuthenticated())
-        {
-            authUtils.requestAuthentication(this, REQUEST_CODE_AUTHORIZE_NEWRIDE);
-        }
-        else
-        {
-            showFragment(UiFragment.FRAGMENT_NEW_RIDE, true);
-        }
     }
 
     @Override

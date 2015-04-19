@@ -62,7 +62,7 @@ public class MyRidesAdapter extends BaseAdapter implements StickyListHeadersAdap
     }
 
     @Override
-    public Object getItem(int position)
+    public RestRide getItem(int position)
     {
         return myrides.get(position);
     }

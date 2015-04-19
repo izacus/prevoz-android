@@ -12,7 +12,7 @@ import com.google.gson.stream.JsonWriter;
 import com.squareup.okhttp.OkHttpClient;
 
 import org.prevoz.android.BuildConfig;
-import org.prevoz.android.PrevozApplication_;
+import org.prevoz.android.PrevozApplication;
 import org.prevoz.android.model.Bookmark;
 import org.prevoz.android.util.LocaleUtil;
 
@@ -174,7 +174,7 @@ public class ApiClient
         @Override
         public void intercept(RequestFacade requestFacade)
         {
-            requestFacade.addHeader("User-Agent", String.format("Prevoz/%d Android/%d", PrevozApplication_.VERSION, Build.VERSION.SDK_INT));
+            requestFacade.addHeader("User-Agent", String.format("Prevoz/%d Android/%d", PrevozApplication.VERSION, Build.VERSION.SDK_INT));
 
             if (bearer != null) {
                 requestFacade.addHeader("Authorization", String.format("Bearer %s", bearer));

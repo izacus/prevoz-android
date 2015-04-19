@@ -7,26 +7,32 @@ import android.os.Environment;
 
 import com.crashlytics.android.Crashlytics;
 
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EApplication;
+import org.prevoz.android.auth.AuthenticationModule;
 import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.util.ContentUtils;
 
 import java.io.File;
 
-@EApplication
+import javax.inject.Inject;
+
 public class PrevozApplication extends Application
 {
     public static int VERSION = -1;
+    private ApplicationComponent component;
 
-    @Bean
+    @Inject
     protected AuthenticationUtils authUtils;
 
     @Override
     public void onCreate()
     {
         super.onCreate();
-        Crashlytics.start(this);
+        component = DaggerApplicationComponent.builder()
+                                              .applicationModule(new ApplicationModule(this))
+                                              .build();
+        component.inject(this);
+
+        if (!BuildConfig.DEBUG) Crashlytics.start(this);
 
         try
         {
@@ -38,6 +44,10 @@ public class PrevozApplication extends Application
         }
 
         new PruneHistory().execute();
+    }
+
+    public ApplicationComponent component() {
+        return component;
     }
 
     private class PruneHistory extends AsyncTask<Void, Void, Void>

@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewStub;
 import android.view.Window;
@@ -22,26 +23,22 @@ import android.webkit.WebViewClient;
 
 import com.crashlytics.android.Crashlytics;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.OptionsItem;
-import org.androidannotations.annotations.ViewById;
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestAccountStatus;
 import org.prevoz.android.api.rest.RestAuthTokenResponse;
+import org.prevoz.android.util.PrevozActivity;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+import javax.inject.Inject;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import retrofit.RetrofitError;
 
-
-@EActivity(R.layout.activity_login)
-@SuppressLint("Registered")     // AndroidAnnotated activity is registered.
-public class LoginActivity extends ActionBarActivity
+public class LoginActivity extends PrevozActivity
 {
     private static final String LOG_TAG = "Prevoz.Login";
     private static final String CLIENT_ID = "b89d13d3b102d84963bb";
@@ -51,11 +48,8 @@ public class LoginActivity extends ActionBarActivity
     private AccountAuthenticatorResponse authenticatorResponse;
     private Bundle authenticatorResult;
 
-    @ViewById(R.id.login_webview)
+    @InjectView(R.id.login_webview)
     protected WebView webview;
-
-    @Bean
-    protected AuthenticationUtils authUtils;
 
     private boolean tokenRequestInProgress = false; // Workaround for Android 2.3
 
@@ -65,6 +59,9 @@ public class LoginActivity extends ActionBarActivity
     {
         supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+        getApplicationComponent().inject(this);
+        ButterKnife.inject(this);
 
         CookieSyncManager.createInstance(this);
         authenticatorResponse = getIntent().getParcelableExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE);
@@ -72,12 +69,7 @@ public class LoginActivity extends ActionBarActivity
             authenticatorResponse.onRequestContinued();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
 
-    @AfterViews
-    @SuppressLint("SetJavaScriptEnabled")
-    protected void initActivity()
-    {
         webview.setWebViewClient(new WebViewController());
         webview.setVisibility(View.VISIBLE);
         WebSettings settings = webview.getSettings();
@@ -127,7 +119,7 @@ public class LoginActivity extends ActionBarActivity
         requestAccessToken(dialog, code);
     }
 
-    @Background
+    // TODO TODO: Move to background
     protected void requestAccessToken(final ProgressDialog dialog, String code)
     {
         RestAuthTokenResponse retrievedToken;
@@ -261,10 +253,14 @@ public class LoginActivity extends ActionBarActivity
         webview.restoreState(savedInstanceState);
     }
 
-    @OptionsItem(android.R.id.home)
-    public void clickHome()
-    {
-        finish();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

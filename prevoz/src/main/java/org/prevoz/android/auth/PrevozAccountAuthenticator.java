@@ -40,7 +40,7 @@ public class PrevozAccountAuthenticator extends AbstractAccountAuthenticator
         Log.d(LOG_TAG, "AddAccount.");
 
         final Bundle result = new Bundle();
-        final Intent loginActivityIntent = new Intent(ctx, LoginActivity_.class);
+        final Intent loginActivityIntent = new Intent(ctx, LoginActivity.class);
         loginActivityIntent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
         result.putParcelable(AccountManager.KEY_INTENT, loginActivityIntent);
         return result;
@@ -96,7 +96,7 @@ public class PrevozAccountAuthenticator extends AbstractAccountAuthenticator
     private Bundle getLoginIntentBundle(AccountAuthenticatorResponse response)
     {
         final Bundle result = new Bundle();
-        final Intent loginActivityIntent = new Intent(ctx, LoginActivity_.class);
+        final Intent loginActivityIntent = new Intent(ctx, LoginActivity.class);
         loginActivityIntent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
         result.putParcelable(AccountManager.KEY_INTENT, loginActivityIntent);
 

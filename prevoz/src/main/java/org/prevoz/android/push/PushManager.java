@@ -12,8 +12,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
-import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.EBean;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestPushStatus;
 import org.prevoz.android.events.Events;
@@ -33,7 +31,6 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-@EBean(scope = EBean.Scope.Singleton)
 public class PushManager
 {
     private static final String GCM_ID_KEY = "GCM_ID_";
@@ -54,9 +51,7 @@ public class PushManager
         setup();
     }
 
-
-
-    @Background
+    // TODO TODO TODO Move to background
     protected void setup()
     {
         try

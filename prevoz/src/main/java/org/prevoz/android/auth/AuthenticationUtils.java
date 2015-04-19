@@ -15,8 +15,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.EBean;
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.events.Events;
@@ -25,7 +23,6 @@ import java.io.IOException;
 
 import de.greenrobot.event.EventBus;
 
-@EBean(scope = EBean.Scope.Singleton)
 public class AuthenticationUtils
 {
     private static final String LOG_TAG = "Prevoz.Authentication";
@@ -45,7 +42,6 @@ public class AuthenticationUtils
         return null;
     }
 
-    @Background
     public void requestAuthentication(Activity parentActivity, int requestCode)
     {
         AccountManager am = AccountManager.get(parentActivity);
@@ -140,7 +136,7 @@ public class AuthenticationUtils
         }
     }
 
-    @Background
+    // TODO TODO TODO TODO Move to background
     public void logout()
     {
         removeExistingAccounts();

@@ -1,60 +1,81 @@
 package org.prevoz.android.myrides;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.crashlytics.android.Crashlytics;
 
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.ItemClick;
-import org.androidannotations.annotations.ViewById;
 import org.prevoz.android.MainActivity;
+import org.prevoz.android.PrevozFragment;
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.api.rest.RestSearchResults;
-import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.Bookmark;
 import org.prevoz.android.ride.RideInfoFragment;
+import org.prevoz.android.util.PrevozActivity;
 import org.prevoz.android.util.ViewUtils;
 
 import java.util.List;
 
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
-import retrofit.Callback;
 import retrofit.RetrofitError;
-import retrofit.client.Response;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
-@EFragment(R.layout.fragment_myrides)
-public class MyRidesFragment extends Fragment
+public class MyRidesFragment extends PrevozFragment
 {
     private static final String LOG_TAG = "Prevoz.MyRides";
 
-    @ViewById(R.id.myrides_list)
+    @InjectView(R.id.myrides_list)
     protected StickyListHeadersListView myridesList;
 
-    @ViewById(R.id.empty_view)
+    @InjectView(R.id.empty_view)
     protected View emptyView;
 
-    @ViewById(R.id.myrides_throbber)
+    @InjectView(R.id.myrides_throbber)
     protected ProgressBar throbber;
 
     private MyRidesAdapter adapter = null;
 
-    @Bean
-    protected AuthenticationUtils authUtils;
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ((PrevozActivity)getActivity()).getApplicationComponent().inject(this);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View views = inflater.inflate(R.layout.fragment_myrides, container, false);
+        ButterKnife.inject(this, views);
+
+        myridesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                RestRide ride = ((MyRidesAdapter)parent.getAdapter()).getItem(position);
+                RideInfoFragment fragment = RideInfoFragment.newInstance(ride, RideInfoFragment.PARAM_ACTION_EDIT);
+                fragment.show(getActivity().getSupportFragmentManager(), "RideInfoFragment");
+            }
+        });
+
+        return views;
+    }
 
     @Override
     public void onResume()
@@ -148,13 +169,6 @@ public class MyRidesFragment extends Fragment
         Log.e(LOG_TAG, "Ride load failed!");
         ViewUtils.setupEmptyView(myridesList, emptyView, "Pri nalaganju vaših prevozov je prišlo do napake.");
         setListVisibility(true);
-    }
-
-    @ItemClick(R.id.myrides_list)
-    protected void itemClick(RestRide ride)
-    {
-        RideInfoFragment fragment = RideInfoFragment.newInstance(ride, RideInfoFragment.PARAM_ACTION_EDIT);
-        fragment.show(getActivity().getSupportFragmentManager(), "RideInfoFragment");
     }
 
     private void setListVisibility(boolean listVisible)

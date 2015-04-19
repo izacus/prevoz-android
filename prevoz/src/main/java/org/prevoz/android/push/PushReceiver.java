@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import org.prevoz.android.MainActivity_;
+import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.model.City;
 import org.prevoz.android.util.LocaleUtil;
@@ -56,7 +56,7 @@ public class PushReceiver extends BroadcastReceiver
             return;
         }
 
-        Intent notificationIntent = new Intent(context, MainActivity_.class);
+        Intent notificationIntent = new Intent(context, MainActivity.class);
         notificationIntent.putExtra("from", from);
         notificationIntent.putExtra("to", to);
         notificationIntent.putExtra("when", when.getTimeInMillis());

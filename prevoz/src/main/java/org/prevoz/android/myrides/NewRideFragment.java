@@ -5,9 +5,13 @@ import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
@@ -20,13 +24,8 @@ import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.InstanceState;
-import org.androidannotations.annotations.ViewById;
 import org.prevoz.android.MainActivity;
+import org.prevoz.android.PrevozFragment;
 import org.prevoz.android.R;
 import org.prevoz.android.UiFragment;
 import org.prevoz.android.api.ApiClient;
@@ -41,60 +40,66 @@ import org.prevoz.android.ride.RideInfoListener;
 import org.prevoz.android.search.CityAutocompleteAdapter;
 import org.prevoz.android.ui.FloatingHintEditText;
 import org.prevoz.android.util.LocaleUtil;
+import org.prevoz.android.util.PrevozActivity;
 import org.prevoz.android.util.StringUtil;
 import org.prevoz.android.util.ViewUtils;
 
 import java.util.Calendar;
 
+import javax.inject.Inject;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-@EFragment(R.layout.fragment_newride)
-public class NewRideFragment extends Fragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, RideInfoListener, android.app.DatePickerDialog.OnDateSetListener, android.app.TimePickerDialog.OnTimeSetListener {
+public class NewRideFragment extends PrevozFragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, RideInfoListener, android.app.DatePickerDialog.OnDateSetListener, android.app.TimePickerDialog.OnTimeSetListener {
     private static final String PREF_PHONE_NO = "org.prevoz.phoneno";
     private static final String PREF_HAS_INSURANCE = "org.prevoz.hasinsurance";
 
     public static final String PARAM_EDIT_RIDE = "EditRide";
 
-    @ViewById(R.id.newride_from)
+    @InjectView(R.id.newride_from)
     protected AutoCompleteTextView textFrom;
-    @ViewById(R.id.newride_to)
+    @InjectView(R.id.newride_to)
     protected AutoCompleteTextView textTo;
-    @ViewById(R.id.newride_date_edit)
+    @InjectView(R.id.newride_date_edit)
     protected FloatingHintEditText textDate;
-    @ViewById(R.id.newride_time_edit)
+    @InjectView(R.id.newride_time_edit)
     protected FloatingHintEditText textTime;
-    @ViewById(R.id.newride_price)
+    @InjectView(R.id.newride_price)
     protected FloatingHintEditText textPrice;
-    @ViewById(R.id.newride_phone)
+    @InjectView(R.id.newride_phone)
     protected FloatingHintEditText textPhone;
-    @ViewById(R.id.newride_people)
+    @InjectView(R.id.newride_people)
     protected FloatingHintEditText textPeople;
-    @ViewById(R.id.newride_notes)
+    @InjectView(R.id.newride_notes)
     protected FloatingHintEditText textNotes;
-    @ViewById(R.id.newride_insurance)
+    @InjectView(R.id.newride_insurance)
     protected CheckBox chkInsurance;
 
-    @Bean
-    protected AuthenticationUtils authUtils;
-
-    @InstanceState
+    // TODO: Store to instance state
     protected Calendar setTime;
-    @InstanceState
     protected boolean dateSet;
-    @InstanceState
     protected boolean timeSet;
-
-    @InstanceState
     protected Long editRideId;
 
     private boolean shouldGoFromDateToTime = false;
 
-    @AfterViews
-    protected void initFragment()
-    {
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ((PrevozActivity)getActivity()).getApplicationComponent().inject(this);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View views = inflater.inflate(R.layout.fragment_newride, container, false);
+        ButterKnife.inject(this, views);
+
         setTime = Calendar.getInstance(LocaleUtil.getLocalTimezone());
 
         // Round time to nearest 30 mins
@@ -117,7 +122,7 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
                 if (actionId == EditorInfo.IME_ACTION_NEXT)
                 {
                     shouldGoFromDateToTime = true;
-                    clickDate();
+                    onDateClicked();
                     textTo.clearFocus();
                     textPrice.requestFocus();
                     return true;
@@ -134,7 +139,7 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
             {
                 if (actionId == EditorInfo.IME_ACTION_SEND)
                 {
-                    clickSubmit();
+                    onSubmitClicked();
                     return true;
                 }
 
@@ -155,6 +160,8 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
             chkInsurance.setChecked(prefs.getBoolean(PREF_HAS_INSURANCE, false));
         }
 
+
+        return views;
     }
 
     protected void fillInEditRide(RestRide editRide)
@@ -193,8 +200,8 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
         timeSet = true;
     }
 
-    @Click(R.id.newride_date_edit)
-    protected void clickDate()
+    @OnClick(R.id.newride_date_edit)
+    protected void onDateClicked()
     {
         ViewUtils.hideKeyboard(getActivity());
 
@@ -211,8 +218,8 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
         }
     }
 
-    @Click(R.id.newride_time_edit)
-    protected void clickTime()
+    @OnClick(R.id.newride_time_edit)
+    protected void onTimeClicked()
     {
         if (getActivity() == null | !isAdded()) return;
         ViewUtils.hideKeyboard(getActivity());
@@ -230,8 +237,8 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
         }
     }
 
-    @Click(R.id.newride_button)
-    protected void clickSubmit()
+    @OnClick(R.id.newride_button)
+    protected void onSubmitClicked()
     {
         if (!validateForm())
             return;
@@ -275,7 +282,7 @@ public class NewRideFragment extends Fragment implements DatePickerDialog.OnDate
         if (shouldGoFromDateToTime)
         {
             shouldGoFromDateToTime = false;
-            clickTime();
+            onTimeClicked();
         }
     }
 

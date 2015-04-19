@@ -2,10 +2,13 @@ package org.prevoz.android.search;
 
 import android.app.Activity;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
@@ -17,12 +20,6 @@ import android.widget.TextView;
 import com.crashlytics.android.Crashlytics;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.InstanceState;
-import org.androidannotations.annotations.ViewById;
 import org.prevoz.android.R;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
@@ -35,32 +32,36 @@ import org.prevoz.android.util.ViewUtils;
 
 import java.util.Calendar;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
-@EFragment(R.layout.fragment_search)
 public class SearchFragment extends Fragment implements DatePickerDialog.OnDateSetListener, android.app.DatePickerDialog.OnDateSetListener {
-    @ViewById(R.id.search_date_edit)
+    @InjectView(R.id.search_date_edit)
     protected EditText searchDate;
-    @ViewById(R.id.search_from)
+    @InjectView(R.id.search_from)
     protected AutoCompleteTextView searchFrom;
-    @ViewById(R.id.search_to)
+    @InjectView(R.id.search_to)
     protected AutoCompleteTextView searchTo;
-    @ViewById(R.id.search_button)
+    @InjectView(R.id.search_button)
     protected View searchButton;
 
-    @ViewById(R.id.search_button_text)
+    @InjectView(R.id.search_button_text)
     protected TextView searchButtonText;
-    @ViewById(R.id.search_button_img)
+    @InjectView(R.id.search_button_img)
     protected ImageView searchButtonImage;
-    @ViewById(R.id.search_button_progress)
+    @InjectView(R.id.search_button_progress)
     protected ProgressBar searchButtonProgress;
 
-    @InstanceState
+    // TODO: Store to instance state
     protected Calendar selectedDate;
 
-    @AfterViews
-    protected void initFragment()
-    {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View views = inflater.inflate(R.layout.fragment_search, container, false);
+        ButterKnife.inject(this, views);
+
         if (selectedDate == null)
         {
             selectedDate = Calendar.getInstance();
@@ -75,7 +76,7 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
             {
                 if (actionId == EditorInfo.IME_ACTION_NEXT)
                 {
-                    clickDate();
+                    onDateClicked();
                     searchTo.clearFocus();
                     searchButton.requestFocus();
                     return true;
@@ -88,11 +89,12 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
         searchFrom.setValidator(new CityNameTextValidator(getActivity()));
         searchTo.setValidator(new CityNameTextValidator(getActivity()));
         setupAdapters();
+
+        return views;
     }
 
-
-    @Click(R.id.search_date)
-    protected void clickDate()
+    @OnClick(R.id.search_date)
+    protected void onDateClicked()
     {
         FragmentActivity activity = getActivity();
         if (activity == null || !isAdded()) return;
@@ -117,14 +119,14 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
     }
 
     // This is duplicated to allow clicking on logo or edittext
-    @Click(R.id.search_date_edit)
-    protected void clickDateEdit()
+    @OnClick(R.id.search_date_edit)
+    protected void onDateEditClicked()
     {
-        clickDate();
+        onDateClicked();
     }
 
-    @Click(R.id.search_button)
-    protected void clickSearch()
+    @OnClick(R.id.search_button)
+    protected void onSearchClicked()
     {
         updateSearchButtonProgress(true);
         ViewUtils.hideKeyboard(getActivity());
@@ -140,7 +142,7 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
         updateShownDate();
     }
 
-    @Background
+    // TODO: Move to background
     public void setupAdapters()
     {
         // Initialization requres DB access that's why this is here.
@@ -163,7 +165,7 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
 
     }
 
-    @Background
+    // TODO: Move to background
     protected void startSearch()
     {
         try

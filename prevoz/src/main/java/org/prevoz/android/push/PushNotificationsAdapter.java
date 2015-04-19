@@ -31,7 +31,7 @@ public class PushNotificationsAdapter extends BaseAdapter
     }
 
     @Override
-    public Object getItem(int position)
+    public NotificationSubscription getItem(int position)
     {
         return notifications.get(position);
     }

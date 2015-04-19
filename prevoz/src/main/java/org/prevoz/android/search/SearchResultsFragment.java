@@ -5,25 +5,20 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
 import com.nineoldandroids.view.ViewHelper;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.InstanceState;
-import org.androidannotations.annotations.ViewById;
+import org.prevoz.android.PrevozFragment;
 import org.prevoz.android.R;
-import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestSearchResults;
+import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
@@ -31,10 +26,15 @@ import org.prevoz.android.push.PushManager;
 import org.prevoz.android.ui.ListDisappearAnimation;
 import org.prevoz.android.ui.ListFlyupAnimator;
 import org.prevoz.android.util.LocaleUtil;
+import org.prevoz.android.util.PrevozActivity;
 import org.prevoz.android.util.ViewUtils;
 
 import java.util.Calendar;
 
+import javax.inject.Inject;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -44,13 +44,11 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
 
-
-@EFragment(R.layout.fragment_search_list)
-public class SearchResultsFragment extends Fragment implements Callback<RestSearchResults>
+public class SearchResultsFragment extends PrevozFragment implements Callback<RestSearchResults>
 {
-    @ViewById(R.id.search_results_list)
+    @InjectView(R.id.search_results_list)
     protected StickyListHeadersListView resultList;
-    @ViewById(R.id.search_results_noresults)
+    @InjectView(R.id.search_results_noresults)
     protected TextView noResultsText;
 
     protected View searchNofityButtonContainer;
@@ -59,29 +57,17 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
     protected ProgressBar searchNotifyButtonProgress;
     protected TextView searchNofityButtonText;
 
-    @InstanceState
-    protected RestSearchResults results;
-
-    @InstanceState
-    protected boolean shouldShowNotificationButton = false;
-
     private View headerFragmentView;
     private StickyListHeadersAdapter adapter;
 
-    @Bean
-    protected PushManager pushManager;
-    @Bean
-    protected AuthenticationUtils authUtils;
-
     // Needed to keep track of last searches
     // TODO: find a better solution
-    @InstanceState
+    // TODO: store all to instance state
+    protected RestSearchResults results;
+    protected boolean shouldShowNotificationButton = false;
     protected City lastFrom;
-    @InstanceState
     protected City lastTo;
-    @InstanceState
     protected Calendar lastDate;
-    @InstanceState
     protected int[] highlightRides;
 
     @Override
@@ -102,25 +88,24 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
         });
     }
 
-    @AfterViews
-    protected void afterViews()
-    {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View views = inflater.inflate(R.layout.fragment_search_list, container, false);
+        ButterKnife.inject(this, views);
+
         resultList.setDivider(null);
         resultList.setDividerHeight(0);
         resultList.addHeaderView(headerFragmentView, null, true);
 
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-        ft.replace(R.id.search_form, new SearchFragment_());
+        ft.replace(R.id.search_form, new SearchFragment());
         ft.commit();
 
         if (results == null)
-        {
             showHistory(false);
-        }
         else
-        {
             showResults(results);
-        }
+        return views;
     }
 
     @Override
@@ -265,7 +250,7 @@ public class SearchResultsFragment extends Fragment implements Callback<RestSear
         pushManager.setSubscriptionStatus(getActivity(), lastFrom, lastTo, lastDate, !pushManager.isSubscribed(lastFrom, lastTo, lastDate));
     }
 
-    @Background
+    // TODO: Move to background
     protected void showHistory(final boolean animate)
     {
         final Activity activity = getActivity();

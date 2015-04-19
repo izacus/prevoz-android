@@ -25,7 +25,9 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -35,13 +37,6 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.crashlytics.android.Crashlytics;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.CheckedChange;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.InstanceState;
-import org.androidannotations.annotations.ViewById;
 import org.prevoz.android.MainActivity;
 import org.prevoz.android.R;
 import org.prevoz.android.UiFragment;
@@ -53,17 +48,23 @@ import org.prevoz.android.events.Events;
 import org.prevoz.android.model.Bookmark;
 import org.prevoz.android.myrides.NewRideFragment;
 import org.prevoz.android.util.LocaleUtil;
+import org.prevoz.android.util.PrevozActivity;
 import org.prevoz.android.util.ViewUtils;
 
 import java.text.SimpleDateFormat;
 
+import javax.inject.Inject;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnCheckedChanged;
+import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import si.virag.fuzzydateformatter.FuzzyDateTimeFormatter;
 
-@EFragment(R.layout.fragment_rideinfo)
 public class RideInfoFragment extends DialogFragment
 {
     private static final SimpleDateFormat timeFormatter = LocaleUtil.getSimpleDateFormat("HH:mm");
@@ -76,7 +77,7 @@ public class RideInfoFragment extends DialogFragment
 
     public static RideInfoFragment newInstance(RestRide ride)
     {
-        RideInfoFragment fragment = new RideInfoFragment_();
+        RideInfoFragment fragment = new RideInfoFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_RIDE, ride);
         fragment.setArguments(args);
@@ -85,7 +86,7 @@ public class RideInfoFragment extends DialogFragment
 
     public static RideInfoFragment newInstance(RestRide ride, String action)
     {
-        RideInfoFragment fragment = new RideInfoFragment_();
+        RideInfoFragment fragment = new RideInfoFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_RIDE, ride);
         args.putString(ARG_ACTION, action);
@@ -93,58 +94,56 @@ public class RideInfoFragment extends DialogFragment
         return fragment;
     }
 
-    @ViewById(R.id.rideinfo_favorite)
+    @InjectView(R.id.rideinfo_favorite)
     protected ImageView imgFavorite;
 
-    @ViewById(R.id.rideinfo_from)
+    @InjectView(R.id.rideinfo_from)
     protected TextView txtFrom;
 
-    @ViewById(R.id.rideinfo_to)
+    @InjectView(R.id.rideinfo_to)
     protected TextView txtTo;
 
-    @ViewById(R.id.rideinfo_time)
+    @InjectView(R.id.rideinfo_time)
     protected TextView txtTime;
 
-    @ViewById(R.id.rideinfo_price)
+    @InjectView(R.id.rideinfo_price)
     protected TextView txtPrice;
 
-    @ViewById(R.id.rideinfo_date)
+    @InjectView(R.id.rideinfo_date)
     protected TextView txtDate;
 
-    @ViewById(R.id.rideinfo_details)
+    @InjectView(R.id.rideinfo_details)
     protected View vDetails;
-    @ViewById(R.id.rideinfo_load_progress)
+    @InjectView(R.id.rideinfo_load_progress)
     protected View vProgress;
 
-    @ViewById(R.id.rideinfo_phone)
+    @InjectView(R.id.rideinfo_phone)
     protected TextView txtPhone;
-    @ViewById(R.id.rideinfo_people)
+    @InjectView(R.id.rideinfo_people)
     protected TextView txtPeople;
-    @ViewById(R.id.rideinfo_insurance)
+    @InjectView(R.id.rideinfo_insurance)
     protected TextView txtInsurance;
-    @ViewById(R.id.rideinfo_driver)
+    @InjectView(R.id.rideinfo_driver)
     protected TextView txtDriver;
-    @ViewById(R.id.rideinfo_comment)
+    @InjectView(R.id.rideinfo_comment)
     protected TextView txtComment;
 
-    @ViewById(R.id.rideinfo_full_box)
+    @InjectView(R.id.rideinfo_full_box)
     protected View vFull;
-    @ViewById(R.id.rideinfo_ridefull)
+    @InjectView(R.id.rideinfo_ridefull)
     protected CheckBox chkFull;
 
-    @ViewById(R.id.rideinfo_button_call)
+    @InjectView(R.id.rideinfo_button_call)
     protected Button leftButton;
-    @ViewById(R.id.rideinfo_button_sms)
+    @InjectView(R.id.rideinfo_button_sms)
     protected Button rightButton;
 
-    @InstanceState
-    protected RestRide ride = null;
-
-    @InstanceState
-    protected String action = null;
-
-    @Bean
+    @Inject
     protected AuthenticationUtils authUtils;
+
+    // TODO TODO TODO: Store to instance state
+    protected RestRide ride = null;
+    protected String action = null;
 
     private RideInfoListener listener;
 
@@ -152,6 +151,8 @@ public class RideInfoFragment extends DialogFragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        ((PrevozActivity)getActivity()).getApplicationComponent().inject(this);
+
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Prevoz_RideInfo);
 
         ride = getArguments().getParcelable(ARG_RIDE);
@@ -165,9 +166,11 @@ public class RideInfoFragment extends DialogFragment
         }
     }
 
-    @AfterViews
-    protected void initFragment()
-    {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View views = inflater.inflate(R.layout.fragment_rideinfo, container, false);
+        ButterKnife.inject(this, views);
+
         imgFavorite.setVisibility(authUtils.isAuthenticated() ? View.VISIBLE : View.INVISIBLE);
         updateFavoriteIcon();
 
@@ -231,6 +234,8 @@ public class RideInfoFragment extends DialogFragment
         }
 
         setupActionButtons(action);
+
+        return views;
     }
 
     private void setPeopleText()
@@ -280,8 +285,8 @@ public class RideInfoFragment extends DialogFragment
         imgFavorite.setImageDrawable(drawable);
     }
 
-    @Click(R.id.rideinfo_button_call)
-    protected void clickCall()
+    @OnClick(R.id.rideinfo_button_call)
+    protected void onCallClicked()
     {
         if (PARAM_ACTION_SHOW.equals(action))
         {
@@ -307,8 +312,8 @@ public class RideInfoFragment extends DialogFragment
         dismiss();
     }
 
-    @Click(R.id.rideinfo_button_sms)
-    protected void clickSms()
+    @OnClick(R.id.rideinfo_button_sms)
+    protected void onSmsClicked()
     {
         if (PARAM_ACTION_SHOW.equals(action))
         {
@@ -367,8 +372,8 @@ public class RideInfoFragment extends DialogFragment
         }
     }
 
-    @Click(R.id.rideinfo_favorite)
-    protected void clickFavorite() {
+    @OnClick(R.id.rideinfo_favorite)
+    protected void onFavoriteClicked() {
         if (Bookmark.shouldShow(ride.bookmark)) {
             ride.bookmark = null;
         } else {
@@ -403,8 +408,8 @@ public class RideInfoFragment extends DialogFragment
         });
     }
 
-    @CheckedChange(R.id.rideinfo_ridefull)
-    protected void clickFull()
+    @OnCheckedChanged(R.id.rideinfo_ridefull)
+    protected void onFullClicked()
     {
         chkFull.setEnabled(false);
         final boolean rideFull = chkFull.isChecked();
