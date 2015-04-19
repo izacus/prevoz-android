@@ -70,21 +70,16 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
         }
 
         // Handle input action for next on to
-        searchTo.setOnEditorActionListener(new TextView.OnEditorActionListener()
-        {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
+        searchTo.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_NEXT)
             {
-                if (actionId == EditorInfo.IME_ACTION_NEXT)
-                {
-                    onDateClicked();
-                    searchTo.clearFocus();
-                    searchButton.requestFocus();
-                    return true;
-                }
-
-                return false;
+                onDateClicked();
+                searchTo.clearFocus();
+                searchButton.requestFocus();
+                return true;
             }
+
+            return false;
         });
 
         searchFrom.setValidator(new CityNameTextValidator(getActivity()));

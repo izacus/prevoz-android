@@ -74,7 +74,7 @@ public class PushManager
             }
         }).cache();
 
-        gcmIdObservable.subscribe();
+        gcmIdObservable.subscribe(gcmId -> {}, throwable -> Log.e(LOG_TAG, "Error", throwable));
     }
 
     public List<NotificationSubscription> getSubscriptions()

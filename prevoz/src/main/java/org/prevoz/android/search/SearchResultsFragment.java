@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.nineoldandroids.view.ViewHelper;
 
 import org.prevoz.android.PrevozFragment;
@@ -39,6 +41,8 @@ import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
@@ -233,11 +237,9 @@ public class SearchResultsFragment extends PrevozFragment implements Callback<Re
             return;
 
         searchNofityButtonContainer.clearAnimation();
-        animate(searchNofityButtonContainer).alpha(0.0f).setDuration(200).setListener(new com.nineoldandroids.animation.AnimatorListenerAdapter()
-        {
+        animate(searchNofityButtonContainer).alpha(0.0f).setDuration(200).setListener(new com.nineoldandroids.animation.AnimatorListenerAdapter() {
             @Override
-            public void onAnimationEnd(com.nineoldandroids.animation.Animator animation)
-            {
+            public void onAnimationEnd(com.nineoldandroids.animation.Animator animation) {
                 searchNofityButtonContainer.setVisibility(View.GONE);
             }
         });
@@ -251,29 +253,33 @@ public class SearchResultsFragment extends PrevozFragment implements Callback<Re
         pushManager.setSubscriptionStatus(getActivity(), lastFrom, lastTo, lastDate, !pushManager.isSubscribed(lastFrom, lastTo, lastDate));
     }
 
-    // TODO: Move to background
     protected void showHistory(final boolean animate)
     {
         final Activity activity = getActivity();
         if (activity == null) return;
 
-        adapter = new SearchHistoryAdapter(activity);
-        activity.runOnUiThread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                if (animate && resultList.getAdapter() != null)
-                {
-                    hideNotificationsButton();
-                    new ListDisappearAnimation(resultList).animate();
-                }
+        Observable.defer(() -> {
+            adapter = new SearchHistoryAdapter(activity);
+            return Observable.empty();
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(o -> {},
+                throwable -> {
+                    Log.e("Prevoz", "Error while loading history!", throwable);
+                    Crashlytics.logException(throwable);
+                },
+                () -> {
+                    if (animate && resultList.getAdapter() != null)
+                    {
+                        hideNotificationsButton();
+                        new ListDisappearAnimation(resultList).animate();
+                    }
 
-                resultList.setAdapter(adapter);
-                if (animate)
-                    new ListFlyupAnimator(resultList).animate();
-            }
-        });
+                    resultList.setAdapter(adapter);
+                    if (animate)
+                        new ListFlyupAnimator(resultList).animate();
+                });
     }
 
     public void onEventMainThread(Events.NewSearchEvent e)
