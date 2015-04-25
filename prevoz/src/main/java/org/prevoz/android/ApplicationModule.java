@@ -10,7 +10,7 @@ import dagger.Provides;
 @Module
 public class ApplicationModule {
 
-    private Context application;
+    private final Context application;
 
     public ApplicationModule(PrevozApplication application) {
         this.application = application;

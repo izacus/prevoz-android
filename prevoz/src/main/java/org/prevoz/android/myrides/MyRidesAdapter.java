@@ -29,9 +29,7 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 public class MyRidesAdapter extends BaseAdapter implements StickyListHeadersAdapter
 {
     private final FragmentActivity context;
-
-    private List<RestRide> myrides;
-
+    private final List<RestRide> myrides;
     private final LayoutInflater inflater;
 
     public MyRidesAdapter(FragmentActivity context, List<RestRide> myrides)

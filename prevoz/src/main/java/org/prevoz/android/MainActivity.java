@@ -7,14 +7,16 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -62,6 +64,9 @@ public class MainActivity extends PrevozActivity
     private static final String MY_RIDES_FRAGMENT_TAG = "MyRidesFragment";
     private static final String NEW_RIDE_FRAGMENT_TAG = "NewRideFragment";
 
+    @InjectView(R.id.toolbar)
+    protected Toolbar toolbar;
+
 
     @InjectView(R.id.main_drawer)
     protected DrawerLayout drawerLayout;
@@ -89,10 +94,10 @@ public class MainActivity extends PrevozActivity
             setTaskDescription(td);
         }
 
-        drawerLayoutToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_navigation_drawer, 0, 0);
+        setSupportActionBar(toolbar);
+        drawerLayoutToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, 0, 0);
+        drawerLayoutToggle.setDrawerIndicatorEnabled(true);
         drawerLayout.setDrawerListener(drawerLayoutToggle);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
 
         prepareDrawer();
         checkAuthenticated();

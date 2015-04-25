@@ -20,6 +20,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:baselineAligned="false"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:orientation="horizontal"

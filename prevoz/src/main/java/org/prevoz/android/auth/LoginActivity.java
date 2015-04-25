@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.util.Pair;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,6 +57,9 @@ public class LoginActivity extends PrevozActivity
     private AccountAuthenticatorResponse authenticatorResponse;
     private Bundle authenticatorResult;
 
+    @InjectView(R.id.toolbar)
+    protected Toolbar toolbar;
+
     @InjectView(R.id.login_webview)
     protected WebView webview;
 
@@ -76,6 +80,7 @@ public class LoginActivity extends PrevozActivity
         if (authenticatorResponse != null)
             authenticatorResponse.onRequestContinued();
 
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         webview.setWebViewClient(new WebViewController());

@@ -1,7 +1,9 @@
 package org.prevoz.android.util;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import org.prevoz.android.ApplicationComponent;
 import org.prevoz.android.PrevozApplication;
@@ -10,7 +12,8 @@ import org.prevoz.android.push.PushManager;
 
 import javax.inject.Inject;
 
-public class PrevozActivity extends ActionBarActivity {
+@SuppressLint("Registered")
+public class PrevozActivity extends AppCompatActivity {
 
     @Inject protected AuthenticationUtils authUtils;
     @Inject protected PushManager pushManager;
