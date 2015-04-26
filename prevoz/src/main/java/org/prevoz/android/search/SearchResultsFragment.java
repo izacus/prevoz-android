@@ -3,6 +3,7 @@ package org.prevoz.android.search;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewCompat;
 import android.util.Log;
@@ -18,6 +19,7 @@ import com.crashlytics.android.Crashlytics;
 
 import org.prevoz.android.PrevozFragment;
 import org.prevoz.android.R;
+import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.api.rest.RestSearchResults;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.events.Events;
@@ -27,7 +29,9 @@ import org.prevoz.android.ui.ListFlyupAnimator;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.ViewUtils;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -48,8 +52,6 @@ public class SearchResultsFragment extends PrevozFragment implements Callback<Re
 {
     @InjectView(R.id.search_results_list)
     protected StickyListHeadersListView resultList;
-    @InjectView(R.id.search_results_noresults)
-    protected TextView noResultsText;
 
     protected View searchNotifyButtonContainer;
     protected View searchNotifyButton;
@@ -131,9 +133,9 @@ public class SearchResultsFragment extends PrevozFragment implements Callback<Re
         else
         {
             results = restSearchResults;
-            showResults(results);
         }
 
+        showResults(results);
         EventBus.getDefault().post(new Events.SearchComplete());
     }
 
@@ -157,33 +159,29 @@ public class SearchResultsFragment extends PrevozFragment implements Callback<Re
         EventBus.getDefault().post(new Events.SearchComplete());
     }
 
-    private void showResults(RestSearchResults results)
+    private void showResults(@Nullable RestSearchResults results)
     {
+        List<RestRide> restResults = results == null ? new ArrayList<>() : results.results;
+
         if (resultList.getAdapter() == null || !(resultList.getAdapter() instanceof SearchResultsAdapter))
         {
-            adapter = new SearchResultsAdapter(getActivity(), results.results, highlightRides);
+            adapter = new SearchResultsAdapter(getActivity(), restResults, highlightRides);
             resultList.setAdapter(adapter);
         }
         else
         {
             final SearchResultsAdapter adapter = (SearchResultsAdapter) resultList.getAdapter();
-            adapter.setResults(results.results, highlightRides);
+            adapter.setResults(restResults, highlightRides);
 
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
                 resultList.smoothScrollToPosition(1);
 
         }
 
-        if (results.results != null && results.results.size() > 0)
+        showNotificationsButton();
+        if (restResults.size() > 0)
         {
-            showNotificationsButton();
             new ListFlyupAnimator(resultList).animate();
-        }
-        else
-        {
-            noResultsText.setVisibility(View.VISIBLE);
-            noResultsText.setAlpha(0f);
-            noResultsText.animate().alpha(1.0f).setDuration(200);
         }
     }
 
@@ -195,13 +193,11 @@ public class SearchResultsFragment extends PrevozFragment implements Callback<Re
              searchNotifyButtonContainer.getVisibility() == View.VISIBLE ||
             !pushManager.isPushAvailable())
         {
-            searchNotifyButtonContainer.setAlpha(1.0f);
             return;
         }
 
         // Show notifications button
 
-        searchNotifyButtonContainer.setAlpha(0.0f);
         updateNotificationButtonText();
         searchNotifyButtonContainer.setVisibility(View.VISIBLE);
         searchNotifyButtonContainer.animate().alpha(1.0f).setDuration(200).setListener(null);
@@ -270,8 +266,6 @@ public class SearchResultsFragment extends PrevozFragment implements Callback<Re
     public void onEventMainThread(Events.NewSearchEvent e)
     {
         EventBus.getDefault().removeStickyEvent(e);
-        noResultsText.setVisibility(View.INVISIBLE);
-
         if (resultList.getAdapter() != null)
         {
             hideNotificationsButton();

@@ -26,7 +26,9 @@ import java.util.Locale;
 
 import de.greenrobot.event.EventBus;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.exceptions.OnErrorThrowable;
+import rx.schedulers.Schedulers;
 
 public class PushManager
 {
@@ -74,7 +76,10 @@ public class PushManager
             }
         }).cache();
 
-        gcmIdObservable.subscribe(gcmId -> {}, throwable -> Log.e(LOG_TAG, "Error", throwable));
+        gcmIdObservable
+                .subscribeOn(Schedulers.io())
+                .subscribe(gcmId -> {
+                }, throwable -> Log.e(LOG_TAG, "Error", throwable));
     }
 
     public List<NotificationSubscription> getSubscriptions()
@@ -92,20 +97,22 @@ public class PushManager
                                                 to.getCountryCode(),
                                                 dateFormat.format(date.getTime()),
                                                 subscribed ? "subscribe" : "unsubscribe"))
+                       .subscribeOn(Schedulers.io())
+                       .observeOn(AndroidSchedulers.mainThread())
                        .subscribe(
-                           status -> {
-                               if (subscribed)
-                                   ContentUtils.addNotificationSubscription(context, from, to, date);
-                               else
-                                   ContentUtils.deleteNotificationSubscription(context, from, to, date);
+                               status -> {
+                                   if (subscribed)
+                                       ContentUtils.addNotificationSubscription(context, from, to, date);
+                                   else
+                                       ContentUtils.deleteNotificationSubscription(context, from, to, date);
 
-                               ViewUtils.showMessage(context, subscribed ? "Prijavljeni ste na obvestila." : "Obveščanje preklicano.", false);
-                               EventBus.getDefault().post(new Events.NotificationSubscriptionStatusChanged());
-                           },
-                           throwable -> {
-                               ViewUtils.showMessage(context, "Obveščanja ni bilo mogoče vklopiti.", true);
-                               EventBus.getDefault().post(new Events.NotificationSubscriptionStatusChanged());
-                           });
+                                   ViewUtils.showMessage(context, subscribed ? "Prijavljeni ste na obvestila." : "Obveščanje preklicano.", false);
+                                   EventBus.getDefault().post(new Events.NotificationSubscriptionStatusChanged());
+                               },
+                               throwable -> {
+                                   ViewUtils.showMessage(context, "Obveščanja ni bilo mogoče vklopiti.", true);
+                                   EventBus.getDefault().post(new Events.NotificationSubscriptionStatusChanged());
+                               });
     }
 
     public boolean isSubscribed(City from, City to, Calendar date)
