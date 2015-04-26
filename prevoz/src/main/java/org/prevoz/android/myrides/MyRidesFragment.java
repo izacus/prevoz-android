@@ -1,17 +1,12 @@
 package org.prevoz.android.myrides;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.crashlytics.android.Crashlytics;
@@ -25,11 +20,8 @@ import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.api.rest.RestSearchResults;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.Bookmark;
-import org.prevoz.android.ride.RideInfoFragment;
 import org.prevoz.android.util.PrevozActivity;
 import org.prevoz.android.util.ViewUtils;
-
-import java.util.List;
 
 
 import butterknife.ButterKnife;
@@ -37,11 +29,9 @@ import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 import retrofit.RetrofitError;
 import rx.Observable;
-import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class MyRidesFragment extends PrevozFragment
 {
@@ -55,6 +45,7 @@ public class MyRidesFragment extends PrevozFragment
 
     @InjectView(R.id.myrides_throbber)
     protected ProgressBar throbber;
+
 
     private MyRidesAdapter adapter = null;
 
@@ -108,8 +99,9 @@ public class MyRidesFragment extends PrevozFragment
 
     private void loadRides()
     {
-        setListVisibility(false);
         ViewUtils.setupEmptyView(myridesList, emptyView, "Nimate objavljenih ali zaznamovanih prevozov.");
+        setListVisibility(false);
+        emptyView.setVisibility(View.INVISIBLE);
         adapter.clear();
 
         ApiClient.getAdapter().getMyRides()
@@ -145,7 +137,7 @@ public class MyRidesFragment extends PrevozFragment
                             adapter.addRides(rides);
                             setListVisibility(true);
                         },
-                    throwable -> showLoadFailureError(throwable));
+                        throwable -> showLoadFailureError(throwable));
     }
 
     private void showLoadFailureError(Throwable error) {
@@ -177,7 +169,7 @@ public class MyRidesFragment extends PrevozFragment
         throbber.setVisibility(listVisible ? View.INVISIBLE : View.VISIBLE);
     }
 
-    public void onEventMainThread(Events.RideDeleted e)
+    public void onEventMainThread(Events.MyRideStatusUpdated e)
     {
         loadRides();
     }

@@ -16,15 +16,20 @@
         style="@style/Prevoz.Header"
         />
 
-    <ListView
-        android:id="@+id/notifications_list"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@null"
-        android:scrollbarStyle="outsideOverlay"
-        >
-    </ListView>
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/notifications_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbarStyle="outsideOverlay"
+            >
 
-    <include layout="@layout/empty_view" />
+
+        </android.support.v7.widget.RecyclerView>
+
+        <include layout="@layout/empty_view" />
+    </FrameLayout>
 
 </LinearLayout>

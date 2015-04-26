@@ -6,7 +6,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
@@ -346,7 +345,7 @@ public class RideInfoFragment extends DialogFragment
                                 ApiClient.getAdapter().deleteRide(String.valueOf(ride.id), new Callback<Response>() {
                                     @Override
                                     public void success(Response response, Response response2) {
-                                        EventBus.getDefault().post(new Events.RideDeleted(ride.id));
+                                        EventBus.getDefault().post(new Events.MyRideStatusUpdated(ride.id));
                                         deleteDialog.dismiss();
                                         ViewUtils.showMessage(activity, R.string.ride_delete_success, false);
                                     }
@@ -394,6 +393,7 @@ public class RideInfoFragment extends DialogFragment
             @Override
             public void success(Response response, Response response2) {
                 Log.i("Prevoz", "Bookmark set OK.");
+                EventBus.getDefault().post(new Events.MyRideStatusUpdated(ride.id));
             }
 
             @Override

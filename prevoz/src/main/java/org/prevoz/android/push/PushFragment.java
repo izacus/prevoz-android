@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +34,7 @@ public class PushFragment extends PrevozFragment
     public static final String DIALOG_ARG_SUB = "subscription";
 
     @InjectView(R.id.notifications_list)
-    protected ListView notificationList;
+    protected RecyclerView notificationList;
 
     @InjectView(R.id.empty_view)
     protected View emptyView;
@@ -41,6 +43,8 @@ public class PushFragment extends PrevozFragment
     // Used for dialog callback due to unvieldy interface
     private NotificationSubscription clickedSubscription;
 
+    private PushNotificationsAdapter adapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View views = inflater.inflate(R.layout.fragment_notifications, container, false);
@@ -48,9 +52,12 @@ public class PushFragment extends PrevozFragment
 
         ViewUtils.setupEmptyView(notificationList, emptyView, "Niste prijavljeni na nobena obvestila.");
         List<NotificationSubscription> notifications = pushManager.getSubscriptions();
-        final PushNotificationsAdapter adapter = new PushNotificationsAdapter(getActivity(), notifications);
+        adapter = new PushNotificationsAdapter(getActivity(), notifications, item -> onItemClicked(item));
+
         notificationList.setAdapter(adapter);
-        notificationList.setOnItemClickListener((parent, view, position, id) -> onItemClicked(adapter.getItem(position)));
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        notificationList.setLayoutManager(llm);
+        updateEmptyView();
         return views;
     }
 
@@ -83,9 +90,15 @@ public class PushFragment extends PrevozFragment
         EventBus.getDefault().register(this);
     }
 
+    private void updateEmptyView() {
+        notificationList.setVisibility(adapter.getItemCount() == 0 ? View.INVISIBLE : View.VISIBLE);
+        emptyView.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.INVISIBLE);
+    }
+
     public void onEventMainThread(Events.NotificationSubscriptionStatusChanged e)
     {
         List<NotificationSubscription> notifications = pushManager.getSubscriptions();
-        notificationList.setAdapter(new PushNotificationsAdapter(getActivity(), notifications));
+        adapter.setData(notifications);
+        updateEmptyView();
     }
 }

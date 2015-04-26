@@ -299,7 +299,7 @@ public class SearchResultsFragment extends PrevozFragment implements Callback<Re
         searchNotifyButtonProgress.setVisibility(View.INVISIBLE);
     }
 
-    public void onEventMainThread(Events.RideDeleted e)
+    public void onEventMainThread(Events.MyRideStatusUpdated e)
     {
         if (adapter != null && adapter instanceof SearchResultsAdapter)
             ((SearchResultsAdapter) adapter).removeRide(e.id);

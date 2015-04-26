@@ -1,9 +1,13 @@
 package org.prevoz.android.push;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
@@ -13,27 +17,37 @@ import org.prevoz.android.util.LocaleUtil;
 
 import java.util.List;
 
-public class PushNotificationsAdapter extends BaseAdapter
+public class PushNotificationsAdapter extends RecyclerView.Adapter<PushNotificationsAdapter.PushNotificationsHolder>
 {
-    private final Context ctx;
-    private final List<NotificationSubscription> notifications;
+    public interface PushItemClickedListener {
+        void onNotificationClicked(NotificationSubscription item);
+    }
 
-    public PushNotificationsAdapter(Context context, List<NotificationSubscription> notifications)
+    private final Context ctx;
+    private final PushItemClickedListener listener;
+
+    private List<NotificationSubscription> notifications;
+
+
+    public PushNotificationsAdapter(Context context, List<NotificationSubscription> notifications, PushItemClickedListener listener)
     {
         this.ctx = context;
         this.notifications = notifications;
+        this.listener = listener;
+    }
+
+
+    @Override
+    public PushNotificationsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(ctx).inflate(R.layout.item_notification, parent, false);
+        return new PushNotificationsHolder(v);
     }
 
     @Override
-    public int getCount()
-    {
-        return notifications.size();
-    }
-
-    @Override
-    public NotificationSubscription getItem(int position)
-    {
-        return notifications.get(position);
+    public void onBindViewHolder(PushNotificationsHolder holder, int position) {
+        NotificationSubscription sub = notifications.get(position);
+        holder.route.setText(sub.getFrom().toString() + " - " + sub.getTo().toString());
+        holder.date.setText(LocaleUtil.localizeDate(ctx.getResources(), sub.getDate()));
     }
 
     @Override
@@ -43,20 +57,31 @@ public class PushNotificationsAdapter extends BaseAdapter
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
-    {
-        View v = convertView;
-        if (v == null)
-        {
-            v = LayoutInflater.from(ctx).inflate(R.layout.item_notification, parent, false);
+    public int getItemCount() {
+        return notifications.size();
+    }
+
+    public void setData(List<NotificationSubscription> notifications) {
+        this.notifications = notifications;
+        notifyDataSetChanged();
+    }
+
+    class PushNotificationsHolder extends RecyclerView.ViewHolder {
+
+        @NonNull
+        final TextView route;
+        @NonNull
+        final TextView date;
+        @NonNull
+        final CardView card;
+
+        public PushNotificationsHolder(View itemView) {
+            super(itemView);
+            card = (CardView) itemView.findViewById(R.id.item_push_card);
+            route = (TextView) itemView.findViewById(R.id.item_push_route);
+            date = (TextView) itemView.findViewById(R.id.item_push_date);
+
+            card.setOnClickListener(v -> listener.onNotificationClicked(notifications.get(getAdapterPosition())));
         }
-
-        TextView route = (TextView) v.findViewById(R.id.item_push_route);
-        TextView date = (TextView) v.findViewById(R.id.item_push_date);
-
-        NotificationSubscription sub = notifications.get(position);
-        route.setText(sub.getFrom().toString() + " - " + sub.getTo().toString());
-        date.setText(LocaleUtil.localizeDate(ctx.getResources(), sub.getDate()));
-        return v;
     }
 }
