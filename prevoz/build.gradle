@@ -79,11 +79,7 @@ dependencies {
     compile 'io.reactivex:rxjava:1.0.8'
     compile 'si.virag:fuzzydateformatter:1.0.0'
     compile 'com.crashlytics.android:crashlytics:1.+'
-    compile('de.keyboardsurfer.android.widget:crouton:1.8.5@aar') {
-        // exclusion is not neccessary, but generally a good idea.
-        exclude group: 'com.google.android', module: 'support-v4'
-    }
-
+    compile 'com.nispok:snackbar:2.10.7'
     compile 'com.wdullaer:materialdatetimepicker:1.2.2'
     compile 'edu.mit.mobile:SimpleContentProvider:0.2.0'
 }

@@ -2,10 +2,14 @@ package org.prevoz.android.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.SnackbarManager;
 
 import org.prevoz.android.R;
 
@@ -47,9 +51,11 @@ public class ViewUtils
     public static void showMessage(Activity context, String messageText, boolean failure) {
         if (context == null) return;
 
-        if (confirmStyle == null)
-            confirmStyle = new Style.Builder().setBackgroundColor(R.color.prevoztheme_color).build();
+        Snackbar snackbar = Snackbar.with(context)
+                                    .text(messageText)
+                                    .color(failure ? Color.RED : context.getResources().getColor(R.color.prevoztheme_color_dark))
+                                    .duration(Snackbar.SnackbarDuration.LENGTH_SHORT);
 
-        Crouton.makeText(context, messageText, failure ? Style.ALERT : confirmStyle).show();
+        SnackbarManager.show(snackbar, context);
     }
 }
