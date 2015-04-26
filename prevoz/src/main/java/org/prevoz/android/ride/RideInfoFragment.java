@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
@@ -16,6 +17,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -34,7 +36,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.crashlytics.android.Crashlytics;
 
 import org.prevoz.android.MainActivity;
@@ -333,37 +334,30 @@ public class RideInfoFragment extends DialogFragment
         {
             final Activity activity = getActivity();
             dismiss();
+            new AlertDialog.Builder(activity, R.style.Prevoz_Theme_Dialog)
+                            .setTitle(String.format("%s - %s", ride.fromCity, ride.toCity))
+                            .setMessage(getString(R.string.ride_delete_message, LocaleUtil.getDayName(getResources(), ride.date).toLowerCase(LocaleUtil.getLocale()), LocaleUtil.getFormattedTime(ride.date)))
+                            .setNegativeButton(R.string.ride_delete_cancel, null)
+                            .setPositiveButton(R.string.ride_delete_ok, (dialog, which) -> {
+                                final ProgressDialog deleteDialog = new ProgressDialog(activity);
+                                deleteDialog.setMessage(activity.getString(R.string.ride_delete_progress));
+                                deleteDialog.show();
 
-            new MaterialDialog.Builder(activity)
-                              .title(ride.fromCity + " - " + ride.toCity)
-                              .titleColorRes(R.color.prevoztheme_color_dark)
-                              .content(getString(R.string.ride_delete_message, LocaleUtil.getDayName(getResources(), ride.date).toLowerCase(LocaleUtil.getLocale()), LocaleUtil.getFormattedTime(ride.date)))
-                              .positiveText(R.string.ride_delete_ok)
-                              .negativeText(R.string.ride_delete_cancel)
-                              .callback(new MaterialDialog.SimpleCallback() {
-                                  @Override
-                                  public void onPositive(MaterialDialog materialDialog) {
-                                      final ProgressDialog deleteDialog = new ProgressDialog(activity);
-                                      deleteDialog.setMessage(activity.getString(R.string.ride_delete_progress));
-                                      deleteDialog.show();
+                                ApiClient.getAdapter().deleteRide(String.valueOf(ride.id), new Callback<Response>() {
+                                    @Override
+                                    public void success(Response response, Response response2) {
+                                        EventBus.getDefault().post(new Events.RideDeleted(ride.id));
+                                        deleteDialog.dismiss();
+                                        ViewUtils.showMessage(activity, R.string.ride_delete_success, false);
+                                    }
 
-                                      ApiClient.getAdapter().deleteRide(String.valueOf(ride.id), new Callback<Response>() {
-                                          @Override
-                                          public void success(Response response, Response response2) {
-                                              EventBus.getDefault().post(new Events.RideDeleted(ride.id));
-                                              deleteDialog.dismiss();
-                                              ViewUtils.showMessage(activity, R.string.ride_delete_success, false);
-                                          }
-
-                                          @Override
-                                          public void failure(RetrofitError error) {
-                                              deleteDialog.dismiss();
-                                              ViewUtils.showMessage(activity, R.string.ride_delete_failure, true);
-                                          }
-                                      });
-                                  }
-                              })
-                              .show();
+                                    @Override
+                                    public void failure(RetrofitError error) {
+                                        deleteDialog.dismiss();
+                                        ViewUtils.showMessage(activity, R.string.ride_delete_failure, true);
+                                    }
+                                });
+                            }).show();
         }
         else
         {

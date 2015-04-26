@@ -1,14 +1,15 @@
 package org.prevoz.android.push;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.prevoz.android.PrevozFragment;
 import org.prevoz.android.R;
@@ -62,22 +63,16 @@ public class PushFragment extends PrevozFragment
     protected void onItemClicked(NotificationSubscription item)
     {
         clickedSubscription = item;
-        new MaterialDialog.Builder(getActivity())
-                          .title(item.getFrom().toString() + " - " + item.getTo().toString())
-                          .titleColorRes(R.color.prevoztheme_color_dark)
-                          .content(String.format("Ali se res želite odjaviti od obveščanja v %s?", LocaleUtil.getNotificationDayName(getResources(), item.getDate()).toLowerCase()))
-                          .positiveText("Odjavi")
-                          .negativeText("Prekliči")
-                          .callback(new MaterialDialog.SimpleCallback() {
-                              @Override
-                              public void onPositive(MaterialDialog materialDialog) {
-                                  if (clickedSubscription != null)
-                                  {
-                                      pushManager.setSubscriptionStatus(getActivity(), clickedSubscription.getFrom(), clickedSubscription.getTo(), clickedSubscription.getDate(), false);
-                                  }
-                              }
-                          })
-                          .show();
+        new AlertDialog.Builder(getActivity(), R.style.Prevoz_Theme_Dialog)
+                        .setTitle(String.format("%s - %s", item.getFrom().toString(), item.getTo().toString()))
+                        .setMessage(String.format("Ali se res želite odjaviti od obveščanja v %s?", LocaleUtil.getNotificationDayName(getResources(), item.getDate()).toLowerCase()))
+                        .setNegativeButton("Prekliči", null)
+                        .setPositiveButton("Odjavi", (dialog, which) -> {
+                            if (clickedSubscription != null)
+                            {
+                                pushManager.setSubscriptionStatus(getActivity(), clickedSubscription.getFrom(), clickedSubscription.getTo(), clickedSubscription.getDate(), false);
+                            }
+                        }).show();
     }
 
     @Override

@@ -85,6 +85,5 @@ dependencies {
     }
 
     compile 'com.wdullaer:materialdatetimepicker:1.2.2'
-    compile 'com.afollestad:material-dialogs:0.4.4'
     compile 'edu.mit.mobile:SimpleContentProvider:0.2.0'
 }

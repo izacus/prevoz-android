@@ -3,6 +3,7 @@ package org.prevoz.android;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -16,6 +17,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,8 +27,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.events.Events;
@@ -174,12 +174,9 @@ public class MainActivity extends PrevozActivity
         menu.findItem(R.id.menu_myrides_add).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if (!authUtils.isAuthenticated())
-                {
+                if (!authUtils.isAuthenticated()) {
                     authUtils.requestAuthentication(MainActivity.this, REQUEST_CODE_AUTHORIZE_NEWRIDE);
-                }
-                else
-                {
+                } else {
                     showFragment(UiFragment.FRAGMENT_NEW_RIDE, true);
                 }
 
@@ -196,14 +193,12 @@ public class MainActivity extends PrevozActivity
         if (authUtils.getUsername() == null)
             return;
 
-        new MaterialDialog.Builder(this)
-                          .title("Odjava")
-                          .titleColorRes(R.color.prevoztheme_color_dark)
-                          .content("Se res želite odjaviti?")
-                          .positiveText("Odjavi")
-                          .negativeText("Prekliči")
-                          .callback(materialDialog -> authUtils.logout().subscribeOn(Schedulers.io()).subscribe())
-                          .show();
+        new AlertDialog.Builder(this, R.style.Prevoz_Theme_Dialog)
+                       .setTitle("Odjava")
+                       .setMessage("Se res želite odjaviti?")
+                       .setPositiveButton("Odjavi", (dialog, which) -> authUtils.logout().subscribeOn(Schedulers.io()).subscribe())
+                       .setNegativeButton("Prekliči", null)
+                       .show();
     }
 
     protected void triggerSearchFromIntent(Intent intent)
