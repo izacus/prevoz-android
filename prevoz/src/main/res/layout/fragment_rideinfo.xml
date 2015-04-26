@@ -127,22 +127,6 @@
                 style="?android:attr/textAppearanceMedium"
                 />
 
-            <FrameLayout
-                android:id="@+id/rideinfo_load_progress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                >
-
-                <ProgressBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:indeterminateOnly="true"
-                    android:layout_gravity="center"
-                    />
-
-            </FrameLayout>
-
             <LinearLayout
                 android:id="@+id/rideinfo_details"
                 android:layout_width="match_parent"

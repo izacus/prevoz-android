@@ -173,6 +173,8 @@
                         android:layout_gravity="center_vertical"
                         android:indeterminateOnly="true"
                         android:visibility="invisible"
+                        android:indeterminateTintMode="src_in"
+                        android:indeterminateTint="@color/prevoztheme_color_dark"
                         />
 
                 </FrameLayout>

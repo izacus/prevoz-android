@@ -1,6 +1,7 @@
 package org.prevoz.android.events;
 
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 
 import org.prevoz.android.UiFragment;
 import org.prevoz.android.model.City;
@@ -88,6 +89,14 @@ public class Events
             this.fragment = fragment;
             this.backstack = backstack;
             this.params = params;
+        }
+    }
+
+    public static class ShowMessage {
+        public final int stringId;
+
+        public ShowMessage(@StringRes int stringId) {
+            this.stringId = stringId;
         }
     }
 }

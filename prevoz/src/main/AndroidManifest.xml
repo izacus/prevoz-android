@@ -35,7 +35,26 @@
 			</intent-filter>
 		</activity>
 
-        <activity android:name=".auth.LoginActivity" android:label="@string/login_title" />
+        <activity android:name=".auth.LoginActivity" android:label="@string/login_title"
+                  android:parentActivityName=".MainActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.prevoz.android.MainActivity" />
+
+        </activity>
+
+        <activity android:name=".myrides.NewRideActivity" android:label="Nov prevoz"
+                  android:parentActivityName=".MainActivity"
+                  android:theme="@style/Prevoz.Theme.NewRide"
+            >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.prevoz.android.MainActivity" />
+
+        </activity>
+
         <service android:name=".auth.AuthenticationService"
                  android:exported="false" >
             <intent-filter>

@@ -20,6 +20,8 @@
 
         android:indeterminateOnly="true"
         android:indeterminate="true"
+        android:indeterminateTint="@color/prevoztheme_color_dark"
+        android:indeterminateTintMode="src_in"
         style="?android:attr/progressBarStyleLarge"
         />
 

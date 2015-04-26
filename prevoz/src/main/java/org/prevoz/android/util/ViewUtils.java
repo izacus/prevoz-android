@@ -3,6 +3,7 @@ package org.prevoz.android.util;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -16,6 +17,8 @@ import org.prevoz.android.R;
 
 public class ViewUtils
 {
+    private static Typeface snackbarTypeface;
+
     public static void setupEmptyView(RecyclerView listView, View emptyView, String text) {
         TextView textView = (TextView) emptyView.findViewById(R.id.empty_text);
         textView.setText(text);
@@ -46,8 +49,12 @@ public class ViewUtils
     public static void showMessage(Activity context, String messageText, boolean failure) {
         if (context == null) return;
 
+        if (snackbarTypeface == null)
+            snackbarTypeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD);
+
         Snackbar snackbar = Snackbar.with(context)
                                     .text(messageText)
+                                    .textTypeface(snackbarTypeface)
                                     .color(failure ? Color.RED : context.getResources().getColor(R.color.prevoztheme_color_dark))
                                     .duration(Snackbar.SnackbarDuration.LENGTH_SHORT);
 

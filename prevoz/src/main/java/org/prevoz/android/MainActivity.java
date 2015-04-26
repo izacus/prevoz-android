@@ -11,6 +11,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -33,12 +35,13 @@ import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.Route;
 import org.prevoz.android.myrides.MyRidesFragment;
-import org.prevoz.android.myrides.NewRideFragment;
+import org.prevoz.android.myrides.NewRideActivity;
 import org.prevoz.android.push.PushFragment;
 import org.prevoz.android.push.PushManager;
 import org.prevoz.android.search.SearchResultsFragment;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.PrevozActivity;
+import org.prevoz.android.util.ViewUtils;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -174,7 +177,8 @@ public class MainActivity extends PrevozActivity
             if (!authUtils.isAuthenticated()) {
                 authUtils.requestAuthentication(MainActivity.this, REQUEST_CODE_AUTHORIZE_NEWRIDE);
             } else {
-                showFragment(UiFragment.FRAGMENT_NEW_RIDE, true);
+                Intent i = new Intent(this, NewRideActivity.class);
+                ActivityCompat.startActivity(this, i, ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_up, 0).toBundle());
             }
 
             return true;
@@ -304,14 +308,6 @@ public class MainActivity extends PrevozActivity
                     tag = PUSH_NOTIFICATIONS_FRAGMENT_TAG;
                 }
                 break;
-
-            case FRAGMENT_NEW_RIDE:
-                if (fm.findFragmentByTag(NEW_RIDE_FRAGMENT_TAG) == null)
-                {
-                    f = new NewRideFragment();
-                    tag = NEW_RIDE_FRAGMENT_TAG;
-                }
-                break;
         }
 
         if (f != null)
@@ -356,8 +352,10 @@ public class MainActivity extends PrevozActivity
             {
                 if (requestCode == REQUEST_CODE_AUTHORIZE_MYRIDES)
                     showFragment(UiFragment.FRAGMENT_MY_RIDES, false);
-                else
-                    showFragment(UiFragment.FRAGMENT_NEW_RIDE, true);
+                else {
+                    Intent i = new Intent(this, NewRideActivity.class);
+                    startActivity(i);
+                }
             }
         }
     }
@@ -366,8 +364,7 @@ public class MainActivity extends PrevozActivity
     public void onBackPressed()
     {
         SearchResultsFragment fragment = (SearchResultsFragment) getSupportFragmentManager().findFragmentByTag(SEARCH_FRAGMENT_TAG);
-        NewRideFragment newRideFragment = (NewRideFragment) getSupportFragmentManager().findFragmentByTag(NEW_RIDE_FRAGMENT_TAG);
-        if (fragment != null && newRideFragment == null && fragment.showingResults())
+        if (fragment != null && fragment.showingResults())
         {
             EventBus.getDefault().post(new Events.ClearSearchEvent());
         }
@@ -386,5 +383,11 @@ public class MainActivity extends PrevozActivity
     public void onEventMainThread(Events.ShowFragment e)
     {
         showFragment(e.fragment, e.backstack, e.params);
+        EventBus.getDefault().removeStickyEvent(e);
+    }
+
+    public void onEventMainThread(Events.ShowMessage e) {
+        ViewUtils.showMessage(this, e.stringId, false);
+        EventBus.getDefault().removeStickyEvent(e);
     }
 }

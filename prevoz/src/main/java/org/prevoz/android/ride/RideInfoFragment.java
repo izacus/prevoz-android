@@ -15,6 +15,9 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.text.Spannable;
@@ -46,7 +49,7 @@ import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.Bookmark;
-import org.prevoz.android.myrides.NewRideFragment;
+import org.prevoz.android.myrides.NewRideActivity;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.PrevozActivity;
 import org.prevoz.android.util.ViewUtils;
@@ -116,8 +119,6 @@ public class RideInfoFragment extends DialogFragment
 
     @InjectView(R.id.rideinfo_details)
     protected View vDetails;
-    @InjectView(R.id.rideinfo_load_progress)
-    protected View vProgress;
 
     @InjectView(R.id.rideinfo_phone)
     protected TextView txtPhone;
@@ -173,7 +174,7 @@ public class RideInfoFragment extends DialogFragment
         View views = inflater.inflate(R.layout.fragment_rideinfo, container, false);
         ButterKnife.inject(this, views);
 
-        imgFavorite.setVisibility(authUtils.isAuthenticated() ? View.VISIBLE : View.INVISIBLE);
+        imgFavorite.setVisibility(authUtils.isAuthenticated() && !ride.isAuthor ? View.VISIBLE : View.INVISIBLE);
         updateFavoriteIcon();
 
         txtFrom.setText(LocaleUtil.getLocalizedCityName(getActivity(), ride.fromCity, ride.fromCountry));
@@ -190,8 +191,6 @@ public class RideInfoFragment extends DialogFragment
         }
 
         txtDate.setText(LocaleUtil.localizeDate(getResources(), ride.date));
-
-        vProgress.setVisibility(View.GONE);
         vDetails.setVisibility(View.VISIBLE);
 
         txtPhone.setText(getPhoneNumberString(ride.phoneNumber, ride.phoneNumberConfirmed));
@@ -216,11 +215,7 @@ public class RideInfoFragment extends DialogFragment
             }
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-            txtInsurance.setText(ride.insured ? "\u2713 Ima zavarovanje." : "\u2717 Nima zavarovanja.");
-        else
-            txtInsurance.setText(ride.insured ? "Ima zavarovanje." : "Nima zavarovanja.");
-
+        txtInsurance.setText(ride.insured ? "\u2713 Ima zavarovanje." : "\u2717 Nima zavarovanja.");
 
         // Hide call/SMS buttons on devices without telephony support
         PackageManager pm = getActivity().getPackageManager();
@@ -300,10 +295,9 @@ public class RideInfoFragment extends DialogFragment
         {
             MainActivity activity = (MainActivity) getActivity();
             if (activity == null) return;
-
-            Bundle params = new Bundle();
-            params.putParcelable(NewRideFragment.PARAM_EDIT_RIDE, ride);
-            EventBus.getDefault().post(new Events.ShowFragment(UiFragment.FRAGMENT_NEW_RIDE, false, params));
+            Intent intent = new Intent(activity, NewRideActivity.class);
+            intent.putExtra(NewRideActivity.PARAM_EDIT_RIDE, (Parcelable)ride);
+            ActivityCompat.startActivity(activity, intent, ActivityOptionsCompat.makeCustomAnimation(activity, R.anim.slide_up, 0).toBundle());
         }
         else
         {
