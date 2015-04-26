@@ -49,7 +49,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
-import de.keyboardsurfer.android.widget.crouton.Crouton;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -387,11 +386,5 @@ public class MainActivity extends PrevozActivity
     public void onEventMainThread(Events.ShowFragment e)
     {
         showFragment(e.fragment, e.backstack, e.params);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Crouton.cancelAllCroutons();
     }
 }

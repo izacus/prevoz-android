@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.crashlytics.android.Crashlytics;
+import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
 import org.prevoz.android.MainActivity;
 import org.prevoz.android.PrevozFragment;
@@ -45,7 +48,7 @@ public class MyRidesFragment extends PrevozFragment
     private static final String LOG_TAG = "Prevoz.MyRides";
 
     @InjectView(R.id.myrides_list)
-    protected StickyListHeadersListView myridesList;
+    protected RecyclerView myridesList;
 
     @InjectView(R.id.empty_view)
     protected View emptyView;
@@ -54,6 +57,12 @@ public class MyRidesFragment extends PrevozFragment
     protected ProgressBar throbber;
 
     private MyRidesAdapter adapter = null;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        adapter = new MyRidesAdapter(getActivity());
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -65,16 +74,11 @@ public class MyRidesFragment extends PrevozFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View views = inflater.inflate(R.layout.fragment_myrides, container, false);
         ButterKnife.inject(this, views);
-
-        myridesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                RestRide ride = ((MyRidesAdapter)parent.getAdapter()).getItem(position);
-                RideInfoFragment fragment = RideInfoFragment.newInstance(ride, RideInfoFragment.PARAM_ACTION_EDIT);
-                fragment.show(getActivity().getSupportFragmentManager(), "RideInfoFragment");
-            }
-        });
-
+        myridesList.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        myridesList.setLayoutManager(llm);
+        myridesList.addItemDecoration(new StickyRecyclerHeadersDecoration(adapter));
+        myridesList.setAdapter(adapter);
         return views;
     }
 
@@ -105,17 +109,10 @@ public class MyRidesFragment extends PrevozFragment
     private void loadRides()
     {
         setListVisibility(false);
-        Observable<RestRide> myRides = ApiClient.getAdapter().getMyRides()
-                .flatMap(new Func1<RestSearchResults, Observable<RestRide>>() {
-                    @Override
-                    public Observable<RestRide> call(RestSearchResults restSearchResults) {
-                        if (restSearchResults == null || restSearchResults.results == null)
-                            return Observable.empty();
-                        return Observable.from(restSearchResults.results);
-                    }
-                });
+        ViewUtils.setupEmptyView(myridesList, emptyView, "Nimate objavljenih ali zaznamovanih prevozov.");
+        adapter.clear();
 
-        Observable<RestRide> bookmarkedRides = ApiClient.getAdapter().getBookmarkedRides()
+        ApiClient.getAdapter().getMyRides()
                 .flatMap(new Func1<RestSearchResults, Observable<RestRide>>() {
                     @Override
                     public Observable<RestRide> call(RestSearchResults restSearchResults) {
@@ -124,38 +121,31 @@ public class MyRidesFragment extends PrevozFragment
                         return Observable.from(restSearchResults.results);
                     }
                 })
-                .filter(new Func1<RestRide, Boolean>() {
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((rides) -> {
+                            adapter.addRides(rides);
+                            setListVisibility(true);
+                        },
+                        throwable -> showLoadFailureError(throwable));
+
+        ApiClient.getAdapter().getBookmarkedRides()
+                .flatMap(new Func1<RestSearchResults, Observable<RestRide>>() {
                     @Override
-                    public Boolean call(RestRide restRide) {
-                        return Bookmark.shouldShow(restRide.bookmark);
+                    public Observable<RestRide> call(RestSearchResults restSearchResults) {
+                        if (restSearchResults == null || restSearchResults.results == null)
+                            return Observable.empty();
+                        return Observable.from(restSearchResults.results);
                     }
-                });
-
-        myRides.mergeWith(bookmarkedRides)
-               .toList()
-               .observeOn(AndroidSchedulers.mainThread())
-               .subscribe(new Subscriber<List<RestRide>>() {
-                   @Override
-                   public void onCompleted() {
-
-                   }
-
-                   @Override
-                   public void onError(Throwable e) {
-                       showLoadFailureError(e);
-                   }
-
-                   @Override
-                   public void onNext(List<RestRide> rides) {
-                       ViewUtils.setupEmptyView(myridesList, emptyView, "Nimate objavljenih ali zaznamovanih prevozov.");
-                       Activity activity = getActivity();
-                       if (activity == null) return;
-
-                       adapter = new MyRidesAdapter((FragmentActivity) activity, rides);
-                       myridesList.setAdapter(adapter);
-                       setListVisibility(true);
-                   }
-               });
+                })
+                .filter(restRide -> Bookmark.shouldShow(restRide.bookmark))
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((rides) -> {
+                            adapter.addRides(rides);
+                            setListVisibility(true);
+                        },
+                    throwable -> showLoadFailureError(throwable));
     }
 
     private void showLoadFailureError(Throwable error) {
@@ -176,8 +166,8 @@ public class MyRidesFragment extends PrevozFragment
     {
 
         if (listVisible) {
-            emptyView.setVisibility(adapter == null || adapter.getCount() == 0 ? View.VISIBLE : View.INVISIBLE);
-            myridesList.setVisibility(adapter == null || adapter.getCount() != 0 ? View.VISIBLE : View.INVISIBLE);
+            emptyView.setVisibility(adapter == null || adapter.getItemCount() == 0 ? View.VISIBLE : View.INVISIBLE);
+            myridesList.setVisibility(adapter == null || adapter.getItemCount() != 0 ? View.VISIBLE : View.INVISIBLE);
         } else {
             emptyView.setVisibility(View.INVISIBLE);
             myridesList.setVisibility(View.INVISIBLE);

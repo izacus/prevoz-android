@@ -3,6 +3,7 @@ package org.prevoz.android.util;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
@@ -13,18 +14,12 @@ import com.nispok.snackbar.SnackbarManager;
 
 import org.prevoz.android.R;
 
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
-import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
-
 public class ViewUtils
 {
-    private static Style confirmStyle = null;
-
-    public static void setupEmptyView(StickyListHeadersListView listView, View emptyView, String text) {
+    public static void setupEmptyView(RecyclerView listView, View emptyView, String text) {
         TextView textView = (TextView) emptyView.findViewById(R.id.empty_text);
         textView.setText(text);
-        listView.setEmptyView(emptyView);
+        emptyView.setVisibility(View.VISIBLE);
     }
 
     public static void setupEmptyView(ListView listView, View emptyView, String text)

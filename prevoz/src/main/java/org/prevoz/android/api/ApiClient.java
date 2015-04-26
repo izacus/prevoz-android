@@ -129,6 +129,11 @@ public class ApiClient
     {
         @Override
         public void write(JsonWriter out, Bookmark value) throws IOException {
+            if (value == null) {
+                out.nullValue();
+                return;
+            }
+
             switch (value) {
                 case GOING_WITH:
                     out.value("going_with");
