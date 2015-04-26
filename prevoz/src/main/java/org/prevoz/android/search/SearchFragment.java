@@ -18,7 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
-import com.fourmob.datetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import org.prevoz.android.R;
 import org.prevoz.android.events.Events;
@@ -40,7 +40,7 @@ import icepick.Icepick;
 import icepick.Icicle;
 import rx.schedulers.Schedulers;
 
-public class SearchFragment extends Fragment implements DatePickerDialog.OnDateSetListener, android.app.DatePickerDialog.OnDateSetListener {
+public class SearchFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
     @InjectView(R.id.search_date_edit)
     protected EditText searchDate;
     @InjectView(R.id.search_from)
@@ -105,20 +105,11 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
         ViewUtils.hideKeyboard(activity);
         final Calendar calendar = Calendar.getInstance(LocaleUtil.getLocale());
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-
-            DatePickerDialog dialog = DatePickerDialog.newInstance(this,
-                    calendar.get(Calendar.YEAR),
-                    calendar.get(Calendar.MONTH),
-                    calendar.get(Calendar.DAY_OF_MONTH),
-                    false);
-            dialog.show(activity.getSupportFragmentManager(), "SearchDate");
-        } else {
-            android.app.DatePickerDialog dialog = new android.app.DatePickerDialog(getActivity(), this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-            dialog.show();
-        }
-
-
+        DatePickerDialog dialog = DatePickerDialog.newInstance(this,
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH));
+        dialog.show(activity.getFragmentManager(), "SearchDate");
     }
 
     // This is duplicated to allow clicking on logo or edittext
@@ -224,11 +215,6 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
     {
         super.onResume();
         EventBus.getDefault().registerSticky(this);
-    }
-
-    @Override
-    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        onDateSet((DatePickerDialog)null, year, monthOfYear, dayOfMonth);
     }
 
     @Override

@@ -5,4 +5,8 @@
     <color name="prevoztheme_color_dark">#E65100</color>
     <color name="prevoztheme_color_soft">#44FFCC80</color>
     <color name="prevoztheme_pressed">#FFB74D</color>
+
+    <!-- Picker theme -->
+    <color name="mdtp_accent_color">@color/prevoztheme_color</color>
+    <color name="mdtp_accent_color_dark">@color/prevoztheme_color_dark</color>
 </resources>

@@ -20,9 +20,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.crashlytics.android.Crashlytics;
-import com.fourmob.datetimepicker.date.DatePickerDialog;
-import com.sleepbot.datetimepicker.time.RadialPickerLayout;
-import com.sleepbot.datetimepicker.time.TimePickerDialog;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import org.prevoz.android.MainActivity;
 import org.prevoz.android.PrevozFragment;
@@ -59,7 +59,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import rx.schedulers.Schedulers;
 
-public class NewRideFragment extends PrevozFragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, RideInfoListener, android.app.DatePickerDialog.OnDateSetListener, android.app.TimePickerDialog.OnTimeSetListener {
+public class NewRideFragment extends PrevozFragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, RideInfoListener {
     private static final String PREF_PHONE_NO = "org.prevoz.phoneno";
     private static final String PREF_HAS_INSURANCE = "org.prevoz.hasinsurance";
 
@@ -122,37 +122,27 @@ public class NewRideFragment extends PrevozFragment implements DatePickerDialog.
         textTo.setValidator(new CityNameTextValidator(getActivity()));
 
         // Setup IME actions
-        textTo.setOnEditorActionListener(new TextView.OnEditorActionListener()
-        {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
+        textTo.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_NEXT)
             {
-                if (actionId == EditorInfo.IME_ACTION_NEXT)
-                {
-                    shouldGoFromDateToTime = true;
-                    onDateClicked();
-                    textTo.clearFocus();
-                    textPrice.requestFocus();
-                    return true;
-                }
-
-                return false;
+                shouldGoFromDateToTime = true;
+                onDateClicked();
+                textTo.clearFocus();
+                textPrice.requestFocus();
+                return true;
             }
+
+            return false;
         });
 
-        textNotes.setOnEditorActionListener(new TextView.OnEditorActionListener()
-        {
-            @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent)
+        textNotes.setOnEditorActionListener((textView, actionId, keyEvent) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEND)
             {
-                if (actionId == EditorInfo.IME_ACTION_SEND)
-                {
-                    onSubmitClicked();
-                    return true;
-                }
-
-                return false;
+                onSubmitClicked();
+                return true;
             }
+
+            return false;
         });
 
         if (getArguments() != null)
@@ -212,18 +202,11 @@ public class NewRideFragment extends PrevozFragment implements DatePickerDialog.
     protected void onDateClicked()
     {
         ViewUtils.hideKeyboard(getActivity());
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            DatePickerDialog dialog = DatePickerDialog.newInstance(this,
-                    setTime.get(Calendar.YEAR),
-                    setTime.get(Calendar.MONTH),
-                    setTime.get(Calendar.DAY_OF_MONTH),
-                    false);
-            dialog.show(getActivity().getSupportFragmentManager(), "NewDate");
-        } else {
-            android.app.DatePickerDialog dialog = new android.app.DatePickerDialog(getActivity(), this, setTime.get(Calendar.YEAR), setTime.get(Calendar.MONTH), setTime.get(Calendar.DAY_OF_MONTH));
-            dialog.show();
-        }
+        DatePickerDialog dialog = DatePickerDialog.newInstance(this,
+                setTime.get(Calendar.YEAR),
+                setTime.get(Calendar.MONTH),
+                setTime.get(Calendar.DAY_OF_MONTH));
+        dialog.show(getActivity().getFragmentManager(), "NewDate");
     }
 
     @OnClick(R.id.newride_time_edit)
@@ -231,18 +214,11 @@ public class NewRideFragment extends PrevozFragment implements DatePickerDialog.
     {
         if (getActivity() == null | !isAdded()) return;
         ViewUtils.hideKeyboard(getActivity());
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            TimePickerDialog dialog = TimePickerDialog.newInstance(this,
-                    setTime.get(Calendar.HOUR_OF_DAY),
-                    setTime.get(Calendar.MINUTE),
-                    true,
-                    false);
-            dialog.show(getActivity().getSupportFragmentManager(), "NewTime");
-        } else {
-            android.app.TimePickerDialog dialog = new android.app.TimePickerDialog(getActivity(), this, setTime.get(Calendar.HOUR_OF_DAY), setTime.get(Calendar.MINUTE), true);
-            dialog.show();
-        }
+        TimePickerDialog dialog = TimePickerDialog.newInstance(this,
+                                                               setTime.get(Calendar.HOUR_OF_DAY),
+                                                               setTime.get(Calendar.MINUTE),
+                                                               true);
+        dialog.show(getActivity().getFragmentManager(), "NewTime");
     }
 
     @OnClick(R.id.newride_button)
@@ -418,33 +394,24 @@ public class NewRideFragment extends PrevozFragment implements DatePickerDialog.
 
         // TODO: remove when server timezone parsing is fixed
         r.date.setTimeZone(LocaleUtil.getLocalTimezone());
-        ApiClient.getAdapter().postRide(r, new Callback<RestStatus>()
-        {
+        ApiClient.getAdapter().postRide(r, new Callback<RestStatus>() {
             @Override
-            public void success(RestStatus status, Response response)
-            {
-                try
-                {
+            public void success(RestStatus status, Response response) {
+                try {
                     dialog.dismiss();
-                }
-                catch (IllegalArgumentException e)
-                {
+                } catch (IllegalArgumentException e) {
                     // Why does this happen?
                     return;
                 }
 
-                if (!("created".equals(status.status) || "updated".equals(status.status)))
-                {
-                    if (status.error != null && status.error.size() > 0)
-                    {
+                if (!("created".equals(status.status) || "updated".equals(status.status))) {
+                    if (status.error != null && status.error.size() > 0) {
                         String firstKey = status.error.keySet().iterator().next();
                         final MainActivity activity = (MainActivity) getActivity();
                         if (activity == null) return;
                         ViewUtils.showMessage(activity, status.error.get(firstKey).get(0), true);
                     }
-                }
-                else
-                {
+                } else {
                     final MainActivity activity = (MainActivity) getActivity();
                     if (activity == null) return;
                     ViewUtils.showMessage(activity, R.string.newride_publish_success, false);
@@ -453,8 +420,7 @@ public class NewRideFragment extends PrevozFragment implements DatePickerDialog.
             }
 
             @Override
-            public void failure(RetrofitError error)
-            {
+            public void failure(RetrofitError error) {
                 if (error.getResponse() != null && error.getResponse().getStatus() == 403) {
                     ViewUtils.showMessage(activity, "Vaša prijava ni več veljavna, prosimo ponovno se prijavite.", true);
                     authUtils.logout().subscribeOn(Schedulers.io()).subscribe();
@@ -471,15 +437,6 @@ public class NewRideFragment extends PrevozFragment implements DatePickerDialog.
         });
     }
 
-    @Override
-    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        onDateSet((DatePickerDialog)null, year, monthOfYear, dayOfMonth);
-    }
-
-    @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        onTimeSet((RadialPickerLayout)null, hourOfDay, minute);
-    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

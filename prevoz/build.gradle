@@ -84,7 +84,7 @@ dependencies {
         exclude group: 'com.google.android', module: 'support-v4'
     }
 
-    compile 'si.virag.flavienlaurent.datetimepicker:library:0.1.2'
+    compile 'com.wdullaer:materialdatetimepicker:1.2.2'
     compile 'com.afollestad:material-dialogs:0.4.4'
     compile 'edu.mit.mobile:SimpleContentProvider:0.2.0'
 }
