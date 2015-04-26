@@ -171,17 +171,14 @@ public class MainActivity extends PrevozActivity
         MenuInflater mi = getMenuInflater();
         mi.inflate(R.menu.fragment_myrides, menu);
 
-        menu.findItem(R.id.menu_myrides_add).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (!authUtils.isAuthenticated()) {
-                    authUtils.requestAuthentication(MainActivity.this, REQUEST_CODE_AUTHORIZE_NEWRIDE);
-                } else {
-                    showFragment(UiFragment.FRAGMENT_NEW_RIDE, true);
-                }
-
-                return true;
+        menu.findItem(R.id.menu_myrides_add).setOnMenuItemClickListener(item -> {
+            if (!authUtils.isAuthenticated()) {
+                authUtils.requestAuthentication(MainActivity.this, REQUEST_CODE_AUTHORIZE_NEWRIDE);
+            } else {
+                showFragment(UiFragment.FRAGMENT_NEW_RIDE, true);
             }
+
+            return true;
         });
 
         return true;
@@ -257,21 +254,18 @@ public class MainActivity extends PrevozActivity
         adapter.add("Obvestila");
 
         leftDrawer.setAdapter(adapter);
-        leftDrawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
-                switch (position) {
-                    case 0:     // SEARCH
-                        showFragment(UiFragment.FRAGMENT_SEARCH, false);
-                        break;
-                    case 1:     // MY RIDES
-                        showFragment(UiFragment.FRAGMENT_MY_RIDES, false);
-                        break;
+        leftDrawer.setOnItemClickListener((parent, view, position, id) -> {
+            switch (position) {
+                case 0:     // SEARCH
+                    showFragment(UiFragment.FRAGMENT_SEARCH, false);
+                    break;
+                case 1:     // MY RIDES
+                    showFragment(UiFragment.FRAGMENT_MY_RIDES, false);
+                    break;
 
-                    case 2:     // PUSH NOTIFICATION LIST
-                        showFragment(UiFragment.FRAGMENT_NOTIFICATIONS, false);
-                        break;
-                }
+                case 2:     // PUSH NOTIFICATION LIST
+                    showFragment(UiFragment.FRAGMENT_NOTIFICATIONS, false);
+                    break;
             }
         });
     }

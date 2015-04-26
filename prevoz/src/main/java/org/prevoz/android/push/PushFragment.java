@@ -50,13 +50,7 @@ public class PushFragment extends PrevozFragment
         List<NotificationSubscription> notifications = pushManager.getSubscriptions();
         final PushNotificationsAdapter adapter = new PushNotificationsAdapter(getActivity(), notifications);
         notificationList.setAdapter(adapter);
-        notificationList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                onItemClicked(adapter.getItem(position));
-            }
-        });
-
+        notificationList.setOnItemClickListener((parent, view, position, id) -> onItemClicked(adapter.getItem(position)));
         return views;
     }
 
