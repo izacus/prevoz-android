@@ -78,7 +78,7 @@
                         android:src="@drawable/ic_action_location_to"
                         />
 
-                    <AutoCompleteTextView
+                    <android.support.v7.widget.AppCompatAutoCompleteTextView
                         android:id="@+id/newride_from"
                         android:layout_width="match_parent"
                         android:layout_toRightOf="@id/newride_ic_from"
@@ -90,10 +90,10 @@
                         android:imeOptions="actionNext"
                         android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
                         android:hint="@string/search_form_from_hint"
-                        style="?android:editTextStyle"
+                        style="@style/Prevoz.AutoCompleteTextView"
                         />
 
-                    <AutoCompleteTextView
+                    <android.support.v7.widget.AppCompatAutoCompleteTextView
                         android:id="@+id/newride_to"
                         android:layout_width="match_parent"
                         android:layout_toRightOf="@id/newride_ic_to"
@@ -104,7 +104,7 @@
                         android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
                         android:singleLine="true"
                         android:hint="@string/search_form_to_hint"
-                        style="?android:editTextStyle"
+                        style="@style/Prevoz.AutoCompleteTextView"
                         />
 
                 </RelativeLayout>
@@ -141,7 +141,7 @@
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:hint="@string/search_form_date"
-                        style="?android:editTextStyle"
+                        style="@style/Prevoz.FloatingHintEditText"
                         tools:ignore="TextFields" />
 
                     <org.prevoz.android.ui.FloatingHintEditText
@@ -155,7 +155,7 @@
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:hint="@string/newride_time"
-                        style="?android:editTextStyle"
+                        style="@style/Prevoz.FloatingHintEditText"
                         tools:ignore="TextFields"
                         />
 
@@ -189,7 +189,7 @@
                         android:imeOptions="actionNext"
                         android:nextFocusRight="@+id/newride_people"
                         android:nextFocusForward="@id/newride_people"
-                        style="?android:editTextStyle"
+                        style="@style/Prevoz.FloatingHintEditText"
                         tools:ignore="TextFields"
                         />
 
@@ -225,7 +225,7 @@
                         android:nextFocusForward="@+id/newride_phone"
                         android:nextFocusDown="@id/newride_phone"
                         android:hint="@string/newride_people"
-                        style="?android:editTextStyle"
+                        style="@style/Prevoz.FloatingHintEditText"
                         tools:ignore="TextFields"
                         />
 
@@ -259,7 +259,7 @@
                         android:imeOptions="actionNext"
                         android:nextFocusForward="@+id/newride_insurance"
                         android:nextFocusDown="@id/newride_insurance"
-                        style="?android:editTextStyle"
+                        style="@style/Prevoz.FloatingHintEditText"
                         tools:ignore="TextFields"
                         />
 
@@ -289,7 +289,7 @@
                     android:scrollbars="none"
                     android:hint="@string/newride_notes"
                     android:imeOptions="actionSend"
-                    style="?android:editTextStyle"
+                    style="@style/Prevoz.FloatingHintEditText"
                     tools:ignore="TextFields"
                     />
 

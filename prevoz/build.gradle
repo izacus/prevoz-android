@@ -33,7 +33,7 @@ android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
     defaultConfig {
-        minSdkVersion 9
+        minSdkVersion 15
         targetSdkVersion 22
         versionCode 34
         versionName "3.2"
@@ -85,8 +85,6 @@ dependencies {
     }
 
     compile 'si.virag.flavienlaurent.datetimepicker:library:0.1.2'
-    compile 'com.nineoldandroids:library:2.4.0'
-    compile 'com.nineoldandroids:parent:2.2.0'
     compile 'com.afollestad:material-dialogs:0.4.4'
     compile 'edu.mit.mobile:SimpleContentProvider:0.2.0'
 }

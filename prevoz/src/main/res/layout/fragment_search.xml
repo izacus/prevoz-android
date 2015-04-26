@@ -72,7 +72,7 @@
                     android:src="@drawable/ic_action_location_to"
                     />
 
-                <AutoCompleteTextView
+                <android.support.v7.widget.AppCompatAutoCompleteTextView
                     android:id="@+id/search_from"
                     android:layout_width="match_parent"
                     android:layout_toRightOf="@id/search_ic_from"
@@ -84,10 +84,10 @@
                     android:nextFocusForward="@+id/search_to"
                     android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
                     android:hint="@string/search_form_from_hint"
-                    style="?android:editTextStyle"
+                    style="@style/Prevoz.AutoCompleteTextView"
                     />
 
-                <AutoCompleteTextView
+                <android.support.v7.widget.AppCompatAutoCompleteTextView
                     android:id="@id/search_to"
                     android:layout_width="match_parent"
                     android:layout_toRightOf="@id/search_ic_to"
@@ -98,7 +98,7 @@
                     android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
                     android:singleLine="true"
                     android:hint="@string/search_form_to_hint"
-                    style="?android:editTextStyle"
+                    style="@style/Prevoz.AutoCompleteTextView"
                     />
 
             </RelativeLayout>
@@ -122,7 +122,7 @@
                     android:scaleType="center"
                     />
 
-                <EditText
+                <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/search_date_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -132,7 +132,7 @@
                     android:focusableInTouchMode="false"
                     android:clickable="true"
                     android:hint="@string/search_form_date"
-                    style="?android:editTextStyle"
+                    style="@style/Prevoz.EditText"
                     tools:ignore="TextFields" />
 
              </LinearLayout>

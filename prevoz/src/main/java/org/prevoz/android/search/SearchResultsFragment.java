@@ -3,8 +3,8 @@ package org.prevoz.android.search;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,25 +15,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-import com.nineoldandroids.view.ViewHelper;
 
 import org.prevoz.android.PrevozFragment;
 import org.prevoz.android.R;
 import org.prevoz.android.api.rest.RestSearchResults;
 import org.prevoz.android.api.ApiClient;
-import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
-import org.prevoz.android.push.PushManager;
 import org.prevoz.android.ui.ListDisappearAnimation;
 import org.prevoz.android.ui.ListFlyupAnimator;
 import org.prevoz.android.util.LocaleUtil;
-import org.prevoz.android.util.PrevozActivity;
 import org.prevoz.android.util.ViewUtils;
 
 import java.util.Calendar;
-
-import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -49,7 +43,6 @@ import rx.schedulers.Schedulers;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
-import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
 
 public class SearchResultsFragment extends PrevozFragment implements Callback<RestSearchResults>
 {
@@ -58,7 +51,7 @@ public class SearchResultsFragment extends PrevozFragment implements Callback<Re
     @InjectView(R.id.search_results_noresults)
     protected TextView noResultsText;
 
-    protected View searchNofityButtonContainer;
+    protected View searchNotifyButtonContainer;
     protected View searchNotifyButton;
     protected ImageView searchNotifyButtonIcon;
     protected ProgressBar searchNotifyButtonProgress;
@@ -83,12 +76,12 @@ public class SearchResultsFragment extends PrevozFragment implements Callback<Re
         Icepick.restoreInstanceState(this, savedInstanceState);
 
         headerFragmentView = getLayoutInflater(savedInstanceState).inflate(R.layout.header_search_form, null, false);
-        searchNofityButtonContainer = headerFragmentView.findViewById(R.id.search_notify_button_container);
+        searchNotifyButtonContainer = headerFragmentView.findViewById(R.id.search_notify_button_container);
         searchNofityButtonText = (TextView) headerFragmentView.findViewById(R.id.search_notify_button_text);
         searchNotifyButtonIcon = (ImageView) headerFragmentView.findViewById(R.id.search_notify_button_icon);
         searchNotifyButtonProgress = (ProgressBar) headerFragmentView.findViewById(R.id.search_notify_button_progress);
         searchNotifyButton = headerFragmentView.findViewById(R.id.search_notify_button);
-        searchNofityButtonContainer.setOnClickListener(v -> clickNotificationButton());
+        searchNotifyButtonContainer.setOnClickListener(v -> clickNotificationButton());
     }
 
     @Override
@@ -189,30 +182,29 @@ public class SearchResultsFragment extends PrevozFragment implements Callback<Re
         else
         {
             noResultsText.setVisibility(View.VISIBLE);
-            ViewHelper.setAlpha(noResultsText, 0.0f);
-            animate(noResultsText).alpha(1.0f).setDuration(200).start();
+            noResultsText.setAlpha(0f);
+            noResultsText.animate().alpha(1.0f).setDuration(200);
         }
     }
 
     private void showNotificationsButton()
     {
-        searchNofityButtonContainer.clearAnimation();
+        searchNotifyButtonContainer.clearAnimation();
 
         if (!shouldShowNotificationButton ||
-             searchNofityButtonContainer.getVisibility() == View.VISIBLE ||
+             searchNotifyButtonContainer.getVisibility() == View.VISIBLE ||
             !pushManager.isPushAvailable())
         {
-            ViewHelper.setAlpha(searchNofityButtonContainer, 1.0f);
+            searchNotifyButtonContainer.setAlpha(1.0f);
             return;
         }
 
         // Show notifications button
 
-        ViewHelper.setAlpha(searchNofityButtonContainer, 0.0f);
+        searchNotifyButtonContainer.setAlpha(0.0f);
         updateNotificationButtonText();
-        searchNofityButtonContainer.setVisibility(View.VISIBLE);
-
-        animate(searchNofityButtonContainer).alpha(1.0f).setDuration(200).setListener(null);
+        searchNotifyButtonContainer.setVisibility(View.VISIBLE);
+        searchNotifyButtonContainer.animate().alpha(1.0f).setDuration(200).setListener(null);
     }
 
     private void updateNotificationButtonText()
@@ -231,16 +223,11 @@ public class SearchResultsFragment extends PrevozFragment implements Callback<Re
 
     private void hideNotificationsButton()
     {
-        if (searchNofityButtonContainer.getVisibility() == View.GONE)
+        if (searchNotifyButtonContainer.getVisibility() == View.GONE)
             return;
 
-        searchNofityButtonContainer.clearAnimation();
-        animate(searchNofityButtonContainer).alpha(0.0f).setDuration(200).setListener(new com.nineoldandroids.animation.AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(com.nineoldandroids.animation.Animator animation) {
-                searchNofityButtonContainer.setVisibility(View.GONE);
-            }
-        });
+        searchNotifyButtonContainer.clearAnimation();
+        ViewCompat.animate(searchNotifyButtonContainer).alpha(0.0f).setDuration(200).withEndAction(() -> searchNotifyButtonContainer.setVisibility(View.GONE));
     }
 
     private void clickNotificationButton()
