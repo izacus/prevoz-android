@@ -111,4 +111,6 @@
     <string name="newride_publish_success">Prevoz je bil oddan.</string>
     <string name="newride_publish_failure">Pri oddajanju je prišlo do napake :(</string>
     <string name="rideinfo_ride_full">Prevoz je poln.</string>
+    <string name="myrides_header_bookmarks">Zaznamki</string>
+    <string name="myrides_header_published_rides">Objavljeni prevozi</string>
 </resources>

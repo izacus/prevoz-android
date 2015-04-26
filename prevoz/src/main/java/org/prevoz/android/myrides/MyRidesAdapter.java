@@ -96,7 +96,7 @@ public class MyRidesAdapter extends RecyclerView.Adapter<MyRidesAdapter.ResultsV
 
     @Override
     public void onBindHeaderViewHolder(HeadersViewHolder headersViewHolder, int position) {
-        headersViewHolder.text.setText(!myrides.get(position).isAuthor ? "Zaznamki" : "Objavljeni prevozi");
+        headersViewHolder.text.setText(!myrides.get(position).isAuthor ? context.getString(R.string.myrides_header_bookmarks) : context.getString(R.string.myrides_header_published_rides));
     }
 
     @Override
