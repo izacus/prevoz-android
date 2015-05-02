@@ -129,8 +129,13 @@ public class RestRide implements Comparable, Parcelable, Serializable
         if (!(another instanceof RestRide))
             return 0;
 
-        RestRide other = (RestRide) another;
-        return (fromCity + toCity).compareTo(other.fromCity + other.toCity);
+        final RestRide other = (RestRide) another;
+        final int cityNameCompare = (fromCity + toCity).compareTo(other.fromCity + other.toCity);
+        if (cityNameCompare == 0) {
+            return date.compareTo(other.date);
+        }
+
+        return cityNameCompare;
     }
 
     @Override

@@ -115,7 +115,11 @@ public class MyRidesAdapter extends RecyclerView.Adapter<MyRidesAdapter.ResultsV
             if (r2.isAuthor && !r1.isAuthor)
                 return -1;
 
-            return r1.compareTo(r2);
+            int dateCompare = r1.date.compareTo(r2.date);
+            if (dateCompare == 0)
+                return r1.compareTo(r2);
+
+            return dateCompare;
         });
 
         notifyDataSetChanged();
