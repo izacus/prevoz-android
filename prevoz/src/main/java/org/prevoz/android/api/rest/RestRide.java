@@ -1,5 +1,6 @@
 package org.prevoz.android.api.rest;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -72,6 +73,11 @@ public class RestRide implements Comparable, Parcelable, Serializable
     @SerializedName("is_author")
     public boolean isAuthor;
 
+    @Nullable
+    private String localizedFromCity;
+    @Nullable
+    private String localizedToCity;
+
     public RestRide(String fromCity, String fromCountry, String toCity, String toCountry, @Nullable Float price, @Nullable Integer numPeople, Calendar date, @Nullable String phoneNumber, boolean insured, @Nullable String comment)
     {
         this.id = null;
@@ -87,6 +93,18 @@ public class RestRide implements Comparable, Parcelable, Serializable
         this.isAuthor = true;
         this.insured = insured;
         this.comment = comment;
+    }
+
+    public String getLocalizedFrom(Context ctx) {
+        if (localizedFromCity == null)
+            localizedFromCity = LocaleUtil.getLocalizedCityName(ctx, fromCity, fromCountry);
+        return localizedFromCity;
+    }
+
+    public String getLocalizedTo(Context ctx) {
+        if (localizedToCity == null)
+            localizedToCity = LocaleUtil.getLocalizedCityName(ctx, toCity, toCountry);
+        return localizedToCity;
     }
 
     @Override

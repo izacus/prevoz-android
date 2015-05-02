@@ -3,6 +3,7 @@ package org.prevoz.android.search;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewCompat;
@@ -42,13 +43,15 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 
-public class SearchResultsFragment extends PrevozFragment implements Callback<RestSearchResults>
+public class SearchResultsFragment extends PrevozFragment
 {
     @InjectView(R.id.search_results_list)
     protected StickyListHeadersListView resultList;
@@ -120,8 +123,7 @@ public class SearchResultsFragment extends PrevozFragment implements Callback<Re
         EventBus.getDefault().unregister(this);
     }
 
-    @Override
-    public void success(RestSearchResults restSearchResults, Response response)
+    public void success(RestSearchResults restSearchResults)
     {
         if (getActivity() == null) return;
 
@@ -139,7 +141,6 @@ public class SearchResultsFragment extends PrevozFragment implements Callback<Re
         EventBus.getDefault().post(new Events.SearchComplete());
     }
 
-    @Override
     public void failure(RetrofitError retrofitError)
     {
         Activity activity = getActivity();
@@ -245,14 +246,14 @@ public class SearchResultsFragment extends PrevozFragment implements Callback<Re
         })
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(o -> {},
+        .subscribe(o -> {
+                },
                 throwable -> {
                     Log.e("Prevoz", "Error while loading history!", throwable);
                     Crashlytics.logException(throwable);
                 },
                 () -> {
-                    if (animate && resultList.getAdapter() != null)
-                    {
+                    if (animate && resultList.getAdapter() != null) {
                         hideNotificationsButton();
                         new ListDisappearAnimation(resultList).animate();
                     }
@@ -263,21 +264,63 @@ public class SearchResultsFragment extends PrevozFragment implements Callback<Re
                 });
     }
 
-    public void onEventMainThread(Events.NewSearchEvent e)
-    {
-        EventBus.getDefault().removeStickyEvent(e);
+    private void startSearch(@Nullable String fromCity, @Nullable String fromCountry, @Nullable String toCity, @Nullable String toCountry, @NonNull String dateString) {
         if (resultList.getAdapter() != null)
         {
             hideNotificationsButton();
             new ListDisappearAnimation(resultList).animate();
         }
 
-        shouldShowNotificationButton = !(e.from == null || e.to == null);
-        ApiClient.getAdapter().search(e.from == null ? null : e.from.getDisplayName(),
-                                      e.from == null ? null : e.from.getCountryCode(),
-                                      e.to == null ? null : e.to.getDisplayName(),
-                                      e.to == null ? null : e.to.getCountryCode(),
-                                      LocaleUtil.getSimpleDateFormat("yyyy-MM-dd").format(e.date.getTime()), this);
+        final Activity activity = getActivity();
+        shouldShowNotificationButton = !(fromCity == null || toCity == null);
+
+        ApiClient.getAdapter().search(fromCity, fromCountry, toCity, toCountry, dateString)
+                              .map(new Func1<RestSearchResults, RestSearchResults>() {
+                                  @Override
+                                  public RestSearchResults call(RestSearchResults restSearchResults) {
+
+                                      // This is localization cache warmup on backgorund thread
+                                      LocaleUtil.getFormattedCurrency(1.0);
+
+                                      if (restSearchResults.results != null) {
+                                          for (RestRide ride : restSearchResults.results) {
+                                              ride.getLocalizedFrom(activity);
+                                              ride.getLocalizedTo(activity);
+                                          }
+                                      }
+
+                                      return restSearchResults;
+                                  }
+                              })
+                              .subscribeOn(Schedulers.io())
+                              .observeOn(AndroidSchedulers.mainThread())
+                              .subscribe(new Subscriber<RestSearchResults>() {
+                                  @Override
+                                  public void onCompleted() {
+
+                                  }
+
+                                  @Override
+                                  public void onError(Throwable e) {
+                                        failure((RetrofitError)e);
+                                  }
+
+                                  @Override
+                                  public void onNext(RestSearchResults restSearchResults) {
+                                        success(restSearchResults);
+                                  }
+                              });
+    }
+
+
+    public void onEventMainThread(Events.NewSearchEvent e)
+    {
+        EventBus.getDefault().removeStickyEvent(e);
+        startSearch(e.from == null ? null : e.from.getDisplayName(),
+                    e.from == null ? null : e.from.getCountryCode(),
+                    e.to == null ? null : e.to.getDisplayName(),
+                    e.to == null ? null : e.to.getCountryCode(),
+                    LocaleUtil.getSimpleDateFormat("yyyy-MM-dd").format(e.date.getTime()));
 
         lastFrom = e.from;
         lastTo = e.to;

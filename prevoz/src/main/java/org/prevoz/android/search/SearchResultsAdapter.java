@@ -22,6 +22,7 @@ import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.ride.RideInfoFragment;
 import org.prevoz.android.util.LocaleUtil;
 
+import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -99,19 +100,16 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
         }
         else
         {
-            holder.price.setText(String.format(Locale.GERMAN, "%1.1f €", ride.price));
+            holder.price.setText(LocaleUtil.getFormattedCurrency(ride.price));
             holder.price.setVisibility(View.VISIBLE);
         }
 
         holder.driver.setText(ride.author);
-        holder.card.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RideInfoFragment rideInfo = RideInfoFragment.newInstance(ride);
-                FragmentTransaction ft = context.getSupportFragmentManager().beginTransaction();
-                ft.add(rideInfo, null);
-                ft.commitAllowingStateLoss();
-            }
+        holder.card.setOnClickListener(v1 -> {
+            RideInfoFragment rideInfo = RideInfoFragment.newInstance(ride);
+            FragmentTransaction ft = context.getSupportFragmentManager().beginTransaction();
+            ft.add(rideInfo, null);
+            ft.commitAllowingStateLoss();
         });
 
 

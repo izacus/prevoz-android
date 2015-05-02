@@ -53,6 +53,10 @@ public class LocaleUtil
                 + date.get(Calendar.YEAR);
     }
 
+    public static String getFormattedCurrency(double currency) {
+        return String.format(getLocale(), "%1.1f €", currency);
+    }
+
     public static String getShortFormattedDate(Resources res, Calendar date)
     {
         return getShortDayName(res, date) + ", " + date.get(Calendar.DATE) + ". " + (date.get(Calendar.MONTH) + 1) + ".";

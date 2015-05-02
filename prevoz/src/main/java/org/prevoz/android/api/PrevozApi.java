@@ -26,12 +26,11 @@ public interface PrevozApi
     String FULL_STATE_FULL = "full";
 
     @GET("/api/search/shares/")
-    void search(@Query("f") String from,
+    Observable<RestSearchResults> search(@Query("f") String from,
                 @Query("fc") String fromCountry,
                 @Query("t") String to,
                 @Query("tc") String toCountry,
-                @Query("d") String date,
-                Callback<RestSearchResults> cb);
+                @Query("d") String date);
 
     @GET("/api/accounts/status/")
     Observable<RestAccountStatus> getAccountStatus();
