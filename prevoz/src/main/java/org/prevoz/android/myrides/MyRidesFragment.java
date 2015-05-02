@@ -20,6 +20,7 @@ import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.api.rest.RestSearchResults;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.Bookmark;
+import org.prevoz.android.ui.DividerItemDecoration;
 import org.prevoz.android.util.PrevozActivity;
 import org.prevoz.android.util.ViewUtils;
 
@@ -66,6 +67,7 @@ public class MyRidesFragment extends PrevozFragment
         View views = inflater.inflate(R.layout.fragment_myrides, container, false);
         ButterKnife.inject(this, views);
         myridesList.setHasFixedSize(true);
+        myridesList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
         LinearLayoutManager llm = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         myridesList.setLayoutManager(llm);
         myridesList.addItemDecoration(new StickyRecyclerHeadersDecoration(adapter));

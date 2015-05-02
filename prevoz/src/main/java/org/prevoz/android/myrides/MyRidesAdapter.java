@@ -133,7 +133,7 @@ public class MyRidesAdapter extends RecyclerView.Adapter<MyRidesAdapter.ResultsV
     }
 
     static class ResultsViewHolder extends RecyclerView.ViewHolder {
-        final CardView card;
+        final View card;
         final TextView time;
         final TextView price;
         final TextView path;
@@ -141,7 +141,7 @@ public class MyRidesAdapter extends RecyclerView.Adapter<MyRidesAdapter.ResultsV
 
         public ResultsViewHolder(View v) {
             super(v);
-            card = (CardView)v.findViewById(R.id.item_myride_card);
+            card = v.findViewById(R.id.item_myride_card);
             time = (TextView) v.findViewById(R.id.item_myride_time);
             date = (TextView) v.findViewById(R.id.item_myride_date);
             price = (TextView) v.findViewById(R.id.item_myride_price);

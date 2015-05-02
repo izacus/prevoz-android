@@ -73,11 +73,11 @@ public class PushNotificationsAdapter extends RecyclerView.Adapter<PushNotificat
         @NonNull
         final TextView date;
         @NonNull
-        final CardView card;
+        final View card;
 
         public PushNotificationsHolder(View itemView) {
             super(itemView);
-            card = (CardView) itemView.findViewById(R.id.item_push_card);
+            card = itemView.findViewById(R.id.item_push_card);
             route = (TextView) itemView.findViewById(R.id.item_push_route);
             date = (TextView) itemView.findViewById(R.id.item_push_date);
 
