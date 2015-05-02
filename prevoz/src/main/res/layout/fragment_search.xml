@@ -108,7 +108,7 @@
         <LinearLayout
             android:id="@+id/search_date"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:clickable="true"
@@ -122,10 +122,10 @@
                 android:scaleType="center"
                 />
 
-            <android.support.v7.widget.AppCompatEditText
+            <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/search_date_edit"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="24dp"
                 android:inputType="textNoSuggestions"
                 android:focusable="false"
@@ -133,7 +133,8 @@
                 android:clickable="true"
                 android:gravity="center_vertical|left"
                 android:hint="@string/search_form_date"
-                style="@style/Prevoz.EditText"
+                app:met_hideUnderline="true"
+                style="@style/Prevoz.FloatingHintEditText"
                 tools:ignore="TextFields" />
 
          </LinearLayout>
