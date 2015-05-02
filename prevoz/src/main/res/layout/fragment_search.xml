@@ -2,7 +2,6 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,185 +11,182 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
+        android:gravity="left|bottom"
         android:text="@string/search_form_title"
         style="@style/Prevoz.Header"
         />
 
     <!-- Search card -->
-
-    <android.support.v7.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        app:cardElevation="1dp"
-        app:cardUseCompatPadding="true"
-        >
+        android:background="@android:color/white"
+        android:elevation="8dp"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="48dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:orientation="horizontal"
+            >
 
-            <RelativeLayout
+            <ImageView
+                android:id="@+id/search_ic_from"
+                android:layout_width="32dp"
+                android:layout_height="match_parent"
+                android:scaleType="center"
+                android:src="@drawable/ic_action_location_from"
+                />
+
+            <android.support.v7.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/search_from"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
-                >
+                android:layout_height="match_parent"
+                android:layout_marginLeft="24dp"
+                android:singleLine="true"
+                android:imeOptions="actionNext"
+                android:nextFocusForward="@+id/search_to"
+                android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
+                android:hint="@string/search_form_from_hint"
+                style="@style/Prevoz.AutoCompleteTextView"
+                />
 
-                <ImageView
-                    android:id="@+id/search_ic_from"
-                    android:layout_width="32dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentLeft="true"
-                    android:scaleType="center"
-                    android:src="@drawable/ic_action_location_from"
-                    />
-
-                <ImageView
-                    android:id="@+id/search_ic_dots"
-                    android:layout_width="32dp"
-                    android:layout_height="16dp"
-                    android:layout_below="@id/search_ic_from"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_action_overflow"
-                    />
-
-                <ImageView
-                    android:id="@+id/search_ic_to"
-                    android:layout_below="@id/search_ic_dots"
-                    android:layout_width="32dp"
-                    android:layout_height="40dp"
-                    android:scaleType="center"
-                    android:src="@drawable/ic_action_location_to"
-                    />
-
-                <android.support.v7.widget.AppCompatAutoCompleteTextView
-                    android:id="@+id/search_from"
-                    android:layout_width="match_parent"
-                    android:layout_toRightOf="@id/search_ic_from"
-                    android:layout_alignBottom="@id/search_ic_from"
-                    android:layout_height="40sp"
-                    android:layout_marginLeft="8dp"
-                    android:singleLine="true"
-                    android:imeOptions="actionNext"
-                    android:nextFocusForward="@+id/search_to"
-                    android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
-                    android:hint="@string/search_form_from_hint"
-                    style="@style/Prevoz.AutoCompleteTextView"
-                    />
-
-                <android.support.v7.widget.AppCompatAutoCompleteTextView
-                    android:id="@id/search_to"
-                    android:layout_width="match_parent"
-                    android:layout_toRightOf="@id/search_ic_to"
-                    android:layout_alignBottom="@id/search_ic_to"
-                    android:layout_height="40sp"
-                    android:layout_marginLeft="8dp"
-                    android:imeOptions="actionNext"
-                    android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
-                    android:singleLine="true"
-                    android:hint="@string/search_form_to_hint"
-                    style="@style/Prevoz.AutoCompleteTextView"
-                    />
-
-            </RelativeLayout>
-
-
-            <LinearLayout
-                android:id="@+id/search_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:clickable="true"
-                android:orientation="horizontal"
-                >
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:src="@drawable/ic_action_calendar_day"
-                    android:scaleType="center"
-                    />
-
-                <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/search_date_edit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:inputType="textNoSuggestions"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:clickable="true"
-                    android:hint="@string/search_form_date"
-                    style="@style/Prevoz.EditText"
-                    tools:ignore="TextFields" />
-
-             </LinearLayout>
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_marginTop="16dp"
-                android:layout_height="1dp"
-
-                android:background="#DDDDDD" />
-
-            <LinearLayout
-                android:id="@+id/search_button"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:paddingLeft="16dp"
-                android:orientation="horizontal"
-                android:background="?selectableItemBackground"
-                >
-
-                <FrameLayout
-                    android:layout_width="32dp"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:id="@+id/search_button_img"
-                        android:layout_width="32dp"
-                        android:layout_height="match_parent"
-                        android:scaleType="center"
-                        android:src="@drawable/ic_action_send"
-                        />
-
-                    <ProgressBar
-                        android:id="@+id/search_button_progress"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_gravity="center_vertical"
-                        android:indeterminateOnly="true"
-                        android:visibility="invisible"
-                        android:indeterminateTintMode="src_in"
-                        android:indeterminateTint="@color/prevoztheme_color_dark"
-                        />
-
-                </FrameLayout>
-
-                <TextView
-                    android:id="@+id/search_button_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="left|center_vertical"
-                    android:paddingLeft="16dp"
-                    android:textColor="@color/prevoztheme_color"
-                    android:text="@string/search_form_button_search"
-                    style="?android:textAppearanceButton"
-                    />
-            </LinearLayout>
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="72dp"
+            android:background="@color/prevoztheme_divider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:orientation="horizontal"
+            >
+
+            <ImageView
+                android:id="@+id/search_ic_to"
+                android:layout_width="32dp"
+                android:layout_height="match_parent"
+                android:scaleType="center"
+                android:src="@drawable/ic_action_location_to"
+                />
+
+            <android.support.v7.widget.AppCompatAutoCompleteTextView
+                android:id="@id/search_to"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="24dp"
+                android:imeOptions="actionNext"
+                android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
+                android:singleLine="true"
+                android:hint="@string/search_form_to_hint"
+                style="@style/Prevoz.AutoCompleteTextView"
+                />
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="72dp"
+            android:background="@color/prevoztheme_divider" />
+
+        <LinearLayout
+            android:id="@+id/search_date"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:clickable="true"
+            android:orientation="horizontal"
+            >
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_action_calendar_day"
+                android:scaleType="center"
+                />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/search_date_edit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="24dp"
+                android:inputType="textNoSuggestions"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:clickable="true"
+                android:gravity="center_vertical|left"
+                android:hint="@string/search_form_date"
+                style="@style/Prevoz.EditText"
+                tools:ignore="TextFields" />
+
+         </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/prevoztheme_divider" />
+
+        <LinearLayout
+            android:id="@+id/search_button"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:paddingLeft="16dp"
+            android:orientation="horizontal"
+            android:background="?selectableItemBackground"
+            >
+
+            <FrameLayout
+                android:layout_width="32dp"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/search_button_img"
+                    android:layout_width="32dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_action_send"
+                    />
+
+                <ProgressBar
+                    android:id="@+id/search_button_progress"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center_vertical"
+                    android:indeterminateOnly="true"
+                    android:visibility="invisible"
+                    android:indeterminateTintMode="src_in"
+                    android:indeterminateTint="@color/prevoztheme_color_dark"
+                    />
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/search_button_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="16dp"
+                android:textColor="@color/prevoztheme_color"
+                android:text="@string/search_form_button_search"
+                style="?android:textAppearanceButton"
+                />
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

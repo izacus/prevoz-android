@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import org.prevoz.android.R;
 import org.prevoz.android.api.rest.RestRide;
+import org.prevoz.android.model.Bookmark;
 import org.prevoz.android.ride.RideInfoFragment;
 import org.prevoz.android.util.LocaleUtil;
 
@@ -72,7 +73,7 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
         if (v == null)
         {
             v = inflater.inflate(R.layout.item_search_result, parent, false);
-            CardView c = (CardView)v.findViewById(R.id.item_result_card);
+            View c = v.findViewById(R.id.item_result_card);
             TextView time = (TextView) v.findViewById(R.id.item_result_time);
             TextView price = (TextView) v.findViewById(R.id.item_result_price);
             TextView driver = (TextView) v.findViewById(R.id.item_result_driver);
@@ -87,6 +88,13 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
         if (highlights.contains(ride.id.intValue()))
         {
             time.append("*");
+            time.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.prevoztheme_color)), time.length() - 1, time.length(), SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE);
+            time.setSpan(new RelativeSizeSpan(0.6f), time.length() - 1, time.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            time.setSpan(new SuperscriptSpan(), time.length() - 1, time.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+        }
+
+        if (Bookmark.shouldShow(ride.bookmark)) {
+            time.append("\u2764");
             time.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.prevoztheme_color)), time.length() - 1, time.length(), SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE);
             time.setSpan(new RelativeSizeSpan(0.6f), time.length() - 1, time.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
             time.setSpan(new SuperscriptSpan(), time.length() - 1, time.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
@@ -202,12 +210,12 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
 
     private static class ResultsViewHolder
     {
-        final CardView card;
+        final View card;
         final TextView time;
         final TextView price;
         final TextView driver;
 
-        private ResultsViewHolder(CardView card, TextView time, TextView price, TextView driver)
+        private ResultsViewHolder(View card, TextView time, TextView price, TextView driver)
         {
             this.card = card;
             this.time = time;

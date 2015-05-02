@@ -65,10 +65,12 @@ public class Events
     public static class MyRideStatusUpdated
     {
         public final Long id;
+        public final boolean deleted;
 
-        public MyRideStatusUpdated(Long id)
+        public MyRideStatusUpdated(Long id, boolean deleted)
         {
             this.id = id;
+            this.deleted = deleted;
         }
     }
 

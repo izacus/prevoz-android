@@ -9,4 +9,5 @@
     <!-- Picker theme -->
     <color name="mdtp_accent_color">@color/prevoztheme_color</color>
     <color name="mdtp_accent_color_dark">@color/prevoztheme_color_dark</color>
+    <color name="prevoztheme_divider">#1E000000</color>
 </resources>

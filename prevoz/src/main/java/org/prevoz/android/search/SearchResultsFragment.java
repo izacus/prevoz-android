@@ -93,9 +93,6 @@ public class SearchResultsFragment extends PrevozFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View views = inflater.inflate(R.layout.fragment_search_list, container, false);
         ButterKnife.inject(this, views);
-
-        resultList.setDivider(null);
-        resultList.setDividerHeight(0);
         resultList.addHeaderView(headerFragmentView, null, true);
 
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
@@ -338,8 +335,11 @@ public class SearchResultsFragment extends PrevozFragment
 
     public void onEventMainThread(Events.MyRideStatusUpdated e)
     {
-        if (adapter != null && adapter instanceof SearchResultsAdapter)
-            ((SearchResultsAdapter) adapter).removeRide(e.id);
+        if (adapter != null && adapter instanceof SearchResultsAdapter) {
+            if (e.deleted)
+                ((SearchResultsAdapter) adapter).removeRide(e.id);
+            ((SearchResultsAdapter) adapter).notifyDataSetChanged();
+        }
     }
 
     public void onEventMainThread(Events.ClearSearchEvent e)
