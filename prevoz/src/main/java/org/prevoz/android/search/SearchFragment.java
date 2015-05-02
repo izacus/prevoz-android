@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
+import com.rengwuxian.materialedittext.MaterialAutoCompleteTextView;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import org.prevoz.android.R;
@@ -44,9 +45,9 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
     @InjectView(R.id.search_date_edit)
     protected EditText searchDate;
     @InjectView(R.id.search_from)
-    protected AutoCompleteTextView searchFrom;
+    protected MaterialAutoCompleteTextView searchFrom;
     @InjectView(R.id.search_to)
-    protected AutoCompleteTextView searchTo;
+    protected MaterialAutoCompleteTextView searchTo;
     @InjectView(R.id.search_button)
     protected View searchButton;
 

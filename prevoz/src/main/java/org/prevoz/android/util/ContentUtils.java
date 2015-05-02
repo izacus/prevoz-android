@@ -23,7 +23,7 @@ import java.util.Date;
 
 public class ContentUtils
 {
-    private static final int CONTENT_DB_VERSION = 2;
+    private static final int CONTENT_DB_VERSION = 3;
     private static final String PREF_CONTENT_DB_VERSION = "content_db_ver";
     private static final String LOG_TAG = "Prevoz.Content";
 
@@ -37,6 +37,8 @@ public class ContentUtils
 
         ContentResolver resolver = context.getContentResolver();
         Log.d(LOG_TAG, "Inserting data into content provider.....");
+        resolver.delete(Location.CONTENT_URI, null, null);
+        resolver.delete(Country.CONTENT_URI, null, null);
 
         // Cities
         {

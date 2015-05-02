@@ -90,7 +90,6 @@
                 android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
                 android:hint="@string/search_form_to_hint"
                 app:met_hideUnderline="true"
-                app:met_floatingLabel="highlight"
                 app:met_clearButton="true"
                 style="@style/Prevoz.FloatingHintEditText"
                 />
@@ -156,7 +155,6 @@
                 android:layout_marginLeft="72dp"
                 android:hint="@string/newride_time"
                 app:met_hideUnderline="true"
-                app:met_floatingLabel="highlight"
                 style="@style/Prevoz.FloatingHintEditText"
                 tools:ignore="TextFields"
                 />
