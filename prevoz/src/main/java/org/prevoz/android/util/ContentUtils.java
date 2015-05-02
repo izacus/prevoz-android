@@ -23,7 +23,7 @@ import java.util.Date;
 
 public class ContentUtils
 {
-    private static final int CONTENT_DB_VERSION = 1;
+    private static final int CONTENT_DB_VERSION = 2;
     private static final String PREF_CONTENT_DB_VERSION = "content_db_ver";
     private static final String LOG_TAG = "Prevoz.Content";
 
