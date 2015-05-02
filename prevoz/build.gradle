@@ -83,4 +83,5 @@ dependencies {
     compile 'com.nispok:snackbar:2.10.7'
     compile 'com.wdullaer:materialdatetimepicker:1.2.2'
     compile 'edu.mit.mobile:SimpleContentProvider:0.2.0'
+    compile 'com.rengwuxian.materialedittext:library:2.1.3'
 }

@@ -24,324 +24,327 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
+            android:layout_height="48dp"
+            android:layout_margin="8dp"
+            android:gravity="bottom|left"
             android:text="@string/newride_title"
             style="@style/Prevoz.Header"
             />
 
         <!-- Search card -->
 
-        <android.support.v7.widget.CardView
-            android:layout_height="wrap_content"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_marginLeft="11dp"
-            android:layout_marginRight="11dp"
-            app:cardElevation="1dp"
-            app:cardUseCompatPadding="true"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@android:color/white"
+            android:elevation="4dp"
             >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:orientation="horizontal"
                 >
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="8dp"
-                    >
-
-                    <ImageView
-                        android:id="@+id/newride_ic_from"
-                        android:layout_width="32dp"
-                        android:layout_height="48dp"
-                        android:paddingTop="8dp"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentLeft="true"
-                        android:scaleType="center"
-                        android:src="@drawable/ic_action_location_from"
-                        />
-
-                    <ImageView
-                        android:id="@+id/newride_ic_dots"
-                        android:layout_width="32dp"
-                        android:layout_height="16dp"
-                        android:layout_below="@id/newride_ic_from"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ic_action_overflow"
-                        />
-
-                    <ImageView
-                        android:id="@+id/newride_ic_to"
-                        android:layout_below="@id/newride_ic_dots"
-                        android:layout_width="32dp"
-                        android:layout_height="48dp"
-                        android:scaleType="center"
-                        android:src="@drawable/ic_action_location_to"
-                        />
-
-                    <android.support.v7.widget.AppCompatAutoCompleteTextView
-                        android:id="@+id/newride_from"
-                        android:layout_width="match_parent"
-                        android:layout_toRightOf="@id/newride_ic_from"
-                        android:layout_alignBottom="@id/newride_ic_from"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginTop="2dp"
-                        android:singleLine="true"
-                        android:imeOptions="actionNext"
-                        android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
-                        android:hint="@string/search_form_from_hint"
-                        style="@style/Prevoz.AutoCompleteTextView"
-                        />
-
-                    <android.support.v7.widget.AppCompatAutoCompleteTextView
-                        android:id="@+id/newride_to"
-                        android:layout_width="match_parent"
-                        android:layout_toRightOf="@id/newride_ic_to"
-                        android:layout_alignBottom="@id/newride_ic_to"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:imeOptions="actionNext"
-                        android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
-                        android:singleLine="true"
-                        android:hint="@string/search_form_to_hint"
-                        style="@style/Prevoz.AutoCompleteTextView"
-                        />
-
-                </RelativeLayout>
-
-
-                <LinearLayout
-                    android:id="@+id/newride_date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:clickable="true"
-                    android:orientation="horizontal"
-                    >
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_action_calendar_day"
-                        android:scaleType="center"
-                        />
-
-                    <org.prevoz.android.ui.FloatingHintEditText
-                        android:id="@+id/newride_date_edit"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:inputType="textNoSuggestions"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:clickable="true"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:hint="@string/search_form_date"
-                        style="@style/Prevoz.FloatingHintEditText"
-                        tools:ignore="TextFields" />
-
-                    <org.prevoz.android.ui.FloatingHintEditText
-                        android:id="@+id/newride_time_edit"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:inputType="textNoSuggestions"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:clickable="true"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:hint="@string/newride_time"
-                        style="@style/Prevoz.FloatingHintEditText"
-                        tools:ignore="TextFields"
-                        />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/newride_money_people"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:orientation="horizontal"
-                    >
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_action_ticket"
-                        android:scaleType="center"
-                        />
-
-                    <org.prevoz.android.ui.FloatingHintEditText
-                        android:id="@+id/newride_price"
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:inputType="numberDecimal"
-                        android:singleLine="true"
-                        android:hint="@string/newride_price"
-                        android:imeOptions="actionNext"
-                        android:nextFocusRight="@+id/newride_people"
-                        android:nextFocusForward="@id/newride_people"
-                        style="@style/Prevoz.FloatingHintEditText"
-                        tools:ignore="TextFields"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:textSize="18sp"
-                        android:text="€"
-                        />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="48dp"
-                        android:layout_marginLeft="32dp"
-                        android:src="@drawable/ic_action_users"
-                        android:scaleType="center"
-                        />
-
-                    <org.prevoz.android.ui.FloatingHintEditText
-                        android:id="@id/newride_people"
-                        android:layout_width="76dp"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:layout_marginLeft="8dp"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:nextFocusForward="@+id/newride_phone"
-                        android:nextFocusDown="@id/newride_phone"
-                        android:hint="@string/newride_people"
-                        style="@style/Prevoz.FloatingHintEditText"
-                        tools:ignore="TextFields"
-                        />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:clickable="true"
-                    android:orientation="horizontal"
-                    >
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_action_phone_start"
-                        android:scaleType="center"
-                        />
-
-                    <org.prevoz.android.ui.FloatingHintEditText
-                        android:id="@id/newride_phone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:inputType="phone"
-                        android:singleLine="true"
-                        android:hint="@string/newride_phone_number"
-                        android:imeOptions="actionNext"
-                        android:nextFocusForward="@+id/newride_insurance"
-                        android:nextFocusDown="@id/newride_insurance"
-                        style="@style/Prevoz.FloatingHintEditText"
-                        tools:ignore="TextFields"
-                        />
-
-                </LinearLayout>
-
-                <CheckBox
-                    android:id="@id/newride_insurance"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:paddingLeft="@dimen/checkbox_padding"
-                    android:text="@string/newride_insurance"
-                    android:nextFocusForward="@+id/newride_notes"
-                    android:nextFocusDown="@id/newride_notes"
-                    tools:ignore="TextFields"
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_action_location_from"
                     />
 
-                <org.prevoz.android.ui.FloatingHintEditText
-                    android:id="@id/newride_notes"
+                <com.rengwuxian.materialedittext.MaterialAutoCompleteTextView
+                    android:id="@+id/newride_from"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:inputType="textMultiLine"
-                    android:scrollbars="none"
-                    android:hint="@string/newride_notes"
-                    android:imeOptions="actionSend"
+                    android:layout_marginLeft="24dp"
+                    android:singleLine="true"
+                    android:imeOptions="actionNext"
+                    android:nextFocusForward="@+id/search_to"
+                    android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
+                    android:hint="@string/search_form_from_hint"
+                    app:met_hideUnderline="true"
+                    app:met_clearButton="true"
+                    style="@style/Prevoz.FloatingHintEditText"
+                    />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="72dp"
+                android:background="@color/prevoztheme_divider" />
+
+            <com.rengwuxian.materialedittext.MaterialAutoCompleteTextView
+                android:id="@+id/newride_to"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="72dp"
+                android:singleLine="true"
+                android:imeOptions="actionNext"
+                android:nextFocusForward="@+id/search_to"
+                android:inputType="textPostalAddress|textNoSuggestions|textCapWords"
+                android:hint="@string/search_form_to_hint"
+                app:met_hideUnderline="true"
+                app:met_floatingLabel="highlight"
+                app:met_clearButton="true"
+                style="@style/Prevoz.FloatingHintEditText"
+                />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/prevoztheme_divider" />
+
+            <LinearLayout
+                android:id="@+id/newride_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:clickable="true"
+                android:orientation="horizontal"
+                >
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_action_calendar_day"
+                    android:scaleType="center"
+                    />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/newride_date_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="24dp"
+                    android:inputType="textNoSuggestions"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:clickable="true"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:hint="@string/search_form_date"
+                    app:met_hideUnderline="true"
+                    style="@style/Prevoz.FloatingHintEditText"
+                    tools:ignore="TextFields" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="72dp"
+                android:background="@color/prevoztheme_divider" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/newride_time_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textNoSuggestions"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:clickable="true"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:gravity="left|center_vertical"
+                android:layout_marginLeft="72dp"
+                android:hint="@string/newride_time"
+                app:met_hideUnderline="true"
+                app:met_floatingLabel="highlight"
+                style="@style/Prevoz.FloatingHintEditText"
+                tools:ignore="TextFields"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/prevoztheme_divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:orientation="horizontal"
+                >
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_action_ticket"
+                    android:scaleType="center"
+                    />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/newride_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="24dp"
+                    android:inputType="numberDecimal"
+                    android:singleLine="true"
+                    android:hint="@string/newride_price"
+                    android:imeOptions="actionNext"
+                    android:maxLength="6"
+                    android:nextFocusRight="@+id/newride_people"
+                    android:nextFocusForward="@id/newride_people"
+                    app:met_hideUnderline="true"
                     style="@style/Prevoz.FloatingHintEditText"
                     tools:ignore="TextFields"
                     />
 
+            </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="16dp"
+            <View   android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#DDDDDD" />
+                    android:background="@color/prevoztheme_divider" />
 
-                <LinearLayout
-                    android:id="@+id/newride_button"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:orientation="horizontal"
+                >
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_action_users"
+                    android:scaleType="center"
+                    />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@id/newride_people"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:paddingLeft="16dp"
-                    android:orientation="horizontal"
-                    android:background="@drawable/borderless_button"
-                    >
-
-                    <ImageView
-                        android:id="@+id/newride_button_img"
-                        android:layout_width="32dp"
-                        android:layout_height="match_parent"
-                        android:scaleType="center"
-                        android:src="@drawable/ic_action_send"
-                        />
-
-
-                    <TextView
-                        android:id="@+id/newride_button_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="left|center_vertical"
-                        android:paddingLeft="16dp"
-
-                        android:textColor="@color/prevoztheme_color"
-                        android:text="@string/newride_button_submit"
-                        style="?android:textAppearanceButton"
-                        />
-                </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:layout_marginLeft="24dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:gravity="left|center_vertical"
+                    android:nextFocusForward="@+id/newride_phone"
+                    android:nextFocusDown="@id/newride_phone"
+                    android:hint="@string/newride_people"
+                    app:met_hideUnderline="true"
+                    style="@style/Prevoz.FloatingHintEditText"
+                    tools:ignore="TextFields"
+                    />
 
             </LinearLayout>
-        </android.support.v7.widget.CardView>
+
+            <View   android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/prevoztheme_divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:clickable="true"
+                android:orientation="horizontal"
+                >
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_action_phone_start"
+                    android:scaleType="center"
+                    />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@id/newride_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="24dp"
+                    android:inputType="phone"
+                    android:singleLine="true"
+                    android:hint="@string/newride_phone_number"
+                    android:imeOptions="actionNext"
+                    android:nextFocusForward="@+id/newride_insurance"
+                    android:nextFocusDown="@id/newride_insurance"
+                    app:met_hideUnderline="true"
+                    style="@style/Prevoz.FloatingHintEditText"
+                    tools:ignore="TextFields"
+                    />
+
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@id/newride_insurance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:paddingLeft="@dimen/checkbox_padding"
+                android:text="@string/newride_insurance"
+                android:nextFocusForward="@+id/newride_notes"
+                android:nextFocusDown="@id/newride_notes"
+                tools:ignore="TextFields"
+                />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@id/newride_notes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:inputType="textMultiLine"
+                android:scrollbars="none"
+                android:hint="@string/newride_notes"
+                android:imeOptions="actionSend"
+                app:met_hideUnderline="true"
+                app:met_floatingLabel="highlight"
+                style="@style/Prevoz.FloatingHintEditText"
+                tools:ignore="TextFields"
+                />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_marginTop="16dp"
+                android:layout_height="1dp"
+                android:background="#DDDDDD" />
+
+            <LinearLayout
+                android:id="@+id/newride_button"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:paddingLeft="16dp"
+                android:orientation="horizontal"
+                android:background="@drawable/borderless_button"
+                >
+
+                <ImageView
+                    android:id="@+id/newride_button_img"
+                    android:layout_width="32dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_action_send"
+                    />
+
+
+                <TextView
+                    android:id="@+id/newride_button_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"
+                    android:paddingLeft="16dp"
+
+                    android:textColor="@color/prevoztheme_color"
+                    android:text="@string/newride_button_submit"
+                    style="?android:textAppearanceButton"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <style name="Prevoz.Theme" parent="Prevoz.Theme.Base" />
     <style name="Prevoz.Theme.Base" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/prevoztheme_color</item>
@@ -37,8 +38,8 @@
     </style>
 
     <style name="Prevoz.FloatingHintEditText" parent="@style/Prevoz.EditText">
-        <item name="android:paddingTop">0dp</item>
         <item name="android:colorActivatedHighlight">@color/prevoztheme_color</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="Prevoz.Header" parent="@android:style/Widget.TextView">

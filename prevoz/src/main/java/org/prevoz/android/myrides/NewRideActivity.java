@@ -10,6 +10,9 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 
+import com.rengwuxian.materialedittext.MaterialAutoCompleteTextView;
+import com.rengwuxian.materialedittext.MaterialEditText;
+import com.rengwuxian.materialedittext.validation.RegexpValidator;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
@@ -54,21 +57,21 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
     @InjectView(R.id.toolbar)
     protected Toolbar toolbar;
     @InjectView(R.id.newride_from)
-    protected AutoCompleteTextView textFrom;
+    protected MaterialAutoCompleteTextView textFrom;
     @InjectView(R.id.newride_to)
-    protected AutoCompleteTextView textTo;
+    protected MaterialAutoCompleteTextView textTo;
     @InjectView(R.id.newride_date_edit)
-    protected FloatingHintEditText textDate;
+    protected MaterialEditText textDate;
     @InjectView(R.id.newride_time_edit)
-    protected FloatingHintEditText textTime;
+    protected MaterialEditText textTime;
     @InjectView(R.id.newride_price)
-    protected FloatingHintEditText textPrice;
+    protected MaterialEditText textPrice;
     @InjectView(R.id.newride_phone)
-    protected FloatingHintEditText textPhone;
+    protected MaterialEditText textPhone;
     @InjectView(R.id.newride_people)
-    protected FloatingHintEditText textPeople;
+    protected MaterialEditText textPeople;
     @InjectView(R.id.newride_notes)
-    protected FloatingHintEditText textNotes;
+    protected MaterialEditText textNotes;
     @InjectView(R.id.newride_insurance)
     protected CheckBox chkInsurance;
 
@@ -104,8 +107,7 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
 
         // Setup IME actions
         textTo.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_NEXT)
-            {
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
                 shouldGoFromDateToTime = true;
                 onDateClicked();
                 textTo.clearFocus();
@@ -117,8 +119,7 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
         });
 
         textNotes.setOnEditorActionListener((textView, actionId, keyEvent) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEND)
-            {
+            if (actionId == EditorInfo.IME_ACTION_SEND) {
                 onSubmitClicked();
                 return true;
             }
@@ -262,7 +263,7 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
     protected void updateDateTimeDisplay(boolean date, boolean time)
     {
         if (date)
-            textDate.setText(LocaleUtil.getShortFormattedDate(getResources(), setTime));
+            textDate.setText(LocaleUtil.localizeDate(getResources(), setTime));
 
         if (time)
             textTime.setText(LocaleUtil.getFormattedTime(setTime));
@@ -270,88 +271,14 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
 
     private boolean validateForm()
     {
-        textPhone.setFloatingHintColor(null);
-        textPeople.setFloatingHintColor(null);
-        textPrice.setFloatingHintColor(null);
-        textTime.setFloatingHintColor(null);
-        textDate.setFloatingHintColor(null);
-
-        String error = null;
-
-        if (textPhone.getText().toString().length() == 0)
-        {
-            error = getString(R.string.newride_error_phone);
-            textPhone.setFloatingHintColor(Color.RED);
-        }
-
-        try
-        {
-            int people = Integer.parseInt(textPeople.getText().toString());
-            if (people < 1 || people > 6)
-            {
-                error = getString(R.string.newride_error_people_num);
-                textPeople.setFloatingHintColor(Color.RED);
-            }
-        }
-        catch (NumberFormatException e)
-        {
-            textPeople.setFloatingHintColor(Color.RED);
-            error = getString(R.string.newride_error_people_missing);
-        }
-
-        try
-        {
-            double price = Double.parseDouble(textPrice.getText().toString());
-            if (price < 0 || price > 100)
-            {
-                error = getString(R.string.newride_error_price_invalid);
-                textPrice.setFloatingHintColor(Color.RED);
-            }
-        }
-        catch (NumberFormatException e)
-        {
-            error = getString(R.string.newride_error_price_invalid);
-            textPrice.setFloatingHintColor(Color.RED);
-        }
-
-        if (!timeSet)
-        {
-            error = getString(R.string.newride_error_time_missing);
-        }
-        else if (!dateSet)
-        {
-            error = getString(R.string.newride_error_date_missing);
-        }
-        else if (setTime.getTimeInMillis() < System.currentTimeMillis())
-        {
-            error = getString(R.string.newride_error_date_passed);
-            textDate.setFloatingHintColor(Color.RED);
-            textTime.setFloatingHintColor(Color.RED);
-        }
-
-
-        if (textTo.getText().length() == 0)
-        {
-            error = getString(R.string.newride_error_to_missing);
-        }
-
-        if (textFrom.getText().length() == 0)
-        {
-            error = getString(R.string.newride_error_from_missing);
-        }
-
-        if (error != null)
-        {
-            showError(error);
-            return false;
-        }
-
-        return true;
-    }
-
-    private void showError(String message)
-    {
-        ViewUtils.showMessage(this, message, true);
+        // & as a logical operator doesn't short circuit
+        return textPhone.validateWith(new RegexpValidator(getString(R.string.newride_error_phone), "[0-9\\+ ]{9,}")) &
+               textPeople.validateWith(new RegexpValidator(getString(R.string.newride_error_people_num), "[1-6]")) &
+               textPrice.validateWith(new RegexpValidator(getString(R.string.newride_error_price_invalid), "[0-9.,]{1,6}")) &
+               textTime.validateWith(new RegexpValidator(getString(R.string.newride_error_time_missing), ".+")) &
+               textDate.validateWith(new RegexpValidator(getString(R.string.newride_error_date_missing), ".+")) &
+               textFrom.validateWith(new RegexpValidator(getString(R.string.newride_error_from_missing), ".+")) &
+               textTo.validateWith(new RegexpValidator(getString(R.string.newride_error_to_missing), ".+"));
     }
 
     @Override

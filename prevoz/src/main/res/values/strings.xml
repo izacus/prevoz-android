@@ -89,8 +89,7 @@
     <string name="ride_delete_failure">Prevoza ni bilo mogoče izbrisati.</string>
     <string name="newride_error_phone">Vnesite telefonsko številko.</string>
     <string name="newride_error_people_num">Število potnikov mora biti med 1 in 6.</string>
-    <string name="newride_error_people_missing">Vnesite število potnikov.</string>
-    <string name="newride_error_price_invalid">Vnesite ceno prevoza.</string>
+    <string name="newride_error_price_invalid">Vnesite veljavno ceno prevoza.</string>
     <string name="newride_error_time_missing">Vnesite čas prevoza.</string>
     <string name="newride_error_date_missing">Vnesite datum prevoza.</string>
     <string name="newride_error_date_passed">Datum in čas prevoza je že minil.</string>
