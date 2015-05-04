@@ -2,10 +2,9 @@ package org.prevoz.android.search;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.CardView;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -20,14 +19,12 @@ import android.widget.TextView;
 import org.prevoz.android.R;
 import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.model.Bookmark;
-import org.prevoz.android.ride.RideInfoFragment;
+import org.prevoz.android.ride.RideInfoActivity;
 import org.prevoz.android.util.LocaleUtil;
 
-import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
@@ -114,10 +111,8 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
 
         holder.driver.setText(ride.author);
         holder.card.setOnClickListener(v1 -> {
-            RideInfoFragment rideInfo = RideInfoFragment.newInstance(ride);
-            FragmentTransaction ft = context.getSupportFragmentManager().beginTransaction();
-            ft.add(rideInfo, null);
-            ft.commitAllowingStateLoss();
+			ActivityOptionsCompat options = ActivityOptionsCompat.makeScaleUpAnimation(holder.card, 0, 0, holder.card.getWidth(), holder.card.getHeight());
+            RideInfoActivity.show(context, ride, options.toBundle());
         });
 
 

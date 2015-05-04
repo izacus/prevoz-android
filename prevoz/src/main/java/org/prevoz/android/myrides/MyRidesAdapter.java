@@ -1,16 +1,13 @@
 package org.prevoz.android.myrides;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
@@ -19,16 +16,13 @@ import org.prevoz.android.R;
 import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.Route;
-import org.prevoz.android.ride.RideInfoFragment;
+import org.prevoz.android.ride.RideInfoActivity;
 import org.prevoz.android.util.LocaleUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
-
-import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 public class MyRidesAdapter extends RecyclerView.Adapter<MyRidesAdapter.ResultsViewHolder> implements StickyRecyclerHeadersAdapter<MyRidesAdapter.HeadersViewHolder>
 {
@@ -70,10 +64,7 @@ public class MyRidesAdapter extends RecyclerView.Adapter<MyRidesAdapter.ResultsV
         Route r = new Route(new City(ride.fromCity, ride.fromCountry), new City(ride.toCity, ride.toCountry));
         holder.path.setText(r.toString());
         holder.card.setOnClickListener(v -> {
-            RideInfoFragment rideInfo = RideInfoFragment.newInstance(ride);
-            FragmentTransaction ft = context.getSupportFragmentManager().beginTransaction();
-            ft.add(rideInfo, null);
-            ft.commitAllowingStateLoss();
+            RideInfoActivity.show(context, ride);
         });
     }
 

@@ -2,12 +2,10 @@ package org.prevoz.android.myrides;
 
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 
 import com.rengwuxian.materialedittext.MaterialAutoCompleteTextView;
@@ -25,10 +23,9 @@ import org.prevoz.android.api.rest.RestStatus;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.CityNameTextValidator;
-import org.prevoz.android.ride.RideInfoFragment;
+import org.prevoz.android.ride.RideInfoActivity;
 import org.prevoz.android.ride.RideInfoListener;
 import org.prevoz.android.search.CityAutocompleteAdapter;
-import org.prevoz.android.ui.FloatingHintEditText;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.PrevozActivity;
 import org.prevoz.android.util.StringUtil;
@@ -227,9 +224,7 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
         if (editRideId != null)
             ride.id = editRideId;
 
-        RideInfoFragment rideInfo = RideInfoFragment.newInstance(ride, RideInfoFragment.PARAM_ACTION_SUBMIT);
-        rideInfo.setRideInfoListener(this);
-        rideInfo.show(getSupportFragmentManager(), "RideInfo");
+		RideInfoActivity.show(this, ride, RideInfoActivity.PARAM_ACTION_SUBMIT);
     }
 
     @Override

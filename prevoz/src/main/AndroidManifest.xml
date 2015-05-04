@@ -55,6 +55,17 @@
 
         </activity>
 
+        <activity android:name=".ride.RideInfoActivity"
+                  android:parentActivityName=".MainActivity"
+                  android:theme="@style/Prevoz.Theme.RideInfo"
+                >
+
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="org.prevoz.android.MainActivity" />
+
+        </activity>
+
         <service android:name=".auth.AuthenticationService"
                  android:exported="false" >
             <intent-filter>

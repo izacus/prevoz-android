@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rideinfo_container"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@android:color/white"
+    android:elevation="16dp"
     >
 
     <FrameLayout
@@ -25,37 +28,46 @@
             android:layout_height="wrap_content"
             >
 
-            <TextView
-                android:id="@+id/rideinfo_from"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
-                android:textStyle="bold"
-                android:fontFamily="sans-serif-light"
-                android:textColor="@android:color/black"
-                android:textSize="26sp"
-                style="?android:attr/textAppearanceLarge"
-                />
+                android:paddingBottom="16dp"
+                android:background="@color/prevoztheme_color_dark"
+                android:orientation="vertical"
+                >
 
-            <TextView
-                android:id="@+id/rideinfo_to"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:textStyle="bold"
-                android:fontFamily="sans-serif-light"
-                android:textColor="@android:color/black"
-                android:textSize="26sp"
-                style="?android:attr/textAppearanceLarge"
-                android:gravity="right"
-                />
+                <TextView
+                    android:id="@+id/rideinfo_from"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="@android:color/white"
+                    android:textSize="26sp"
+                    style="?android:attr/textAppearanceLarge"
+                    />
+
+                <TextView
+                    android:id="@+id/rideinfo_to"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="@android:color/white"
+                    android:textSize="26sp"
+                    style="?android:attr/textAppearanceLarge"
+                    android:gravity="right"
+                    />
+            </LinearLayout>
+
 
             <View
                 android:layout_width="match_parent"
-                android:layout_marginTop="16dp"
                 android:layout_height="1dp"
                 android:background="#DDDDDD" />
 
@@ -104,7 +116,7 @@
                     android:gravity="center"
                     android:textSize="35sp"
                     android:fontFamily="sans-serif-condensed"
-                    android:textColor="@color/prevoztheme_color"
+                    android:textColor="@android:color/black"
                     style="?android:attr/textAppearanceListItemSmall"
                     />
 
@@ -209,7 +221,7 @@
                     android:textSize="12sp"
                     android:gravity="right"
                     style="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/prevoztheme_color"
+                    android:textColor="@color/prevoztheme_color_dark"
                     />
 
 
@@ -282,7 +294,7 @@
                          android:layout_width="0dp"
                          android:layout_height="48dp"
                          android:layout_weight="1"
-                         android:textColor="@color/prevoztheme_color"
+                         android:textColor="@color/prevoztheme_color_dark"
                          android:background="?selectableItemBackground"
                          style="?android:textAppearanceButton"
 
@@ -294,7 +306,7 @@
                          android:layout_width="0dp"
                          android:layout_height="48dp"
                          android:layout_weight="1"
-                         android:textColor="@color/prevoztheme_color"
+                         android:textColor="@color/prevoztheme_color_dark"
                          android:background="?selectableItemBackground"
                          style="?android:textAppearanceButton"
 
