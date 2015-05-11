@@ -38,9 +38,11 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 
 import org.prevoz.android.R;
+import org.prevoz.android.UiFragment;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.PrevozApi;
 import org.prevoz.android.api.rest.RestRide;
+import org.prevoz.android.api.rest.RestStatus;
 import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.Bookmark;
@@ -63,6 +65,7 @@ import icepick.Icicle;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import rx.schedulers.Schedulers;
 import si.virag.fuzzydateformatter.FuzzyDateTimeFormatter;
 
 public class RideInfoActivity extends PrevozActivity
@@ -145,8 +148,6 @@ public class RideInfoActivity extends PrevozActivity
 
     @Icicle protected RestRide ride = null;
     @Icicle protected String action = null;
-
-    private RideInfoListener listener;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -290,11 +291,6 @@ public class RideInfoActivity extends PrevozActivity
             intent.putExtra(NewRideActivity.PARAM_EDIT_RIDE, (Parcelable)ride);
             ActivityCompat.startActivity(this, intent, ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_up, 0).toBundle());
         }
-        else
-        {
-            if (listener != null)
-                listener.onLeftButtonClicked(ride);
-        }
 
         finish();
     }
@@ -342,12 +338,12 @@ public class RideInfoActivity extends PrevozActivity
                                 });
                             }).show();
         }
+        else if (PARAM_ACTION_SUBMIT.equals(action)) {
+            submitRide();
+        }
         else
         {
             finish();
-
-            if (listener != null)
-                listener.onRightButtonClicked(ride);
         }
     }
 
@@ -394,22 +390,64 @@ public class RideInfoActivity extends PrevozActivity
         chkFull.setEnabled(false);
         final boolean rideFull = chkFull.isChecked();
 
-        ApiClient.getAdapter().setFull(String.valueOf(ride.id), rideFull ? PrevozApi.FULL_STATE_FULL : PrevozApi.FULL_STATE_AVAILABLE, new Callback<Response>()
-        {
+        ApiClient.getAdapter().setFull(String.valueOf(ride.id), rideFull ? PrevozApi.FULL_STATE_FULL : PrevozApi.FULL_STATE_AVAILABLE, new Callback<Response>() {
             @Override
-            public void success(Response response, Response response2)
-            {
+            public void success(Response response, Response response2) {
                 ride.isFull = rideFull;
                 chkFull.setEnabled(true);
                 setPeopleText();
             }
 
             @Override
-            public void failure(RetrofitError retrofitError)
-            {
+            public void failure(RetrofitError retrofitError) {
                 chkFull.setChecked(!rideFull);
                 ViewUtils.showMessage(RideInfoActivity.this, "Stanja prevoza ni bilo mogoče spremeniti :(", true);
                 chkFull.setEnabled(true);
+            }
+        });
+    }
+
+    protected void submitRide() {
+        final ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setMessage("Oddajam prevoz...");
+        dialog.show();
+
+        // TODO: remove when server timezone parsing is fixed
+        ride.date.setTimeZone(LocaleUtil.getLocalTimezone());
+        ApiClient.getAdapter().postRide(ride, new Callback<RestStatus>() {
+            @Override
+            public void success(RestStatus status, Response response) {
+                try {
+                    dialog.dismiss();
+                } catch (IllegalArgumentException e) {
+                    // Why does this happen?
+                    return;
+                }
+
+                if (!("created".equals(status.status) || "updated".equals(status.status))) {
+                    if (status.error != null && status.error.size() > 0) {
+                        String firstKey = status.error.keySet().iterator().next();
+                        EventBus.getDefault().postSticky(new Events.ShowMessage(status.error.get(firstKey).get(0)));
+                    }
+                } else {
+                    EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.newride_publish_success));
+                    EventBus.getDefault().postSticky(new Events.ShowFragment(UiFragment.FRAGMENT_MY_RIDES, false));
+                }
+
+                finish();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (dialog.isShowing()) dialog.dismiss();
+                if (error.getResponse() != null && error.getResponse().getStatus() == 403) {
+                    EventBus.getDefault().postSticky(new Events.ShowMessage("Vaša prijava ni več veljavna, prosimo ponovno se prijavite."));
+                    authUtils.logout().subscribeOn(Schedulers.io()).subscribe();
+                } else {
+                    EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.newride_publish_failure));
+                }
+
+                finish();
             }
         });
     }
@@ -418,10 +456,5 @@ public class RideInfoActivity extends PrevozActivity
     public void onSaveInstanceState(Bundle outState)
     {
         Icepick.saveInstanceState(this, outState);
-    }
-
-    public void setRideInfoListener(RideInfoListener listener)
-    {
-        this.listener = listener;
     }
 }

@@ -10,6 +10,7 @@ import android.widget.CheckBox;
 
 import com.rengwuxian.materialedittext.MaterialAutoCompleteTextView;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.rengwuxian.materialedittext.validation.METValidator;
 import com.rengwuxian.materialedittext.validation.RegexpValidator;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
@@ -24,7 +25,6 @@ import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.CityNameTextValidator;
 import org.prevoz.android.ride.RideInfoActivity;
-import org.prevoz.android.ride.RideInfoListener;
 import org.prevoz.android.search.CityAutocompleteAdapter;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.PrevozActivity;
@@ -39,12 +39,8 @@ import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import icepick.Icepick;
 import icepick.Icicle;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import rx.schedulers.Schedulers;
 
-public class NewRideActivity extends PrevozActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, RideInfoListener {
+public class NewRideActivity extends PrevozActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private static final String PREF_PHONE_NO = "org.prevoz.phoneno";
     private static final String PREF_HAS_INSURANCE = "org.prevoz.hasinsurance";
@@ -266,6 +262,7 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
 
     private boolean validateForm()
     {
+
         // & as a logical operator doesn't short circuit
         return textPhone.validateWith(new RegexpValidator(getString(R.string.newride_error_phone), "[0-9\\+ ]{9,}")) &
                textPeople.validateWith(new RegexpValidator(getString(R.string.newride_error_people_num), "[1-6]")) &
@@ -273,61 +270,14 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
                textTime.validateWith(new RegexpValidator(getString(R.string.newride_error_time_missing), ".+")) &
                textDate.validateWith(new RegexpValidator(getString(R.string.newride_error_date_missing), ".+")) &
                textFrom.validateWith(new RegexpValidator(getString(R.string.newride_error_from_missing), ".+")) &
-               textTo.validateWith(new RegexpValidator(getString(R.string.newride_error_to_missing), ".+"));
-    }
-
-    @Override
-    public void onLeftButtonClicked(RestRide r)
-    {
-        // Canceled, nothing to be done.
-    }
-
-    @Override
-    public void onRightButtonClicked(RestRide r)
-    {
-        final ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setMessage("Oddajam prevoz...");
-        dialog.show();
-
-        // TODO: remove when server timezone parsing is fixed
-        r.date.setTimeZone(LocaleUtil.getLocalTimezone());
-        ApiClient.getAdapter().postRide(r, new Callback<RestStatus>() {
-            @Override
-            public void success(RestStatus status, Response response) {
-                try {
-                    dialog.dismiss();
-                } catch (IllegalArgumentException e) {
-                    // Why does this happen?
-                    return;
-                }
-
-                if (!("created".equals(status.status) || "updated".equals(status.status))) {
-                    if (status.error != null && status.error.size() > 0) {
-                        String firstKey = status.error.keySet().iterator().next();
-                        ViewUtils.showMessage(NewRideActivity.this, status.error.get(firstKey).get(0), true);
+               textTo.validateWith(new RegexpValidator(getString(R.string.newride_error_to_missing), ".+")) &
+               textTime.validateWith(new METValidator(getString(R.string.newride_error_date_passed)) {
+                    @Override
+                    public boolean isValid(CharSequence charSequence, boolean b) {
+                        return Calendar.getInstance(LocaleUtil.getLocalTimezone()).before(setTime);
                     }
-                } else {
-                    finish();
-                    EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.newride_publish_success));
-                    EventBus.getDefault().postSticky(new Events.ShowFragment(UiFragment.FRAGMENT_MY_RIDES, false));
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                if (dialog.isShowing()) dialog.dismiss();
-                if (error.getResponse() != null && error.getResponse().getStatus() == 403) {
-                    ViewUtils.showMessage(NewRideActivity.this, "Vaša prijava ni več veljavna, prosimo ponovno se prijavite.", true);
-                    authUtils.logout().subscribeOn(Schedulers.io()).subscribe();
-                    finish();
-                    return;
-                } else {
-                    ViewUtils.showMessage(NewRideActivity.this, R.string.newride_publish_failure, true);
-                }
-            }
-        });
+               });
     }
-
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -336,8 +286,25 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        EventBus.getDefault().registerSticky(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     public void finish() {
         super.finish();
         overridePendingTransition(0, R.anim.slide_down);
+    }
+
+    public void onEventMainThread(Events.ShowMessage message) {
+        ViewUtils.showMessage(this, message.getMessage(this), true);
+        EventBus.getDefault().removeStickyEvent(message);
     }
 }

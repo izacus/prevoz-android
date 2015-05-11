@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="16dp"
-                android:background="@color/prevoztheme_color_dark"
+                android:background="@color/prevoztheme_color"
                 android:orientation="vertical"
                 >
 
@@ -221,7 +221,7 @@
                     android:textSize="12sp"
                     android:gravity="right"
                     style="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/prevoztheme_color_dark"
+                    android:textColor="@color/prevoztheme_color"
                     />
 
 
@@ -294,7 +294,7 @@
                          android:layout_width="0dp"
                          android:layout_height="48dp"
                          android:layout_weight="1"
-                         android:textColor="@color/prevoztheme_color_dark"
+                         android:textColor="@color/prevoztheme_color"
                          android:background="?selectableItemBackground"
                          style="?android:textAppearanceButton"
 
@@ -306,7 +306,7 @@
                          android:layout_width="0dp"
                          android:layout_height="48dp"
                          android:layout_weight="1"
-                         android:textColor="@color/prevoztheme_color_dark"
+                         android:textColor="@color/prevoztheme_color"
                          android:background="?selectableItemBackground"
                          style="?android:textAppearanceButton"
 

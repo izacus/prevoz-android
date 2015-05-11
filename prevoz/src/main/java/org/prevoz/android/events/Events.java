@@ -1,5 +1,6 @@
 package org.prevoz.android.events;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
 
@@ -95,10 +96,21 @@ public class Events
     }
 
     public static class ShowMessage {
-        public final int stringId;
+        private final int stringId;
+        private final String text;
 
+        public ShowMessage(String text) {
+            this.text = text;
+            this.stringId = 0;
+        }
         public ShowMessage(@StringRes int stringId) {
             this.stringId = stringId;
+            this.text = null;
+        }
+
+        public String getMessage(Context ctx) {
+            if (text != null) return text;
+            return ctx.getResources().getString(stringId);
         }
     }
 }
