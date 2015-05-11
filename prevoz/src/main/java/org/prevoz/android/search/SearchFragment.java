@@ -74,8 +74,8 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
         if (selectedDate == null)
         {
             selectedDate = Calendar.getInstance();
-            updateShownDate();
         }
+        updateShownDate();
 
         // Handle input action for next on to
         searchTo.setOnEditorActionListener((v, actionId, event) -> {

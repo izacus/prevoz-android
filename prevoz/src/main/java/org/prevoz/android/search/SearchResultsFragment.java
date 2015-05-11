@@ -39,9 +39,7 @@ import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 import icepick.Icepick;
 import icepick.Icicle;
-import retrofit.Callback;
 import retrofit.RetrofitError;
-import retrofit.client.Response;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -95,9 +93,11 @@ public class SearchResultsFragment extends PrevozFragment
         ButterKnife.inject(this, views);
         resultList.addHeaderView(headerFragmentView, null, true);
 
-        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-        ft.replace(R.id.search_form, new SearchFragment());
-        ft.commit();
+        if (getChildFragmentManager().findFragmentByTag("SearchFragment") == null) {
+            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+            ft.replace(R.id.search_form, new SearchFragment(), "SearchFragment");
+            ft.commit();
+        }
 
         if (results == null)
             showHistory(false);

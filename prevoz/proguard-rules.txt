@@ -88,9 +88,6 @@
 -dontwarn org.codehaus.mojo.**
 -dontwarn java.nio.file.**
 
-# DateTimePicker
--dontwarn com.fourmob.**
-
 # EventBus
 -keepclassmembers class ** {
     public void onEvent*(**);
@@ -102,3 +99,6 @@
 -dontwarn icepick.**
 -keep class **$$Icicle { *; }
 -keepnames class * { @icepick.Icicle *;}
+-keepclasseswithmembernames class * {
+    @icepick.* <fields>;
+}
