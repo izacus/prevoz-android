@@ -107,13 +107,10 @@ public class MyRidesFragment extends PrevozFragment
         adapter.clear();
 
         ApiClient.getAdapter().getMyRides()
-                .flatMap(new Func1<RestSearchResults, Observable<RestRide>>() {
-                    @Override
-                    public Observable<RestRide> call(RestSearchResults restSearchResults) {
-                        if (restSearchResults == null || restSearchResults.results == null)
-                            return Observable.empty();
-                        return Observable.from(restSearchResults.results);
-                    }
+                .flatMap(restSearchResults -> {
+                    if (restSearchResults == null || restSearchResults.results == null)
+                        return Observable.empty();
+                    return Observable.from(restSearchResults.results);
                 })
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -124,13 +121,10 @@ public class MyRidesFragment extends PrevozFragment
                         throwable -> showLoadFailureError(throwable));
 
         ApiClient.getAdapter().getBookmarkedRides()
-                .flatMap(new Func1<RestSearchResults, Observable<RestRide>>() {
-                    @Override
-                    public Observable<RestRide> call(RestSearchResults restSearchResults) {
-                        if (restSearchResults == null || restSearchResults.results == null)
-                            return Observable.empty();
-                        return Observable.from(restSearchResults.results);
-                    }
+                .flatMap(restSearchResults -> {
+                    if (restSearchResults == null || restSearchResults.results == null)
+                        return Observable.empty();
+                    return Observable.from(restSearchResults.results);
                 })
                 .filter(restRide -> Bookmark.shouldShow(restRide.bookmark))
                 .toList()

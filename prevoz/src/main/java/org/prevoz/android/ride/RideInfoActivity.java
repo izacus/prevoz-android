@@ -312,7 +312,6 @@ public class RideInfoActivity extends PrevozActivity
         }
         else if (PARAM_ACTION_EDIT.equals(action))
         {
-			finish();
             new AlertDialog.Builder(this, R.style.Prevoz_Theme_Dialog)
                             .setTitle(String.format("%s - %s", ride.fromCity, ride.toCity))
                             .setMessage(getString(R.string.ride_delete_message, LocaleUtil.getDayName(getResources(), ride.date).toLowerCase(LocaleUtil.getLocale()), LocaleUtil.getFormattedTime(ride.date)))
@@ -325,15 +324,17 @@ public class RideInfoActivity extends PrevozActivity
                                 ApiClient.getAdapter().deleteRide(String.valueOf(ride.id), new Callback<Response>() {
                                     @Override
                                     public void success(Response response, Response response2) {
+                                        finish();
                                         EventBus.getDefault().post(new Events.MyRideStatusUpdated(ride.id, true));
                                         deleteDialog.dismiss();
-                                        ViewUtils.showMessage(RideInfoActivity.this, R.string.ride_delete_success, false);
+                                        EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.ride_delete_success));
                                     }
 
                                     @Override
                                     public void failure(RetrofitError error) {
+                                        finish();
                                         deleteDialog.dismiss();
-                                        ViewUtils.showMessage(RideInfoActivity.this, R.string.ride_delete_failure, true);
+                                        EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.ride_delete_failure));
                                     }
                                 });
                             }).show();
