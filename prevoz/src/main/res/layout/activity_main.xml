@@ -105,6 +105,7 @@
                 android:layout_height="wrap_content"
                 android:choiceMode="singleChoice"
                 android:divider="?android:attr/listDivider"
+                android:listSelector="?selectableItemBackground"
                 android:dividerHeight="0dp"
                 />
 

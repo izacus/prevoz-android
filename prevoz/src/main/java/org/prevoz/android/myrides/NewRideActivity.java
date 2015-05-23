@@ -1,6 +1,5 @@
 package org.prevoz.android.myrides;
 
-import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -17,10 +16,7 @@ import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import org.prevoz.android.R;
-import org.prevoz.android.UiFragment;
-import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestRide;
-import org.prevoz.android.api.rest.RestStatus;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.CityNameTextValidator;
@@ -155,16 +151,12 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
 
         // Now disable fields user should not edit
         textFrom.setEnabled(false);
-        textFrom.setBackgroundDrawable(null);
         textTo.setEnabled(false);
-        textTo.setBackgroundDrawable(null);
         textDate.setEnabled(false);
-        textDate.setBackgroundDrawable(null);
         chkInsurance.setEnabled(false);
         textPhone.setEnabled(false);
-        textPhone.setBackgroundDrawable(null);
         textPrice.setEnabled(false);
-        textPrice.setBackgroundDrawable(null);
+        textPeople.requestFocus();
 
         dateSet = true;
         timeSet = true;
