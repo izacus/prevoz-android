@@ -5,12 +5,15 @@ import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
@@ -30,7 +33,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.listeners.ActionClickListener;
+
 import org.prevoz.android.auth.AuthenticationUtils;
+import org.prevoz.android.auth.LoginActivity;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.Route;
@@ -64,7 +71,8 @@ public class MainActivity extends PrevozActivity
     private static final String SEARCH_FRAGMENT_TAG = "SearchResultsFragment";
     private static final String PUSH_NOTIFICATIONS_FRAGMENT_TAG = "PushNotificationsFragment";
     private static final String MY_RIDES_FRAGMENT_TAG = "MyRidesFragment";
-    private static final String NEW_RIDE_FRAGMENT_TAG = "NewRideFragment";
+
+    private static final String PREF_SHOWN_LOGIN_PROMPT = "Prevoz.LoginPromptShown";
 
     @InjectView(R.id.toolbar)
     protected Toolbar toolbar;
@@ -131,6 +139,22 @@ public class MainActivity extends PrevozActivity
         {
             leftUsername.setText(getString(R.string.app_name));
             leftLogout.setVisibility(View.GONE);
+
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            if (prefs.getBoolean(PREF_SHOWN_LOGIN_PROMPT, false)) {
+                Typeface tf = Typeface.create(Typeface.DEFAULT, Typeface.BOLD);
+                Snackbar.with(this)
+                        .text("Niste prijavljeni.")
+                        .textTypeface(tf)
+                        .colorResource(R.color.prevoztheme_color_dark)
+                        .actionLabel("PRIJAVA")
+                        .actionLabelTypeface(tf)
+                        .actionListener(snackbar -> authUtils.requestAuthentication(MainActivity.this, 0))
+                        .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE)
+                        .show(this);
+
+                prefs.edit().putBoolean(PREF_SHOWN_LOGIN_PROMPT, true).apply();
+            }
         }
         else
         {
