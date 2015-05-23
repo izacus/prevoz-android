@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
@@ -272,7 +273,7 @@ public class RideInfoActivity extends PrevozActivity
 
     protected void updateFavoriteIcon() {
         Drawable drawable = getResources().getDrawable(Bookmark.shouldShow(ride.bookmark) ? R.drawable.ic_favorite : R.drawable.ic_favorite_outline);
-        drawable.setColorFilter(new PorterDuffColorFilter(getResources().getColor(R.color.prevoztheme_color), PorterDuff.Mode.SRC_ATOP));
+        drawable.setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP));
         imgFavorite.setImageDrawable(drawable);
     }
 
@@ -325,7 +326,7 @@ public class RideInfoActivity extends PrevozActivity
                                     @Override
                                     public void success(Response response, Response response2) {
                                         finish();
-                                        EventBus.getDefault().post(new Events.MyRideStatusUpdated(ride.id, true));
+                                        EventBus.getDefault().post(new Events.MyRideStatusUpdated(ride, true));
                                         deleteDialog.dismiss();
                                         EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.ride_delete_success));
                                     }
@@ -374,7 +375,7 @@ public class RideInfoActivity extends PrevozActivity
             @Override
             public void success(Response response, Response response2) {
                 Log.i("Prevoz", "Bookmark set OK.");
-                EventBus.getDefault().post(new Events.MyRideStatusUpdated(ride.id, false));
+                EventBus.getDefault().postSticky(new Events.MyRideStatusUpdated(ride, false));
             }
 
             @Override

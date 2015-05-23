@@ -107,16 +107,14 @@ public class SearchResultsFragment extends PrevozFragment
     }
 
     @Override
-    public void onResume()
-    {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         EventBus.getDefault().registerSticky(this);
     }
 
     @Override
-    public void onPause()
-    {
-        super.onPause();
+    public void onStop() {
+        super.onStop();
         EventBus.getDefault().unregister(this);
     }
 
@@ -272,22 +270,19 @@ public class SearchResultsFragment extends PrevozFragment
         shouldShowNotificationButton = !(fromCity == null || toCity == null);
 
         ApiClient.getAdapter().search(fromCity, fromCountry, toCity, toCountry, dateString)
-                              .map(new Func1<RestSearchResults, RestSearchResults>() {
-                                  @Override
-                                  public RestSearchResults call(RestSearchResults restSearchResults) {
+                              .map(restSearchResults -> {
 
-                                      // This is localization cache warmup on backgorund thread
-                                      LocaleUtil.getFormattedCurrency(1.0);
+                                  // This is localization cache warmup on backgorund thread
+                                  LocaleUtil.getFormattedCurrency(1.0);
 
-                                      if (restSearchResults.results != null) {
-                                          for (RestRide ride : restSearchResults.results) {
-                                              ride.getLocalizedFrom(activity);
-                                              ride.getLocalizedTo(activity);
-                                          }
+                                  if (restSearchResults.results != null) {
+                                      for (RestRide ride : restSearchResults.results) {
+                                          ride.getLocalizedFrom(activity);
+                                          ride.getLocalizedTo(activity);
                                       }
-
-                                      return restSearchResults;
                                   }
+
+                                  return restSearchResults;
                               })
                               .subscribeOn(Schedulers.io())
                               .observeOn(AndroidSchedulers.mainThread())
@@ -299,12 +294,12 @@ public class SearchResultsFragment extends PrevozFragment
 
                                   @Override
                                   public void onError(Throwable e) {
-                                        failure((RetrofitError)e);
+                                      failure((RetrofitError) e);
                                   }
 
                                   @Override
                                   public void onNext(RestSearchResults restSearchResults) {
-                                        success(restSearchResults);
+                                      success(restSearchResults);
                                   }
                               });
     }
@@ -336,9 +331,11 @@ public class SearchResultsFragment extends PrevozFragment
     public void onEventMainThread(Events.MyRideStatusUpdated e)
     {
         if (adapter != null && adapter instanceof SearchResultsAdapter) {
+            final SearchResultsAdapter srAdapter = (SearchResultsAdapter) adapter;
             if (e.deleted)
-                ((SearchResultsAdapter) adapter).removeRide(e.id);
-            ((SearchResultsAdapter) adapter).notifyDataSetChanged();
+                srAdapter.removeRide(e.ride.id);
+            srAdapter.updateRide(e.ride);
+            srAdapter.notifyDataSetChanged();
         }
     }
 

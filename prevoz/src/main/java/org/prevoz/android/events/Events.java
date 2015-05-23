@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.StringRes;
 
 import org.prevoz.android.UiFragment;
+import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.Route;
 
@@ -65,12 +66,12 @@ public class Events
 
     public static class MyRideStatusUpdated
     {
-        public final Long id;
+        public final RestRide ride;
         public final boolean deleted;
 
-        public MyRideStatusUpdated(Long id, boolean deleted)
+        public MyRideStatusUpdated(RestRide ride, boolean deleted)
         {
-            this.id = id;
+            this.ride = ride;
             this.deleted = deleted;
         }
     }

@@ -161,6 +161,7 @@ public class RestRide implements Comparable, Parcelable, Serializable
         dest.writeByte(insured ? (byte) 1 : (byte) 0);
         dest.writeString(this.author);
         dest.writeString(this.comment);
+        dest.writeInt(this.bookmark == null ? -1 : this.bookmark.ordinal());
     }
 
     private RestRide(Parcel in)
@@ -189,6 +190,9 @@ public class RestRide implements Comparable, Parcelable, Serializable
         this.insured = in.readByte() != 0;
         this.author = in.readString();
         this.comment = in.readString();
+
+        int bookmarkInt = in.readInt();
+        this.bookmark = bookmarkInt == -1 ? null : Bookmark.values()[bookmarkInt];
     }
 
     public static Parcelable.Creator<RestRide> CREATOR = new Parcelable.Creator<RestRide>()

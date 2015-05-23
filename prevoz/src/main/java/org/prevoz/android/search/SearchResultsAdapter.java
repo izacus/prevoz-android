@@ -1,19 +1,25 @@
 package org.prevoz.android.search;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.style.DrawableMarginSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.ImageSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.SuperscriptSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.prevoz.android.R;
@@ -74,8 +80,9 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
             TextView time = (TextView) v.findViewById(R.id.item_result_time);
             TextView price = (TextView) v.findViewById(R.id.item_result_price);
             TextView driver = (TextView) v.findViewById(R.id.item_result_driver);
+            ImageView bookmark = (ImageView) v.findViewById(R.id.item_result_bookmark);
 
-            v.setTag(new ResultsViewHolder(c, time, price, driver));
+            v.setTag(new ResultsViewHolder(c, time, price, driver, bookmark));
         }
 
         final ResultsViewHolder holder = (ResultsViewHolder) v.getTag();
@@ -91,10 +98,10 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
         }
 
         if (Bookmark.shouldShow(ride.bookmark)) {
-            time.append("\u2764");
-            time.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.prevoztheme_color)), time.length() - 1, time.length(), SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE);
-            time.setSpan(new RelativeSizeSpan(0.6f), time.length() - 1, time.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-            time.setSpan(new SuperscriptSpan(), time.length() - 1, time.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            holder.bookmark.getDrawable().setColorFilter(new PorterDuffColorFilter(context.getResources().getColor(R.color.prevoztheme_color), PorterDuff.Mode.SRC_ATOP));
+            holder.bookmark.setVisibility(View.VISIBLE);
+        } else {
+            holder.bookmark.setVisibility(View.INVISIBLE);
         }
 
         holder.time.setText(time);
@@ -203,19 +210,35 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
         notifyDataSetChanged();
     }
 
+    public void updateRide(RestRide ride) {
+        int rideIndex = -1;
+        for (int i = 0; i < results.size(); i++) {
+            if (ride.id.equals(results.get(i).id)) {
+                rideIndex = i;
+                break;
+            }
+        }
+
+        if (rideIndex == -1) return;
+        results.remove(rideIndex);
+        results.add(rideIndex, ride);
+    }
+
     private static class ResultsViewHolder
     {
         final View card;
         final TextView time;
         final TextView price;
         final TextView driver;
+        final ImageView bookmark;
 
-        private ResultsViewHolder(View card, TextView time, TextView price, TextView driver)
+        private ResultsViewHolder(View card, TextView time, TextView price, TextView driver, ImageView bookmark)
         {
             this.card = card;
             this.time = time;
             this.price = price;
             this.driver = driver;
+            this.bookmark = bookmark;
         }
     }
 }
