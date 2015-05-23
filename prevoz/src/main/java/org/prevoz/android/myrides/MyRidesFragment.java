@@ -106,29 +106,23 @@ public class MyRidesFragment extends PrevozFragment
         emptyView.setVisibility(View.INVISIBLE);
         adapter.clear();
 
-        ApiClient.getAdapter().getMyRides()
+        Observable<RestRide> myRides = ApiClient.getAdapter().getMyRides()
                 .flatMap(restSearchResults -> {
                     if (restSearchResults == null || restSearchResults.results == null)
                         return Observable.empty();
                     return Observable.from(restSearchResults.results);
-                })
-                .toList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((rides) -> {
-                            adapter.addRides(rides);
-                            setListVisibility(true);
-                        },
-                        throwable -> showLoadFailureError(throwable));
+                });
 
-        ApiClient.getAdapter().getBookmarkedRides()
+        Observable<RestRide> bookmarks =  ApiClient.getAdapter().getBookmarkedRides()
                 .flatMap(restSearchResults -> {
                     if (restSearchResults == null || restSearchResults.results == null)
                         return Observable.empty();
                     return Observable.from(restSearchResults.results);
-                })
-                .filter(restRide -> Bookmark.shouldShow(restRide.bookmark))
-                .toList()
-                .observeOn(AndroidSchedulers.mainThread())
+                });
+
+        myRides.mergeWith(bookmarks)
+               .toList()
+               .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((rides) -> {
                             adapter.addRides(rides);
                             setListVisibility(true);
