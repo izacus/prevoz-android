@@ -28,6 +28,7 @@ public class PushReceiver extends BroadcastReceiver
     {
         Log.i(this.toString(), "GCM Message received.");
         final Bundle extras = intent.getExtras();
+        if (extras == null) return;
 
         final int[] rideIds = parseRideIds(extras.getString("rides"));
         if (rideIds.length == 0) return;
@@ -80,8 +81,9 @@ public class PushReceiver extends BroadcastReceiver
         notifyManager.notify(1, notification);
     }
 
-    private static int[] parseRideIds(String rideIds)
+    public static int[] parseRideIds(String rideIds)
     {
+        if (rideIds == null) return new int[0];
         ArrayList<Integer> ids = new ArrayList<>();
         String stripped = rideIds.replaceAll("[^0-9,]", "");
 

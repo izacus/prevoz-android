@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class StringUtil
 {
-    private static final String REGEX_CITY_NAME_MATCHER = "([\\p{L} ]+)(\\(([A-Za-z][A-Za-z])\\))?";    // Used to match <CITY> (<COUNTRY CODE>) strings
+    private static final String REGEX_CITY_NAME_MATCHER = "([\\p{L}\\. ]+)(\\(([A-Za-z][A-Za-z])\\))?";    // Used to match <CITY> (<COUNTRY CODE>) strings
     private static final Pattern CITY_NAME_PATTERN = Pattern.compile(REGEX_CITY_NAME_MATCHER);
 
     public static City splitStringToCity(String str)
