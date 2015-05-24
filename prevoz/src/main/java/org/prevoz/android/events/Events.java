@@ -99,19 +99,26 @@ public class Events
     public static class ShowMessage {
         private final int stringId;
         private final String text;
+        private final boolean isError;
 
-        public ShowMessage(String text) {
+        public ShowMessage(String text, boolean error) {
             this.text = text;
             this.stringId = 0;
+            this.isError = error;
         }
-        public ShowMessage(@StringRes int stringId) {
+        public ShowMessage(@StringRes int stringId, boolean error) {
             this.stringId = stringId;
             this.text = null;
+            this.isError = error;
         }
 
         public String getMessage(Context ctx) {
             if (text != null) return text;
             return ctx.getResources().getString(stringId);
+        }
+
+        public boolean isError() {
+            return isError;
         }
     }
 }

@@ -64,7 +64,7 @@ public class MyRidesAdapter extends RecyclerView.Adapter<MyRidesAdapter.ResultsV
         Route r = new Route(new City(ride.fromCity, ride.fromCountry), new City(ride.toCity, ride.toCountry));
         holder.path.setText(r.toString());
         holder.card.setOnClickListener(v -> {
-            RideInfoActivity.show(context, ride, ride.isAuthor ? RideInfoActivity.PARAM_ACTION_EDIT : RideInfoActivity.PARAM_ACTION_SHOW);
+            RideInfoActivity.show(context, ride, ride.isAuthor ? RideInfoActivity.PARAM_ACTION_EDIT : RideInfoActivity.PARAM_ACTION_SHOW, 0);
         });
     }
 

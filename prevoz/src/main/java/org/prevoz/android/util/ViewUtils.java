@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
+import com.nispok.snackbar.enums.SnackbarType;
 
 import org.prevoz.android.R;
 
@@ -55,6 +56,7 @@ public class ViewUtils
         Snackbar snackbar = Snackbar.with(context)
                                     .text(messageText)
                                     .textTypeface(snackbarTypeface)
+                                    .type(failure ? SnackbarType.MULTI_LINE : SnackbarType.SINGLE_LINE)
                                     .color(failure ? Color.RED : context.getResources().getColor(R.color.prevoztheme_color_dark))
                                     .duration(Snackbar.SnackbarDuration.LENGTH_SHORT);
 

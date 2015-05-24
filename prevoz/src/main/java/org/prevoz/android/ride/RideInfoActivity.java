@@ -85,11 +85,11 @@ public class RideInfoActivity extends PrevozActivity
 		parent.startActivity(i);
 	}
 
-	public static void show(Activity parent, RestRide ride, String action) {
+	public static void show(Activity parent, RestRide ride, String action, int requestCode) {
 		Intent i = new Intent(parent, RideInfoActivity.class);
 		i.putExtra(ARG_RIDE, (Parcelable)ride);
 		i.putExtra(ARG_ACTION, action);
-		parent.startActivity(i);
+		parent.startActivityForResult(i, requestCode);
 	}
 
 
@@ -328,14 +328,14 @@ public class RideInfoActivity extends PrevozActivity
                                         finish();
                                         EventBus.getDefault().post(new Events.MyRideStatusUpdated(ride, true));
                                         deleteDialog.dismiss();
-                                        EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.ride_delete_success));
+                                        EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.ride_delete_success, false));
                                     }
 
                                     @Override
                                     public void failure(RetrofitError error) {
                                         finish();
                                         deleteDialog.dismiss();
-                                        EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.ride_delete_failure));
+                                        EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.ride_delete_failure, true));
                                     }
                                 });
                             }).show();
@@ -429,11 +429,12 @@ public class RideInfoActivity extends PrevozActivity
                 if (!("created".equals(status.status) || "updated".equals(status.status))) {
                     if (status.error != null && status.error.size() > 0) {
                         String firstKey = status.error.keySet().iterator().next();
-                        EventBus.getDefault().postSticky(new Events.ShowMessage(status.error.get(firstKey).get(0)));
+                        EventBus.getDefault().postSticky(new Events.ShowMessage(status.error.get(firstKey).get(0), true));
                     }
                 } else {
-                    EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.newride_publish_success));
+                    EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.newride_publish_success ,false));
                     EventBus.getDefault().postSticky(new Events.ShowFragment(UiFragment.FRAGMENT_MY_RIDES, false));
+                    setResult(Activity.RESULT_OK);
                 }
 
                 finish();
@@ -443,12 +444,13 @@ public class RideInfoActivity extends PrevozActivity
             public void failure(RetrofitError error) {
                 if (dialog.isShowing()) dialog.dismiss();
                 if (error.getResponse() != null && error.getResponse().getStatus() == 403) {
-                    EventBus.getDefault().postSticky(new Events.ShowMessage("Vaša prijava ni več veljavna, prosimo ponovno se prijavite."));
+                    EventBus.getDefault().postSticky(new Events.ShowMessage("Vaša prijava ni več veljavna, prosimo ponovno se prijavite.", true));
                     authUtils.logout().subscribeOn(Schedulers.io()).subscribe();
                 } else {
-                    EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.newride_publish_failure));
+                    EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.newride_publish_failure, true));
                 }
 
+                setResult(Activity.RESULT_CANCELED);
                 finish();
             }
         });

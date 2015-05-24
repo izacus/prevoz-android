@@ -411,7 +411,7 @@ public class MainActivity extends PrevozActivity
     }
 
     public void onEventMainThread(Events.ShowMessage e) {
-        ViewUtils.showMessage(this, e.getMessage(this), false);
+        ViewUtils.showMessage(this, e.getMessage(this), e.isError());
         EventBus.getDefault().removeStickyEvent(e);
     }
 }

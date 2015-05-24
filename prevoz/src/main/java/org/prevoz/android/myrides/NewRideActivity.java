@@ -1,5 +1,7 @@
 package org.prevoz.android.myrides;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -212,7 +214,13 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
         if (editRideId != null)
             ride.id = editRideId;
 
-		RideInfoActivity.show(this, ride, RideInfoActivity.PARAM_ACTION_SUBMIT);
+		RideInfoActivity.show(this, ride, RideInfoActivity.PARAM_ACTION_SUBMIT, 0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) finish();
     }
 
     @Override
@@ -296,7 +304,7 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
     }
 
     public void onEventMainThread(Events.ShowMessage message) {
-        ViewUtils.showMessage(this, message.getMessage(this), true);
+        ViewUtils.showMessage(this, message.getMessage(this), message.isError());
         EventBus.getDefault().removeStickyEvent(message);
     }
 }
