@@ -46,7 +46,7 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 34
+        versionCode 35
         versionName "3.2"
         resConfigs "sl"
     }
