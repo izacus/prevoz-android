@@ -102,3 +102,26 @@
 -keepclasseswithmembernames class * {
     @icepick.* <fields>;
 }
+
+# Realm
+-keep class io.realm.annotations.RealmModule
+-keep @io.realm.annotations.RealmModule class *
+-keep class io.realm.internal.Keep
+-keep @io.realm.internal.Keep class * { *; }
+-dontwarn javax.**
+-dontwarn io.realm.**
+
+# Retrolambda
+-dontwarn java.lang.invoke.*
+
+# ButterKnife
+-dontwarn javax.annotation.processing.**
+-dontwarn butterknife.internal.**
+-keep class butterknife.** { *; }
+-keep class **$$ViewInjector { *; }
+-keepclasseswithmembernames class * {
+    @butterknife.* <fields>;
+}
+-keepclasseswithmembernames class * {
+    @butterknife.* <methods>;
+}

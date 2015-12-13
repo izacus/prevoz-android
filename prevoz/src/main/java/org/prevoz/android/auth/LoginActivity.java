@@ -130,7 +130,7 @@ public class LoginActivity extends PrevozActivity
         final ProgressDialog dialog = ProgressDialog.show(this, "Prijava", "Prijavljam....", true, false);
         webview.setVisibility(View.INVISIBLE);
 
-        Observable<RestAuthTokenResponse> accessToken = ApiClient.getAdapter().getAccessToken("authorization_code", CLIENT_ID, CLIENT_SECRET, code)
+        Observable<RestAuthTokenResponse> accessToken = ApiClient.getAdapter().getAccessToken("authorization_code", CLIENT_ID, CLIENT_SECRET, code, REDIRECT_URL)
                                                         .cache();
 
         Observable<RestAccountStatus> accountStatus = accessToken.flatMap(restAuthTokenResponse -> {

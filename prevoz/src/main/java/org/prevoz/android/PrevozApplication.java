@@ -15,6 +15,8 @@ import java.io.File;
 
 import javax.inject.Inject;
 
+import io.fabric.sdk.android.Fabric;
+
 public class PrevozApplication extends Application
 {
     public static int VERSION = -1;
@@ -32,7 +34,7 @@ public class PrevozApplication extends Application
                                               .build();
         component.inject(this);
 
-        if (!BuildConfig.DEBUG) Crashlytics.start(this);
+        if (!BuildConfig.DEBUG) Fabric.with(this, new Crashlytics());
 
         try
         {
