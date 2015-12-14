@@ -44,9 +44,10 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
     defaultConfig {
+        applicationId = "org.prevoz.android"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 36
+        versionCode 37
         versionName "3.2.1"
         resConfigs "sl"
     }
