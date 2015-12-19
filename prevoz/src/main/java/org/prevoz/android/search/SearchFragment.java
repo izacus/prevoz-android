@@ -21,17 +21,22 @@ import com.crashlytics.android.Crashlytics;
 import com.rengwuxian.materialedittext.MaterialAutoCompleteTextView;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
+import org.prevoz.android.PrevozFragment;
 import org.prevoz.android.R;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.CityNameTextValidator;
+import org.prevoz.android.model.PrevozDatabase;
 import org.prevoz.android.model.Route;
-import org.prevoz.android.util.ContentUtils;
 import org.prevoz.android.util.LocaleUtil;
+import org.prevoz.android.util.PrevozActivity;
 import org.prevoz.android.util.StringUtil;
 import org.prevoz.android.util.ViewUtils;
+import org.threeten.bp.LocalDate;
 
 import java.util.Calendar;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -41,7 +46,7 @@ import icepick.Icepick;
 import icepick.Icicle;
 import rx.schedulers.Schedulers;
 
-public class SearchFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
+public class SearchFragment extends PrevozFragment implements DatePickerDialog.OnDateSetListener {
     @InjectView(R.id.search_date_edit)
     protected EditText searchDate;
     @InjectView(R.id.search_from)
@@ -58,11 +63,12 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
     @InjectView(R.id.search_button_progress)
     protected ProgressBar searchButtonProgress;
 
-    @Icicle protected Calendar selectedDate;
+    @Icicle protected LocalDate selectedDate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((PrevozActivity)getActivity()).getApplicationComponent().inject(this);
         Icepick.restoreInstanceState(this, savedInstanceState);
     }
 
@@ -73,8 +79,9 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
 
         if (selectedDate == null)
         {
-            selectedDate = Calendar.getInstance();
+            selectedDate = LocalDate.now();
         }
+
         updateShownDate();
 
         // Handle input action for next on to
@@ -90,8 +97,8 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
             return false;
         });
 
-        searchFrom.setValidator(new CityNameTextValidator(getActivity()));
-        searchTo.setValidator(new CityNameTextValidator(getActivity()));
+        searchFrom.setValidator(new CityNameTextValidator(getActivity(), database));
+        searchTo.setValidator(new CityNameTextValidator(getActivity(), database));
         setupAdapters();
 
         return views;
@@ -131,9 +138,7 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
     @Override
     public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day)
     {
-        selectedDate.set(Calendar.YEAR, year);
-        selectedDate.set(Calendar.MONTH, month);
-        selectedDate.set(Calendar.DAY_OF_MONTH, day);
+        selectedDate = selectedDate.withYear(year).withMonth(month).withDayOfMonth(day);
         updateShownDate();
     }
 
@@ -143,8 +148,8 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
         Activity activity = getActivity();
         if (activity == null) return;   // Happens when fragment is detached
 
-        final CityAutocompleteAdapter fromAdapter = new CityAutocompleteAdapter(activity);
-        final CityAutocompleteAdapter toAdapter = new CityAutocompleteAdapter(activity);
+        final CityAutocompleteAdapter fromAdapter = new CityAutocompleteAdapter(activity, database);
+        final CityAutocompleteAdapter toAdapter = new CityAutocompleteAdapter(activity, database);
         searchFrom.setAdapter(fromAdapter);
         searchTo.setAdapter(toAdapter);
     }
@@ -155,14 +160,14 @@ public class SearchFragment extends Fragment implements DatePickerDialog.OnDateS
             City fromCity = StringUtil.splitStringToCity(searchFrom.getText().toString());
             City toCity = StringUtil.splitStringToCity(searchTo.getText().toString());
 
-            ContentUtils.addSearchToHistory(getActivity(), fromCity, toCity, selectedDate.getTime());
+            database.addSearchToHistory(fromCity, toCity, selectedDate);
             EventBus.getDefault().post(new Events.NewSearchEvent(fromCity, toCity, selectedDate));
         });
     }
 
     private void updateShownDate()
     {
-        searchDate.setText(LocaleUtil.localizeDate(getResources(), selectedDate));
+        searchDate.setText(LocaleUtil.localizeDate(getResources(), selectedDate.atStartOfDay(LocaleUtil.getLocalTimezone())));
     }
 
     private void updateSearchButtonProgress(boolean progressShown)

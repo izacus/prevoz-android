@@ -17,6 +17,7 @@ import org.prevoz.android.PrevozFragment;
 import org.prevoz.android.R;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.NotificationSubscription;
+import org.prevoz.android.provider.Notification;
 import org.prevoz.android.ui.DividerItemDecoration;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.PrevozActivity;
@@ -29,6 +30,8 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 
 public class PushFragment extends PrevozFragment
 {
@@ -51,15 +54,20 @@ public class PushFragment extends PrevozFragment
         View views = inflater.inflate(R.layout.fragment_notifications, container, false);
         ButterKnife.inject(this, views);
 
-        ViewUtils.setupEmptyView(notificationList, emptyView, "Niste prijavljeni na nobena obvestila.");
-        List<NotificationSubscription> notifications = pushManager.getSubscriptions();
-        adapter = new PushNotificationsAdapter(getActivity(), notifications, item -> onItemClicked(item));
+        pushManager.getSubscriptions()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(notifications -> {
+                        ViewUtils.setupEmptyView(notificationList, emptyView, "Niste prijavljeni na nobena obvestila.");
+                        adapter = new PushNotificationsAdapter(getActivity(), notifications, item -> onItemClicked(item));
 
-        notificationList.setAdapter(adapter);
-        notificationList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        notificationList.setLayoutManager(llm);
-        updateEmptyView();
+                        notificationList.setAdapter(adapter);
+                        notificationList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+                        LinearLayoutManager llm = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+                        notificationList.setLayoutManager(llm);
+                        updateEmptyView();
+                    });
+
+
         return views;
     }
 
@@ -99,8 +107,12 @@ public class PushFragment extends PrevozFragment
 
     public void onEventMainThread(Events.NotificationSubscriptionStatusChanged e)
     {
-        List<NotificationSubscription> notifications = pushManager.getSubscriptions();
-        adapter.setData(notifications);
-        updateEmptyView();
+        pushManager.getSubscriptions()
+                   .observeOn(AndroidSchedulers.mainThread())
+                   .subscribe(notifications -> {
+                       adapter.setData(notifications);
+                       updateEmptyView();
+                   });
+
     }
 }

@@ -9,25 +9,29 @@ import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.BooleanResult;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.pushtorefresh.storio.sqlite.operations.put.PutResult;
 
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.NotificationSubscription;
-import org.prevoz.android.util.ContentUtils;
+import org.prevoz.android.model.PrevozDatabase;
+import org.prevoz.android.provider.Notification;
 import org.prevoz.android.util.ViewUtils;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.format.DateTimeFormatter;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import de.greenrobot.event.EventBus;
 import rx.Observable;
+import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.exceptions.OnErrorThrowable;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class PushManager
@@ -37,12 +41,14 @@ public class PushManager
     private static final String GCM_PROJECT_ID = "121500391433";
 
     private final Context context;
+    private final PrevozDatabase database;
     private Observable<String> gcmIdObservable;
     boolean available = false;
 
-    public PushManager(Context ctx)
+    public PushManager(Context ctx, PrevozDatabase database)
     {
         this.context = ctx;
+        this.database = database;
         setup();
     }
 
@@ -82,32 +88,42 @@ public class PushManager
                 }, throwable -> Log.e(LOG_TAG, "Error", throwable));
     }
 
-    public List<NotificationSubscription> getSubscriptions()
+    public Single<List<NotificationSubscription>> getSubscriptions()
     {
-        return ContentUtils.getNotificationSubscriptions(context);
+        return database.getNotificationSubscriptions()
+                       .flatMap(Observable::from)
+                       .map(n -> new NotificationSubscription(n.getId(), new City(n.getFromCity(), n.getFromCountry()), new City(n.getToCity(), n.getToCountry()), n.getDate()))
+                       .toList()
+                       .toSingle();
     }
 
-    public void setSubscriptionStatus(final Activity context, final City from, final City to, final Calendar date, final boolean subscribed)
+    public void setSubscriptionStatus(final Activity context, final City from, final City to, final LocalDate date, final boolean subscribed)
     {
-        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         gcmIdObservable.flatMap((gcmId) -> ApiClient.getAdapter().setSubscriptionState(gcmId,
                                                 from.getDisplayName(),
                                                 from.getCountryCode(),
                                                 to.getDisplayName(),
                                                 to.getCountryCode(),
-                                                dateFormat.format(date.getTime()),
+                                                date.format(DateTimeFormatter.ISO_LOCAL_DATE),
                                                 subscribed ? "subscribe" : "unsubscribe"))
                        .subscribeOn(Schedulers.io())
                        .observeOn(AndroidSchedulers.mainThread())
                        .subscribe(
                                status -> {
-                                   if (subscribed)
-                                       ContentUtils.addNotificationSubscription(context, from, to, date);
-                                   else
-                                       ContentUtils.deleteNotificationSubscription(context, from, to, date);
+                                   Observable<Boolean> databaseObservable;
+                                   if (subscribed) {
+                                       databaseObservable = database.addNotificationSubscription(from, to, date);
+                                   } else {
+                                       databaseObservable = database.deleteNotificationSubscription(from, to, date);
+                                   }
 
-                                   ViewUtils.showMessage(context, subscribed ? "Prijavljeni ste na obvestila." : "Obveščanje preklicano.", false);
-                                   EventBus.getDefault().post(new Events.NotificationSubscriptionStatusChanged());
+                                   databaseObservable
+                                           .observeOn(AndroidSchedulers.mainThread())
+                                           .subscribe(success -> {
+                                               ViewUtils.showMessage(context, subscribed ? "Prijavljeni ste na obvestila." : "Obveščanje preklicano.", false);
+                                               EventBus.getDefault().post(new Events.NotificationSubscriptionStatusChanged());
+                                           },
+                                           e -> Log.e(LOG_TAG, "Failed to update notification DB!", e));
                                },
                                throwable -> {
                                    ViewUtils.showMessage(context, "Obveščanja ni bilo mogoče vklopiti.", true);
@@ -115,9 +131,9 @@ public class PushManager
                                });
     }
 
-    public boolean isSubscribed(City from, City to, Calendar date)
+    public Single<Boolean> isSubscribed(City from, City to, LocalDate date)
     {
-        return ContentUtils.isSubscribedForNotification(context, from, to, date);
+        return database.isSubscribedForNotification(from, to, date);
     }
 
     public boolean isPushAvailable()

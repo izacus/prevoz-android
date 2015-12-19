@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 
+import org.prevoz.android.MainActivity;
 import org.prevoz.android.PrevozFragment;
 import org.prevoz.android.R;
 import org.prevoz.android.api.rest.RestRide;
@@ -25,14 +26,19 @@ import org.prevoz.android.api.rest.RestSearchResults;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
+import org.prevoz.android.model.PrevozDatabase;
 import org.prevoz.android.ui.ListDisappearAnimation;
 import org.prevoz.android.ui.ListFlyupAnimator;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.ViewUtils;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -43,6 +49,7 @@ import retrofit.RetrofitError;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
@@ -69,7 +76,7 @@ public class SearchResultsFragment extends PrevozFragment
     @Icicle protected boolean shouldShowNotificationButton = false;
     @Icicle protected City lastFrom;
     @Icicle protected City lastTo;
-    @Icicle protected Calendar lastDate;
+    @Icicle protected LocalDate lastDate;
     @Icicle protected int[] highlightRides;
 
     @Override
@@ -161,7 +168,7 @@ public class SearchResultsFragment extends PrevozFragment
 
         if (resultList.getAdapter() == null || !(resultList.getAdapter() instanceof SearchResultsAdapter))
         {
-            adapter = new SearchResultsAdapter(getActivity(), restResults, highlightRides);
+            adapter = new SearchResultsAdapter(getActivity(), database, restResults, highlightRides);
             resultList.setAdapter(adapter);
         }
         else
@@ -201,16 +208,17 @@ public class SearchResultsFragment extends PrevozFragment
 
     private void updateNotificationButtonText()
     {
-        if (pushManager.isSubscribed(lastFrom, lastTo, lastDate))
-        {
-            searchNotifyButtonIcon.setImageResource(R.drawable.ic_action_cancel);
-            searchNofityButtonText.setText("Prenehaj z obveščanjem");
-        }
-        else
-        {
-            searchNotifyButtonIcon.setImageResource(R.drawable.ic_action_bell);
-            searchNofityButtonText.setText("Obveščaj me o novih prevozih");
-        }
+        pushManager.isSubscribed(lastFrom, lastTo, lastDate)
+                   .observeOn(AndroidSchedulers.mainThread())
+                   .subscribe(subscribed -> {
+                       if (subscribed) {
+                           searchNotifyButtonIcon.setImageResource(R.drawable.ic_action_cancel);
+                           searchNofityButtonText.setText("Prenehaj z obveščanjem");
+                       } else {
+                           searchNotifyButtonIcon.setImageResource(R.drawable.ic_action_bell);
+                           searchNofityButtonText.setText("Obveščaj me o novih prevozih");
+                       }
+                   });
     }
 
     private void hideNotificationsButton()
@@ -227,7 +235,11 @@ public class SearchResultsFragment extends PrevozFragment
         searchNotifyButton.setEnabled(false);
         searchNotifyButtonIcon.setVisibility(View.INVISIBLE);
         searchNotifyButtonProgress.setVisibility(View.VISIBLE);
-        pushManager.setSubscriptionStatus(getActivity(), lastFrom, lastTo, lastDate, !pushManager.isSubscribed(lastFrom, lastTo, lastDate));
+
+        pushManager.isSubscribed(lastFrom, lastTo, lastDate)
+                   .subscribe(subscribed -> {
+                       pushManager.setSubscriptionStatus(getActivity(), lastFrom, lastTo, lastDate, !subscribed);
+                   });
     }
 
     protected void showHistory(final boolean animate)
@@ -235,19 +247,10 @@ public class SearchResultsFragment extends PrevozFragment
         final Activity activity = getActivity();
         if (activity == null) return;
 
-        Observable.defer(() -> {
-            adapter = new SearchHistoryAdapter(activity);
-            return Observable.empty();
-        })
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(o -> {
-                },
-                throwable -> {
-                    Log.e("Prevoz", "Error while loading history!", throwable);
-                    Crashlytics.logException(throwable);
-                },
-                () -> {
+        database.getLastSearches(5)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s -> {
+                   adapter = new SearchHistoryAdapter(activity, s);
                     if (animate && resultList.getAdapter() != null) {
                         hideNotificationsButton();
                         new ListDisappearAnimation(resultList).animate();
@@ -256,6 +259,10 @@ public class SearchResultsFragment extends PrevozFragment
                     resultList.setAdapter(adapter);
                     if (animate)
                         new ListFlyupAnimator(resultList).animate();
+                },
+                throwable -> {
+                    Log.e("Prevoz", "Error while loading history!", throwable);
+                    Crashlytics.logException(throwable);
                 });
     }
 
@@ -277,8 +284,8 @@ public class SearchResultsFragment extends PrevozFragment
 
                                   if (restSearchResults.results != null) {
                                       for (RestRide ride : restSearchResults.results) {
-                                          ride.getLocalizedFrom(activity);
-                                          ride.getLocalizedTo(activity);
+                                          ride.getLocalizedFrom(database);
+                                          ride.getLocalizedTo(database);
                                       }
                                   }
 
@@ -312,7 +319,7 @@ public class SearchResultsFragment extends PrevozFragment
                     e.from == null ? null : e.from.getCountryCode(),
                     e.to == null ? null : e.to.getDisplayName(),
                     e.to == null ? null : e.to.getCountryCode(),
-                    LocaleUtil.getSimpleDateFormat("yyyy-MM-dd").format(e.date.getTime()));
+                    e.date.format(DateTimeFormatter.ISO_LOCAL_DATE));
 
         lastFrom = e.from;
         lastTo = e.to;

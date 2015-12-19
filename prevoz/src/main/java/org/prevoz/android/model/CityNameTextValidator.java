@@ -4,8 +4,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.widget.AutoCompleteTextView;
 
+import org.prevoz.android.PrevozApplication;
 import org.prevoz.android.provider.Location;
-import org.prevoz.android.util.ContentUtils;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
 
@@ -17,16 +17,17 @@ import org.prevoz.android.util.StringUtil;
 public class CityNameTextValidator implements AutoCompleteTextView.Validator
 {
     private final Context context;
+    protected PrevozDatabase database;
 
-    public CityNameTextValidator(Context ctx)
-    {
+    public CityNameTextValidator(Context ctx, PrevozDatabase database) {
         this.context = ctx;
+        this.database = database;
     }
 
     @Override
     public boolean isValid(CharSequence text)
     {
-        return ContentUtils.doesCityExist(context, text.toString());
+        return database.cityExists(text.toString()).toBlocking().value();
     }
 
     @Override
@@ -37,12 +38,12 @@ public class CityNameTextValidator implements AutoCompleteTextView.Validator
             return null;
 
 
-        Cursor cityCandidates = ContentUtils.getCityCursor(context, c.getDisplayName(), c.getCountryCode());
+        Cursor cityCandidates = database.cityCursor(c.getDisplayName(), c.getCountryCode());
         if (cityCandidates.moveToNext())
         {
             int idx = cityCandidates.getColumnIndex(Location.NAME);
             int cidx = cityCandidates.getColumnIndex(Location.COUNTRY);
-            return LocaleUtil.getLocalizedCityName(context, cityCandidates.getString(idx), cityCandidates.getString(cidx));
+            return LocaleUtil.getLocalizedCityName(database, cityCandidates.getString(idx), cityCandidates.getString(cidx));
         }
 
         return null;

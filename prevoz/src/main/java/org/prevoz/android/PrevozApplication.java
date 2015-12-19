@@ -6,14 +6,16 @@ import android.os.AsyncTask;
 import android.os.Environment;
 
 import com.crashlytics.android.Crashlytics;
+import com.jakewharton.threetenabp.AndroidThreeTen;
 
-import org.prevoz.android.auth.AuthenticationModule;
 import org.prevoz.android.auth.AuthenticationUtils;
-import org.prevoz.android.util.ContentUtils;
+import org.prevoz.android.model.PrevozDatabase;
 
 import java.io.File;
 
 import javax.inject.Inject;
+
+import io.fabric.sdk.android.Fabric;
 
 public class PrevozApplication extends Application
 {
@@ -23,16 +25,19 @@ public class PrevozApplication extends Application
     @Inject
     protected AuthenticationUtils authUtils;
 
+    @Inject
+    protected PrevozDatabase database;
+
     @Override
     public void onCreate()
     {
         super.onCreate();
+        if (!BuildConfig.DEBUG) Fabric.with(this, new Crashlytics());
+        AndroidThreeTen.init(this);
         component = DaggerApplicationComponent.builder()
                                               .applicationModule(new ApplicationModule(this))
                                               .build();
         component.inject(this);
-
-        if (!BuildConfig.DEBUG) Crashlytics.start(this);
 
         try
         {
@@ -56,9 +61,8 @@ public class PrevozApplication extends Application
         @Override
         protected Void doInBackground(Void... params)
         {
-            ContentUtils.importDatabase(PrevozApplication.this);
-            ContentUtils.deleteOldHistoryEntries(PrevozApplication.this, 5);
-            ContentUtils.pruneOldNotifications(PrevozApplication.this);
+            database.deleteOldHistoryEntries(5);
+            database.pruneOldNotifications();
             authUtils.updateRetrofitAuthenticationCookie();
 
             // Check for old database file

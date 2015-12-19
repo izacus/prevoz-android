@@ -24,6 +24,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.format.DateUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
@@ -47,10 +48,12 @@ import org.prevoz.android.api.rest.RestStatus;
 import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.Bookmark;
+import org.prevoz.android.model.PrevozDatabase;
 import org.prevoz.android.myrides.NewRideActivity;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.PrevozActivity;
 import org.prevoz.android.util.ViewUtils;
+import org.threeten.bp.format.DateTimeFormatter;
 
 import java.text.SimpleDateFormat;
 
@@ -71,7 +74,8 @@ import si.virag.fuzzydateformatter.FuzzyDateTimeFormatter;
 
 public class RideInfoActivity extends PrevozActivity
 {
-    private static final SimpleDateFormat timeFormatter = LocaleUtil.getSimpleDateFormat("HH:mm");
+    private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
     private static final String ARG_RIDE = "ride";
     private static final String ARG_ACTION = "action";
 
@@ -147,6 +151,9 @@ public class RideInfoActivity extends PrevozActivity
     @Inject
     protected AuthenticationUtils authUtils;
 
+    @Inject
+    protected PrevozDatabase database;
+
     @Icicle protected RestRide ride = null;
     @Icicle protected String action = null;
 
@@ -174,9 +181,9 @@ public class RideInfoActivity extends PrevozActivity
 		imgFavorite.setVisibility(authUtils.isAuthenticated() && !ride.isAuthor ? View.VISIBLE : View.INVISIBLE);
 		updateFavoriteIcon();
 
-		txtFrom.setText(LocaleUtil.getLocalizedCityName(this, ride.fromCity, ride.fromCountry));
-		txtTo.setText(LocaleUtil.getLocalizedCityName(this, ride.toCity, ride.toCountry));
-		txtTime.setText(timeFormatter.format(ride.date.getTime()));
+		txtFrom.setText(LocaleUtil.getLocalizedCityName(database, ride.fromCity, ride.fromCountry));
+		txtTo.setText(LocaleUtil.getLocalizedCityName(database, ride.toCity, ride.toCountry));
+        txtTime.setText(ride.date.format(timeFormatter));
 
 		if (ride.price == null || ride.price == 0)
 		{
@@ -200,12 +207,12 @@ public class RideInfoActivity extends PrevozActivity
 			txtDriver.setText(ride.author + "\u00A0");
 		} else {
 			if (ride.author == null || ride.author.length() == 0) {
-				txtDriver.setText(FuzzyDateTimeFormatter.getTimeAgo(this, ride.published.getTime()) + "\u00A0");   // Add non-breaking space at the end to prevent italic letter clipping
+				txtDriver.setText(DateUtils.getRelativeTimeSpanString(ride.published.toInstant().toEpochMilli()) + "\u00A0");   // Add non-breaking space at the end to prevent italic letter clipping
 			} else {
 				SpannableStringBuilder ssb = new SpannableStringBuilder();
 				ssb.append(ride.author);
 				ssb.append(", ");
-				ssb.append(FuzzyDateTimeFormatter.getTimeAgo(this, ride.published.getTime()));
+				ssb.append(DateUtils.getRelativeTimeSpanString(ride.published.toInstant().toEpochMilli()));
 				ssb.setSpan(new StyleSpan(Typeface.BOLD), 0, ride.author.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 				ssb.append("\u00A0");
 				txtDriver.setText(ssb);
@@ -414,8 +421,6 @@ public class RideInfoActivity extends PrevozActivity
         dialog.setMessage("Oddajam prevoz...");
         dialog.show();
 
-        // TODO: remove when server timezone parsing is fixed
-        ride.date.setTimeZone(LocaleUtil.getLocalTimezone());
         ApiClient.getAdapter().postRide(ride, new Callback<RestStatus>() {
             @Override
             public void success(RestStatus status, Response response) {

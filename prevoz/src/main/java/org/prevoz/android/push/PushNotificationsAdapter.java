@@ -47,7 +47,7 @@ public class PushNotificationsAdapter extends RecyclerView.Adapter<PushNotificat
     public void onBindViewHolder(PushNotificationsHolder holder, int position) {
         NotificationSubscription sub = notifications.get(position);
         holder.route.setText(sub.getFrom().toString() + " - " + sub.getTo().toString());
-        holder.date.setText(LocaleUtil.localizeDate(ctx.getResources(), sub.getDate()));
+        holder.date.setText(LocaleUtil.localizeDate(ctx.getResources(), sub.getDate().atStartOfDay(LocaleUtil.getLocalTimezone())));
     }
 
     @Override

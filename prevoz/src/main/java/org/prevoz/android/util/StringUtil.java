@@ -1,5 +1,8 @@
 package org.prevoz.android.util;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import org.prevoz.android.model.City;
 
 import java.util.regex.Matcher;
@@ -25,5 +28,10 @@ public class StringUtil
         }
 
         return null;
+    }
+
+    @NonNull
+    public static String toNonNull(@Nullable String string) {
+        return string == null ? "" : string;
     }
 }

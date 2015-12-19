@@ -15,6 +15,9 @@ import org.prevoz.android.BuildConfig;
 import org.prevoz.android.PrevozApplication;
 import org.prevoz.android.model.Bookmark;
 import org.prevoz.android.util.LocaleUtil;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.format.DateTimeFormatter;
+import org.threeten.bp.format.DateTimeParseException;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -65,36 +68,28 @@ public class ApiClient
         ApiClient.bearer = bearer;
     }
 
-    private static class Iso8601CalendarAdapter extends TypeAdapter<Calendar>
+    private static class Iso8601CalendarAdapter extends TypeAdapter<LocalDateTime>
     {
-        private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz", Locale.US);
-
-        static
-        {
-            sdf.setTimeZone(LocaleUtil.getLocalTimezone());
-        }
+        private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
         @Override
-        public void write(JsonWriter out, Calendar value) throws IOException
+        public void write(JsonWriter out, LocalDateTime value) throws IOException
         {
             if (value == null) {
                 out.nullValue();
             } else {
-                out.value(sdf.format(value.getTime()));
+                out.value(formatter.format(value));
             }
         }
 
         @Override
-        public Calendar read(JsonReader in) throws IOException
+        public LocalDateTime read(JsonReader in) throws IOException
         {
             try
             {
-                Date time = sdf.parse(in.nextString());
-                Calendar cal = Calendar.getInstance(LocaleUtil.getLocalTimezone());
-                cal.setTime(time);
-                return cal;
+                return LocalDateTime.parse(in.nextString(), formatter);
             }
-            catch (ParseException e)
+            catch (DateTimeParseException e)
             {
                 throw new IOException("Invalid date encountered: " + e.getMessage());
             }

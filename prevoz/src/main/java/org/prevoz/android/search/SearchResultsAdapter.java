@@ -25,6 +25,7 @@ import android.widget.TextView;
 import org.prevoz.android.R;
 import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.model.Bookmark;
+import org.prevoz.android.model.PrevozDatabase;
 import org.prevoz.android.ride.RideInfoActivity;
 import org.prevoz.android.util.LocaleUtil;
 
@@ -38,14 +39,16 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 public class SearchResultsAdapter extends BaseAdapter implements StickyListHeadersAdapter
 {
     private final FragmentActivity context;
+    private final PrevozDatabase database;
 
     private List<RestRide> results;
     private Set<Integer> highlights;
     private final LayoutInflater inflater;
 
-    public SearchResultsAdapter(@NonNull FragmentActivity context, @NonNull List<RestRide> results, @NonNull int[] highlights)
+    public SearchResultsAdapter(@NonNull FragmentActivity context, @NonNull PrevozDatabase database, @NonNull List<RestRide> results, @NonNull int[] highlights)
     {
         this.context = context;
+        this.database = database;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         buildResults(results, highlights);
     }
@@ -173,9 +176,9 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
 
 
         RestRide item = results.get(position);
-        String titleText = LocaleUtil.getLocalizedCityName(context, item.fromCity, item.fromCountry) +
+        String titleText = LocaleUtil.getLocalizedCityName(database, item.fromCity, item.fromCountry) +
                            " - " +
-                           LocaleUtil.getLocalizedCityName(context, item.toCity, item.toCountry);
+                           LocaleUtil.getLocalizedCityName(database, item.toCity, item.toCountry);
 
         titleView.setText(titleText);
         return v;

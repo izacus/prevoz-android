@@ -1,7 +1,7 @@
 package org.prevoz.android.search;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +11,6 @@ import android.widget.TextView;
 import org.prevoz.android.R;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.Route;
-import org.prevoz.android.util.ContentUtils;
 
 import java.util.List;
 
@@ -20,12 +19,14 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 public class SearchHistoryAdapter extends BaseAdapter implements StickyListHeadersAdapter
 {
+    @NonNull
     private final LayoutInflater inflater;
+    @NonNull
     private final List<Route> searchHistory;
 
-    public SearchHistoryAdapter(Context ctx)
+    public SearchHistoryAdapter(@NonNull Context ctx, @NonNull List<Route> historyItems)
     {
-        this.searchHistory = ContentUtils.getLastSearches(ctx, 5);
+        this.searchHistory = historyItems;
         this.inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 

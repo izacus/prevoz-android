@@ -49,6 +49,8 @@ import org.prevoz.android.search.SearchResultsFragment;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.PrevozActivity;
 import org.prevoz.android.util.ViewUtils;
+import org.threeten.bp.Instant;
+import org.threeten.bp.LocalDate;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -231,9 +233,7 @@ public class MainActivity extends PrevozActivity
         City from = intent.getParcelableExtra("from");
         City to = intent.getParcelableExtra("to");
 
-        Calendar date = Calendar.getInstance();
-        date.setTimeInMillis(intent.getLongExtra("when", 0));
-
+        LocalDate date = LocalDate.from(Instant.ofEpochMilli(intent.getLongExtra("when", 0)));
         int[] highlights = intent.getIntArrayExtra("highlights");
 
         EventBus.getDefault().postSticky(new Events.NewSearchEvent(from, to, date, highlights));

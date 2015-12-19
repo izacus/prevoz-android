@@ -8,7 +8,10 @@ import android.support.annotation.Nullable;
 import com.google.gson.annotations.SerializedName;
 
 import org.prevoz.android.model.Bookmark;
+import org.prevoz.android.model.PrevozDatabase;
 import org.prevoz.android.util.LocaleUtil;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZonedDateTime;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -43,11 +46,11 @@ public class RestRide implements Comparable, Parcelable, Serializable
     public boolean isFull;
 
     @SerializedName("date_iso8601")
-    public Calendar date;
+    public ZonedDateTime date;
 
     @Nullable
     @SerializedName("added")
-    public Calendar published;
+    public ZonedDateTime published;
 
     @Nullable
     @SerializedName("contact")
@@ -78,7 +81,7 @@ public class RestRide implements Comparable, Parcelable, Serializable
     @Nullable
     private String localizedToCity;
 
-    public RestRide(String fromCity, String fromCountry, String toCity, String toCountry, @Nullable Float price, @Nullable Integer numPeople, Calendar date, @Nullable String phoneNumber, boolean insured, @Nullable String comment)
+    public RestRide(String fromCity, String fromCountry, String toCity, String toCountry, @Nullable Float price, @Nullable Integer numPeople, ZonedDateTime date, @Nullable String phoneNumber, boolean insured, @Nullable String comment)
     {
         this.id = null;
         this.fromCity = fromCity;
@@ -95,15 +98,15 @@ public class RestRide implements Comparable, Parcelable, Serializable
         this.comment = comment;
     }
 
-    public String getLocalizedFrom(Context ctx) {
+    public String getLocalizedFrom(PrevozDatabase database) {
         if (localizedFromCity == null)
-            localizedFromCity = LocaleUtil.getLocalizedCityName(ctx, fromCity, fromCountry);
+            localizedFromCity = LocaleUtil.getLocalizedCityName(database, fromCity, fromCountry);
         return localizedFromCity;
     }
 
-    public String getLocalizedTo(Context ctx) {
+    public String getLocalizedTo(PrevozDatabase database) {
         if (localizedToCity == null)
-            localizedToCity = LocaleUtil.getLocalizedCityName(ctx, toCity, toCountry);
+            localizedToCity = LocaleUtil.getLocalizedCityName(database, toCity, toCountry);
         return localizedToCity;
     }
 
@@ -155,7 +158,7 @@ public class RestRide implements Comparable, Parcelable, Serializable
         dest.writeValue(this.price);
         dest.writeValue(this.numPeople);
         dest.writeByte(isFull ? (byte) 1 : (byte) 0);
-        dest.writeLong(date != null ? date.getTimeInMillis() : -1);
+        dest.writeSerializable(date);
         dest.writeString(this.phoneNumber);
         dest.writeByte(phoneNumberConfirmed ? (byte) 1 : (byte) 0);
         dest.writeByte(insured ? (byte) 1 : (byte) 0);
@@ -176,15 +179,7 @@ public class RestRide implements Comparable, Parcelable, Serializable
         this.price = (Float) in.readValue(Float.class.getClassLoader());
         this.numPeople = (Integer) in.readValue(Integer.class.getClassLoader());
         this.isFull = in.readByte() != 0;
-        long tmpDate = in.readLong();
-
-        if (tmpDate > 0)
-        {
-            Calendar calendar = Calendar.getInstance(LocaleUtil.getLocalTimezone());
-            calendar.setTimeInMillis(tmpDate);
-            this.date = calendar;
-        }
-
+        this.date = (ZonedDateTime) in.readSerializable();
         this.phoneNumber = in.readString();
         this.phoneNumberConfirmed = in.readByte() != 0;
         this.insured = in.readByte() != 0;

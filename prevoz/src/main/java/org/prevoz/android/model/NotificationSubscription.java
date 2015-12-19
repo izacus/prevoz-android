@@ -3,16 +3,18 @@ package org.prevoz.android.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.threeten.bp.LocalDate;
+
 import java.util.Calendar;
 
 public class NotificationSubscription implements Parcelable
 {
-    private final Integer id;
+    private final Long id;
     private final City from;
     private final City to;
-    private final Calendar date;
+    private final LocalDate date;
 
-    public NotificationSubscription(Integer id, City from, City to, Calendar date)
+    public NotificationSubscription(Long id, City from, City to, LocalDate date)
     {
         this.from = from;
         this.to = to;
@@ -20,12 +22,12 @@ public class NotificationSubscription implements Parcelable
         this.id = id;
     }
 
-    public NotificationSubscription(City from, City to, Calendar date)
+    public NotificationSubscription(City from, City to, LocalDate date)
     {
         this(null, from, to, date);
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -37,7 +39,7 @@ public class NotificationSubscription implements Parcelable
         return to;
     }
 
-    public Calendar getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
@@ -59,10 +61,10 @@ public class NotificationSubscription implements Parcelable
 
     private NotificationSubscription(Parcel in)
     {
-        this.id = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
         this.from = in.readParcelable(City.class.getClassLoader());
         this.to = in.readParcelable((City.class.getClassLoader()));
-        this.date = (Calendar) in.readSerializable();
+        this.date = (LocalDate) in.readSerializable();
     }
 
     public static Parcelable.Creator<NotificationSubscription> CREATOR = new Parcelable.Creator<NotificationSubscription>()

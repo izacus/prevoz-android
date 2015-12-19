@@ -2,27 +2,84 @@ package org.prevoz.android.provider;
 
 import android.net.Uri;
 
-import edu.mit.mobile.android.content.ContentItem;
-import edu.mit.mobile.android.content.ProviderUtils;
-import edu.mit.mobile.android.content.column.DBColumn;
-import edu.mit.mobile.android.content.column.DatetimeColumn;
-import edu.mit.mobile.android.content.column.TextColumn;
+import com.pushtorefresh.storio.sqlite.annotations.StorIOSQLiteColumn;
+import com.pushtorefresh.storio.sqlite.annotations.StorIOSQLiteType;
 
-public class Notification implements ContentItem
+import org.prevoz.android.util.LocaleUtil;
+import org.threeten.bp.Instant;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalDateTime;
+
+@StorIOSQLiteType(table=Notification.TABLE)
+public class Notification
 {
-    public static final String PATH = "notifications/subscription";
-    public static final Uri CONTENT_URI = ProviderUtils.toContentUri(DataProvider.AUTHORITY, PATH);
-
-    @DBColumn(type = TextColumn.class, notnull = true)
+    public static final String TABLE = "notification";
     public static final String FROM_CITY = "l_from";
-    @DBColumn(type = TextColumn.class, notnull = true)
     public static final String FROM_COUNTRY = "c_from";
-    @DBColumn(type = TextColumn.class, notnull = true)
     public static final String TO_CITY = "l_to";
-    @DBColumn(type = TextColumn.class, notnull = true)
     public static final String TO_COUNTRY = "c_to";
-    @DBColumn(type = DatetimeColumn.class, notnull = true)
     public static final String DATE = "date";
-    @DBColumn(type = DatetimeColumn.class, notnull = true, defaultValue = DatetimeColumn.NOW_IN_MILLISECONDS)
-    public static final String REGISTERED_DATE = "reg_date";
+
+    @StorIOSQLiteColumn(name = "_id", key = true)
+    long id;
+
+    @StorIOSQLiteColumn(name = FROM_CITY)
+    String fromCity;
+
+    @StorIOSQLiteColumn(name = FROM_COUNTRY)
+    String fromCountry;
+
+    @StorIOSQLiteColumn(name = TO_CITY)
+    String toCity;
+
+    @StorIOSQLiteColumn(name = TO_COUNTRY)
+    String toCountry;
+
+    @StorIOSQLiteColumn(name = DATE)
+    long date;
+
+    @StorIOSQLiteColumn(name="reg_date")
+    long registrationDate;
+
+    Notification() {}
+
+    public Notification(String fromCity, String fromCountry, String toCity, String toCountry, long date) {
+        this.fromCity = fromCity;
+        this.fromCountry = fromCountry;
+        this.toCity = toCity;
+        this.toCountry = toCountry;
+        this.date = date;
+        this.registrationDate = LocalDate.now()
+                                         .atStartOfDay(LocaleUtil.getLocalTimezone())
+                                         .toEpochSecond() * 1000;
+    }
+
+
+    public long getId() {
+        return id;
+    }
+
+    public String getFromCity() {
+        return fromCity;
+    }
+
+    public String getFromCountry() {
+        return fromCountry;
+    }
+
+    public String getToCity() {
+        return toCity;
+    }
+
+    public String getToCountry() {
+        return toCountry;
+    }
+
+    public LocalDate getDate() {
+        return LocalDate.from(Instant.ofEpochMilli(date));
+    }
+
+    public LocalDateTime getRegistrationDate() {
+        return LocalDateTime.from(Instant.ofEpochMilli(date));
+    }
 }

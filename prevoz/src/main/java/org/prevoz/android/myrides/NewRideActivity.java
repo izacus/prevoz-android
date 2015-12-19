@@ -17,19 +17,25 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
+import org.prevoz.android.MainActivity;
+import org.prevoz.android.PrevozApplication;
 import org.prevoz.android.R;
 import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.CityNameTextValidator;
+import org.prevoz.android.model.PrevozDatabase;
 import org.prevoz.android.ride.RideInfoActivity;
 import org.prevoz.android.search.CityAutocompleteAdapter;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.PrevozActivity;
 import org.prevoz.android.util.StringUtil;
 import org.prevoz.android.util.ViewUtils;
+import org.threeten.bp.ZonedDateTime;
 
 import java.util.Calendar;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -66,11 +72,13 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
     @InjectView(R.id.newride_insurance)
     protected CheckBox chkInsurance;
 
-    @Icicle
-    protected Calendar setTime;
+    @Icicle protected ZonedDateTime setTime;
     @Icicle protected boolean dateSet;
     @Icicle protected boolean timeSet;
     @Icicle protected Long editRideId;
+
+    @Inject
+    protected PrevozDatabase database;
 
     private boolean shouldGoFromDateToTime = false;
 
@@ -79,22 +87,23 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newride);
         ButterKnife.inject(this);
+        ((PrevozApplication)getApplication()).component().inject(this);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        setTime = Calendar.getInstance(LocaleUtil.getLocalTimezone());
+        setTime = ZonedDateTime.now(LocaleUtil.getLocalTimezone());
+        if (setTime.getMinute() >= 45 || setTime.getMinute() <= 15) {
+            setTime = setTime.withMinute(0);
+        } else {
+            setTime = setTime.withMinute(30);
+        }
 
-        // Round time to nearest 30 mins
-        if (setTime.get(Calendar.MINUTE) >= 45 || setTime.get(Calendar.MINUTE) <= 15)
-            setTime.set(Calendar.MINUTE, 0);
-        else
-            setTime.set(Calendar.MINUTE, 30);
-
-        textFrom.setAdapter(new CityAutocompleteAdapter(this));
-        textTo.setAdapter(new CityAutocompleteAdapter(this));
-        textFrom.setValidator(new CityNameTextValidator(this));
-        textTo.setValidator(new CityNameTextValidator(this));
+        textFrom.setAdapter(new CityAutocompleteAdapter(this, database));
+        textTo.setAdapter(new CityAutocompleteAdapter(this, database));
+        textFrom.setValidator(new CityNameTextValidator(this, database));
+        textTo.setValidator(new CityNameTextValidator(this, database));
 
         // Setup IME actions
         textTo.setOnEditorActionListener((v, actionId, event) -> {
@@ -170,9 +179,9 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
     {
         ViewUtils.hideKeyboard(this);
         DatePickerDialog dialog = DatePickerDialog.newInstance(this,
-                                                                setTime.get(Calendar.YEAR),
-                                                                setTime.get(Calendar.MONTH),
-                                                                setTime.get(Calendar.DAY_OF_MONTH));
+                                                                setTime.getYear(),
+                                                                setTime.getMonthValue(),
+                                                                setTime.getDayOfMonth());
         dialog.show(getFragmentManager(), "NewDate");
     }
 
@@ -181,9 +190,9 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
     {
         ViewUtils.hideKeyboard(this);
         TimePickerDialog dialog = TimePickerDialog.newInstance(this,
-                setTime.get(Calendar.HOUR_OF_DAY),
-                setTime.get(Calendar.MINUTE),
-                true);
+                                                                setTime.getHour(),
+                                                                setTime.getMinute(),
+                                                                true);
         dialog.show(getFragmentManager(), "NewTime");
     }
 
@@ -206,7 +215,8 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
                 textPhone.getText().toString(),
                 chkInsurance.isChecked(),
                 textNotes.getText().toString());
-        ride.published = Calendar.getInstance(LocaleUtil.getLocale());
+
+        ride.published = ZonedDateTime.now(LocaleUtil.getLocalTimezone());
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefs.edit().putString(PREF_PHONE_NO, textPhone.getText().toString()).putBoolean(PREF_HAS_INSURANCE, chkInsurance.isChecked()).apply();
@@ -226,10 +236,7 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
     @Override
     public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day)
     {
-        setTime.set(Calendar.YEAR, year);
-        setTime.set(Calendar.MONTH, month);
-        setTime.set(Calendar.DAY_OF_MONTH, day);
-
+        setTime = setTime.withYear(year).withMonth(month).withDayOfMonth(day);
         dateSet = true;
         updateDateTimeDisplay(true, false);
 
@@ -243,9 +250,7 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
     @Override
     public void onTimeSet(RadialPickerLayout radialPickerLayout, int hour, int minute)
     {
-        setTime.set(Calendar.HOUR_OF_DAY, hour);
-        setTime.set(Calendar.MINUTE, minute);
-
+        setTime = setTime.withHour(hour).withMinute(minute);
         timeSet = true;
         updateDateTimeDisplay(false, true);
         textPrice.requestFocus();
@@ -274,7 +279,7 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
                textTime.validateWith(new METValidator(getString(R.string.newride_error_date_passed)) {
                     @Override
                     public boolean isValid(CharSequence charSequence, boolean b) {
-                        return Calendar.getInstance(LocaleUtil.getLocalTimezone()).before(setTime);
+                        return ZonedDateTime.now(LocaleUtil.getLocalTimezone()).isBefore(setTime);
                     }
                });
     }

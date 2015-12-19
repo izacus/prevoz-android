@@ -10,9 +10,13 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import org.prevoz.android.MainActivity;
+import org.prevoz.android.PrevozApplication;
 import org.prevoz.android.R;
 import org.prevoz.android.model.City;
+import org.prevoz.android.model.PrevozDatabase;
 import org.prevoz.android.util.LocaleUtil;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.format.DateTimeFormatter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,14 +25,23 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
+import javax.inject.Inject;
+
 public class PushReceiver extends BroadcastReceiver
 {
+    @Inject
+    protected PrevozDatabase database;
+
     @Override
     public void onReceive(Context context, Intent intent)
     {
         Log.i(this.toString(), "GCM Message received.");
         final Bundle extras = intent.getExtras();
         if (extras == null) return;
+
+        if (database == null) {
+            ((PrevozApplication)context.getApplicationContext()).component().inject(this);
+        }
 
         final int[] rideIds = parseRideIds(extras.getString("rides"));
         if (rideIds.length == 0) return;
@@ -41,26 +54,15 @@ public class PushReceiver extends BroadcastReceiver
 
         // Create notification message:
         android.app.NotificationManager notifyManager = (android.app.NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-        String title = context.getString(R.string.notify_statusbar) + " " + from.getLocalizedName(context) + " - " + to.getLocalizedName(context);
+        String title = context.getString(R.string.notify_statusbar) + " " + from.getLocalizedName(database) + " - " + to.getLocalizedName(database);
 
         // Prepare search results launch intent
-        Calendar when = Calendar.getInstance();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-
-        try
-        {
-            when.setTime(format.parse(extras.getString("date")));
-        }
-        catch (ParseException e)
-        {
-            Log.e(this.toString(), "Failed to parse passed date.", e);
-            return;
-        }
+        LocalDate when = LocalDate.parse(extras.getString("date"), DateTimeFormatter.ISO_LOCAL_DATE);
 
         Intent notificationIntent = new Intent(context, MainActivity.class);
         notificationIntent.putExtra("from", from);
         notificationIntent.putExtra("to", to);
-        notificationIntent.putExtra("when", when.getTimeInMillis());
+        notificationIntent.putExtra("when", when.atStartOfDay(LocaleUtil.getLocalTimezone()).toInstant());
         notificationIntent.putExtra("highlights", rideIds);
 
         PendingIntent pIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);

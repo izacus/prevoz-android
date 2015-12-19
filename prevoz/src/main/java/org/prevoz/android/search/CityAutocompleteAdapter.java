@@ -2,30 +2,34 @@ package org.prevoz.android.search;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.widget.FilterQueryProvider;
 import android.widget.TextView;
 
 import org.prevoz.android.R;
+import org.prevoz.android.model.PrevozDatabase;
 import org.prevoz.android.provider.Location;
-import org.prevoz.android.util.ContentUtils;
 import org.prevoz.android.util.LocaleUtil;
 
 public class CityAutocompleteAdapter extends SimpleCursorAdapter implements FilterQueryProvider, SimpleCursorAdapter.CursorToStringConverter
 {
+    @NonNull
+    private final PrevozDatabase database;
 
-    public CityAutocompleteAdapter(Context context)
+    public CityAutocompleteAdapter(@NonNull Context context, @NonNull PrevozDatabase database)
     {
         super(context,
               R.layout.item_autocomplete,
-              ContentUtils.getCityCursor(context, "", null),
+              database.cityCursor("", null),
               new String[] { Location.NAME},
               new int[] { R.id.city_name },
               0);
 
         setFilterQueryProvider(this);
         setCursorToStringConverter(this);
+        this.database = database;
     }
 
     @Override
@@ -43,14 +47,14 @@ public class CityAutocompleteAdapter extends SimpleCursorAdapter implements Filt
         else
         {
             countryName.setVisibility(View.VISIBLE);
-            countryName.setText(LocaleUtil.getLocalizedCountryName(context, countryCode));
+            countryName.setText(LocaleUtil.getLocalizedCountryName(database, countryCode));
         }
     }
 
     @Override
     public Cursor runQuery(CharSequence constraint)
     {
-        return ContentUtils.getCityCursor(mContext, constraint == null ? null : constraint.toString(), null);
+        return database.cityCursor(constraint == null ? null : constraint.toString(), null);
     }
 
     @Override
@@ -58,6 +62,6 @@ public class CityAutocompleteAdapter extends SimpleCursorAdapter implements Filt
     {
         int colIndex = cursor.getColumnIndex(Location.NAME);
         int ctrIndex = cursor.getColumnIndex(Location.COUNTRY);
-        return LocaleUtil.getLocalizedCityName(mContext, cursor.getString(colIndex), cursor.getString(ctrIndex));
+        return LocaleUtil.getLocalizedCityName(database, cursor.getString(colIndex), cursor.getString(ctrIndex));
     }
 }

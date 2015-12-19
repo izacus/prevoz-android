@@ -8,6 +8,7 @@ import org.prevoz.android.UiFragment;
 import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.Route;
+import org.threeten.bp.LocalDate;
 
 import java.util.Calendar;
 
@@ -17,10 +18,10 @@ public class Events
     {
         public final City from;
         public final City to;
-        public final Calendar date;
+        public final LocalDate date;
         public final int[] rideIds;
 
-        public NewSearchEvent(City from, City to, Calendar date)
+        public NewSearchEvent(City from, City to, LocalDate date)
         {
             this.from = from;
             this.to = to;
@@ -28,7 +29,7 @@ public class Events
             this.rideIds = new int[0];
         }
 
-        public NewSearchEvent(City from, City to, Calendar date, int[] rideIds)
+        public NewSearchEvent(City from, City to, LocalDate date, int[] rideIds)
         {
             this.from = from;
             this.to = to;
@@ -44,7 +45,7 @@ public class Events
     public static class SearchFillWithRoute
     {
         public final Route route;
-        public final Calendar date;
+        public final LocalDate date;
         public final boolean searchInProgress;
 
         public SearchFillWithRoute(Route route)
@@ -54,7 +55,7 @@ public class Events
             this.searchInProgress = false;
         }
 
-        public SearchFillWithRoute(Route route, Calendar date, boolean inProgress)
+        public SearchFillWithRoute(Route route, LocalDate date, boolean inProgress)
         {
             this.route = route;
             this.date = date;
