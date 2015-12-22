@@ -25,7 +25,6 @@ public class LocaleUtil
 {
     private static final HashMap<String, String> localizedCountryNamesCache = new HashMap<>();
     private static final HashMap<String, String> localizedCityNamesCache = new HashMap<>();
-    private static final HashMap<String, SimpleDateFormat> dateFormatCache = new HashMap<>();
 
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
     private static Locale localeCache = null;

@@ -56,6 +56,7 @@ import org.prevoz.android.util.ViewUtils;
 import org.threeten.bp.format.DateTimeFormatter;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -207,12 +208,14 @@ public class RideInfoActivity extends PrevozActivity
 			txtDriver.setText(ride.author + "\u00A0");
 		} else {
 			if (ride.author == null || ride.author.length() == 0) {
-				txtDriver.setText(DateUtils.getRelativeTimeSpanString(ride.published.toInstant().toEpochMilli()) + "\u00A0");   // Add non-breaking space at the end to prevent italic letter clipping
+                Date date = new Date(ride.published.toInstant().toEpochMilli());
+				txtDriver.setText(FuzzyDateTimeFormatter.getTimeAgo(this, date) + "\u00A0");   // Add non-breaking space at the end to prevent italic letter clipping
 			} else {
-				SpannableStringBuilder ssb = new SpannableStringBuilder();
+                Date date = new Date(ride.published.toInstant().toEpochMilli());
+                SpannableStringBuilder ssb = new SpannableStringBuilder();
 				ssb.append(ride.author);
 				ssb.append(", ");
-				ssb.append(DateUtils.getRelativeTimeSpanString(ride.published.toInstant().toEpochMilli()));
+				ssb.append(FuzzyDateTimeFormatter.getTimeAgo(this, date));
 				ssb.setSpan(new StyleSpan(Typeface.BOLD), 0, ride.author.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 				ssb.append("\u00A0");
 				txtDriver.setText(ssb);

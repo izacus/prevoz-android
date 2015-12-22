@@ -96,30 +96,6 @@ public class ApiClient
         }
     }
 
-    private static class Iso8601DateAdapter extends TypeAdapter<Date>
-    {
-        private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz", Locale.US);
-
-        @Override
-        public void write(JsonWriter out, Date value) throws IOException
-        {
-            out.value(sdf.format(value));
-        }
-
-        @Override
-        public Date read(JsonReader in) throws IOException
-        {
-            try
-            {
-                return sdf.parse(in.nextString());
-            }
-            catch (ParseException e)
-            {
-                throw new IOException("Invalid date encountered: " + e.getMessage());
-            }
-        }
-    }
-
     private static class BookmarkAdapter extends TypeAdapter<Bookmark>
     {
         @Override
