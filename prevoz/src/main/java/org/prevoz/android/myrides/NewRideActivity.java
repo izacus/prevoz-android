@@ -213,6 +213,7 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
                 chkInsurance.isChecked(),
                 textNotes.getText().toString());
 
+        ride.isAuthor = true;
         ride.published = ZonedDateTime.now(LocaleUtil.getLocalTimezone());
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
