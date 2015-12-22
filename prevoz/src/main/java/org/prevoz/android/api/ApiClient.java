@@ -16,6 +16,7 @@ import org.prevoz.android.PrevozApplication;
 import org.prevoz.android.model.Bookmark;
 import org.prevoz.android.util.LocaleUtil;
 import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.format.DateTimeParseException;
 
@@ -43,8 +44,7 @@ public class ApiClient
     {
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .registerTypeAdapter(Date.class, new Iso8601DateAdapter())
-                .registerTypeAdapter(Calendar.class, new Iso8601CalendarAdapter())
+                .registerTypeAdapter(ZonedDateTime.class, new Iso8601CalendarAdapter())
                 .registerTypeAdapter(GregorianCalendar.class, new Iso8601CalendarAdapter())
                 .registerTypeAdapter(Bookmark.class, new BookmarkAdapter())
                 .create();
@@ -68,12 +68,12 @@ public class ApiClient
         ApiClient.bearer = bearer;
     }
 
-    private static class Iso8601CalendarAdapter extends TypeAdapter<LocalDateTime>
+    private static class Iso8601CalendarAdapter extends TypeAdapter<ZonedDateTime>
     {
         private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
         @Override
-        public void write(JsonWriter out, LocalDateTime value) throws IOException
+        public void write(JsonWriter out, ZonedDateTime value) throws IOException
         {
             if (value == null) {
                 out.nullValue();
@@ -83,11 +83,11 @@ public class ApiClient
         }
 
         @Override
-        public LocalDateTime read(JsonReader in) throws IOException
+        public ZonedDateTime read(JsonReader in) throws IOException
         {
             try
             {
-                return LocalDateTime.parse(in.nextString(), formatter);
+                return ZonedDateTime.parse(in.nextString(), formatter);
             }
             catch (DateTimeParseException e)
             {

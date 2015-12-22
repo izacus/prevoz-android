@@ -38,13 +38,13 @@ public class LocaleUtil
     public static String getDayName(Resources res, ZonedDateTime date)
     {
         String[] dayNames = res.getStringArray(R.array.day_names);
-        return dayNames[date.getDayOfWeek().getValue() - 1];
+        return dayNames[date.getDayOfWeek().getValue()];
     }
 
     public static String getShortDayName(Resources res, ZonedDateTime date)
     {
         String[] shortDayNames = res.getStringArray(R.array.short_day_names);
-        return shortDayNames[date.getDayOfWeek().getValue() - 1];
+        return shortDayNames[date.getDayOfWeek().getValue()];
     }
 
     public static String getFormattedDate(Resources res, ZonedDateTime date)

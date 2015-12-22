@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.jakewharton.threetenabp.AndroidThreeTen;
@@ -16,6 +17,8 @@ import java.io.File;
 import javax.inject.Inject;
 
 import io.fabric.sdk.android.Fabric;
+import rx.plugins.RxJavaErrorHandler;
+import rx.plugins.RxJavaPlugins;
 
 public class PrevozApplication extends Application
 {
@@ -38,6 +41,14 @@ public class PrevozApplication extends Application
                                               .applicationModule(new ApplicationModule(this))
                                               .build();
         component.inject(this);
+
+        RxJavaPlugins.getInstance().registerErrorHandler(new RxJavaErrorHandler() {
+            @Override
+            public void handleError(Throwable e) {
+                super.handleError(e);
+                Log.e("Prevoz", "Exception.", e);
+            }
+        });
 
         try
         {

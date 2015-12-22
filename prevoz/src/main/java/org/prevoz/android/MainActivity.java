@@ -79,7 +79,6 @@ public class MainActivity extends PrevozActivity
     @InjectView(R.id.toolbar)
     protected Toolbar toolbar;
 
-
     @InjectView(R.id.main_drawer)
     protected DrawerLayout drawerLayout;
     protected ActionBarDrawerToggle drawerLayoutToggle;

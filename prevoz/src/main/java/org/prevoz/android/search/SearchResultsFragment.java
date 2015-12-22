@@ -27,6 +27,7 @@ import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.PrevozDatabase;
+import org.prevoz.android.model.Route;
 import org.prevoz.android.ui.ListDisappearAnimation;
 import org.prevoz.android.ui.ListFlyupAnimator;
 import org.prevoz.android.util.LocaleUtil;

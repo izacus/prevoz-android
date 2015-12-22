@@ -33,6 +33,7 @@ import org.prevoz.android.util.PrevozActivity;
 import org.prevoz.android.util.StringUtil;
 import org.prevoz.android.util.ViewUtils;
 import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalDateTime;
 
 import java.util.Calendar;
 
@@ -111,12 +112,12 @@ public class SearchFragment extends PrevozFragment implements DatePickerDialog.O
         if (activity == null || !isAdded()) return;
 
         ViewUtils.hideKeyboard(activity);
-        final Calendar calendar = Calendar.getInstance(LocaleUtil.getLocale());
 
+        LocalDateTime now = LocalDateTime.now(LocaleUtil.getLocalTimezone());
         DatePickerDialog dialog = DatePickerDialog.newInstance(this,
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH));
+                now.getYear(),
+                now.getMonthValue() - 1,
+                now.getDayOfMonth());
         dialog.show(activity.getFragmentManager(), "SearchDate");
     }
 
@@ -138,7 +139,7 @@ public class SearchFragment extends PrevozFragment implements DatePickerDialog.O
     @Override
     public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day)
     {
-        selectedDate = selectedDate.withYear(year).withMonth(month).withDayOfMonth(day);
+        selectedDate = selectedDate.withYear(year).withMonth(month + 1).withDayOfMonth(day);
         updateShownDate();
     }
 

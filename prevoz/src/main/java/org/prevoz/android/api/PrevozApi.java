@@ -66,7 +66,9 @@ public interface PrevozApi
     Observable<RestAuthTokenResponse> getAccessToken(@Field("grant_type") String grantType,
                                                      @Field("client_id") String clientId,
                                                      @Field("client_secret") String clientSecret,
-                                                     @Field("code") String code);
+                                                     @Field("code") String code,
+                                                     @Field("redirect_uri") String redirectUri);
+
     @FormUrlEncoded
     @POST("/api/carshare/bookmark/{id}/")
     void setRideBookmark(@Path("id") String id, @Field("state") String state, Callback<Response> cb);

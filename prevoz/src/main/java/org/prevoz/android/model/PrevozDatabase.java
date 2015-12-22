@@ -42,6 +42,8 @@ import org.prevoz.android.util.FileUtil;
 import org.prevoz.android.util.LocaleUtil;
 import org.threeten.bp.LocalDate;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -97,9 +99,13 @@ public class PrevozDatabase {
 
     private void checkUpdateContentDatabase(final StorIOSQLite sqlite) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        if (prefs.getInt(PREF_CONTENT_DB_VERSION, -1) == CONTENT_DB_VERSION) return;
-        Log.d(LOG_TAG, "Loading initial database...");
+        if (prefs.getInt(PREF_CONTENT_DB_VERSION, -1) == CONTENT_DB_VERSION) {
+            databasePrepared.onNext(sqlite);
+            databasePrepared.onCompleted();
+            return;
+        }
 
+        Log.d(LOG_TAG, "Loading initial database...");
         Observable.fromCallable((Callable<Void>) () -> {
 
             sqlite.delete().byQuery(
@@ -152,7 +158,7 @@ public class PrevozDatabase {
 
     public Single<String> getLocalCityName(@NonNull String city) {
         return databasePrepared.flatMap(storIOSQLite -> storIOSQLite.get()
-                    .listOfObjects(Location.class)
+                    .cursor()
                     .withQuery(Query.builder()
                                 .table(Location.TABLE)
                                 .columns(Location.NAME)
@@ -160,10 +166,19 @@ public class PrevozDatabase {
                                 .whereArgs(city)
                                 .build())
                     .prepare()
-                    .createObservable())
-                    .flatMap(Observable::from)
-                    .map(Location::getName)
+                    .createObservable()
+                    .first())
+                    .flatMap(cursor -> {
+                        List<String> results = new ArrayList<>(cursor.getCount());
+                        int idx = cursor.getColumnIndex(Location.NAME);
+                        while (cursor.moveToNext()) {
+                            results.add(cursor.getString(idx));
+                        }
+
+                        return Observable.from(results);
+                    })
                     .subscribeOn(Schedulers.io())
+                    .singleOrDefault("")
                     .toSingle();
     }
 
@@ -174,15 +189,16 @@ public class PrevozDatabase {
                 .listOfObjects(Country.class)
                 .withQuery(Query.builder()
                         .table(Country.TABLE)
-                        .columns(Country.NAME)
                         .where(Country.LANGUAGE + " = ? AND " + Country.COUNTRY_CODE + " = ?")
                         .whereArgs(actualLocale, countryCode)
                         .build())
                 .prepare()
-                .createObservable())
+                .createObservable()
+                .first())
                 .flatMap(Observable::from)
                 .map(Country::getName)
                 .subscribeOn(Schedulers.io())
+                .singleOrDefault("")
                 .toSingle();
     }
 
@@ -195,7 +211,8 @@ public class PrevozDatabase {
                             .whereArgs(city)
                             .build())
                 .prepare()
-                .createObservable())
+                .createObservable()
+                .first())
                 .map(num -> num > 0)
                 .subscribeOn(Schedulers.io())
                 .toSingle();
@@ -252,7 +269,8 @@ public class PrevozDatabase {
                                         .whereArgs(fcity, fcountry, tcity, tcountry)
                                         .build())
                             .prepare()
-                            .createObservable())
+                            .createObservable()
+                            .first())
                             .subscribeOn(Schedulers.io())
                             .flatMap(Observable::from)
         // Grab the existing item or create a new one and insert it back in with new date.
@@ -277,7 +295,8 @@ public class PrevozDatabase {
                                         .limit(count)
                                         .build())
                 .prepare()
-                .createObservable())
+                .createObservable()
+                .first())
                 .flatMap(Observable::from)
                 .map(item -> new Route(item.getFrom(), item.getTo()))
                 .toList()
@@ -292,11 +311,11 @@ public class PrevozDatabase {
                             .listOfObjects(SearchHistoryItem.class)
                             .withQuery(Query.builder()
                                         .table(SearchHistoryItem.TABLE)
-                                        .columns(SearchHistoryItem.ID)
                                         .orderBy(SearchHistoryItem.SEARCH_DATE + " DESC")
                                         .build())
                             .prepare()
-                            .createObservable())
+                            .createObservable()
+                            .first())
                             .flatMap(Observable::from);
 
         historyItems.count()
@@ -328,7 +347,8 @@ public class PrevozDatabase {
                                                epoch)
                                     .build())
                         .prepare()
-                        .createObservable())
+                        .createObservable()
+                        .first())
                         .map(count -> count > 0)
                         .subscribeOn(Schedulers.io())
                         .toSingle();
@@ -338,7 +358,7 @@ public class PrevozDatabase {
         return databasePrepared.flatMap(storIOSQLite -> storIOSQLite.get()
                         .listOfObjects(Notification.class)
                         .withQuery(Query.builder().table(Notification.TABLE).build())
-                        .prepare().createObservable())
+                        .prepare().createObservable().first())
                         .subscribeOn(Schedulers.io());
     }
 
@@ -352,7 +372,8 @@ public class PrevozDatabase {
         return databasePrepared.flatMap(storIOSQLite -> storIOSQLite.put()
                                                         .object(notification)
                                                         .prepare()
-                                                        .createObservable())
+                                                        .createObservable()
+                                                        .first())
                                 .subscribeOn(Schedulers.io())
                                 .map(v -> true);
     }
@@ -369,7 +390,8 @@ public class PrevozDatabase {
                                                                to.getDisplayName(), to.getCountryCode(), epoch)
                                                     .build())
                                         .prepare()
-                                        .createObservable())
+                                        .createObservable()
+                                        .first())
                                 .subscribeOn(Schedulers.io())
                                 .map(v -> true);
     }

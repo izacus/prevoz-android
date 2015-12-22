@@ -77,9 +77,6 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
     @Icicle protected boolean timeSet;
     @Icicle protected Long editRideId;
 
-    @Inject
-    protected PrevozDatabase database;
-
     private boolean shouldGoFromDateToTime = false;
 
     @Override
@@ -180,7 +177,7 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
         ViewUtils.hideKeyboard(this);
         DatePickerDialog dialog = DatePickerDialog.newInstance(this,
                                                                 setTime.getYear(),
-                                                                setTime.getMonthValue(),
+                                                                setTime.getMonthValue() - 1,
                                                                 setTime.getDayOfMonth());
         dialog.show(getFragmentManager(), "NewDate");
     }
@@ -236,7 +233,7 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
     @Override
     public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day)
     {
-        setTime = setTime.withYear(year).withMonth(month).withDayOfMonth(day);
+        setTime = setTime.withYear(year).withMonth(month + 1).withDayOfMonth(day);
         dateSet = true;
         updateDateTimeDisplay(true, false);
 
