@@ -29,23 +29,23 @@
 
     <!--  Day and month names -->
     <string-array name="day_names">
-        <item>Nedelja</item>
         <item>Ponedeljek</item>
         <item>Torek</item>
         <item>Sreda</item>
         <item>Četrtek</item>
         <item>Petek</item>
         <item>Sobota</item>
+        <item>Nedelja</item>
     </string-array>
 
     <string-array name="short_day_names">
-        <item>ned</item>
         <item>pon</item>
         <item>tor</item>
         <item>sre</item>
         <item>čet</item>
         <item>pet</item>
         <item>sob</item>
+        <item>ned</item>
     </string-array>
 
     <string-array name="month_names">

@@ -42,14 +42,6 @@ public class PrevozApplication extends Application
                                               .build();
         component.inject(this);
 
-        RxJavaPlugins.getInstance().registerErrorHandler(new RxJavaErrorHandler() {
-            @Override
-            public void handleError(Throwable e) {
-                super.handleError(e);
-                Log.e("Prevoz", "Exception.", e);
-            }
-        });
-
         try
         {
             VERSION = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;

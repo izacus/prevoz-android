@@ -162,20 +162,16 @@ public class PrevozDatabase {
                     .withQuery(Query.builder()
                                 .table(Location.TABLE)
                                 .columns(Location.NAME)
-                                .where(Location.NAME_ASCII + " = ?")
-                                .whereArgs(city)
+                                .where(Location.NAME_ASCII + " = ? OR " + Location.NAME + " = ?")
+                                .whereArgs(city, city)
                                 .build())
                     .prepare()
                     .createObservable()
                     .first())
                     .flatMap(cursor -> {
-                        List<String> results = new ArrayList<>(cursor.getCount());
                         int idx = cursor.getColumnIndex(Location.NAME);
-                        while (cursor.moveToNext()) {
-                            results.add(cursor.getString(idx));
-                        }
-
-                        return Observable.from(results);
+                        cursor.moveToNext();
+                        return Observable.just(cursor.getString(idx));
                     })
                     .subscribeOn(Schedulers.io())
                     .singleOrDefault("")
@@ -274,13 +270,13 @@ public class PrevozDatabase {
                             .subscribeOn(Schedulers.io())
                             .flatMap(Observable::from)
         // Grab the existing item or create a new one and insert it back in with new date.
-                            .firstOrDefault(new SearchHistoryItem(fcity, fcountry, tcity, tcity, epoch))
+                            .firstOrDefault(new SearchHistoryItem(fcity, fcountry, tcity, tcountry, epoch))
                             .map(searchHistoryItem -> {
                                 searchHistoryItem.setDate(epoch);
                                 return searchHistoryItem;
                              })
                             .zipWith(databasePrepared, Pair::new)
-                            .flatMap(pair -> pair.second.put().object(pair.first).prepare().createObservable())
+                            .flatMap(pair -> pair.second.put().object(pair.first).prepare().createObservable().first())
                             .subscribeOn(Schedulers.io())
                             .subscribe(r -> {},
                                        e -> Log.e(LOG_TAG, "Failed to instert search history item!", e));
@@ -326,7 +322,8 @@ public class PrevozDatabase {
                                     .objects(pair.first)
                                     .useTransaction(true)
                                     .prepare()
-                                    .createObservable())
+                                    .createObservable()
+                                    .first())
                     .subscribeOn(Schedulers.io())
                     .subscribe(a -> {},
                                e -> Log.e(LOG_TAG, "Failed to truncate search table!", e));
