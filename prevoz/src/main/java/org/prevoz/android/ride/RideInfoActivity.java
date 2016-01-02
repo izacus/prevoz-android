@@ -149,12 +149,6 @@ public class RideInfoActivity extends PrevozActivity
     @InjectView(R.id.rideinfo_button_sms)
     protected Button rightButton;
 
-    @Inject
-    protected AuthenticationUtils authUtils;
-
-    @Inject
-    protected PrevozDatabase database;
-
     @Icicle protected RestRide ride = null;
     @Icicle protected String action = null;
 
@@ -165,13 +159,13 @@ public class RideInfoActivity extends PrevozActivity
         Icepick.restoreInstanceState(this, savedInstanceState);
 		setContentView(R.layout.activity_rideinfo);
 		ButterKnife.inject(this);
-		getApplicationComponent().inject(this);
 
 		ride = getIntent().getParcelableExtra(ARG_RIDE);
 		action = getIntent().getStringExtra(ARG_ACTION);
 
-        if (action == null)
+        if (action == null) {
             action = PARAM_ACTION_SHOW;
+        }
 
         if (PARAM_ACTION_SHOW.equals(action) && ride.isAuthor)
         {
@@ -267,12 +261,12 @@ public class RideInfoActivity extends PrevozActivity
     {
         switch (currentAction) {
             case PARAM_ACTION_SUBMIT:
-                leftButton.setText("Prekliči");
-                rightButton.setText("Oddaj");
+                leftButton.setText(R.string.rideinfo_cancel);
+                rightButton.setText(R.string.rideinfo_submit);
                 break;
             case PARAM_ACTION_EDIT:
-                leftButton.setText("Uredi");
-                rightButton.setText("Izbriši");
+                leftButton.setText(R.string.rideinfo_edit);
+                rightButton.setText(R.string.rideinfo_delete);
                 break;
             default:
                 leftButton.setText(R.string.rideinfo_call);

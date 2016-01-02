@@ -112,4 +112,8 @@
     <string name="rideinfo_ride_full">Prevoz je poln.</string>
     <string name="myrides_header_bookmarks">Zaznamki</string>
     <string name="myrides_header_published_rides">Objavljeni prevozi</string>
+    <string name="rideinfo_delete">Izbriši</string>
+    <string name="rideinfo_edit">Uredi</string>
+    <string name="rideinfo_cancel">Prekliči</string>
+    <string name="rideinfo_submit">Oddaj</string>
 </resources>
