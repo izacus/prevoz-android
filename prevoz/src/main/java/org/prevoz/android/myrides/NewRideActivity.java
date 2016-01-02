@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
 
@@ -304,6 +305,16 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
     public void finish() {
         super.finish();
         overridePendingTransition(0, R.anim.slide_down);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public void onEventMainThread(Events.ShowMessage message) {
