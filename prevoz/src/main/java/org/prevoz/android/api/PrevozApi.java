@@ -1,7 +1,6 @@
 package org.prevoz.android.api;
 
 import org.prevoz.android.api.rest.RestAccountStatus;
-import org.prevoz.android.api.rest.RestApiKey;
 import org.prevoz.android.api.rest.RestAuthTokenResponse;
 import org.prevoz.android.api.rest.RestPushStatus;
 import org.prevoz.android.api.rest.RestRide;

@@ -14,19 +14,12 @@ import com.squareup.okhttp.OkHttpClient;
 import org.prevoz.android.BuildConfig;
 import org.prevoz.android.PrevozApplication;
 import org.prevoz.android.model.Bookmark;
-import org.prevoz.android.util.LocaleUtil;
-import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.format.DateTimeParseException;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;

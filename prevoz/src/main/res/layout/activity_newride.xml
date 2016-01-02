@@ -54,6 +54,7 @@
                     android:layout_height="match_parent"
                     android:scaleType="center"
                     android:src="@drawable/ic_action_location_from"
+                    android:contentDescription="@null"
                     />
 
                 <com.rengwuxian.materialedittext.MaterialAutoCompleteTextView

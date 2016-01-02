@@ -1,23 +1,17 @@
 package org.prevoz.android.search;
 
 import android.app.Activity;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AutoCompleteTextView;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
 import com.rengwuxian.materialedittext.MaterialAutoCompleteTextView;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -26,7 +20,6 @@ import org.prevoz.android.R;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.CityNameTextValidator;
-import org.prevoz.android.model.PrevozDatabase;
 import org.prevoz.android.model.Route;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.PrevozActivity;
@@ -34,10 +27,6 @@ import org.prevoz.android.util.StringUtil;
 import org.prevoz.android.util.ViewUtils;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
-
-import java.util.Calendar;
-
-import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

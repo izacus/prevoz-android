@@ -54,6 +54,7 @@
             android:layout_height="match_parent"
             android:scaleType="center"
             android:src="@drawable/ic_action_cancel"
+            android:contentDescription="@string/cd_notification_cancel"
             />
 
     </LinearLayout>

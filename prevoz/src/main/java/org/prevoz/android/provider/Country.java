@@ -1,7 +1,5 @@
 package org.prevoz.android.provider;
 
-import android.net.Uri;
-
 import com.pushtorefresh.storio.sqlite.annotations.StorIOSQLiteColumn;
 import com.pushtorefresh.storio.sqlite.annotations.StorIOSQLiteType;
 

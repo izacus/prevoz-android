@@ -116,4 +116,6 @@
     <string name="rideinfo_edit">Uredi</string>
     <string name="rideinfo_cancel">Prekliči</string>
     <string name="rideinfo_submit">Oddaj</string>
+    <string name="cd_bookmark">Priljubljen prevoz</string>
+    <string name="cd_notification_cancel">Prekliči obveščanje</string>
 </resources>

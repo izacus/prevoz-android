@@ -2,7 +2,6 @@ package org.prevoz.android.myrides;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;

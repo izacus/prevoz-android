@@ -2,7 +2,6 @@ package org.prevoz.android.util;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 
 import org.prevoz.android.ApplicationComponent;

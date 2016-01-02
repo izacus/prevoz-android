@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:scaleType="center"
             android:src="@drawable/empty_content"
+            android:contentDescription="@null"
             />
 
         <TextView

@@ -1,6 +1,5 @@
 package org.prevoz.android.api.rest;
 
-import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -10,11 +9,9 @@ import com.google.gson.annotations.SerializedName;
 import org.prevoz.android.model.Bookmark;
 import org.prevoz.android.model.PrevozDatabase;
 import org.prevoz.android.util.LocaleUtil;
-import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZonedDateTime;
 
 import java.io.Serializable;
-import java.util.Calendar;
 
 public class RestRide implements Comparable, Parcelable, Serializable
 {

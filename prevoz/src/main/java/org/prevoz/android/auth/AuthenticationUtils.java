@@ -28,7 +28,6 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.exceptions.OnErrorThrowable;
-import rx.functions.Func0;
 import rx.schedulers.Schedulers;
 
 public class AuthenticationUtils

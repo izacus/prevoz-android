@@ -24,7 +24,6 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
-import android.text.format.DateUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
@@ -45,20 +44,15 @@ import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.PrevozApi;
 import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.api.rest.RestStatus;
-import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.Bookmark;
-import org.prevoz.android.model.PrevozDatabase;
 import org.prevoz.android.myrides.NewRideActivity;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.PrevozActivity;
 import org.prevoz.android.util.ViewUtils;
 import org.threeten.bp.format.DateTimeFormatter;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

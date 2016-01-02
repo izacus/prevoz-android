@@ -18,11 +18,7 @@ import org.prevoz.android.util.LocaleUtil;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
 import java.util.StringTokenizer;
 
 import javax.inject.Inject;

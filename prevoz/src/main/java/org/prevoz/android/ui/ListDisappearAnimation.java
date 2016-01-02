@@ -7,7 +7,6 @@ import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ListView;
 
-
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class ListDisappearAnimation implements ViewTreeObserver.OnPreDrawListener

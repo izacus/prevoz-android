@@ -7,19 +7,13 @@ import android.content.res.Resources;
 import org.prevoz.android.R;
 import org.prevoz.android.model.PrevozDatabase;
 import org.threeten.bp.LocalDate;
-import org.threeten.bp.MonthDay;
-import org.threeten.bp.Period;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.temporal.ChronoUnit;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.TimeZone;
 
 public class LocaleUtil
 {

@@ -1,5 +1,6 @@
 package org.prevoz.android.search;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -18,16 +19,13 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 
-import org.prevoz.android.MainActivity;
 import org.prevoz.android.PrevozFragment;
 import org.prevoz.android.R;
+import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.api.rest.RestSearchResults;
-import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
-import org.prevoz.android.model.PrevozDatabase;
-import org.prevoz.android.model.Route;
 import org.prevoz.android.ui.ListDisappearAnimation;
 import org.prevoz.android.ui.ListFlyupAnimator;
 import org.prevoz.android.util.LocaleUtil;
@@ -36,10 +34,7 @@ import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -47,11 +42,8 @@ import de.greenrobot.event.EventBus;
 import icepick.Icepick;
 import icepick.Icicle;
 import retrofit.RetrofitError;
-import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
@@ -80,6 +72,7 @@ public class SearchResultsFragment extends PrevozFragment
     @Icicle protected LocalDate lastDate;
     @Icicle protected int[] highlightRides;
 
+    @SuppressLint("InflateParams")
     @Override
     public void onCreate(Bundle savedInstanceState)
     {

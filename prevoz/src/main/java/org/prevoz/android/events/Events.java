@@ -10,8 +10,6 @@ import org.prevoz.android.model.City;
 import org.prevoz.android.model.Route;
 import org.threeten.bp.LocalDate;
 
-import java.util.Calendar;
-
 public class Events
 {
     public static class NewSearchEvent

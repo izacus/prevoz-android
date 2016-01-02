@@ -9,16 +9,13 @@ import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.BooleanResult;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.pushtorefresh.storio.sqlite.operations.put.PutResult;
 
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.NotificationSubscription;
 import org.prevoz.android.model.PrevozDatabase;
-import org.prevoz.android.provider.Notification;
 import org.prevoz.android.util.ViewUtils;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
@@ -31,7 +28,6 @@ import rx.Observable;
 import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.exceptions.OnErrorThrowable;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class PushManager

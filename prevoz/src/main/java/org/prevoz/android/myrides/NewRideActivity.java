@@ -18,14 +18,12 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
-import org.prevoz.android.MainActivity;
 import org.prevoz.android.PrevozApplication;
 import org.prevoz.android.R;
 import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.CityNameTextValidator;
-import org.prevoz.android.model.PrevozDatabase;
 import org.prevoz.android.ride.RideInfoActivity;
 import org.prevoz.android.search.CityAutocompleteAdapter;
 import org.prevoz.android.util.LocaleUtil;
@@ -33,10 +31,6 @@ import org.prevoz.android.util.PrevozActivity;
 import org.prevoz.android.util.StringUtil;
 import org.prevoz.android.util.ViewUtils;
 import org.threeten.bp.ZonedDateTime;
-
-import java.util.Calendar;
-
-import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

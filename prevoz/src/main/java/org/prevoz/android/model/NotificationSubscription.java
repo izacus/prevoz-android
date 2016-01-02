@@ -5,8 +5,6 @@ import android.os.Parcelable;
 
 import org.threeten.bp.LocalDate;
 
-import java.util.Calendar;
-
 public class NotificationSubscription implements Parcelable
 {
     private final Long id;

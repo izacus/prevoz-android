@@ -17,13 +17,10 @@ import org.prevoz.android.PrevozFragment;
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestRide;
-import org.prevoz.android.api.rest.RestSearchResults;
 import org.prevoz.android.events.Events;
-import org.prevoz.android.model.Bookmark;
 import org.prevoz.android.ui.DividerItemDecoration;
 import org.prevoz.android.util.PrevozActivity;
 import org.prevoz.android.util.ViewUtils;
-
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -31,7 +28,6 @@ import de.greenrobot.event.EventBus;
 import retrofit.RetrofitError;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class MyRidesFragment extends PrevozFragment

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.widget.AutoCompleteTextView;
 
-import org.prevoz.android.PrevozApplication;
 import org.prevoz.android.provider.Location;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
@@ -16,11 +15,9 @@ import org.prevoz.android.util.StringUtil;
  */
 public class CityNameTextValidator implements AutoCompleteTextView.Validator
 {
-    private final Context context;
-    protected PrevozDatabase database;
+    protected final PrevozDatabase database;
 
     public CityNameTextValidator(Context ctx, PrevozDatabase database) {
-        this.context = ctx;
         this.database = database;
     }
 

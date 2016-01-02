@@ -38,6 +38,7 @@
             android:layout_gravity="top"
             android:layout_marginLeft="4dp"
             android:src="@drawable/ic_favorite"
+            android:contentDescription="@string/cd_bookmark"
             android:visibility="invisible"
             />
 

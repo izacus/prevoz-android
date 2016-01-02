@@ -50,6 +50,7 @@
                     android:layout_height="match_parent"
                     android:scaleType="centerInside"
                     android:src="@drawable/icon"
+                    android:contentDescription="@null"
                     android:layout_margin="3dp"
                     />
 

@@ -16,8 +16,6 @@ import android.util.Pair;
 import com.pushtorefresh.storio.sqlite.SQLiteTypeMapping;
 import com.pushtorefresh.storio.sqlite.StorIOSQLite;
 import com.pushtorefresh.storio.sqlite.impl.DefaultStorIOSQLite;
-import com.pushtorefresh.storio.sqlite.operations.delete.DeleteResult;
-import com.pushtorefresh.storio.sqlite.operations.put.PutResult;
 import com.pushtorefresh.storio.sqlite.queries.DeleteQuery;
 import com.pushtorefresh.storio.sqlite.queries.Query;
 
@@ -42,14 +40,11 @@ import org.prevoz.android.util.FileUtil;
 import org.prevoz.android.util.LocaleUtil;
 import org.threeten.bp.LocalDate;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 
 import rx.Observable;
 import rx.Single;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subjects.ReplaySubject;
 

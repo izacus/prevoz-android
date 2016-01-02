@@ -1,37 +1,25 @@
 package org.prevoz.android.push;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
-
 
 import org.prevoz.android.PrevozFragment;
 import org.prevoz.android.R;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.NotificationSubscription;
-import org.prevoz.android.provider.Notification;
 import org.prevoz.android.ui.DividerItemDecoration;
 import org.prevoz.android.util.LocaleUtil;
-import org.prevoz.android.util.PrevozActivity;
 import org.prevoz.android.util.ViewUtils;
-
-import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 
 public class PushFragment extends PrevozFragment
 {

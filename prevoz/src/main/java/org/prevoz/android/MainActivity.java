@@ -3,13 +3,11 @@ package org.prevoz.android;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,7 +18,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -28,23 +25,18 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.nispok.snackbar.Snackbar;
-import com.nispok.snackbar.listeners.ActionClickListener;
 
-import org.prevoz.android.auth.AuthenticationUtils;
-import org.prevoz.android.auth.LoginActivity;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.Route;
 import org.prevoz.android.myrides.MyRidesFragment;
 import org.prevoz.android.myrides.NewRideActivity;
 import org.prevoz.android.push.PushFragment;
-import org.prevoz.android.push.PushManager;
 import org.prevoz.android.search.SearchResultsFragment;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.PrevozActivity;
@@ -52,10 +44,7 @@ import org.prevoz.android.util.ViewUtils;
 import org.threeten.bp.Instant;
 import org.threeten.bp.LocalDate;
 
-import java.util.Calendar;
 import java.util.Locale;
-
-import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
