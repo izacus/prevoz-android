@@ -69,6 +69,14 @@ public interface PrevozApi
                                                      @Field("redirect_uri") String redirectUri);
 
     @FormUrlEncoded
+    @POST("/oauth2/token/")
+    Observable<RestAuthTokenResponse> getRefreshedToken(@Field("grant_type") String grantType,
+                                                               @Field("refresh_token") String refreshToken,
+                                                               @Field("client_id") String clientId,
+                                                               @Field("client_secret") String clientSecret,
+                                                               @Field("scope") String scope);
+
+    @FormUrlEncoded
     @POST("/api/carshare/bookmark/{id}/")
     void setRideBookmark(@Path("id") String id, @Field("state") String state, Callback<Response> cb);
 }

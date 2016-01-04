@@ -17,6 +17,7 @@ import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 
+import com.squareup.okhttp.Response;
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.events.Events;
@@ -24,6 +25,7 @@ import org.prevoz.android.events.Events;
 import java.io.IOException;
 
 import de.greenrobot.event.EventBus;
+import retrofit.RetrofitError;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -130,31 +132,51 @@ public class AuthenticationUtils
         Account acc = getUserAccount();
         if (acc == null)
             return;
-
-        AccountManagerCallback<Bundle> callback = new AccountManagerCallback<Bundle>()
-        {
-            @Override
-            public void run(AccountManagerFuture<Bundle> future)
-            {
-                try
-                {
-                    Bundle b = future.getResult();
-                    if (b == null)
-                        return;
-
-                    String cookies = b.getString(AccountManager.KEY_AUTHTOKEN);
-                    ApiClient.setBearer(cookies);
-                }
-                catch (OperationCanceledException | IOException | AuthenticatorException e)
-                {
-                    // Nothing TBD
-                }
-            }
-
-        };
-
         // Check for expiry
         final AccountManager am = AccountManager.get(ctx);
+        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
+
+        AccountManagerCallback<Bundle> callback = future -> {
+            try
+            {
+                Bundle b = future.getResult();
+                if (b == null)
+                    return;
+
+                String cookies = b.getString(AccountManager.KEY_AUTHTOKEN);
+                ApiClient.setBearer(cookies);
+
+                // Refresh authentication token if required.
+                if (sp.getLong(PrevozAccountAuthenticator.PREF_KEY_EXPIRES, 0) < System.currentTimeMillis()) {
+                    ApiClient.getAdapter()
+                            .getRefreshedToken("refresh_token", am.getPassword(acc), LoginActivity.CLIENT_ID, LoginActivity.CLIENT_SECRET, "read write")
+                            .subscribe(token -> {
+                                        ApiClient.setBearer(token.accessToken);
+                                        am.setPassword(acc, token.refreshToken);
+                                        sp.edit().putBoolean(PrevozAccountAuthenticator.PREF_OAUTH2, true)
+                                                .putLong(PrevozAccountAuthenticator.PREF_KEY_EXPIRES, System.currentTimeMillis() + (token.expiresIn * 1000))
+                                                .apply();
+
+                                        Log.d(LOG_TAG, "Login token refreshed.");
+                                    },
+                                    error -> {
+                                        Crashlytics.logException(error.getCause());
+
+                                        if (error instanceof RetrofitError) {
+                                            RetrofitError re = (RetrofitError)error;
+                                            if (re.getBody() != null) {
+                                                Crashlytics.log(Log.ERROR, LOG_TAG, re.getBody().toString());
+                                            }
+                                        }
+                                    });
+                }
+            }
+            catch (OperationCanceledException | IOException | AuthenticatorException e)
+            {
+                // Nothing TBD
+            }
+        };
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
         {
             am.getAuthToken(acc, "default", null, false, callback, null);

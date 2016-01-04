@@ -46,8 +46,8 @@ import rx.schedulers.Schedulers;
 public class LoginActivity extends PrevozActivity
 {
     private static final String LOG_TAG = "Prevoz.Login";
-    private static final String CLIENT_ID = "b89d13d3b102d84963bb";
-    private static final String CLIENT_SECRET = "d94e76ff9086e1fe428519b6aed6dbe65adde616";
+    public static final String CLIENT_ID = "b89d13d3b102d84963bb";
+    public static final String CLIENT_SECRET = "d94e76ff9086e1fe428519b6aed6dbe65adde616";
     private static final String REDIRECT_URL = "http://app.local/login_done/";
 
     private AccountAuthenticatorResponse authenticatorResponse;
