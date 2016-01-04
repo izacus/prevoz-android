@@ -145,6 +145,11 @@ public class SearchResultsFragment extends PrevozFragment
                 Toast.makeText(activity, "Prijava ni več veljavna, odjavljam...", Toast.LENGTH_SHORT).show();
             }
 
+            Crashlytics.logException(retrofitError.getCause());
+            if (retrofitError.getBody() != null) {
+                Crashlytics.log(Log.ERROR, "Prevoz.Search", retrofitError.getBody().toString());
+            }
+
             authUtils.logout().subscribeOn(Schedulers.io()).subscribe();
             ApiClient.setBearer(null);
             EventBus.getDefault().post(new Events.NewSearchEvent(lastFrom, lastTo, lastDate));

@@ -26,6 +26,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 import retrofit.RetrofitError;
+import retrofit.client.Response;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -123,15 +124,22 @@ public class MyRidesFragment extends PrevozFragment
                             adapter.addRides(rides);
                             setListVisibility(true);
                         },
-                        throwable -> showLoadFailureError(throwable));
+                        this::showLoadFailureError);
     }
 
     private void showLoadFailureError(Throwable error) {
         Crashlytics.logException(error.getCause());
         if (error instanceof RetrofitError) {
-            if (((RetrofitError)error).getResponse() != null && ((RetrofitError)error).getResponse().getStatus() == 403) {
-                authUtils.logout().subscribeOn(Schedulers.io()).subscribe();
-                ApiClient.setBearer(null);
+            // Check for unauthorzied
+            RetrofitError rerror = (RetrofitError)error;
+            if (rerror.getResponse() != null) {
+                Response response = rerror.getResponse();
+                Crashlytics.log(Log.ERROR, LOG_TAG, response.getBody().toString());
+                if (response.getStatus() == 403 || response.getStatus() == 401) {
+                    authUtils.logout().toBlocking().firstOrDefault(null);
+                    authUtils.requestAuthentication(getActivity(), MainActivity.REQUEST_CODE_AUTHORIZE_MYRIDES);
+                    return;
+                }
             }
         }
 

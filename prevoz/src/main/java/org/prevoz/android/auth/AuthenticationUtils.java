@@ -43,8 +43,10 @@ public class AuthenticationUtils
     {
         AccountManager am = AccountManager.get(ctx);
         Account[] accounts = am.getAccountsByType(ctx.getString(R.string.account_type));
-        if (accounts.length > 0)
+        if (accounts.length > 0) {
+            Crashlytics.setUserName(accounts[0].name);
             return accounts[0];
+        }
 
         return null;
     }

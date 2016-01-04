@@ -83,7 +83,6 @@ public class MainActivity extends PrevozActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        LocaleUtil.checkSetLocale(this, getResources().getConfiguration());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);

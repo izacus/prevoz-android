@@ -2,6 +2,7 @@ package org.prevoz.android;
 
 import android.app.Application;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Environment;
 
@@ -10,8 +11,10 @@ import com.jakewharton.threetenabp.AndroidThreeTen;
 
 import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.model.PrevozDatabase;
+import org.prevoz.android.util.LocaleUtil;
 
 import java.io.File;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -31,8 +34,9 @@ public class PrevozApplication extends Application
     @Override
     public void onCreate()
     {
+        LocaleUtil.checkSetLocale(this, getResources().getConfiguration());
         super.onCreate();
-        if (!BuildConfig.DEBUG) Fabric.with(this, new Crashlytics());
+        Fabric.with(this, new Crashlytics());
         AndroidThreeTen.init(this);
         component = DaggerApplicationComponent.builder()
                                               .applicationModule(new ApplicationModule(this))

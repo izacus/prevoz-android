@@ -147,6 +147,7 @@ public class ApiClient
 
             if (bearer != null) {
                 requestFacade.addHeader("Authorization", String.format("Bearer %s", bearer));
+                requestFacade.addHeader("WWW-Authenticate", "Bearer realm=\"api\"");
                 // Server caches requests too enthusiasticly so append this to parameter list
                 requestFacade.addEncodedQueryParam("nocache", String.valueOf(System.currentTimeMillis()));
             }
