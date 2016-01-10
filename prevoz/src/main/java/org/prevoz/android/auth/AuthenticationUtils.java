@@ -168,6 +168,8 @@ public class AuthenticationUtils
                                                 Crashlytics.log(Log.ERROR, LOG_TAG, re.getBody().toString());
                                             }
                                         }
+
+                                        logout().subscribeOn(Schedulers.io()).onErrorReturn(null).subscribe();
                                     });
                 }
             }

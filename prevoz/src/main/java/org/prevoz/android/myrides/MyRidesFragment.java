@@ -136,7 +136,7 @@ public class MyRidesFragment extends PrevozFragment
                 Response response = rerror.getResponse();
                 Crashlytics.log(Log.ERROR, LOG_TAG, response.getBody().toString());
                 if (response.getStatus() == 403 || response.getStatus() == 401) {
-                    authUtils.logout().toBlocking().firstOrDefault(null);
+                    authUtils.logout().subscribeOn(Schedulers.io()).toBlocking().firstOrDefault(null);
                     authUtils.requestAuthentication(getActivity(), MainActivity.REQUEST_CODE_AUTHORIZE_MYRIDES);
                     return;
                 }
