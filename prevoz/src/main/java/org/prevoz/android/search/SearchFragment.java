@@ -102,11 +102,10 @@ public class SearchFragment extends PrevozFragment implements DatePickerDialog.O
 
         ViewUtils.hideKeyboard(activity);
 
-        LocalDateTime now = LocalDateTime.now(LocaleUtil.getLocalTimezone());
         DatePickerDialog dialog = DatePickerDialog.newInstance(this,
-                now.getYear(),
-                now.getMonthValue() - 1,
-                now.getDayOfMonth());
+                                                                selectedDate.getYear(),
+                                                                selectedDate.getMonthValue() - 1,
+                                                                selectedDate.getDayOfMonth());
         dialog.show(activity.getFragmentManager(), "SearchDate");
     }
 

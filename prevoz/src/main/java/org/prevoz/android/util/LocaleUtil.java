@@ -65,9 +65,9 @@ public class LocaleUtil
         ZonedDateTime today = LocalDate.now().atStartOfDay(LocaleUtil.getLocalTimezone());
         ZonedDateTime tomorrow = LocalDate.now().atStartOfDay(LocaleUtil.getLocalTimezone()).plus(1, ChronoUnit.DAYS);
 
-        if (date.isAfter(today) && date.isBefore(tomorrow)) {
+        if (date.isAfter(today) && date.isBefore(tomorrow) || date.isEqual(today)) {
             return resources.getString(R.string.today);
-        } else if (date.isAfter(tomorrow) && date.isBefore(tomorrow.plus(1, ChronoUnit.DAYS))) {
+        } else if (date.isAfter(tomorrow) && date.isBefore(tomorrow.plus(1, ChronoUnit.DAYS)) || date.isEqual(tomorrow)) {
             return resources.getString(R.string.tomorrow);
         }
 

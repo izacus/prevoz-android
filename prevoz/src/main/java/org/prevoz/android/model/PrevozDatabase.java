@@ -151,7 +151,7 @@ public class PrevozDatabase {
                    () -> Log.d(LOG_TAG, "Database loaded."));
     }
 
-    public Single<String> getLocalCityName(@NonNull String city) {
+    public Single<String> getLocalCityName(@NonNull final String city) {
         return databasePrepared.flatMap(storIOSQLite -> storIOSQLite.get()
                     .cursor()
                     .withQuery(Query.builder()
@@ -165,8 +165,11 @@ public class PrevozDatabase {
                     .first())
                     .flatMap(cursor -> {
                         int idx = cursor.getColumnIndex(Location.NAME);
-                        cursor.moveToNext();
-                        return Observable.just(cursor.getString(idx));
+                        if (cursor.moveToNext()) {
+                            return Observable.just(cursor.getString(idx));
+                        } else {
+                            return Observable.just(city);
+                        }
                     })
                     .subscribeOn(Schedulers.io())
                     .singleOrDefault("")
