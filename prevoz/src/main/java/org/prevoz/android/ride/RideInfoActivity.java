@@ -29,6 +29,8 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -146,6 +148,8 @@ public class RideInfoActivity extends PrevozActivity
     @Icicle protected RestRide ride = null;
     @Icicle protected String action = null;
 
+    GestureDetector detector;
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -226,6 +230,14 @@ public class RideInfoActivity extends PrevozActivity
 		}
 
 		setupActionButtons(action);
+
+        detector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                finish();
+                return true;
+            }
+        });
     }
 
 	private void setPeopleText()
@@ -450,6 +462,12 @@ public class RideInfoActivity extends PrevozActivity
                 finish();
             }
         });
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (detector == null) return false;
+        return detector.onTouchEvent(event);
     }
 
     @Override
