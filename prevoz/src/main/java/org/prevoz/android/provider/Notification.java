@@ -74,7 +74,7 @@ public class Notification
     }
 
     public LocalDate getDate() {
-        return LocalDate.from(Instant.ofEpochMilli(date));
+        return LocalDate.from(Instant.ofEpochMilli(date).atZone(LocaleUtil.getLocalTimezone()));
     }
 
     public LocalDateTime getRegistrationDate() {
