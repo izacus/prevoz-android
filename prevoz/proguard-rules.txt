@@ -102,3 +102,22 @@
 -keepclasseswithmembernames class * {
     @icepick.* <fields>;
 }
+
+# ButterKnife
+-keep class butterknife.** { *; }
+-dontwarn butterknife.internal.**
+-keep class **$$ViewBinder { *; }
+-keep class **$$ViewInjector { *; }
+
+-keepclasseswithmembernames class * {
+    @butterknife.* <fields>;
+}
+
+-keepclasseswithmembernames class * {
+    @butterknife.* <methods>;
+}
+
+# Support-v7
+-dontwarn android.support.v7.**
+-keep class !android.support.v7.internal.view.menu.**,android.support.v7.** {*;}
+-keep interface android.support.v7.** { *; }

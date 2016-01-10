@@ -65,7 +65,7 @@ public class MainActivity extends PrevozActivity
 
     private static final String PREF_SHOWN_LOGIN_PROMPT = "Prevoz.LoginPromptShown";
 
-    @InjectView(R.id.toolbar)
+    @InjectView(R.id.main_toolbar)
     protected Toolbar toolbar;
 
     @InjectView(R.id.main_drawer)
