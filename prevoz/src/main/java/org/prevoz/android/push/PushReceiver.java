@@ -58,7 +58,7 @@ public class PushReceiver extends BroadcastReceiver
         Intent notificationIntent = new Intent(context, MainActivity.class);
         notificationIntent.putExtra("from", from);
         notificationIntent.putExtra("to", to);
-        notificationIntent.putExtra("when", when.atStartOfDay(LocaleUtil.getLocalTimezone()).toInstant());
+        notificationIntent.putExtra("when", when.atStartOfDay(LocaleUtil.getLocalTimezone()).toInstant().toEpochMilli());
         notificationIntent.putExtra("highlights", rideIds);
 
         PendingIntent pIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
