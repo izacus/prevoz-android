@@ -48,8 +48,8 @@ android {
         applicationId "org.prevoz.android"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 38
-        versionName "3.2.2"
+        versionCode 39
+        versionName "3.2.3"
         resConfigs "sl"
     }
     compileOptions {
