@@ -220,7 +220,7 @@ public class MainActivity extends PrevozActivity
         City from = intent.getParcelableExtra("from");
         City to = intent.getParcelableExtra("to");
 
-        LocalDate date = LocalDate.from(Instant.ofEpochMilli(intent.getLongExtra("when", 0)));
+        LocalDate date = LocalDate.from(Instant.ofEpochMilli(intent.getLongExtra("when", 0)).atZone(LocaleUtil.getLocalTimezone()));
         int[] highlights = intent.getIntArrayExtra("highlights");
 
         EventBus.getDefault().postSticky(new Events.NewSearchEvent(from, to, date, highlights));
