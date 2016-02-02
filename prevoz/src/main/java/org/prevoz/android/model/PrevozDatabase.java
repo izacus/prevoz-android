@@ -313,7 +313,7 @@ public class PrevozDatabase {
                             .flatMap(Observable::from);
 
         historyItems.count()
-                    .flatMap(historyItems::take)
+                    .flatMap(totalCount -> historyItems.take(Math.max(totalCount - min, 0)))
                     .toList()
                     .zipWith(databasePrepared, Pair::new)
                     .flatMap(pair -> pair.second.delete()

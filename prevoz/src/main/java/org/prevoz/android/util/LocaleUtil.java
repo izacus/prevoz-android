@@ -153,6 +153,6 @@ public class LocaleUtil
     public static String getNotificationDayName(Resources res, LocalDate date)
     {
         String[] dayNames = res.getStringArray(R.array.notify_day_names);
-        return dayNames[date.getDayOfWeek().getValue()];
+        return dayNames[date.getDayOfWeek().getValue() - 1];
     }
 }

@@ -64,13 +64,13 @@
     </string-array>
 
     <string-array name="notify_day_names">
-        <item>nedeljo</item>
         <item>ponedeljek</item>
         <item>torek</item>
         <item>sredo</item>
         <item>četrtek</item>
         <item>petek</item>
         <item>soboto</item>
+        <item>nedeljo</item>
     </string-array>
 
     <!-- Auto-login bar description [CHAR-LIMIT=40] -->

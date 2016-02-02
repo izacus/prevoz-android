@@ -9,6 +9,7 @@ import com.google.gson.annotations.SerializedName;
 import org.prevoz.android.model.Bookmark;
 import org.prevoz.android.model.PrevozDatabase;
 import org.prevoz.android.util.LocaleUtil;
+import org.threeten.bp.Instant;
 import org.threeten.bp.ZonedDateTime;
 
 import java.io.Serializable;
@@ -133,7 +134,7 @@ public class RestRide implements Comparable, Parcelable, Serializable
         final int cityNameCompare = (fromCity + toCity).compareTo(other.fromCity + other.toCity);
         if (cityNameCompare == 0) {
             if (date != null && other.date != null) {
-                return date.compareTo(other.date);
+                return (int)(date.toEpochSecond() - other.date.toEpochSecond());
             } else if (published != null && other.published != null) {
                 return published.compareTo(other.published);
             }
@@ -159,7 +160,7 @@ public class RestRide implements Comparable, Parcelable, Serializable
         dest.writeValue(this.price);
         dest.writeValue(this.numPeople);
         dest.writeByte(isFull ? (byte) 1 : (byte) 0);
-        dest.writeSerializable(date);
+        dest.writeLong(this.date == null ? 0 : date.toEpochSecond());
         dest.writeString(this.phoneNumber);
         dest.writeByte(phoneNumberConfirmed ? (byte) 1 : (byte) 0);
         dest.writeByte(insured ? (byte) 1 : (byte) 0);
@@ -167,7 +168,7 @@ public class RestRide implements Comparable, Parcelable, Serializable
         dest.writeString(this.comment);
         dest.writeInt(this.bookmark == null ? -1 : this.bookmark.ordinal());
         dest.writeInt(isAuthor ? (byte)1 : (byte) 0);
-        dest.writeSerializable(this.published);
+        dest.writeLong(this.published == null ? 0 : this.published.toEpochSecond());
     }
 
     private RestRide(Parcel in)
@@ -182,7 +183,8 @@ public class RestRide implements Comparable, Parcelable, Serializable
         this.price = (Float) in.readValue(Float.class.getClassLoader());
         this.numPeople = (Integer) in.readValue(Integer.class.getClassLoader());
         this.isFull = in.readByte() != 0;
-        this.date = (ZonedDateTime) in.readSerializable();
+        long dateEpoch = in.readLong();
+        this.date = dateEpoch == 0 ? null : ZonedDateTime.ofInstant(Instant.ofEpochSecond(dateEpoch), LocaleUtil.getLocalTimezone());
         this.phoneNumber = in.readString();
         this.phoneNumberConfirmed = in.readByte() != 0;
         this.insured = in.readByte() != 0;
@@ -192,7 +194,8 @@ public class RestRide implements Comparable, Parcelable, Serializable
         int bookmarkInt = in.readInt();
         this.bookmark = bookmarkInt == -1 ? null : Bookmark.values()[bookmarkInt];
         this.isAuthor = in.readByte() != 0;
-        this.published = (ZonedDateTime) in.readSerializable();
+        long publishedEpoch = in.readLong();
+        this.published = publishedEpoch == 0 ? null : ZonedDateTime.ofInstant(Instant.ofEpochSecond(publishedEpoch), LocaleUtil.getLocalTimezone());
     }
 
     public static Parcelable.Creator<RestRide> CREATOR = new Parcelable.Creator<RestRide>()
