@@ -1,7 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.prevoz.android">
 
-    <permission android:name="org.prevoz.permission.ACCESS_DATA" android:protectionLevel="signature" />
+    <permission
+        android:name="org.prevoz.permission.ACCESS_DATA"
+        android:protectionLevel="signature" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -14,77 +17,76 @@
     <uses-permission android:name="org.prevoz.permission.ACCESS_DATA" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
-	<application
+    <application
         android:name=".PrevozApplication"
-        android:theme="@style/Prevoz.Theme"
+        android:allowBackup="true"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:logo="@drawable/icon_ab"
-        android:icon="@drawable/icon"
-        android:allowBackup="true"
         android:supportsRtl="false"
-        >
-
-		<activity android:name="MainActivity"
-                  android:configChanges="locale"
-                  android:label="@string/app_name"
-                  android:launchMode="singleTask"
-            >
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
-		</activity>
-
-        <activity android:name=".auth.LoginActivity" android:label="@string/login_title"
-                  android:parentActivityName=".MainActivity">
-
+        android:theme="@style/Prevoz.Theme">
+        <activity
+            android:name=".auth.LoginActivity"
+            android:label="@string/login_title"
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.prevoz.android.MainActivity" />
-
         </activity>
-
-        <activity android:name=".myrides.NewRideActivity" android:label="Nov prevoz"
-                  android:parentActivityName=".MainActivity"
-                  android:theme="@style/Prevoz.Theme.NewRide"
-            >
-
+        <activity
+            android:name=".myrides.NewRideActivity"
+            android:label="Nov prevoz"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Prevoz.Theme.NewRide">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.prevoz.android.MainActivity" />
-
         </activity>
-
-        <activity android:name=".ride.RideInfoActivity"
-                  android:parentActivityName=".MainActivity"
-                  android:theme="@style/Prevoz.Theme.RideInfo"
-                >
-
+        <activity
+            android:name=".ride.RideInfoActivity"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Prevoz.Theme.RideInfo">
             <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="org.prevoz.android.MainActivity" />
-
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.prevoz.android.MainActivity" />
         </activity>
 
-        <service android:name=".auth.AuthenticationService"
-                 android:exported="false" >
+        <service
+            android:name=".auth.AuthenticationService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
-            <meta-data android:name="android.accounts.AccountAuthenticator" android:resource="@xml/authenticator" />
+
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
         </service>
 
-        <receiver android:name=".push.PushReceiver"
-                  android:permission="com.google.android.c2dm.permission.SEND" >
-
+        <receiver
+            android:name=".push.PushReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
                 <category android:name="org.prevoz.android" />
             </intent-filter>
-
         </receiver>
 
-        <meta-data android:name="com.crashlytics.ApiKey" android:value="5387e48d80669f4e2a3a0ca327b54e39b9e74e5f"/>
-        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
-	</application>
+        <meta-data
+            android:name="com.crashlytics.ApiKey"
+            android:value="5387e48d80669f4e2a3a0ca327b54e39b9e74e5f" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity android:name=".SearchActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
 </manifest>

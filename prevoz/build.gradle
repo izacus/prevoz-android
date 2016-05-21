@@ -6,6 +6,8 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.0-alpha5'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'me.tatarka:gradle-retrolambda:3.2.5'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
@@ -15,6 +17,7 @@ buildscript {
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.github.ben-manes.versions'
@@ -22,7 +25,7 @@ apply plugin: 'com.github.ben-manes.versions'
 repositories {
     jcenter()
     maven { url 'https://maven.fabric.io/public' }
-    maven {url "https://clojars.org/repo/"}
+    maven { url "https://clojars.org/repo/" }
 }
 
 android {
@@ -56,6 +59,7 @@ android {
 
     productFlavors {
     }
+
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
@@ -81,31 +85,24 @@ dependencies {
     // Icepick
     compile 'frankiesardo:icepick:3.2.0'
     apt 'frankiesardo:icepick-processor:3.2.0'
-
     // Retrofit + ButterKnife
     compile 'com.jakewharton:butterknife:8.0.1'
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
-
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.okhttp:okhttp:2.7.5'
-
     // RxJava
     compile 'io.reactivex:rxandroid:1.2.0'
     compile 'io.reactivex:rxjava:1.1.5'
-
     // Date
     compile 'com.jakewharton.threetenabp:threetenabp:1.0.3'
-
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'se.emilsjolander:stickylistheaders:2.7.0'
     compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3@aar'
     compile 'si.virag:fuzzydateformatter:1.1.0'
-
     // UI
     compile 'com.nispok:snackbar:2.11.0'
     compile 'com.wdullaer:materialdatetimepicker:2.3.0'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
-
     // DB
     compile 'com.pushtorefresh.storio:sqlite:1.9.0'
     compile 'com.pushtorefresh.storio:sqlite-annotations:1.9.0'

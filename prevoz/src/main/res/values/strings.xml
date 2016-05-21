@@ -1,5 +1,5 @@
 <resources>
-	<string name="app_name">Prevoz</string>
+    <string name="app_name">Prevoz</string>
     <string name="account_type">org.prevoz.account</string>
 
     <string name="today">danes</string>

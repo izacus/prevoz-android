@@ -73,4 +73,9 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:backgroundDimEnabled">true</item>
     </style>
+
+    <style name="Prevoz.Theme.Search.EditText" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="colorAccent">@android:color/white</item>
+        <item name="android:textSize">24sp</item>
+    </style>
 </resources>
