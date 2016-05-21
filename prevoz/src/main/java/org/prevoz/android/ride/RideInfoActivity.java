@@ -56,13 +56,13 @@ import org.threeten.bp.format.DateTimeFormatter;
 
 import java.util.Date;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import icepick.Icepick;
-import icepick.Icicle;
+import icepick.State;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -100,53 +100,53 @@ public class RideInfoActivity extends PrevozActivity
 		ActivityCompat.startActivity(parent, i, options);
 	}
 
-	@InjectView(R.id.rideinfo_container)
+	@BindView(R.id.rideinfo_container)
 	protected View container;
 
-    @InjectView(R.id.rideinfo_favorite)
+    @BindView(R.id.rideinfo_favorite)
     protected ImageView imgFavorite;
 
-    @InjectView(R.id.rideinfo_from)
+    @BindView(R.id.rideinfo_from)
     protected TextView txtFrom;
 
-    @InjectView(R.id.rideinfo_to)
+    @BindView(R.id.rideinfo_to)
     protected TextView txtTo;
 
-    @InjectView(R.id.rideinfo_time)
+    @BindView(R.id.rideinfo_time)
     protected TextView txtTime;
 
-    @InjectView(R.id.rideinfo_price)
+    @BindView(R.id.rideinfo_price)
     protected TextView txtPrice;
 
-    @InjectView(R.id.rideinfo_date)
+    @BindView(R.id.rideinfo_date)
     protected TextView txtDate;
 
-    @InjectView(R.id.rideinfo_details)
+    @BindView(R.id.rideinfo_details)
     protected View vDetails;
 
-    @InjectView(R.id.rideinfo_phone)
+    @BindView(R.id.rideinfo_phone)
     protected TextView txtPhone;
-    @InjectView(R.id.rideinfo_people)
+    @BindView(R.id.rideinfo_people)
     protected TextView txtPeople;
-    @InjectView(R.id.rideinfo_insurance)
+    @BindView(R.id.rideinfo_insurance)
     protected TextView txtInsurance;
-    @InjectView(R.id.rideinfo_driver)
+    @BindView(R.id.rideinfo_driver)
     protected TextView txtDriver;
-    @InjectView(R.id.rideinfo_comment)
+    @BindView(R.id.rideinfo_comment)
     protected TextView txtComment;
 
-    @InjectView(R.id.rideinfo_full_box)
+    @BindView(R.id.rideinfo_full_box)
     protected View vFull;
-    @InjectView(R.id.rideinfo_ridefull)
+    @BindView(R.id.rideinfo_ridefull)
     protected CheckBox chkFull;
 
-    @InjectView(R.id.rideinfo_button_call)
+    @BindView(R.id.rideinfo_button_call)
     protected Button leftButton;
-    @InjectView(R.id.rideinfo_button_sms)
+    @BindView(R.id.rideinfo_button_sms)
     protected Button rightButton;
 
-    @Icicle protected RestRide ride = null;
-    @Icicle protected String action = null;
+    @State protected RestRide ride = null;
+    @State protected String action = null;
 
     GestureDetector detector;
 
@@ -156,7 +156,7 @@ public class RideInfoActivity extends PrevozActivity
         super.onCreate(savedInstanceState);
         Icepick.restoreInstanceState(this, savedInstanceState);
 		setContentView(R.layout.activity_rideinfo);
-		ButterKnife.inject(this);
+		ButterKnife.bind(this);
 
 		ride = getIntent().getParcelableExtra(ARG_RIDE);
 		action = getIntent().getStringExtra(ARG_ACTION);

@@ -16,8 +16,8 @@ import org.prevoz.android.ui.DividerItemDecoration;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.ViewUtils;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -25,10 +25,10 @@ public class PushFragment extends PrevozFragment
 {
     public static final String DIALOG_ARG_SUB = "subscription";
 
-    @InjectView(R.id.notifications_list)
+    @BindView(R.id.notifications_list)
     protected RecyclerView notificationList;
 
-    @InjectView(R.id.empty_view)
+    @BindView(R.id.empty_view)
     protected View emptyView;
 
 
@@ -40,7 +40,7 @@ public class PushFragment extends PrevozFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View views = inflater.inflate(R.layout.fragment_notifications, container, false);
-        ButterKnife.inject(this, views);
+        ButterKnife.bind(this, views);
 
         pushManager.getSubscriptions()
                     .observeOn(AndroidSchedulers.mainThread())

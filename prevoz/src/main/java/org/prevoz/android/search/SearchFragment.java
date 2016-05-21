@@ -28,32 +28,32 @@ import org.prevoz.android.util.ViewUtils;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import icepick.Icepick;
-import icepick.Icicle;
+import icepick.State;
 import rx.schedulers.Schedulers;
 
 public class SearchFragment extends PrevozFragment implements DatePickerDialog.OnDateSetListener {
-    @InjectView(R.id.search_date_edit)
+    @BindView(R.id.search_date_edit)
     protected EditText searchDate;
-    @InjectView(R.id.search_from)
+    @BindView(R.id.search_from)
     protected MaterialAutoCompleteTextView searchFrom;
-    @InjectView(R.id.search_to)
+    @BindView(R.id.search_to)
     protected MaterialAutoCompleteTextView searchTo;
-    @InjectView(R.id.search_button)
+    @BindView(R.id.search_button)
     protected View searchButton;
 
-    @InjectView(R.id.search_button_text)
+    @BindView(R.id.search_button_text)
     protected TextView searchButtonText;
-    @InjectView(R.id.search_button_img)
+    @BindView(R.id.search_button_img)
     protected ImageView searchButtonImage;
-    @InjectView(R.id.search_button_progress)
+    @BindView(R.id.search_button_progress)
     protected ProgressBar searchButtonProgress;
 
-    @Icicle protected LocalDate selectedDate;
+    @State protected LocalDate selectedDate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,7 +65,7 @@ public class SearchFragment extends PrevozFragment implements DatePickerDialog.O
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View views = inflater.inflate(R.layout.fragment_search, container, false);
-        ButterKnife.inject(this, views);
+        ButterKnife.bind(this, views);
 
         if (selectedDate == null)
         {

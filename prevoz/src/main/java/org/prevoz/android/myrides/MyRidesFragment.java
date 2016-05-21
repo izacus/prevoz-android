@@ -22,8 +22,8 @@ import org.prevoz.android.ui.DividerItemDecoration;
 import org.prevoz.android.util.PrevozActivity;
 import org.prevoz.android.util.ViewUtils;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -35,13 +35,13 @@ public class MyRidesFragment extends PrevozFragment
 {
     private static final String LOG_TAG = "Prevoz.MyRides";
 
-    @InjectView(R.id.myrides_list)
+    @BindView(R.id.myrides_list)
     protected RecyclerView myridesList;
 
-    @InjectView(R.id.empty_view)
+    @BindView(R.id.empty_view)
     protected View emptyView;
 
-    @InjectView(R.id.myrides_throbber)
+    @BindView(R.id.myrides_throbber)
     protected ProgressBar throbber;
 
 
@@ -62,7 +62,7 @@ public class MyRidesFragment extends PrevozFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View views = inflater.inflate(R.layout.fragment_myrides, container, false);
-        ButterKnife.inject(this, views);
+        ButterKnife.bind(this, views);
         myridesList.setHasFixedSize(true);
         myridesList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
         LinearLayoutManager llm = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);

@@ -36,8 +36,8 @@ import org.prevoz.android.util.PrevozActivity;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -53,10 +53,10 @@ public class LoginActivity extends PrevozActivity
     private AccountAuthenticatorResponse authenticatorResponse;
     private Bundle authenticatorResult;
 
-    @InjectView(R.id.toolbar)
+    @BindView(R.id.toolbar)
     protected Toolbar toolbar;
 
-    @InjectView(R.id.login_webview)
+    @BindView(R.id.login_webview)
     protected WebView webview;
 
     private boolean tokenRequestInProgress = false; // Workaround for Android 2.3
@@ -69,7 +69,7 @@ public class LoginActivity extends PrevozActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         getApplicationComponent().inject(this);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         CookieSyncManager.createInstance(this);
         authenticatorResponse = getIntent().getParcelableExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE);

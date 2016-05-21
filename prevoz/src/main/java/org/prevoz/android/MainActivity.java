@@ -46,8 +46,8 @@ import org.threeten.bp.LocalDate;
 
 import java.util.Locale;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import rx.android.schedulers.AndroidSchedulers;
@@ -65,19 +65,19 @@ public class MainActivity extends PrevozActivity
 
     private static final String PREF_SHOWN_LOGIN_PROMPT = "Prevoz.LoginPromptShown";
 
-    @InjectView(R.id.main_toolbar)
+    @BindView(R.id.main_toolbar)
     protected Toolbar toolbar;
 
-    @InjectView(R.id.main_drawer)
+    @BindView(R.id.main_drawer)
     protected DrawerLayout drawerLayout;
     protected ActionBarDrawerToggle drawerLayoutToggle;
 
-    @InjectView(R.id.main_left_drawer_list)
+    @BindView(R.id.main_left_drawer_list)
     protected ListView leftDrawer;
 
-    @InjectView(R.id.main_left_drawer_username)
+    @BindView(R.id.main_left_drawer_username)
     protected TextView leftUsername;
-    @InjectView(R.id.main_left_drawer_logout)
+    @BindView(R.id.main_left_drawer_logout)
     protected TextView leftLogout;
 
     @Override
@@ -85,7 +85,7 @@ public class MainActivity extends PrevozActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.icon_ab);

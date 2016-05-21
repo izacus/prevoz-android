@@ -36,11 +36,11 @@ import org.threeten.bp.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 import icepick.Icepick;
-import icepick.Icicle;
+import icepick.State;
 import retrofit.RetrofitError;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -51,7 +51,7 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class SearchResultsFragment extends PrevozFragment
 {
-    @InjectView(R.id.search_results_list)
+    @BindView(R.id.search_results_list)
     protected StickyListHeadersListView resultList;
 
     protected View searchNotifyButtonContainer;
@@ -65,12 +65,12 @@ public class SearchResultsFragment extends PrevozFragment
 
     // Needed to keep track of last searches
     // TODO: find a better solution
-    @Icicle protected RestSearchResults results;
-    @Icicle protected boolean shouldShowNotificationButton = false;
-    @Icicle protected City lastFrom;
-    @Icicle protected City lastTo;
-    @Icicle protected LocalDate lastDate;
-    @Icicle protected int[] highlightRides;
+    @State protected RestSearchResults results;
+    @State protected boolean shouldShowNotificationButton = false;
+    @State protected City lastFrom;
+    @State protected City lastTo;
+    @State protected LocalDate lastDate;
+    @State protected int[] highlightRides;
 
     @SuppressLint("InflateParams")
     @Override
@@ -91,7 +91,7 @@ public class SearchResultsFragment extends PrevozFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View views = inflater.inflate(R.layout.fragment_search_list, container, false);
-        ButterKnife.inject(this, views);
+        ButterKnife.bind(this, views);
         resultList.addHeaderView(headerFragmentView, null, true);
 
         if (getChildFragmentManager().findFragmentByTag("SearchFragment") == null) {

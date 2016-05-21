@@ -32,12 +32,12 @@ import org.prevoz.android.util.StringUtil;
 import org.prevoz.android.util.ViewUtils;
 import org.threeten.bp.ZonedDateTime;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import icepick.Icepick;
-import icepick.Icicle;
+import icepick.State;
 
 public class NewRideActivity extends PrevozActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
@@ -46,31 +46,31 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
 
     public static final String PARAM_EDIT_RIDE = "EditRide";
 
-    @InjectView(R.id.toolbar)
+    @BindView(R.id.toolbar)
     protected Toolbar toolbar;
-    @InjectView(R.id.newride_from)
+    @BindView(R.id.newride_from)
     protected MaterialAutoCompleteTextView textFrom;
-    @InjectView(R.id.newride_to)
+    @BindView(R.id.newride_to)
     protected MaterialAutoCompleteTextView textTo;
-    @InjectView(R.id.newride_date_edit)
+    @BindView(R.id.newride_date_edit)
     protected MaterialEditText textDate;
-    @InjectView(R.id.newride_time_edit)
+    @BindView(R.id.newride_time_edit)
     protected MaterialEditText textTime;
-    @InjectView(R.id.newride_price)
+    @BindView(R.id.newride_price)
     protected MaterialEditText textPrice;
-    @InjectView(R.id.newride_phone)
+    @BindView(R.id.newride_phone)
     protected MaterialEditText textPhone;
-    @InjectView(R.id.newride_people)
+    @BindView(R.id.newride_people)
     protected MaterialEditText textPeople;
-    @InjectView(R.id.newride_notes)
+    @BindView(R.id.newride_notes)
     protected MaterialEditText textNotes;
-    @InjectView(R.id.newride_insurance)
+    @BindView(R.id.newride_insurance)
     protected CheckBox chkInsurance;
 
-    @Icicle protected ZonedDateTime setTime;
-    @Icicle protected boolean dateSet;
-    @Icicle protected boolean timeSet;
-    @Icicle protected Long editRideId;
+    @State protected ZonedDateTime setTime;
+    @State protected boolean dateSet;
+    @State protected boolean timeSet;
+    @State protected Long editRideId;
 
     private boolean shouldGoFromDateToTime = false;
 
@@ -78,7 +78,7 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newride);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         ((PrevozApplication)getApplication()).component().inject(this);
 
         setSupportActionBar(toolbar);
