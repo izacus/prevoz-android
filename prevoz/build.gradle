@@ -13,8 +13,8 @@ buildscript {
     }
 }
 
-apply plugin: 'idea'
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.github.ben-manes.versions'
@@ -23,16 +23,6 @@ repositories {
     jcenter()
     maven { url 'https://maven.fabric.io/public' }
     maven {url "https://clojars.org/repo/"}
-}
-
-idea {
-    module {
-        //if you love browsing Javadoc
-        downloadJavadoc = true
-
-        //and hate reading sources :)
-        downloadSources = true
-    }
 }
 
 android {
@@ -66,9 +56,14 @@ android {
 
     productFlavors {
     }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
 }
 
 dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
     compile 'com.google.dagger:dagger:2.4'
     apt 'com.google.dagger:dagger-compiler:2.4'
     provided 'org.glassfish:javax.annotation:10.0-b28'
