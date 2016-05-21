@@ -3,8 +3,9 @@ buildscript {
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
     }
+
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.0.0-alpha9'
+        classpath 'com.android.tools.build:gradle:2.2.0-alpha1'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'me.tatarka:gradle-retrolambda:3.2.3'
         //noinspection GradleDynamicVersion
@@ -21,14 +22,7 @@ apply plugin: 'me.tatarka.retrolambda'
 repositories {
     jcenter()
     maven { url 'https://maven.fabric.io/public' }
-    maven {
-            url 'http://mvn.virag.si/content/groups/public'
-            credentials {
-                username mvnViragUsername
-                password mvnViragPassword
-            }
-   }
-   maven {url "https://clojars.org/repo/"}
+    maven {url "https://clojars.org/repo/"}
 }
 
 idea {
@@ -48,8 +42,8 @@ android {
         applicationId "org.prevoz.android"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 40
-        versionName "3.2.4"
+        versionCode 41
+        versionName "3.3"
         resConfigs "sl"
     }
     compileOptions {
