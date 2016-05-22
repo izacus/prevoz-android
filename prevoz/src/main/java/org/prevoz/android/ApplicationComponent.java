@@ -16,13 +16,14 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = {ApplicationModule.class, AuthenticationModule.class, PushModule.class})
+@Component(modules = {ApplicationModule.class, AuthenticationModule.class, PushModule.class, MVPModule.class})
 public interface ApplicationComponent {
     void inject(PrevozApplication prevozApplication);
     void inject(PrevozActivity activity);
     void inject(PrevozFragment fragment);
     void inject(RideInfoActivity fragment);
     void inject(CityNameTextValidator validator);
+    void inject(SearchActivity activity);
 
     Context context();
 

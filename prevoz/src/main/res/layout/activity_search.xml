@@ -70,4 +70,10 @@
         app:layout_anchorGravity="bottom|right|end"
         android:layout_marginRight="16dp"
         android:clickable="true"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/search_recycler"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </android.support.design.widget.CoordinatorLayout>
