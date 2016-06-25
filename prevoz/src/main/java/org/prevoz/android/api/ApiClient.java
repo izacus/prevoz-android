@@ -9,7 +9,6 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-import com.squareup.okhttp.OkHttpClient;
 
 import org.prevoz.android.BuildConfig;
 import org.prevoz.android.PrevozApplication;
@@ -19,18 +18,23 @@ import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.format.DateTimeParseException;
 
 import java.io.IOException;
-import java.util.GregorianCalendar;
 
-import retrofit.RequestInterceptor;
-import retrofit.RestAdapter;
-import retrofit.client.OkClient;
-import retrofit.converter.GsonConverter;
+import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+import rx.schedulers.Schedulers;
 
 public class ApiClient
 {
     public static final String BASE_URL = "https://prevoz.org";
 
-    private static final RestAdapter adapter;
+    private static final Retrofit retrofit;
     private static String bearer = null;
 
     static
@@ -41,18 +45,26 @@ public class ApiClient
                 .registerTypeAdapter(Bookmark.class, new BookmarkAdapter())
                 .create();
 
-        adapter = new RestAdapter.Builder()
-                                 .setEndpoint(BASE_URL)
-                                 .setConverter(new GsonConverter(gson))
-                                 .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
-                                 .setRequestInterceptor(new CookieSetterInterceptor())
-                                 .setClient(new OkClient(new OkHttpClient()))
-                                 .build();
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        GsonConverterFactory gsonFactory = GsonConverterFactory.create(gson);
+        OkHttpClient client = new OkHttpClient.Builder()
+                                              .addInterceptor(new CookieSetterInterceptor())
+                                              .addNetworkInterceptor(interceptor)
+                                              .build();
+
+        retrofit = new Retrofit.Builder()
+                               .baseUrl(BASE_URL)
+                               .addConverterFactory(gsonFactory)
+                               .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
+                               .client(client)
+                               .build();
     }
 
     public static PrevozApi getAdapter()
     {
-        return adapter.create(PrevozApi.class);
+        return retrofit.create(PrevozApi.class);
     }
 
     public static void setBearer(String bearer)
@@ -138,19 +150,23 @@ public class ApiClient
         }
     }
 
-    private static class CookieSetterInterceptor implements RequestInterceptor
+    private static class CookieSetterInterceptor implements Interceptor
     {
         @Override
-        public void intercept(RequestFacade requestFacade)
-        {
-            requestFacade.addHeader("User-Agent", String.format("Prevoz/%d Android/%d", PrevozApplication.VERSION, Build.VERSION.SDK_INT));
+        public Response intercept(Chain chain) throws IOException {
+            Request request = chain.request();
+            Request.Builder builder = request.newBuilder()
+                                             .header("User-Agent", String.format("Prevoz/%d Android/%d", PrevozApplication.VERSION, Build.VERSION.SDK_INT));
 
             if (bearer != null) {
-                requestFacade.addHeader("Authorization", String.format("Bearer %s", bearer));
-                requestFacade.addHeader("WWW-Authenticate", "Bearer realm=\"api\"");
+                builder.header("Authorization", String.format("Bearer %s", bearer));
+                builder.header("WWW-Authenticate", "Bearer realm=\"api\"");
                 // Server caches requests too enthusiasticly so append this to parameter list
-                requestFacade.addEncodedQueryParam("nocache", String.valueOf(System.currentTimeMillis()));
+                HttpUrl url = request.url().newBuilder().addQueryParameter("nocache", String.valueOf(System.currentTimeMillis())).build();
+                builder.url(url);
             }
+
+            return chain.proceed(builder.build());
         }
     }
 }

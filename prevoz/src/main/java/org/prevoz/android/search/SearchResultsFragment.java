@@ -41,8 +41,6 @@ import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 import icepick.Icepick;
 import icepick.State;
-import retrofit.RetrofitError;
-import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
@@ -136,7 +134,7 @@ public class SearchResultsFragment extends PrevozFragment
         showResults(results);
         EventBus.getDefault().post(new Events.SearchComplete());
     }
-
+/*
     public void failure(RetrofitError retrofitError)
     {
         Activity activity = getActivity();
@@ -157,7 +155,7 @@ public class SearchResultsFragment extends PrevozFragment
         if (activity != null)
             ViewUtils.showMessage(activity, "Napaka med iskanjem, a internet deluje?", true);
         EventBus.getDefault().post(new Events.SearchComplete());
-    }
+    } */
 
     private void showResults(@Nullable RestSearchResults results)
     {

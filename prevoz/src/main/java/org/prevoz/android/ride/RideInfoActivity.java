@@ -63,9 +63,6 @@ import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import icepick.Icepick;
 import icepick.State;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 import rx.schedulers.Schedulers;
 import si.virag.fuzzydateformatter.FuzzyDateTimeFormatter;
 
@@ -286,7 +283,7 @@ public class RideInfoActivity extends PrevozActivity
         drawable.setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP));
         imgFavorite.setImageDrawable(drawable);
     }
-
+/*
     @OnClick(R.id.rideinfo_button_call)
     protected void onCallClicked()
     {
@@ -424,6 +421,7 @@ public class RideInfoActivity extends PrevozActivity
         dialog.setMessage("Oddajam prevoz...");
         dialog.show();
 
+        /*
         ApiClient.getAdapter().postRide(ride, new Callback<RestStatus>() {
             @Override
             public void success(RestStatus status, Response response) {
@@ -463,7 +461,7 @@ public class RideInfoActivity extends PrevozActivity
             }
         });
     }
-
+*/
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (detector == null) return false;

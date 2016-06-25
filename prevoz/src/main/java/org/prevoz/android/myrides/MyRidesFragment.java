@@ -25,8 +25,6 @@ import org.prevoz.android.util.ViewUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -116,7 +114,7 @@ public class MyRidesFragment extends PrevozFragment
                         return Observable.empty();
                     return Observable.from(restSearchResults.results);
                 });
-
+/*
         myRides.mergeWith(bookmarks)
                .toList()
                .observeOn(AndroidSchedulers.mainThread())
@@ -124,9 +122,11 @@ public class MyRidesFragment extends PrevozFragment
                             adapter.addRides(rides);
                             setListVisibility(true);
                         },
-                        this::showLoadFailureError);
+                        this::showLoadFailureError); */
     }
 
+    // TODO TODO
+    /*
     private void showLoadFailureError(Throwable error) {
         if (error instanceof RetrofitError) {
             // Check for unauthorzied
@@ -145,7 +145,7 @@ public class MyRidesFragment extends PrevozFragment
         Log.e(LOG_TAG, "Ride load failed!");
         ViewUtils.setupEmptyView(myridesList, emptyView, "Pri nalaganju vaših prevozov je prišlo do napake.");
         setListVisibility(true);
-    }
+    } */
 
     private void setListVisibility(boolean listVisible)
     {

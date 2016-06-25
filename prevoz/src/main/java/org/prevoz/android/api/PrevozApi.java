@@ -8,16 +8,16 @@ import org.prevoz.android.api.rest.RestSearchResults;
 import org.prevoz.android.api.rest.RestStatus;
 import org.threeten.bp.ZonedDateTime;
 
-import retrofit.Callback;
-import retrofit.client.Response;
-import retrofit.http.Body;
-import retrofit.http.DELETE;
-import retrofit.http.Field;
-import retrofit.http.FormUrlEncoded;
-import retrofit.http.GET;
-import retrofit.http.POST;
-import retrofit.http.Path;
-import retrofit.http.Query;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.http.Body;
+import retrofit2.http.DELETE;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 public interface PrevozApi

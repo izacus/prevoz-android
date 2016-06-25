@@ -24,7 +24,6 @@ import org.prevoz.android.events.Events;
 import java.io.IOException;
 
 import de.greenrobot.event.EventBus;
-import retrofit.RetrofitError;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -159,13 +158,6 @@ public class AuthenticationUtils
                                     },
                                     error -> {
                                         FirebaseCrash.report(error.getCause());
-                                        if (error instanceof RetrofitError) {
-                                            RetrofitError re = (RetrofitError)error;
-                                            if (re.getBody() != null) {
-                                                FirebaseCrash.logcat(Log.ERROR, LOG_TAG, re.getBody().toString());
-                                            }
-                                        }
-
                                         logout().subscribeOn(Schedulers.io()).onErrorReturn(null).subscribe();
                                     });
                 }
