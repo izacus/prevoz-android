@@ -48,7 +48,7 @@ public class LocaleUtil
                 + date.getYear();
     }
 
-    public static String getFormattedCurrency(double currency) {
+    public static String getFormattedCurrency(float currency) {
         return String.format(getLocale(), "%1.1f €", currency);
     }
 

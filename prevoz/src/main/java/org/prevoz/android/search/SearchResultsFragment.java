@@ -15,20 +15,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.crash.FirebaseCrash;
 
 import org.prevoz.android.PrevozFragment;
 import org.prevoz.android.R;
-import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.api.rest.RestSearchResults;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.ui.ListDisappearAnimation;
 import org.prevoz.android.ui.ListFlyupAnimator;
-import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.ViewUtils;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
@@ -42,7 +39,6 @@ import de.greenrobot.event.EventBus;
 import icepick.Icepick;
 import icepick.State;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
@@ -161,14 +157,14 @@ public class SearchResultsFragment extends PrevozFragment
     {
         List<RestRide> restResults = results == null ? new ArrayList<>() : results.results;
 
-        if (resultList.getAdapter() == null || !(resultList.getAdapter() instanceof SearchResultsAdapter))
+        if (resultList.getAdapter() == null || !(resultList.getAdapter() instanceof OldSearchResultsAdapter))
         {
-            adapter = new SearchResultsAdapter(getActivity(), database, restResults, highlightRides);
+            adapter = new OldSearchResultsAdapter(getActivity(), database, restResults, highlightRides);
             resultList.setAdapter(adapter);
         }
         else
         {
-            final SearchResultsAdapter adapter = (SearchResultsAdapter) resultList.getAdapter();
+            final OldSearchResultsAdapter adapter = (OldSearchResultsAdapter) resultList.getAdapter();
             adapter.setResults(restResults, highlightRides);
 
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
@@ -332,8 +328,8 @@ public class SearchResultsFragment extends PrevozFragment
 
     public void onEventMainThread(Events.MyRideStatusUpdated e)
     {
-        if (adapter != null && adapter instanceof SearchResultsAdapter) {
-            final SearchResultsAdapter srAdapter = (SearchResultsAdapter) adapter;
+        if (adapter != null && adapter instanceof OldSearchResultsAdapter) {
+            final OldSearchResultsAdapter srAdapter = (OldSearchResultsAdapter) adapter;
             if (e.deleted)
                 srAdapter.removeRide(e.ride.id);
             srAdapter.updateRide(e.ride);
@@ -348,7 +344,7 @@ public class SearchResultsFragment extends PrevozFragment
 
     public boolean showingResults()
     {
-        return (adapter instanceof SearchResultsAdapter);
+        return (adapter instanceof OldSearchResultsAdapter);
     }
 
     @Override

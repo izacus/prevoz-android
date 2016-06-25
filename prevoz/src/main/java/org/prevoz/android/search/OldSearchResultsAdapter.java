@@ -32,7 +32,7 @@ import java.util.Set;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
-public class SearchResultsAdapter extends BaseAdapter implements StickyListHeadersAdapter
+public class OldSearchResultsAdapter extends BaseAdapter implements StickyListHeadersAdapter
 {
     private final FragmentActivity context;
     private final PrevozDatabase database;
@@ -41,7 +41,7 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
     private Set<Integer> highlights;
     private final LayoutInflater inflater;
 
-    public SearchResultsAdapter(@NonNull FragmentActivity context, @NonNull PrevozDatabase database, @NonNull List<RestRide> results, @NonNull int[] highlights)
+    public OldSearchResultsAdapter(@NonNull FragmentActivity context, @NonNull PrevozDatabase database, @NonNull List<RestRide> results, @NonNull int[] highlights)
     {
         this.context = context;
         this.database = database;

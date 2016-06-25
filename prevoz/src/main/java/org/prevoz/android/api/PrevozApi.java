@@ -30,7 +30,7 @@ public interface PrevozApi
                 @Query("fc") String fromCountry,
                 @Query("t") String to,
                 @Query("tc") String toCountry,
-                @Query("d") ZonedDateTime date);
+                @Query("d") String date);
 
     @GET("/api/accounts/status/")
     Observable<RestAccountStatus> getAccountStatus();

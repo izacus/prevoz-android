@@ -10,7 +10,6 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
-import org.prevoz.android.BuildConfig;
 import org.prevoz.android.PrevozApplication;
 import org.prevoz.android.model.Bookmark;
 import org.threeten.bp.ZonedDateTime;
