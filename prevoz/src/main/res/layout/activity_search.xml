@@ -60,11 +60,23 @@
             android:layout_height="48dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginBottom="36dp"
             android:layout_marginTop = "16dp"
             >
 
         </org.prevoz.android.views.SearchDayPicker>
+
+        <TextView
+            android:id="@+id/search_selected_day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:fontFamily="sans-serif-light"
+            android:textColor="#EFFF"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            tools:text="Petek, 31. december 2014"
+            />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -80,6 +92,8 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/search_recycler"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:paddingTop="16dp"
+        android:clipToPadding="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </android.support.design.widget.CoordinatorLayout>

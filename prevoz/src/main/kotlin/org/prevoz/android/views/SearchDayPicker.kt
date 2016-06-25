@@ -17,26 +17,29 @@ class SearchDayPicker(context: Context?, attrs: AttributeSet?, defStyleAttr: Int
     constructor(context: Context?, attrs: AttributeSet?) : this(context, attrs, 0)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : this(context, attrs, defStyleAttr)
 
-    val r: Rect = Rect()
-    val size : Int
-    val sizeWithPadding : Int
-    val paint : Paint;
-    val textColorNormal: Int
-    val textColorDark: Int
+    private val r: Rect = Rect()
+    private val size : Int
+    private val sizeWithPadding : Int
+    private val paint : Paint;
+    private val textColorNormal: Int
+    private val textColorDark: Int
 
-    var viewCount: Int = 0
-    var totalLeftPadding: Int = 0
+    private var viewCount: Int = 0
+    private var totalLeftPadding: Int = 0
 
-    val nameTextSize: Float
-    val numberTextSize: Float
-    val numberTextPadding: Int
+    private val nameTextSize: Float
+    private val numberTextSize: Float
+    private val numberTextPadding: Int
 
-    var selected: Int = 1
+    private var selected: Int = 1
 
     // Lateinit so it works in UI editor
-    var startDate: ZonedDateTime = ZonedDateTime.now()
+    private var startDate: ZonedDateTime = ZonedDateTime.now()
 
-    val detector: GestureDetectorCompat
+    private val detector: GestureDetectorCompat
+
+    // Listener for changes
+    var onDayChanged: ((ZonedDateTime) -> Unit)? = null
 
     init {
         paint = Paint()
@@ -134,6 +137,7 @@ class SearchDayPicker(context: Context?, attrs: AttributeSet?, defStyleAttr: Int
             if (e == null) return false
             // Determine tapped views
             selected = ((e.x - totalLeftPadding) / sizeWithPadding).toInt()
+            onDayChanged?.invoke(getSelectedDate())
             invalidate()
             return true
         }

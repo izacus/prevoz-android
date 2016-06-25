@@ -7,6 +7,7 @@ import kotlinx.android.synthetic.main.activity_search.*
 import org.prevoz.android.api.rest.RestRide
 import org.prevoz.android.model.Route
 import org.prevoz.android.search.*
+import org.prevoz.android.util.LocaleUtil
 import org.prevoz.android.util.StringUtil
 import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
@@ -25,9 +26,12 @@ class SearchActivity : AppCompatActivity(), SearchView {
         search_edit_from?.setAdapter(CityAutocompleteAdapter(this, presenter.database))
         search_edit_to?.setAdapter(CityAutocompleteAdapter(this, presenter.database))
 
+        search_picker_date.onDayChanged = { search_selected_day.text = LocaleUtil.getFormattedDate(resources, it) }
         search_button_start.setOnClickListener { startSearch(search_edit_from.text.toString(),
                                                              search_edit_to.text.toString(),
                                                              search_picker_date.getSelectedDate()) }
+
+        search_selected_day.text = LocaleUtil.getFormattedDate(resources, search_picker_date.getSelectedDate())
     }
 
     override fun onStart() {
