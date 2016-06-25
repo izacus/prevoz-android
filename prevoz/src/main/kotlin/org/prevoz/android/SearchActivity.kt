@@ -9,6 +9,8 @@ import org.prevoz.android.search.CityAutocompleteAdapter
 import org.prevoz.android.search.SearchHistoryAdapter
 import org.prevoz.android.search.SearchPresenter
 import org.prevoz.android.search.SearchView
+import org.prevoz.android.util.StringUtil
+import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
 
 class SearchActivity : AppCompatActivity(), SearchView {
@@ -23,6 +25,10 @@ class SearchActivity : AppCompatActivity(), SearchView {
 
         search_edit_from?.setAdapter(CityAutocompleteAdapter(this, presenter.database))
         search_edit_to?.setAdapter(CityAutocompleteAdapter(this, presenter.database))
+
+        search_button_start.setOnClickListener { startSearch(search_edit_from.text.toString(),
+                                                             search_edit_to.text.toString(),
+                                                             search_picker_date.getSelectedDate()) }
     }
 
     override fun onStart() {
@@ -33,6 +39,12 @@ class SearchActivity : AppCompatActivity(), SearchView {
     override fun onStop() {
         super.onStop()
         presenter.unbind()
+    }
+
+    fun startSearch(fromString: String, toString: String, date: ZonedDateTime) {
+        val from = StringUtil.splitStringToCity(fromString)
+        val to = StringUtil.splitStringToCity(toString)
+        presenter.startSearch(from, to, date)
     }
 
     override fun showHistory(routes: List<Route>) {

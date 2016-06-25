@@ -6,6 +6,7 @@ import org.prevoz.android.api.rest.RestPushStatus;
 import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.api.rest.RestSearchResults;
 import org.prevoz.android.api.rest.RestStatus;
+import org.threeten.bp.ZonedDateTime;
 
 import retrofit.Callback;
 import retrofit.client.Response;
@@ -29,7 +30,7 @@ public interface PrevozApi
                 @Query("fc") String fromCountry,
                 @Query("t") String to,
                 @Query("tc") String toCountry,
-                @Query("d") String date);
+                @Query("d") ZonedDateTime date);
 
     @GET("/api/accounts/status/")
     Observable<RestAccountStatus> getAccountStatus();

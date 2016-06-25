@@ -272,7 +272,7 @@ public class SearchResultsFragment extends PrevozFragment
 
         final Activity activity = getActivity();
         shouldShowNotificationButton = !(fromCity == null || toCity == null);
-
+/*
         ApiClient.getAdapter().search(fromCity, fromCountry, toCity, toCountry, dateString)
                               .map(restSearchResults -> {
 
@@ -305,7 +305,7 @@ public class SearchResultsFragment extends PrevozFragment
                                   public void onNext(RestSearchResults restSearchResults) {
                                       success(restSearchResults);
                                   }
-                              });
+                              }); */
     }
 
 

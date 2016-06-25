@@ -22,8 +22,11 @@ class SearchPresenter(val database: PrevozDatabase, val prevozApi: PrevozApi) {
         this.view = null
     }
 
-    fun startSearch(from: City, to: City, date: ZonedDateTime) {
-
+    fun startSearch(from: City?, to: City?, date: ZonedDateTime) {
+        prevozApi.search(from?.displayName, from?.countryCode,
+                         to?.displayName, to?.countryCode,
+                         date)
+                 .subscribe {  }
     }
 }
 

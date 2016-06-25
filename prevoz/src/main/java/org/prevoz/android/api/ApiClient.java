@@ -37,8 +37,7 @@ public class ApiClient
     {
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .registerTypeAdapter(ZonedDateTime.class, new Iso8601CalendarAdapter())
-                .registerTypeAdapter(GregorianCalendar.class, new Iso8601CalendarAdapter())
+                .registerTypeAdapter(ZonedDateTime.class, new Iso8601ZonedCalendarAdapter())
                 .registerTypeAdapter(Bookmark.class, new BookmarkAdapter())
                 .create();
 
@@ -61,9 +60,10 @@ public class ApiClient
         ApiClient.bearer = bearer;
     }
 
-    private static class Iso8601CalendarAdapter extends TypeAdapter<ZonedDateTime>
+    private static class Iso8601ZonedCalendarAdapter extends TypeAdapter<ZonedDateTime>
     {
         private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+        private static final DateTimeFormatter outFormatter = DateTimeFormatter.ISO_DATE;
 
         @Override
         public void write(JsonWriter out, ZonedDateTime value) throws IOException
@@ -71,7 +71,7 @@ public class ApiClient
             if (value == null) {
                 out.nullValue();
             } else {
-                out.value(formatter.format(value));
+                out.value(outFormatter.format(value));
             }
         }
 
