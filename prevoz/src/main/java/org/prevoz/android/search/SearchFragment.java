@@ -137,10 +137,10 @@ public class SearchFragment extends PrevozFragment implements DatePickerDialog.O
         Activity activity = getActivity();
         if (activity == null) return;   // Happens when fragment is detached
 
-        final CityAutocompleteAdapter fromAdapter = new CityAutocompleteAdapter(activity, database);
+        /*final CityAutocompleteAdapter fromAdapter = new CityAutocompleteAdapter(activity, database);
         final CityAutocompleteAdapter toAdapter = new CityAutocompleteAdapter(activity, database);
         searchFrom.setAdapter(fromAdapter);
-        searchTo.setAdapter(toAdapter);
+        searchTo.setAdapter(toAdapter); */
     }
 
     protected void startSearch()

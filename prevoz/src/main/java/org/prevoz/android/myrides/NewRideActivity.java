@@ -23,9 +23,7 @@ import org.prevoz.android.R;
 import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
-import org.prevoz.android.model.CityNameTextValidator;
 import org.prevoz.android.ride.RideInfoActivity;
-import org.prevoz.android.search.CityAutocompleteAdapter;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.PrevozActivity;
 import org.prevoz.android.util.StringUtil;
@@ -92,10 +90,12 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
             setTime = setTime.withMinute(30);
         }
 
+        /*
         textFrom.setAdapter(new CityAutocompleteAdapter(this, database));
         textTo.setAdapter(new CityAutocompleteAdapter(this, database));
         textFrom.setValidator(new CityNameTextValidator(this, database));
         textTo.setValidator(new CityNameTextValidator(this, database));
+        */
 
         // Setup IME actions
         textTo.setOnEditorActionListener((v, actionId, event) -> {

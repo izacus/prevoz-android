@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_search.*
 import org.prevoz.android.model.Route
+import org.prevoz.android.search.CityAutocompleteAdapter
 import org.prevoz.android.search.SearchHistoryAdapter
 import org.prevoz.android.search.SearchPresenter
 import org.prevoz.android.search.SearchView
@@ -20,7 +21,8 @@ class SearchActivity : AppCompatActivity(), SearchView {
         setContentView(R.layout.activity_search)
         (application as PrevozApplication).component().inject(this)
 
-        search_button_start?.setOnClickListener {  }
+        search_edit_from?.setAdapter(CityAutocompleteAdapter(this, presenter.database))
+        search_edit_to?.setAdapter(CityAutocompleteAdapter(this, presenter.database))
     }
 
     override fun onStart() {

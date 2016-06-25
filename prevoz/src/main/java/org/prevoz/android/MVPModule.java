@@ -1,5 +1,6 @@
 package org.prevoz.android;
 
+import org.prevoz.android.api.PrevozApi;
 import org.prevoz.android.model.PrevozDatabase;
 import org.prevoz.android.search.SearchPresenter;
 
@@ -10,8 +11,8 @@ import dagger.Provides;
 public class MVPModule {
 
     @Provides
-    public SearchPresenter providePresenter(PrevozDatabase database) {
-        return new SearchPresenter(database);
+    public SearchPresenter providePresenter(PrevozDatabase database, PrevozApi api) {
+        return new SearchPresenter(database, api);
     }
 
 }

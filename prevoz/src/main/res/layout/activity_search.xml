@@ -26,10 +26,11 @@
                 android:hint="@string/search_form_from_hint"
                 >
 
-                <android.support.design.widget.TextInputEditText
+                <AutoCompleteTextView
                     android:id="@+id/search_edit_from"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textPostalAddress"
                     />
 
             </android.support.design.widget.TextInputLayout>
@@ -44,10 +45,11 @@
             android:hint="@string/search_form_to_hint"
             >
 
-            <android.support.design.widget.TextInputEditText
+            <AutoCompleteTextView
                 android:id="@+id/search_edit_to"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textPostalAddress"
                 />
 
         </android.support.design.widget.TextInputLayout>
