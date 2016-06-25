@@ -247,7 +247,7 @@ public class SearchResultsFragment extends PrevozFragment
         database.getLastSearches(5)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
-                   adapter = new SearchHistoryAdapter(activity, s);
+                   adapter = new OldSearchHistoryAdapter(activity, s);
                     if (animate && resultList.getAdapter() != null) {
                         hideNotificationsButton();
                         new ListDisappearAnimation(resultList).animate();

@@ -17,14 +17,14 @@ import java.util.List;
 import de.greenrobot.event.EventBus;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
-public class SearchHistoryAdapter extends BaseAdapter implements StickyListHeadersAdapter
+public class OldSearchHistoryAdapter extends BaseAdapter implements StickyListHeadersAdapter
 {
     @NonNull
     private final LayoutInflater inflater;
     @NonNull
     private final List<Route> searchHistory;
 
-    public SearchHistoryAdapter(@NonNull Context ctx, @NonNull List<Route> historyItems)
+    public OldSearchHistoryAdapter(@NonNull Context ctx, @NonNull List<Route> historyItems)
     {
         this.searchHistory = historyItems;
         this.inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

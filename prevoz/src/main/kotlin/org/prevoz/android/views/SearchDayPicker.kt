@@ -8,16 +8,9 @@ import android.util.TypedValue
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
-import android.widget.LinearLayout
 import org.prevoz.android.R
 import org.prevoz.android.util.LocaleUtil
-import org.threeten.bp.LocalDate
-import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZonedDateTime
-import org.threeten.bp.format.DateTimeFormatter
-import org.threeten.bp.format.DateTimeFormatterBuilder
-import org.threeten.bp.format.FormatStyle
 
 class SearchDayPicker(context: Context?, attrs: AttributeSet?, defStyleAttr: Int): View(context, attrs, defStyleAttr) {
 
@@ -39,6 +32,8 @@ class SearchDayPicker(context: Context?, attrs: AttributeSet?, defStyleAttr: Int
     val numberTextPadding: Int
 
     var selected: Int = 1
+
+    // Lateinit so it works in UI editor
     var startDate: ZonedDateTime = ZonedDateTime.now()
 
     val detector: GestureDetectorCompat
@@ -50,7 +45,7 @@ class SearchDayPicker(context: Context?, attrs: AttributeSet?, defStyleAttr: Int
         paint.isAntiAlias = true
 
         nameTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 14.0f, context!!.resources.displayMetrics)
-        numberTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 16.0f, context!!.resources.displayMetrics)
+        numberTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 16.0f, context.resources.displayMetrics)
         numberTextPadding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4.0f, context.resources.displayMetrics).toInt()
 
         size = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48.0f, context.resources.displayMetrics).toInt()
@@ -123,6 +118,10 @@ class SearchDayPicker(context: Context?, attrs: AttributeSet?, defStyleAttr: Int
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         return detector.onTouchEvent(event)
+    }
+
+    fun getSelectedDate() : ZonedDateTime {
+        return startDate.plusDays(selected.toLong())
     }
 
     inner class SearchDayPickerGestureDetector : GestureDetector.SimpleOnGestureListener() {
