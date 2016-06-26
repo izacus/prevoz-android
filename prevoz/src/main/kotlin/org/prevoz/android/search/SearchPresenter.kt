@@ -11,7 +11,7 @@ import rx.android.schedulers.AndroidSchedulers
 
 
 class SearchPresenter(val database: PrevozDatabase, val prevozApi: PrevozApi) {
-    val searchDateFormatter = DateTimeFormatter.ofPattern("YYYY-mm-dd")
+    val searchDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
     var view: SearchView? = null
 
