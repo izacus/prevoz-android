@@ -12,24 +12,34 @@ import org.prevoz.android.model.PrevozDatabase
 import org.prevoz.android.util.LocaleUtil
 import org.threeten.bp.format.DateTimeFormatter
 import rx.Observable
+import java.util.*
 
-class SearchResultsAdapter(val database : PrevozDatabase, val results : List<RestRide>, val rideClickedCallback : ((RestRide) -> Unit) ) :
+class SearchResultsAdapter(val database : PrevozDatabase, val rideClickedCallback : ((RestRide) -> Unit) ) :
         SectionedRecyclerViewAdapter<SearchResultsAdapter.SearchHolder>() {
 
+    var results: List<RestRide> = listOf()
     var sections: MutableList<String> = mutableListOf()
     var groupedResults : MutableMap<String, List<RestRide>> = mutableMapOf()
 
     init {
-        Observable.from(results)
-                  .toMultimap { (it.fromCity ?: "") + (it.toCity ?: "") }
-                  .subscribe {
-                      for (entry in it) {
-                          sections.add(entry.key)
-                          groupedResults[entry.key] = entry.value.toList()
-                      }
-                  }
+        setHasStableIds(true)
+    }
+
+    fun setData(results : List<RestRide>) {
+        this.results = results.sortedWith(Comparator { a, b -> a.compareTo(b) })
+
+        Observable.from(this.results)
+                .toMultimap { (it.fromCity ?: "") + (it.toCity ?: "") }
+                .subscribe {
+                    for (entry in it) {
+                        sections.add(entry.key)
+                        groupedResults[entry.key] = entry.value.toList()
+                    }
+                }
 
         sections.sort()
+
+        notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: SearchHolder?, section: Int, relativePosition: Int, absolutePosition: Int) {
@@ -73,7 +83,6 @@ class SearchResultsAdapter(val database : PrevozDatabase, val results : List<Res
 
     val hourFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
-
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SearchHolder? {
         val v : View
         if (viewType == VIEW_TYPE_HEADER) {
@@ -84,6 +93,10 @@ class SearchResultsAdapter(val database : PrevozDatabase, val results : List<Res
             return SearchResultHolder(v)
         }
 
+    }
+
+    override fun getItemId(position: Int): Long {
+        return results[position].id ?: 0
     }
 
     inner open class SearchHolder(val view: View): RecyclerView.ViewHolder(view) {}
