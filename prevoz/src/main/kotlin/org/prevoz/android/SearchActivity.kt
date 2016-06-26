@@ -1,5 +1,6 @@
 package org.prevoz.android
 
+import android.app.Activity
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -58,4 +59,7 @@ class SearchActivity : AppCompatActivity(), SearchView {
         search_recycler.adapter = SearchResultsAdapter(presenter.database, results, { presenter.searchResultSelected(it)  })
     }
 
+    override fun getActivity(): Activity {
+        return this
+    }
 }
