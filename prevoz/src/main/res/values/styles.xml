@@ -44,14 +44,9 @@
     </style>
 
     <style name="Prevoz.Header" parent="@android:style/Widget.TextView">
-        <item name="android:textAllCaps">true</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/prevoztheme_color_dark</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:paddingLeft">8dip</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
     <style name="Prevoz.RideInfo" parent="@style/Theme.AppCompat.Light.Dialog">

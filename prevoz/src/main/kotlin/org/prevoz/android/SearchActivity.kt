@@ -55,7 +55,7 @@ class SearchActivity : AppCompatActivity(), SearchView {
     }
 
     override fun showResults(results: List<RestRide>) {
-        search_recycler.adapter = SearchResultsAdapter(results)
+        search_recycler.adapter = SearchResultsAdapter(presenter.database, results)
     }
 
 }

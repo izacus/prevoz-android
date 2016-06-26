@@ -3,20 +3,19 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="48dp"
     android:focusable="false"
     android:focusableInTouchMode="false"
-    android:background="@color/background_color"
+    android:elevation="2dp"
     >
 
     <TextView
         android:id="@+id/search_item_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="4dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="bottom|left"
         style="@style/Prevoz.Header"
         />
 
