@@ -13,7 +13,8 @@ import org.prevoz.android.util.LocaleUtil
 import org.threeten.bp.format.DateTimeFormatter
 import rx.Observable
 
-class SearchResultsAdapter(val database : PrevozDatabase, val results : List<RestRide>) : SectionedRecyclerViewAdapter<SearchResultsAdapter.SearchHolder>() {
+class SearchResultsAdapter(val database : PrevozDatabase, val results : List<RestRide>, val rideClickedCallback : ((RestRide) -> Unit) ) :
+        SectionedRecyclerViewAdapter<SearchResultsAdapter.SearchHolder>() {
 
     var sections: MutableList<String> = mutableListOf()
     var groupedResults : MutableMap<String, List<RestRide>> = mutableMapOf()
@@ -45,6 +46,10 @@ class SearchResultsAdapter(val database : PrevozDatabase, val results : List<Res
             viewHolder.tvPrice.visibility = View.VISIBLE
             viewHolder.tvPrice.text = LocaleUtil.getFormattedCurrency(price)
         }
+
+        viewHolder.view.setOnClickListener {
+            rideClickedCallback.invoke(result)
+        }
     }
 
     override fun getItemCount(section: Int): Int {
@@ -58,6 +63,8 @@ class SearchResultsAdapter(val database : PrevozDatabase, val results : List<Res
         if (sectionData != null && sectionData.size > 0) {
             viewHolder.tvTitle.text = sectionData[0].getLocalizedFrom(database) + " - " + sectionData[0].getLocalizedTo(database)
         }
+
+        viewHolder.view.setOnClickListener(null)
     }
 
     override fun getSectionCount(): Int {

@@ -34,6 +34,13 @@ class SearchPresenter(val database: PrevozDatabase, val prevozApi: PrevozApi) {
                  .observeOn(AndroidSchedulers.mainThread())
                  .subscribe { view?.showResults(it) }
     }
+
+    /**
+     * Called when user clicks on the search result
+     */
+    fun searchResultSelected(result: RestRide) {
+
+    }
 }
 
 interface SearchView {
