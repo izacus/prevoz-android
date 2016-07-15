@@ -95,10 +95,6 @@ class SearchResultsAdapter(val database : PrevozDatabase, val rideClickedCallbac
 
     }
 
-    override fun getItemId(position: Int): Long {
-        return results[position].id ?: 0
-    }
-
     inner open class SearchHolder(val view: View): RecyclerView.ViewHolder(view) {}
 
     inner class SearchResultHolder(view: View) : SearchHolder(view) {
