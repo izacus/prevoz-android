@@ -6,6 +6,8 @@
     android:id="@+id/activity_search"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context="org.prevoz.android.SearchActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -37,6 +39,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
+                    android:nextFocusForward="@+id/search_edit_to"
+                    android:imeOptions="actionNext"
                     />
 
             </android.support.design.widget.TextInputLayout>
@@ -52,10 +56,11 @@
             >
 
             <AutoCompleteTextView
-                android:id="@+id/search_edit_to"
+                android:id="@id/search_edit_to"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPostalAddress"
+                android:imeOptions="actionGo"
                 />
 
         </android.support.design.widget.TextInputLayout>
