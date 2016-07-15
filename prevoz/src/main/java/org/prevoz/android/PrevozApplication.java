@@ -2,11 +2,9 @@ package org.prevoz.android;
 
 import android.app.Application;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Environment;
 
-import com.crashlytics.android.Crashlytics;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
 import org.prevoz.android.auth.AuthenticationUtils;
@@ -14,11 +12,8 @@ import org.prevoz.android.model.PrevozDatabase;
 import org.prevoz.android.util.LocaleUtil;
 
 import java.io.File;
-import java.util.Locale;
 
 import javax.inject.Inject;
-
-import io.fabric.sdk.android.Fabric;
 
 public class PrevozApplication extends Application
 {
@@ -36,7 +31,6 @@ public class PrevozApplication extends Application
     {
         LocaleUtil.checkSetLocale(this, getResources().getConfiguration());
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
         AndroidThreeTen.init(this);
         component = DaggerApplicationComponent.builder()
                                               .applicationModule(new ApplicationModule(this))
@@ -50,8 +44,10 @@ public class PrevozApplication extends Application
         catch (PackageManager.NameNotFoundException e)
         {
             e.printStackTrace();
+
         }
 
+        // TODO: Remove
         new PruneHistory().execute();
     }
 

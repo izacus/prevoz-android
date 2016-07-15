@@ -15,9 +15,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crash.FirebaseCrash;
 
-import com.squareup.okhttp.Response;
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.events.Events;
@@ -46,7 +45,6 @@ public class AuthenticationUtils
         AccountManager am = AccountManager.get(ctx);
         Account[] accounts = am.getAccountsByType(ctx.getString(R.string.account_type));
         if (accounts.length > 0) {
-            Crashlytics.setUserName(accounts[0].name);
             return accounts[0];
         }
 
@@ -75,7 +73,7 @@ public class AuthenticationUtils
 
             @Override
             public void onError(Throwable e) {
-                Crashlytics.logException(e);
+                FirebaseCrash.report(e);
                 Log.e(LOG_TAG, "Something went very wrong when trying to authenticate!", e);
             }
 
@@ -160,12 +158,11 @@ public class AuthenticationUtils
                                         Log.d(LOG_TAG, "Login token refreshed.");
                                     },
                                     error -> {
-                                        Crashlytics.logException(error.getCause());
-
+                                        FirebaseCrash.report(error.getCause());
                                         if (error instanceof RetrofitError) {
                                             RetrofitError re = (RetrofitError)error;
                                             if (re.getBody() != null) {
-                                                Crashlytics.log(Log.ERROR, LOG_TAG, re.getBody().toString());
+                                                FirebaseCrash.logcat(Log.ERROR, LOG_TAG, re.getBody().toString());
                                             }
                                         }
 

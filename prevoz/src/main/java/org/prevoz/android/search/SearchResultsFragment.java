@@ -17,7 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crash.FirebaseCrash;
 
 import org.prevoz.android.PrevozFragment;
 import org.prevoz.android.R;
@@ -144,10 +144,8 @@ public class SearchResultsFragment extends PrevozFragment
             if (activity != null) {
                 Toast.makeText(activity, "Prijava ni več veljavna, odjavljam...", Toast.LENGTH_SHORT).show();
             }
-
-            Crashlytics.logException(retrofitError.getCause());
             if (retrofitError.getBody() != null) {
-                Crashlytics.log(Log.ERROR, "Prevoz.Search", retrofitError.getBody().toString());
+                FirebaseCrash.logcat(Log.ERROR, "Prevoz.Search", retrofitError.getBody().toString());
             }
 
             authUtils.logout().subscribeOn(Schedulers.io()).subscribe();
@@ -261,7 +259,7 @@ public class SearchResultsFragment extends PrevozFragment
                 },
                 throwable -> {
                     Log.e("Prevoz", "Error while loading history!", throwable);
-                    Crashlytics.logException(throwable);
+                    FirebaseCrash.report(throwable);
                 });
     }
 

@@ -8,8 +8,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.events.Events;
@@ -51,13 +50,6 @@ public class PushManager
     protected void setup()
     {
         gcmIdObservable = Observable.defer(() -> {
-                // Check for play services first
-                int result = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
-                if (result != ConnectionResult.SUCCESS) {
-                    Log.e(LOG_TAG, "Google play services not available on device: " + GooglePlayServicesUtil.getErrorString(result));
-                    throw OnErrorThrowable.from(new IOException("Google Play services not available."));
-                }
-
             try {
                 // Try to get GCM ID from preferences
                 int version = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
@@ -66,14 +58,13 @@ public class PushManager
                 String gcmId = prefs.getString(PREF_KEY, null);
 
                 if (gcmId == null) {
-                    GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
-                    gcmId = gcm.register(GCM_PROJECT_ID);
+                    gcmId = FirebaseInstanceId.getInstance().getToken();
                     prefs.edit().putString(PREF_KEY, gcmId).apply();
                 }
 
                 available = (gcmId != null);
                 return Observable.just(gcmId);
-            } catch (IOException|PackageManager.NameNotFoundException e) {
+            } catch (PackageManager.NameNotFoundException e) {
                 throw OnErrorThrowable.from(e);
             }
         }).cache();

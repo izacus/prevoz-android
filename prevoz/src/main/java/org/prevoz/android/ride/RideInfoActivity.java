@@ -38,7 +38,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crash.FirebaseCrash;
 
 import org.prevoz.android.R;
 import org.prevoz.android.UiFragment;
@@ -391,7 +391,7 @@ public class RideInfoActivity extends PrevozActivity
             @Override
             public void failure(RetrofitError error) {
                 Log.e("Prevoz", "Failed to set bookmark status.", error);
-                Crashlytics.logException(error);
+                FirebaseCrash.logcat(Log.ERROR, "Prevoz", "Failed to set bookmark status: " + error.getMessage());
             }
         });
     }

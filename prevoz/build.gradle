@@ -9,6 +9,7 @@ buildscript {
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'me.tatarka:gradle-retrolambda:3.2.5'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
+        classpath 'com.google.gms:google-services:3.0.0'
     }
 }
 
@@ -78,7 +79,9 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.0.0'
 
     // Google
-    compile 'com.google.android.gms:play-services-gcm:9.2.1'
+    compile 'com.google.firebase:firebase-messaging:9.2.1'
+    compile 'com.google.firebase:firebase-core:9.2.1'
+    compile 'com.google.firebase:firebase-crash:9.2.1'
 
     // Icepick
     compile 'frankiesardo:icepick:3.2.0'
@@ -113,3 +116,5 @@ dependencies {
     compile 'com.pushtorefresh.storio:sqlite-annotations:1.9.0'
     apt 'com.pushtorefresh.storio:sqlite-annotations-processor:1.9.0'
 }
+
+apply plugin: 'com.google.gms.google-services'

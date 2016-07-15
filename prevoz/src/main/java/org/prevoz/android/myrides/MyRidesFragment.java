@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crash.FirebaseCrash;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
 import org.prevoz.android.MainActivity;
@@ -128,13 +128,12 @@ public class MyRidesFragment extends PrevozFragment
     }
 
     private void showLoadFailureError(Throwable error) {
-        Crashlytics.logException(error.getCause());
         if (error instanceof RetrofitError) {
             // Check for unauthorzied
             RetrofitError rerror = (RetrofitError)error;
             if (rerror.getResponse() != null) {
                 Response response = rerror.getResponse();
-                Crashlytics.log(Log.ERROR, LOG_TAG, response.getBody().toString());
+                FirebaseCrash.logcat(Log.ERROR, LOG_TAG, response.getBody().toString());
                 if (response.getStatus() == 403 || response.getStatus() == 401) {
                     authUtils.logout().subscribeOn(Schedulers.io()).toBlocking().firstOrDefault(null);
                     authUtils.requestAuthentication(getActivity(), MainActivity.REQUEST_CODE_AUTHORIZE_MYRIDES);
