@@ -33,7 +33,6 @@ public class PushManager
 {
     private static final String GCM_ID_KEY = "GCM_ID_";
     private static final String LOG_TAG = "Prevoz.Push";
-    private static final String GCM_PROJECT_ID = "121500391433";
 
     private final Context context;
     private final PrevozDatabase database;
