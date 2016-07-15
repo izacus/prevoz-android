@@ -16,10 +16,15 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         >
 
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/search_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll" />
+
             <android.support.design.widget.TextInputLayout
                 android:layout_marginLeft="48dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="36dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_scrollFlags="scroll"
@@ -81,15 +86,31 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/search_button_start"
-        android:layout_height="wrap_content"
+    <com.github.jorgecastilloprz.FABProgressCircle
+        android:id="@+id/search_button_start_circle"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="12dp"
+        android:padding="4dp"
+        app:arcColor="@color/prevoztheme_accent"
+        app:arcWidth="3dp"
+        app:reusable="true"
+        android:elevation="6dp"
         app:layout_anchor="@id/search_appbar"
         app:layout_anchorGravity="bottom|right|end"
-        android:layout_marginRight="16dp"
-        android:elevation="6dp"
-        android:clickable="true"/>
+        android:clipToPadding="false"
+        >
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/search_button_start"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:clickable="true"
+            android:tint="@android:color/white"
+            android:src="@drawable/ic_search"
+            />
+
+    </com.github.jorgecastilloprz.FABProgressCircle>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/search_recycler"

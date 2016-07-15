@@ -90,6 +90,10 @@ dependencies {
     // Icepick
     compile 'frankiesardo:icepick:3.2.0'
     apt 'frankiesardo:icepick-processor:3.2.0'
+
+    // Circle FAB
+    compile 'com.github.jorgecastilloprz:fabprogresscircle:1.01@aar'
+
     // Retrofit + ButterKnife
     compile 'com.jakewharton:butterknife:8.0.1'
     apt 'com.jakewharton:butterknife-compiler:8.0.1'

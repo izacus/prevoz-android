@@ -22,6 +22,7 @@ class SearchActivity : AppCompatActivity(), SearchView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         (application as PrevozApplication).component().inject(this)
+        setSupportActionBar(search_toolbar)
         search_recycler.layoutManager = LinearLayoutManager(this)
 
         search_edit_from?.setAdapter(CityAutocompleteAdapter(this, presenter.database))
@@ -46,6 +47,7 @@ class SearchActivity : AppCompatActivity(), SearchView {
     }
 
     fun startSearch(fromString: String, toString: String, date: ZonedDateTime) {
+        search_button_start_circle.show()
         val from = StringUtil.splitStringToCity(fromString)
         val to = StringUtil.splitStringToCity(toString)
         presenter.startSearch(from, to, date)
@@ -56,6 +58,7 @@ class SearchActivity : AppCompatActivity(), SearchView {
     }
 
     override fun showResults(results: List<RestRide>) {
+        search_button_start_circle.hide()
         if (search_recycler.adapter !is SearchResultsAdapter) {
             search_recycler.adapter = SearchResultsAdapter(presenter.database, { presenter.searchResultSelected(it)  })
         }
