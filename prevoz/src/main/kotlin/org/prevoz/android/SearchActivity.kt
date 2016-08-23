@@ -77,10 +77,7 @@ class SearchActivity : AppCompatActivity(), SearchView {
 
     override fun showResults(results: List<RestRide>) {
         search_button_start_circle.hide()
-        if (search_recycler.adapter !is SearchResultsAdapter) {
-            search_recycler.adapter = SearchResultsAdapter(presenter.database, { presenter.searchResultSelected(it)  })
-        }
-
+        search_recycler.adapter = SearchResultsAdapter(presenter.database, { presenter.searchResultSelected(it)  })
         (search_recycler.adapter as SearchResultsAdapter).setData(results)
     }
 

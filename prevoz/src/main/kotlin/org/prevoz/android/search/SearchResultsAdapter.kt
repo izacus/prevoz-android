@@ -18,8 +18,8 @@ class SearchResultsAdapter(val database : PrevozDatabase, val rideClickedCallbac
         SectionedRecyclerViewAdapter<SearchResultsAdapter.SearchHolder>() {
 
     var results: List<RestRide> = listOf()
-    var sections: MutableList<String> = mutableListOf()
-    var groupedResults : MutableMap<String, List<RestRide>> = mutableMapOf()
+    var sections: List<String> = listOf()
+    var groupedResults : Map<String, List<RestRide>> = mapOf()
 
     init {
         setHasStableIds(true)
@@ -27,18 +27,8 @@ class SearchResultsAdapter(val database : PrevozDatabase, val rideClickedCallbac
 
     fun setData(results : List<RestRide>) {
         this.results = results.sortedWith(Comparator { a, b -> a.compareTo(b) })
-
-        Observable.from(this.results)
-                .toMultimap { (it.fromCity ?: "") + (it.toCity ?: "") }
-                .subscribe {
-                    for (entry in it) {
-                        sections.add(entry.key)
-                        groupedResults[entry.key] = entry.value.toList()
-                    }
-                }
-
-        sections.sort()
-
+        this.groupedResults = this.results.groupBy { (it.fromCity ?: "") + (it.toCity ?: "") }
+        this.sections = this.groupedResults.keys.sorted().toList()
         notifyDataSetChanged()
     }
 
@@ -78,10 +68,10 @@ class SearchResultsAdapter(val database : PrevozDatabase, val rideClickedCallbac
     }
 
     override fun getSectionCount(): Int {
-        return groupedResults.size
+        return sections.size
     }
 
-    val hourFormatter = DateTimeFormatter.ofPattern("HH:mm")
+    val hourFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm", LocaleUtil.getLocale())
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SearchHolder? {
         val v : View
