@@ -24,6 +24,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
@@ -132,6 +133,8 @@ public class RideInfoActivity extends PrevozActivity
     protected TextView txtInsurance;
     @BindView(R.id.rideinfo_driver)
     protected TextView txtDriver;
+    @BindView(R.id.rideinfo_car)
+    protected TextView txtCar;
     @BindView(R.id.rideinfo_comment)
     protected TextView txtComment;
 
@@ -193,6 +196,13 @@ public class RideInfoActivity extends PrevozActivity
 		txtPhone.setText(getPhoneNumberString(ride.phoneNumber, ride.phoneNumberConfirmed));
 		setPeopleText();
 		txtComment.setText(ride.comment);
+
+        if (TextUtils.isEmpty(ride.carInfo)) {
+            txtCar.setVisibility(View.GONE);
+        } else {
+            txtCar.setVisibility(View.VISIBLE);
+            txtCar.setText(ride.carInfo);
+        }
 
 		if ((ride.author == null || ride.author.length() == 0) && ride.published == null) {
 			txtDriver.setVisibility(View.GONE);

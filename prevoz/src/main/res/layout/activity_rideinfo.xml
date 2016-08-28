@@ -228,6 +228,19 @@
                     />
 
                 <TextView
+                    android:id="@+id/rideinfo_car"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top|right"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:textColor="@android:color/darker_gray"
+                    android:textStyle="italic"
+                    style="?android:attr/textAppearanceSmall"
+                    />
+
+                <TextView
                     android:id="@+id/rideinfo_driver"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

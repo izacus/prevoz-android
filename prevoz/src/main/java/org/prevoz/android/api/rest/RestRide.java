@@ -64,6 +64,10 @@ public class RestRide implements Comparable, Parcelable, Serializable
     public String author;
 
     @Nullable
+    @SerializedName("car_info")
+    public String carInfo;
+
+    @Nullable
     @SerializedName("bookmark")
     public Bookmark bookmark;
 
@@ -165,6 +169,7 @@ public class RestRide implements Comparable, Parcelable, Serializable
         dest.writeByte(phoneNumberConfirmed ? (byte) 1 : (byte) 0);
         dest.writeByte(insured ? (byte) 1 : (byte) 0);
         dest.writeString(this.author);
+        dest.writeString(this.carInfo);
         dest.writeString(this.comment);
         dest.writeInt(this.bookmark == null ? -1 : this.bookmark.ordinal());
         dest.writeInt(isAuthor ? (byte)1 : (byte) 0);
@@ -189,6 +194,7 @@ public class RestRide implements Comparable, Parcelable, Serializable
         this.phoneNumberConfirmed = in.readByte() != 0;
         this.insured = in.readByte() != 0;
         this.author = in.readString();
+        this.carInfo = in.readString();
         this.comment = in.readString();
 
         int bookmarkInt = in.readInt();
