@@ -47,6 +47,10 @@ android {
         versionCode 42
         versionName "3.2.5"
         resConfigs "sl"
+
+        jackOptions {
+            enabled false
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

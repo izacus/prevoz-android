@@ -25,6 +25,8 @@
 -dontskipnonpubliclibraryclasses
 -verbose
 
+-dontwarn java.lang.invoke.Lambda*
+
 -keepattributes *Annotation*,SourceFile,LineNumberTable,Signature
 -keep public class com.google.vending.licensing.ILicensingService
 -keep public class com.android.vending.licensing.ILicensingService
