@@ -24,8 +24,8 @@
         android:textColor="#000000"
         android:gravity="center"
         android:includeFontPadding="false"
+        android:fontFamily="sans-serif"
         tools:text="14:00"
-        style="?android:attr/textAppearanceLarge"
         />
 
     <ImageView
@@ -51,12 +51,11 @@
             android:id="@+id/item_result_price"
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:layout_marginBottom="1dp"
             android:gravity="bottom|right"
-            android:textColor="@color/prevoztheme_color"
+            android:textColor="@color/prevoztheme_color_dark"
             android:includeFontPadding="false"
             android:fontFamily="sans-serif-medium"
-            android:textSize="16sp"
+            android:textSize="14sp"
             tools:text="8,9EUR"
             />
 
@@ -65,9 +64,9 @@
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:gravity="top|right"
-            android:layout_marginTop="1dp"
             android:textColor="#8A000000"
-            android:textSize="12sp"
+            android:textSize="14sp"
+            android:fontFamily="sans-serif"
             android:includeFontPadding="true"
             tools:text="Francelj"
             />
