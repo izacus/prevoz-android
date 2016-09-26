@@ -50,6 +50,7 @@ class SearchActivity : AppCompatActivity(), SearchView {
         }
 
         search_selected_day.text = LocaleUtil.getFormattedDate(resources, search_picker_date.getSelectedDate())
+        search_appbar.addOnOffsetChangedListener(FadeInOutViewsAppBarListener(listOf(search_edit_from_layout, search_edit_to_layout), listOf(search_selected_path)))
     }
 
     override fun onStart() {
