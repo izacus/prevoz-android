@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.firebase.crash.FirebaseCrash;
 
 import org.prevoz.android.PrevozFragment;
 import org.prevoz.android.R;
@@ -253,7 +252,6 @@ public class SearchResultsFragment extends PrevozFragment
                 },
                 throwable -> {
                     Log.e("Prevoz", "Error while loading history!", throwable);
-                    FirebaseCrash.report(throwable);
                 });
     }
 

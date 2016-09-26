@@ -15,8 +15,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.google.firebase.crash.FirebaseCrash;
-
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.events.Events;
@@ -72,7 +70,6 @@ public class AuthenticationUtils
 
             @Override
             public void onError(Throwable e) {
-                FirebaseCrash.report(e);
                 Log.e(LOG_TAG, "Something went very wrong when trying to authenticate!", e);
             }
 
@@ -157,7 +154,6 @@ public class AuthenticationUtils
                                         Log.d(LOG_TAG, "Login token refreshed.");
                                     },
                                     error -> {
-                                        FirebaseCrash.report(error.getCause());
                                         logout().subscribeOn(Schedulers.io()).onErrorReturn(null).subscribe();
                                     });
                 }

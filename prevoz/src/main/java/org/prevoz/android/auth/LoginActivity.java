@@ -24,7 +24,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.google.firebase.crash.FirebaseCrash;
 
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
@@ -111,7 +110,7 @@ public class LoginActivity extends PrevozActivity
         }
         catch (UnsupportedEncodingException e)
         {
-            FirebaseCrash.report(e);
+            // Nothing TBD
         }
 
 
@@ -152,7 +151,6 @@ public class LoginActivity extends PrevozActivity
                   .observeOn(AndroidSchedulers.mainThread())
                   .subscribe(authInfoPair -> {},
                           throwable -> {
-                              FirebaseCrash.report(throwable.getCause());
                               ApiClient.setBearer(null);
                               final Bundle result = new Bundle();
                               result.putInt(AccountManager.KEY_ERROR_CODE, AccountManager.ERROR_CODE_BAD_AUTHENTICATION);

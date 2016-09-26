@@ -38,8 +38,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.crash.FirebaseCrash;
-
 import org.prevoz.android.R;
 import org.prevoz.android.UiFragment;
 import org.prevoz.android.api.ApiClient;
@@ -185,7 +183,7 @@ public class RideInfoActivity extends PrevozActivity
 		}
 
 		txtDate.setText(LocaleUtil.localizeDate(getResources(), ride.date));
-		vDetails.setVisibility(View.VISIBLE);
+        vDetails.setVisibility(View.VISIBLE);
 
 		txtPhone.setText(getPhoneNumberString(ride.phoneNumber, ride.phoneNumberConfirmed));
 		setPeopleText();
