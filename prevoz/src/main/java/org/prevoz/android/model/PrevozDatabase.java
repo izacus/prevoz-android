@@ -59,7 +59,7 @@ public class PrevozDatabase {
     private final Context context;
 
     // This ensures that the database is ready when other operations work.
-    private final ReplaySubject<StorIOSQLite> databasePrepared = ReplaySubject.create(1);
+    private final ReplaySubject<StorIOSQLite> databasePrepared = ReplaySubject.create();
 
     public PrevozDatabase(Context context) {
         this.context = context;
