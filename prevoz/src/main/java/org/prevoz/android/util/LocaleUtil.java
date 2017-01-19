@@ -3,6 +3,7 @@ package org.prevoz.android.util;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.support.annotation.NonNull;
 
 import org.prevoz.android.R;
 import org.prevoz.android.model.PrevozDatabase;
@@ -124,7 +125,7 @@ public class LocaleUtil
         return localizedCountryNamesCache.get(countryCode);
     }
 
-    public static String getLocalizedCityName(PrevozDatabase database, String cityName, String countryCode)
+    @NonNull public static String getLocalizedCityName(PrevozDatabase database, String cityName, String countryCode)
     {
         if (!localizedCityNamesCache.containsKey(cityName))
         {

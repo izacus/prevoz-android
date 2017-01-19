@@ -26,6 +26,7 @@ import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.api.rest.RestSearchResults;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
+import org.prevoz.android.model.Route;
 import org.prevoz.android.ui.ListDisappearAnimation;
 import org.prevoz.android.ui.ListFlyupAnimator;
 import org.prevoz.android.util.LocaleUtil;
@@ -103,7 +104,7 @@ public class SearchResultsFragment extends PrevozFragment
         if (results == null)
             showHistory(false);
         else
-            showResults(results);
+            showResults(results, new Route(lastFrom, lastTo));
         return views;
     }
 
@@ -119,7 +120,7 @@ public class SearchResultsFragment extends PrevozFragment
         EventBus.getDefault().unregister(this);
     }
 
-    public void success(RestSearchResults restSearchResults)
+    public void success(RestSearchResults restSearchResults, @NonNull Route askedForRoute)
     {
         if (getActivity() == null) return;
 
@@ -133,7 +134,7 @@ public class SearchResultsFragment extends PrevozFragment
             results = restSearchResults;
         }
 
-        showResults(results);
+        showResults(results, askedForRoute);
         EventBus.getDefault().post(new Events.SearchComplete());
     }
 
@@ -161,19 +162,19 @@ public class SearchResultsFragment extends PrevozFragment
         EventBus.getDefault().post(new Events.SearchComplete());
     }
 
-    private void showResults(@Nullable RestSearchResults results)
+    private void showResults(@Nullable RestSearchResults results, Route askedForRoute)
     {
         List<RestRide> restResults = results == null ? new ArrayList<>() : results.results;
 
         if (resultList.getAdapter() == null || !(resultList.getAdapter() instanceof SearchResultsAdapter))
         {
-            adapter = new SearchResultsAdapter(getActivity(), database, restResults, highlightRides);
+            adapter = new SearchResultsAdapter(getActivity(), database, restResults, highlightRides, askedForRoute);
             resultList.setAdapter(adapter);
         }
         else
         {
             final SearchResultsAdapter adapter = (SearchResultsAdapter) resultList.getAdapter();
-            adapter.setResults(restResults, highlightRides);
+            adapter.setResults(restResults, highlightRides, askedForRoute);
 
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
                 resultList.smoothScrollToPosition(1);
@@ -275,7 +276,7 @@ public class SearchResultsFragment extends PrevozFragment
         final Activity activity = getActivity();
         shouldShowNotificationButton = !(fromCity == null || toCity == null);
 
-        ApiClient.getAdapter().search(fromCity, fromCountry, toCity, toCountry, dateString)
+        ApiClient.getAdapter().search(fromCity, fromCountry, toCity, toCountry, dateString, false)
                               .map(restSearchResults -> {
 
                                   // This is localization cache warmup on backgorund thread
@@ -305,7 +306,7 @@ public class SearchResultsFragment extends PrevozFragment
 
                                   @Override
                                   public void onNext(RestSearchResults restSearchResults) {
-                                      success(restSearchResults);
+                                      success(restSearchResults, new Route(fromCity == null ? null : new City(fromCity, fromCountry), toCity == null ? null : new City(toCity, toCountry)));
                                   }
                               });
     }

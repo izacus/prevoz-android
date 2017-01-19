@@ -11,23 +11,23 @@ public class City implements Comparable<City>, Parcelable
     private final String displayName;
     private final String countryCode;
 
-    public City(String displayName, String countryCode)
+    public City(@NonNull String displayName, @NonNull String countryCode)
     {
         this.displayName = displayName;
         this.countryCode = countryCode;
     }
 
-    public String getDisplayName()
+    @NonNull public String getDisplayName()
     {
         return displayName;
     }
 
-    public String getCountryCode()
+    @NonNull public String getCountryCode()
     {
         return countryCode;
     }
 
-    public String getLocalizedName(PrevozDatabase database)
+    @NonNull public String getLocalizedName(PrevozDatabase database)
     {
         return LocaleUtil.getLocalizedCityName(database, getDisplayName(), getCountryCode());
     }

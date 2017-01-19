@@ -2,12 +2,15 @@ package org.prevoz.android.api.rest;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
 import org.prevoz.android.model.Bookmark;
+import org.prevoz.android.model.City;
 import org.prevoz.android.model.PrevozDatabase;
+import org.prevoz.android.model.Route;
 import org.prevoz.android.util.LocaleUtil;
 import org.threeten.bp.Instant;
 import org.threeten.bp.ZonedDateTime;
@@ -145,6 +148,10 @@ public class RestRide implements Comparable, Parcelable, Serializable
         }
 
         return cityNameCompare;
+    }
+
+    @NonNull public Route getRoute() {
+        return new Route(new City(fromCity, fromCountry), new City(toCity, toCountry));
     }
 
     @Override

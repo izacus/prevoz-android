@@ -29,7 +29,8 @@ public interface PrevozApi
                 @Query("fc") String fromCountry,
                 @Query("t") String to,
                 @Query("tc") String toCountry,
-                @Query("d") String date);
+                @Query("d") String date,
+                @Query("exact") boolean exact);
 
     @GET("/api/accounts/status/")
     Observable<RestAccountStatus> getAccountStatus();

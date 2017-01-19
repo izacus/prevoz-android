@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
 import android.text.SpannableStringBuilder;
@@ -21,11 +22,14 @@ import android.widget.TextView;
 import org.prevoz.android.R;
 import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.model.Bookmark;
+import org.prevoz.android.model.City;
 import org.prevoz.android.model.PrevozDatabase;
+import org.prevoz.android.model.Route;
 import org.prevoz.android.ride.RideInfoActivity;
 import org.prevoz.android.util.LocaleUtil;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -41,12 +45,12 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
     private Set<Integer> highlights;
     private final LayoutInflater inflater;
 
-    public SearchResultsAdapter(@NonNull FragmentActivity context, @NonNull PrevozDatabase database, @NonNull List<RestRide> results, @NonNull int[] highlights)
+    public SearchResultsAdapter(@NonNull FragmentActivity context, @NonNull PrevozDatabase database, @NonNull List<RestRide> results, @NonNull int[] highlights, @Nullable Route askedForRoute)
     {
         this.context = context;
         this.database = database;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        buildResults(results, highlights);
+        buildResults(results, highlights, askedForRoute);
     }
 
     @Override
@@ -137,15 +141,40 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
         return false;
     }
 
-    public synchronized void setResults(@NonNull List<RestRide> rides, @NonNull int[] highlights)
+    public synchronized void setResults(@NonNull List<RestRide> rides, @NonNull int[] highlights, @Nullable Route askedForRoute)
     {
-        buildResults(rides, highlights);
+        buildResults(rides, highlights, askedForRoute);
         notifyDataSetChanged();
     }
 
-    private void buildResults(@NonNull List<RestRide> rides, @NonNull int[] highlightIds)
+    private void buildResults(@NonNull List<RestRide> rides, @NonNull int[] highlightIds, @Nullable Route askedForRoute)
     {
-        Collections.sort(rides);
+        Collections.sort(rides, (r1, r2) -> {
+            // Check if this is a preferred route
+            int cityNameCompare = 0;
+            if (askedForRoute != null) {
+                if (r1.getRoute().equals(askedForRoute)) {
+                    cityNameCompare = -1;
+                } else if (r2.getRoute().equals(askedForRoute)) {
+                    cityNameCompare = 1;
+                }
+            }
+
+            if (cityNameCompare == 0) {
+                cityNameCompare = (r1.fromCity + r1.toCity).compareTo(r2.fromCity + r2.toCity);
+            }
+
+            if (cityNameCompare == 0) {
+                if (r1.date != null && r2.date != null) {
+                    return (int)(r1.date.toEpochSecond() - r2.date.toEpochSecond());
+                } else if (r1.published != null && r2.published != null) {
+                    return r1.compareTo(r2.published);
+                }
+            }
+
+            return cityNameCompare;
+        });
+
         highlights = new HashSet<>();
         for (int id : highlightIds)
             highlights.add(id);
