@@ -1,6 +1,7 @@
 package org.prevoz.android.search
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter
+import com.hannesdorfmann.mosby.mvp.MvpPresenter
 import de.greenrobot.event.EventBus
 import org.prevoz.android.ApplicationComponent
 import org.prevoz.android.events.Events
@@ -10,7 +11,7 @@ import org.threeten.bp.LocalDate
 import rx.schedulers.Schedulers
 import javax.inject.Inject
 
-class SearchFormPresenter(component: ApplicationComponent) : MvpNullObjectBasePresenter<SearchFragment>() {
+class SearchFormPresenter(component: ApplicationComponent) : MvpPresenter<SearchFragment> {
     init {
         component.inject(this)
     }
@@ -18,15 +19,17 @@ class SearchFormPresenter(component: ApplicationComponent) : MvpNullObjectBasePr
     @Inject lateinit var database : PrevozDatabase
 
     // Currently selected state
+    var view: SearchFragment? = null
+
     var from : City? = null
     var to : City? = null
     var selectedDate : LocalDate = LocalDate.now()
         set(value) {
-            view.showDate(value)
+            view?.showDate(value)
         }
 
     override fun attachView(view: SearchFragment?) {
-        super.attachView(view)
+        this.view = view
         view?.showFrom(from)
         view?.showTo(to)
         view?.showDate(selectedDate)
@@ -34,11 +37,11 @@ class SearchFormPresenter(component: ApplicationComponent) : MvpNullObjectBasePr
     }
 
     fun onDateClicked() {
-        view.showDateDialog(selectedDate)
+        view?.showDateDialog(selectedDate)
     }
 
     fun search() {
-        view.showLoadingThrobber()
+        view?.showLoadingThrobber()
         Schedulers.io().createWorker().schedule {
             database.addSearchToHistory(from, to, selectedDate)
             EventBus.getDefault().post(Events.NewSearchEvent(from, to, selectedDate));
@@ -46,11 +49,11 @@ class SearchFormPresenter(component: ApplicationComponent) : MvpNullObjectBasePr
     }
 
     override fun detachView(retainInstance: Boolean) {
-        super.detachView(retainInstance)
+        view = null
         EventBus.getDefault().unregister(this)
     }
 
     fun onEventMainThread(e : Events.SearchComplete) {
-        view.hideLoadingThrobber()
+        view?.hideLoadingThrobber()
     }
 }

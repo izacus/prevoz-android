@@ -50,6 +50,7 @@ class SearchFragment : MvpFragment<SearchFragment, SearchFormPresenter>(), DateP
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity as PrevozActivity).applicationComponent.inject(this)
+        retainInstance = true
     }
 
     override fun createPresenter(): SearchFormPresenter {

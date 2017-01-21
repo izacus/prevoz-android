@@ -87,6 +87,7 @@ public class SearchResultsFragment extends PrevozFragment
         searchNotifyButtonProgress = (ProgressBar) headerFragmentView.findViewById(R.id.search_notify_button_progress);
         searchNotifyButton = headerFragmentView.findViewById(R.id.search_notify_button);
         searchNotifyButtonContainer.setOnClickListener(v -> clickNotificationButton());
+        setRetainInstance(true);
     }
 
     @Override
