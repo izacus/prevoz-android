@@ -1,6 +1,8 @@
 package org.prevoz.android.api;
 
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -30,8 +32,8 @@ public class ApiClient
 {
     public static final String BASE_URL = "https://prevoz.org";
 
-    private static final RestAdapter adapter;
-    private static String bearer = null;
+    @NonNull private static final RestAdapter adapter;
+    @Nullable private static String bearer = null;
 
     static
     {
@@ -56,9 +58,13 @@ public class ApiClient
         return adapter.create(PrevozApi.class);
     }
 
-    public static void setBearer(String bearer)
+    public static void setBearer(@Nullable String bearer)
     {
         ApiClient.bearer = bearer;
+    }
+
+    @Nullable public static String getBearer() {
+        return bearer;
     }
 
     private static class Iso8601CalendarAdapter extends TypeAdapter<ZonedDateTime>

@@ -108,7 +108,9 @@ public class MainActivity extends PrevozActivity
 
             if (fm.findFragmentByTag(SEARCH_FRAGMENT_TAG) == null) {
                 FragmentTransaction transaction = fm.beginTransaction();
-                transaction.replace(R.id.main_search_container, new SearchResultsFragment(), SEARCH_FRAGMENT_TAG);
+                transaction.replace(R.id.main_search_container,
+                                    new SearchResultsFragment(getApplicationComponent()),
+                                    SEARCH_FRAGMENT_TAG);
                 transaction.commit();
             }
         }
@@ -223,8 +225,8 @@ public class MainActivity extends PrevozActivity
         LocalDate date = LocalDate.from(Instant.ofEpochMilli(intent.getLongExtra("when", 0)).atZone(LocaleUtil.getLocalTimezone()));
         int[] highlights = intent.getIntArrayExtra("highlights");
 
-        EventBus.getDefault().postSticky(new Events.NewSearchEvent(from, to, date, highlights));
         Route route = new Route(from, to);
+        EventBus.getDefault().postSticky(new Events.NewSearchEvent(route, date, highlights));
         EventBus.getDefault().postSticky(new Events.SearchFillWithRoute(route, date, true));
     }
 
@@ -301,7 +303,7 @@ public class MainActivity extends PrevozActivity
             case FRAGMENT_SEARCH:
                 if (fm.findFragmentByTag(SEARCH_FRAGMENT_TAG) == null)
                 {
-                    f = new SearchResultsFragment();
+                    f = new SearchResultsFragment(getApplicationComponent());
                     tag = SEARCH_FRAGMENT_TAG;
                 }
                 break;

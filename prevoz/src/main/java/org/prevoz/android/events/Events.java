@@ -2,6 +2,8 @@ package org.prevoz.android.events;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 
 import org.prevoz.android.UiFragment;
@@ -14,23 +16,23 @@ public class Events
 {
     public static class NewSearchEvent
     {
-        public final City from;
-        public final City to;
-        public final LocalDate date;
-        public final int[] rideIds;
+        @NonNull public final Route route;
+        @NonNull public final LocalDate date;
+        @NonNull public final int[] rideIds;
 
-        public NewSearchEvent(City from, City to, LocalDate date)
+        public NewSearchEvent(@NonNull Route route,
+                              @NonNull LocalDate date)
         {
-            this.from = from;
-            this.to = to;
+            this.route = route;
             this.date = date;
             this.rideIds = new int[0];
         }
 
-        public NewSearchEvent(City from, City to, LocalDate date, int[] rideIds)
+        public NewSearchEvent(@NonNull Route route,
+                              @NonNull LocalDate date,
+                              @Nullable int[] rideIds)
         {
-            this.from = from;
-            this.to = to;
+            this.route = route;
             this.date = date;
             this.rideIds = rideIds == null ? new int[0] : rideIds;
         }

@@ -36,7 +36,7 @@ public class PrevozApplication extends Application
     {
         LocaleUtil.checkSetLocale(this, getResources().getConfiguration());
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
+        //Fabric.with(this, new Crashlytics());
         AndroidThreeTen.init(this);
         component = DaggerApplicationComponent.builder()
                                               .applicationModule(new ApplicationModule(this))

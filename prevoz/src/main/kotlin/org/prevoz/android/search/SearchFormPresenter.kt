@@ -7,6 +7,7 @@ import org.prevoz.android.ApplicationComponent
 import org.prevoz.android.events.Events
 import org.prevoz.android.model.City
 import org.prevoz.android.model.PrevozDatabase
+import org.prevoz.android.model.Route
 import org.threeten.bp.LocalDate
 import rx.schedulers.Schedulers
 import javax.inject.Inject
@@ -44,7 +45,7 @@ class SearchFormPresenter(component: ApplicationComponent) : MvpPresenter<Search
         view?.showLoadingThrobber()
         Schedulers.io().createWorker().schedule {
             database.addSearchToHistory(from, to, selectedDate)
-            EventBus.getDefault().post(Events.NewSearchEvent(from, to, selectedDate));
+            EventBus.getDefault().post(Events.NewSearchEvent(Route(from, to), selectedDate));
         }
     }
 
@@ -55,5 +56,12 @@ class SearchFormPresenter(component: ApplicationComponent) : MvpPresenter<Search
 
     fun onEventMainThread(e : Events.SearchComplete) {
         view?.hideLoadingThrobber()
+    }
+
+    fun onEventMainThread(e : Events.SearchFillWithRoute) {
+        from = e.route.from
+        to = e.route.to
+        view?.showFrom(from)
+        view?.showTo(to)
     }
 }
