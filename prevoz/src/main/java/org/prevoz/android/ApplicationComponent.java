@@ -9,6 +9,8 @@ import org.prevoz.android.push.PushManager;
 import org.prevoz.android.push.PushModule;
 import org.prevoz.android.push.PushReceiver;
 import org.prevoz.android.ride.RideInfoActivity;
+import org.prevoz.android.search.SearchFormPresenter;
+import org.prevoz.android.search.SearchFragment;
 import org.prevoz.android.util.PrevozActivity;
 
 import javax.inject.Singleton;
@@ -23,6 +25,8 @@ public interface ApplicationComponent {
     void inject(PrevozFragment fragment);
     void inject(RideInfoActivity fragment);
     void inject(CityNameTextValidator validator);
+    void inject(SearchFormPresenter searchFormPresenter);
+    void inject(SearchFragment searchFragment);
 
     Context context();
 

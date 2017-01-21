@@ -1,9 +1,6 @@
 package org.prevoz.android.search
 
-import android.app.Activity
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,51 +9,48 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-
+import butterknife.BindView
+import butterknife.ButterKnife
+import butterknife.OnClick
 import com.hannesdorfmann.mosby.mvp.MvpFragment
-import com.hannesdorfmann.mosby.mvp.MvpView
 import com.rengwuxian.materialedittext.MaterialAutoCompleteTextView
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
-import org.prevoz.android.PrevozFragment
 import org.prevoz.android.R
-import org.prevoz.android.events.Events
 import org.prevoz.android.model.City
 import org.prevoz.android.model.CityNameTextValidator
 import org.prevoz.android.model.PrevozDatabase
-import org.prevoz.android.model.Route
 import org.prevoz.android.util.LocaleUtil
 import org.prevoz.android.util.PrevozActivity
 import org.prevoz.android.util.StringUtil
 import org.prevoz.android.util.ViewUtils
 import org.threeten.bp.LocalDate
-import org.threeten.bp.LocalDateTime
+import javax.inject.Inject
 
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
-import de.greenrobot.event.EventBus
-import icepick.Icepick
-import icepick.State
-import rx.schedulers.Schedulers
+class SearchFragment : MvpFragment<SearchFragment, SearchFormPresenter>(), DatePickerDialog.OnDateSetListener {
 
-class SearchFragment : MvpFragment<MvpView, SearchFormPresenter>(), DatePickerDialog.OnDateSetListener {
-
+    @Inject lateinit var database: PrevozDatabase
 
     @BindView(R.id.search_date_edit)
-    var searchDate: EditText? = null
+    lateinit var searchDate: EditText
     @BindView(R.id.search_from)
-    var searchFrom: MaterialAutoCompleteTextView? = null
+    lateinit var searchFrom: MaterialAutoCompleteTextView
+
     @BindView(R.id.search_to)
-    var searchTo: MaterialAutoCompleteTextView? = null
+    lateinit var searchTo: MaterialAutoCompleteTextView
     @BindView(R.id.search_button)
-    var searchButton: View? = null
+    lateinit var searchButton: View
 
     @BindView(R.id.search_button_text)
-    var searchButtonText: TextView? = null
+    lateinit var searchButtonText: TextView
     @BindView(R.id.search_button_img)
-    var searchButtonImage: ImageView? = null
+    lateinit var searchButtonImage: ImageView
     @BindView(R.id.search_button_progress)
-    var searchButtonProgress: ProgressBar? = null
+    lateinit var searchButtonProgress: ProgressBar
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (activity as PrevozActivity).applicationComponent.inject(this)
+    }
 
     override fun createPresenter(): SearchFormPresenter {
         return SearchFormPresenter((activity as PrevozActivity).applicationComponent)
@@ -65,35 +59,35 @@ class SearchFragment : MvpFragment<MvpView, SearchFormPresenter>(), DatePickerDi
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val views = inflater!!.inflate(R.layout.fragment_search, container, false)
         ButterKnife.bind(this, views)
+        setupViews()
         return views
     }
 
-    protected fun setupViews(database: PrevozDatabase) {
+    fun setupViews() {
         // Handle input action for next on to
-        searchTo!!.setOnEditorActionListener { v, actionId, event ->
+        searchTo.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_NEXT) {
                 onDateClicked()
-                searchTo!!.clearFocus()
-                searchButton!!.requestFocus()
-                return@searchTo.setOnEditorActionListener true
+                searchTo.clearFocus()
+                searchButton.requestFocus()
+                true
+            } else {
+                false
             }
-
-            false
         }
 
-        searchFrom!!.validator = CityNameTextValidator(activity, database)
-        searchTo!!.validator = CityNameTextValidator(activity, database)
+        searchFrom.validator = CityNameTextValidator(activity, database)
+        searchTo.validator = CityNameTextValidator(activity, database)
 
         val fromAdapter = CityAutocompleteAdapter(activity, database)
         val toAdapter = CityAutocompleteAdapter(activity, database)
-        searchFrom!!.setAdapter(fromAdapter)
-        searchTo!!.setAdapter(toAdapter)
+        searchFrom.setAdapter(fromAdapter)
+        searchTo.setAdapter(toAdapter)
     }
 
     @OnClick(R.id.search_date)
     fun onDateClicked() {
-        val activity = activity
-        if (activity == null || !isAdded) return
+        presenter.onDateClicked()
     }
 
     // This is duplicated to allow clicking on logo or edittext
@@ -105,17 +99,9 @@ class SearchFragment : MvpFragment<MvpView, SearchFormPresenter>(), DatePickerDi
     @OnClick(R.id.search_button)
     fun onSearchClicked() {
         ViewUtils.hideKeyboard(activity)
-        presenter.from = StringUtil.splitStringToCity(searchFrom!!.text.toString())
-        presenter.to = StringUtil.splitStringToCity(searchTo!!.text.toString())
+        presenter.from = StringUtil.splitStringToCity(searchFrom.text.toString())
+        presenter.to = StringUtil.splitStringToCity(searchTo.text.toString())
         presenter.search()
-    }
-
-    private fun updateSearchButtonProgress(progressShown: Boolean) {
-        if (!isAdded) return
-        searchButton!!.isEnabled = !progressShown
-        searchButtonImage!!.visibility = if (progressShown) View.INVISIBLE else View.VISIBLE
-        searchButtonProgress!!.visibility = if (progressShown) View.VISIBLE else View.INVISIBLE
-        searchButtonText!!.text = if (progressShown) getString(R.string.search_form_button_searching) else getString(R.string.search_form_button_search)
     }
 
     /*
@@ -150,22 +136,22 @@ class SearchFragment : MvpFragment<MvpView, SearchFormPresenter>(), DatePickerDi
     }*/
 
     fun showDate(selectedDate: LocalDate) {
-        searchDate!!.setText(LocaleUtil.localizeDate(resources, selectedDate.atStartOfDay(LocaleUtil.getLocalTimezone())))
+        searchDate.setText(LocaleUtil.localizeDate(resources, selectedDate.atStartOfDay(LocaleUtil.getLocalTimezone())))
     }
 
     fun showFrom(from: City?) {
         if (from == null) {
-            searchFrom!!.setText("")
+            searchFrom.setText("")
         } else {
-            searchFrom!!.setText(from.toString())
+            searchFrom.setText(from.toString())
         }
     }
 
     fun showTo(to: City?) {
         if (to == null) {
-            searchTo!!.setText("")
+            searchTo.setText("")
         } else {
-            searchTo!!.setText(to.toString())
+            searchTo.setText(to.toString())
         }
     }
 
@@ -173,9 +159,9 @@ class SearchFragment : MvpFragment<MvpView, SearchFormPresenter>(), DatePickerDi
         val activity = activity ?: return
         ViewUtils.hideKeyboard(activity)
         val dialog = DatePickerDialog.newInstance(this,
-                selectedDate.year,
-                selectedDate.monthValue - 1,
-                selectedDate.dayOfMonth)
+                                                  selectedDate.year,
+                                                  selectedDate.monthValue - 1,
+                                                  selectedDate.dayOfMonth)
         dialog.show(activity.fragmentManager, "SearchDate")
     }
 
@@ -185,9 +171,16 @@ class SearchFragment : MvpFragment<MvpView, SearchFormPresenter>(), DatePickerDi
     }
 
     fun showLoadingThrobber() {
-        searchButton!!.isEnabled = false
-        searchButtonImage!!.visibility = View.INVISIBLE
-        searchButtonProgress!!.visibility = View.VISIBLE
-        searchButtonText!!.text = getString(R.string.search_form_button_searching)
+        searchButton.isEnabled = false
+        searchButtonImage.visibility = View.INVISIBLE
+        searchButtonProgress.visibility = View.VISIBLE
+        searchButtonText.text = getString(R.string.search_form_button_searching)
+    }
+
+    fun hideLoadingThrobber() {
+        searchButton.isEnabled = true
+        searchButtonImage.visibility = View.VISIBLE
+        searchButtonProgress.visibility = View.INVISIBLE
+        searchButtonText.text = getString(R.string.search_form_button_search)
     }
 }
