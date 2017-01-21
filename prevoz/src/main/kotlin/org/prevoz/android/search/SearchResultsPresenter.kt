@@ -12,7 +12,9 @@ import org.prevoz.android.events.Events
 import org.prevoz.android.model.City
 import org.prevoz.android.model.PrevozDatabase
 import org.prevoz.android.model.Route
+import org.prevoz.android.push.PushManager
 import org.prevoz.android.util.LocaleUtil
+import org.prevoz.android.util.ViewUtils
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
 import retrofit.RetrofitError
@@ -28,6 +30,7 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
 
     @Inject lateinit var database : PrevozDatabase
     @Inject lateinit var authUtils : AuthenticationUtils
+    @Inject lateinit var pushManager : PushManager
 
     var view : SearchResultsFragment? = null
 
@@ -49,6 +52,7 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
 
     fun search(route: Route, date: LocalDate, highlightRideIds: IntArray) {
         view?.hideList()
+        view?.hideNotificationButton()
         this.route = route
         this.highlightRideIds = highlightRideIds
         this.date = date
@@ -80,15 +84,18 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
             search(route!!, date!!, highlightRideIds)
         } else {
             view?.showSearchError()
+            view?.hideNotificationButton()
         }
     }
 
     fun showResults(results: List<RestRide>, route: Route, highlightRideIds: IntArray) {
         this.results = results
         view?.showResults(results, route, highlightRideIds)
+        showNotificationButtonIfAvailable()
     }
 
     fun showHistory() {
+        view?.hideNotificationButton()
         database.getLastSearches(5)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ history -> view?.showHistory(history, results != null) },
@@ -105,5 +112,42 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
 
     fun onEventMainThread(e: Events.ClearSearchEvent) {
         showHistory()
+    }
+
+    fun onEventMainThread(e: Events.NotificationSubscriptionStatusChanged) {
+        view?.updateNotificationButtonText(e.subscribed)
+        view?.setNotificationButtonThrobber(false)
+    }
+
+    /**
+     * Displays the push notification button if the services are available.
+     */
+    fun showNotificationButtonIfAvailable() {
+        if (!pushManager.isPushAvailable) return
+        val route = route
+        val date = date
+
+        if (route == null || date == null) return
+        if (route.from == null || route.to == null) return
+
+        view?.showNotificationButton()
+        pushManager.isSubscribed(route, date)
+                   .subscribe { subscribed -> view?.updateNotificationButtonText(subscribed) }
+    }
+
+    fun switchNotificationState() {
+        val route = route
+        val date = date
+        if (route == null || date == null) return
+        view?.setNotificationButtonThrobber(true)
+        pushManager.isSubscribed(route, date)
+                .flatMap { subscribed -> pushManager.setSubscriptionStatus(route, date, !subscribed) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe( {
+                                view?.setNotificationButtonThrobber(false)
+                            },
+                            { throwable ->
+                                ViewUtils.showMessage(view?.activity, "Obveščanja ni bilo mogoče vklopiti.", true)
+                                view?.setNotificationButtonThrobber(false) })
     }
 }

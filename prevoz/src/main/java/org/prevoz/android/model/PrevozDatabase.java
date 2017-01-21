@@ -357,12 +357,12 @@ public class PrevozDatabase {
                         .subscribeOn(Schedulers.io());
     }
 
-    public Observable<Boolean> addNotificationSubscription(@NonNull City from, @NonNull City to, @NonNull LocalDate date) {
+    public Observable<Boolean> addNotificationSubscription(@NonNull Route route, @NonNull LocalDate date) {
         long epoch = localDateToEpoch(date);
-        Notification notification = new Notification(from.getDisplayName(),
-                                                     from.getCountryCode(),
-                                                     to.getDisplayName(),
-                                                     to.getCountryCode(),
+        Notification notification = new Notification(route.getFrom().getDisplayName(),
+                                                     route.getFrom().getCountryCode(),
+                                                     route.getTo().getDisplayName(),
+                                                     route.getTo().getCountryCode(),
                                                      epoch);
         return databasePrepared.flatMap(storIOSQLite -> storIOSQLite.put()
                                                         .object(notification)
@@ -373,7 +373,7 @@ public class PrevozDatabase {
                                 .map(v -> true);
     }
 
-    public Observable<Boolean> deleteNotificationSubscription(@NonNull City from, @NonNull City to, @NonNull LocalDate date) {
+    public Observable<Boolean> deleteNotificationSubscription(@NonNull Route route, @NonNull LocalDate date) {
         long epoch = localDateToEpoch(date);
         return databasePrepared.flatMap(storIOSQLite -> storIOSQLite.delete()
                                         .byQuery(DeleteQuery.builder()
@@ -381,8 +381,8 @@ public class PrevozDatabase {
                                                     .where(Notification.FROM_CITY + " = ? AND " + Notification.FROM_COUNTRY + " = ? AND " +
                                                            Notification.TO_CITY + " = ? AND " + Notification.TO_COUNTRY + " = ? AND " +
                                                            Notification.DATE + " = ?")
-                                                    .whereArgs(from.getDisplayName(), from.getCountryCode(),
-                                                               to.getDisplayName(), to.getCountryCode(), epoch)
+                                                    .whereArgs(route.getFrom().getDisplayName(), route.getFrom().getCountryCode(),
+                                                               route.getTo().getDisplayName(), route.getTo().getCountryCode(), epoch)
                                                     .build())
                                         .prepare()
                                         .createObservable()

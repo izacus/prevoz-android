@@ -63,7 +63,14 @@ public class Events
         }
     }
 
-    public static class NotificationSubscriptionStatusChanged {}
+    public static class NotificationSubscriptionStatusChanged {
+        public final boolean subscribed;
+
+        public NotificationSubscriptionStatusChanged(boolean subscribed) {
+            this.subscribed = subscribed;
+        }
+
+    }
 
     public static class MyRideStatusUpdated
     {

@@ -12,6 +12,7 @@ import org.prevoz.android.PrevozFragment;
 import org.prevoz.android.R;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.NotificationSubscription;
+import org.prevoz.android.model.Route;
 import org.prevoz.android.ui.DividerItemDecoration;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.ViewUtils;
@@ -69,7 +70,7 @@ public class PushFragment extends PrevozFragment
                         .setPositiveButton("Odjavi", (dialog, which) -> {
                             if (clickedSubscription != null)
                             {
-                                pushManager.setSubscriptionStatus(getActivity(), clickedSubscription.getFrom(), clickedSubscription.getTo(), clickedSubscription.getDate(), false);
+                                pushManager.setSubscriptionStatus(new Route(clickedSubscription.getFrom(), clickedSubscription.getTo()), clickedSubscription.getDate(), false);
                             }
                         }).show();
     }

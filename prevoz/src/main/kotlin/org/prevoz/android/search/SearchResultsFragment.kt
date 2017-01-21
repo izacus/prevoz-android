@@ -62,12 +62,11 @@ class SearchResultsFragment(component: ApplicationComponent) : MvpFragment<Searc
     @BindView(R.id.search_results_list)
     lateinit var resultList: StickyListHeadersListView
 
-    /*
-    protected var searchNotifyButtonContainer: View
-    protected var searchNotifyButton: View
-    protected var searchNotifyButtonIcon: ImageView
-    protected var searchNotifyButtonProgress: ProgressBar
-    protected var searchNofityButtonText: TextView*/
+    lateinit var searchNotifyButtonContainer: View
+    lateinit var searchNotifyButton: View
+    lateinit var searchNotifyButtonIcon: ImageView
+    lateinit var searchNotifyButtonProgress: ProgressBar
+    lateinit var searchNofityButtonText: TextView
 
     lateinit var headerFragmentView: View
     lateinit var adapter: StickyListHeadersAdapter
@@ -81,13 +80,13 @@ class SearchResultsFragment(component: ApplicationComponent) : MvpFragment<Searc
         super.onCreate(savedInstanceState)
         retainInstance = true
         headerFragmentView = getLayoutInflater(savedInstanceState).inflate(R.layout.header_search_form, null, false)
-        /*
-        searchNotifyButtonContainer = headerFragmentView!!.findViewById(R.id.search_notify_button_container)
-        searchNofityButtonText = headerFragmentView!!.findViewById(R.id.search_notify_button_text) as TextView
-        searchNotifyButtonIcon = headerFragmentView!!.findViewById(R.id.search_notify_button_icon) as ImageView
-        searchNotifyButtonProgress = headerFragmentView!!.findViewById(R.id.search_notify_button_progress) as ProgressBar
-        searchNotifyButton = headerFragmentView!!.findViewById(R.id.search_notify_button)
-        searchNotifyButtonContainer.setOnClickListener { v -> clickNotificationButton() } */
+
+        searchNotifyButtonContainer = headerFragmentView.findViewById(R.id.search_notify_button_container)
+        searchNofityButtonText = headerFragmentView.findViewById(R.id.search_notify_button_text) as TextView
+        searchNotifyButtonIcon = headerFragmentView.findViewById(R.id.search_notify_button_icon) as ImageView
+        searchNotifyButtonProgress = headerFragmentView.findViewById(R.id.search_notify_button_progress) as ProgressBar
+        searchNotifyButton = headerFragmentView.findViewById(R.id.search_notify_button)
+        searchNotifyButtonContainer.setOnClickListener { v -> presenter.switchNotificationState() }
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -127,8 +126,6 @@ class SearchResultsFragment(component: ApplicationComponent) : MvpFragment<Searc
             resultList.adapter = adapter
         }
 
-        //showNotificationsButton()
-
         if (results.isEmpty()) {
             ViewUtils.showMessage(activity, R.string.search_no_results, true)
         } else {
@@ -146,6 +143,35 @@ class SearchResultsFragment(component: ApplicationComponent) : MvpFragment<Searc
         val activity = activity ?: return
         ViewUtils.showMessage(activity, "Napaka med iskanjem, a internet deluje?", true)
     }
+
+    fun showNotificationButton() {
+        searchNotifyButtonContainer.clearAnimation()
+        searchNotifyButtonContainer.visibility = View.VISIBLE
+        searchNotifyButtonContainer.animate().alpha(1.0f).setDuration(200).setListener(null)
+    }
+
+    fun setNotificationButtonThrobber(visible: Boolean) {
+        searchNotifyButton.isEnabled = !visible
+        searchNotifyButtonIcon.visibility = if (visible) View.INVISIBLE else View.VISIBLE
+        searchNotifyButtonProgress.visibility = if (visible) View.VISIBLE else View.INVISIBLE
+    }
+
+    fun updateNotificationButtonText(subscribed: Boolean) {
+        if (subscribed) {
+            searchNotifyButtonIcon.setImageResource(R.drawable.ic_action_cancel)
+            searchNofityButtonText.text = "Prenehaj z obveščanjem"
+        } else {
+            searchNotifyButtonIcon.setImageResource(R.drawable.ic_action_bell)
+            searchNofityButtonText.text = "Obveščaj me o novih prevozih"
+        }
+    }
+
+    fun hideNotificationButton() {
+        if (searchNotifyButtonContainer.visibility == View.GONE) return
+        searchNotifyButtonContainer.clearAnimation()
+        ViewCompat.animate(searchNotifyButtonContainer).alpha(0.0f).setDuration(200).withEndAction { searchNotifyButtonContainer.visibility = View.GONE }
+    }
+
 
     /*
     private fun showNotificationsButton() {
@@ -213,7 +239,7 @@ class SearchResultsFragment(component: ApplicationComponent) : MvpFragment<Searc
         }
     }
     */
-    
+
     fun showingResults(): Boolean {
         return adapter is SearchResultsAdapter
     }
