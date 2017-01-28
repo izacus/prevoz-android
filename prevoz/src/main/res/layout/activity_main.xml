@@ -1,4 +1,4 @@
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -6,111 +6,37 @@
     android:orientation="vertical"
     >
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/main_toolbar"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/prevoztheme_color"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:elevation="4dp"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/main_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/prevoztheme_color"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:layout_scrollFlags="enterAlways|scroll"
+            android:elevation="4dp"
+            />
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/main_tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="4dp"
+            app:tabTextColor="@android:color/white"
+            app:tabSelectedTextColor="@android:color/white"
+            />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/main_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         />
 
-    <android.support.v4.widget.DrawerLayout
-        android:id="@+id/main_drawer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <FrameLayout
-            android:id="@+id/main_search_container"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="0dp" />
-
-        <LinearLayout android:id="@+id/main_left_drawer"
-            android:layout_width="240dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:background="#FFF"
-            android:orientation="vertical"
-            >
-
-            <LinearLayout
-                android:id="@+id/main_left_user_box"
-                android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                android:paddingLeft="4dp"
-                android:background="@color/prevoztheme_color_soft"
-                android:orientation="horizontal"
-            >
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/icon"
-                    android:contentDescription="@null"
-                    android:layout_margin="3dp"
-                    />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    >
-
-                    <TextView
-                        android:id="@+id/main_left_drawer_username"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:gravity="left|center_vertical"
-                        android:layout_marginLeft="4dp"
-                        android:text="@string/app_name"
-                        android:textSize="17sp"
-                        android:textStyle="bold"
-                        android:singleLine="true"
-                        android:ellipsize="end"
-                        />
-
-                    <TextView
-                        android:id="@+id/main_left_drawer_logout"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:gravity="left|center_vertical"
-                        android:layout_marginLeft="4dp"
-                        android:text="@string/main_logout"
-                        android:textSize="12sp"
-                        android:singleLine="true"
-                        android:ellipsize="end"
-                        android:visibility="gone"
-                        android:textColor="#444444"
-                        />
-
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="8dp"
-                android:background="@color/prevoztheme_color" />
-
-            <ListView
-                android:id="@+id/main_left_drawer_list"
-                android:layout_width="240dp"
-                android:layout_height="wrap_content"
-                android:choiceMode="singleChoice"
-                android:divider="?android:attr/listDivider"
-                android:listSelector="?selectableItemBackground"
-                android:dividerHeight="0dp"
-                />
-
-        </LinearLayout>
-
-    </android.support.v4.widget.DrawerLayout>
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
