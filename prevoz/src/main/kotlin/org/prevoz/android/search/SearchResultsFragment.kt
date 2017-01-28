@@ -100,7 +100,7 @@ class SearchResultsFragment(component: ApplicationComponent) : MvpFragment<Searc
         }
 
         if (results.isEmpty()) {
-            ViewUtils.showMessage(activity, R.string.search_no_results, true)
+            showEmptyMessage()
         } else {
             ListFlyupAnimator(resultList).animate()
         }
@@ -129,9 +129,21 @@ class SearchResultsFragment(component: ApplicationComponent) : MvpFragment<Searc
         ViewUtils.showMessage(activity, "Napaka med iskanjem, a internet deluje?", true)
     }
 
+    fun showEmptyMessage() {
+        searchNotifyButtonContainer.clearAnimation()
+        searchNotifyButtonContainer.visibility = View.VISIBLE
+        searchNotifyButtonContainer.animate().alpha(1.0f).setDuration(200).setListener(null)
+        searchNotifyButtonIcon.visibility = View.GONE
+        searchNotifyButtonProgress.visibility = View.GONE
+        searchNofityButtonText.text = getString(R.string.search_no_results)
+        searchNotifyButtonContainer.isEnabled = false
+    }
+
     fun showNotificationButton() {
         searchNotifyButtonContainer.clearAnimation()
         searchNotifyButtonContainer.visibility = View.VISIBLE
+        searchNotifyButtonIcon.visibility = View.VISIBLE
+        searchNotifyButtonContainer.isEnabled = true
         searchNotifyButtonContainer.animate().alpha(1.0f).setDuration(200).setListener(null)
     }
 

@@ -90,8 +90,12 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
 
     fun showResults(results: List<RestRide>, route: Route, highlightRideIds: IntArray) {
         this.results = results
-        view?.showResults(results, route, highlightRideIds)
-        showNotificationButtonIfAvailable()
+        if (results.isEmpty()) {
+            view?.showEmptyMessage()
+        } else {
+            view?.showResults(results, route, highlightRideIds)
+            showNotificationButtonIfAvailable()
+        }
     }
 
     fun showHistory() {
