@@ -121,7 +121,7 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
 
         holder.driver.setText(ride.author);
         holder.card.setOnClickListener(v1 -> {
-			ActivityOptionsCompat options = ActivityOptionsCompat.makeScaleUpAnimation(holder.card, 0, 0, holder.card.getWidth(), holder.card.getHeight());
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeScaleUpAnimation(holder.card, 0, 0, holder.card.getWidth(), holder.card.getHeight());
             RideInfoActivity.show(context, ride, options.toBundle());
         });
 
@@ -166,7 +166,7 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
 
             if (cityNameCompare == 0) {
                 if (r1.date != null && r2.date != null) {
-                    return (int)(r1.date.toEpochSecond() - r2.date.toEpochSecond());
+                    return (int)(r2.date.toEpochSecond() - r1.date.toEpochSecond());
                 } else if (r1.published != null && r2.published != null) {
                     return r1.compareTo(r2.published);
                 }

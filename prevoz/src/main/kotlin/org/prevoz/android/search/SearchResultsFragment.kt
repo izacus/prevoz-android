@@ -22,7 +22,6 @@ import org.prevoz.android.model.Route
 import org.prevoz.android.ui.ListDisappearAnimation
 import org.prevoz.android.ui.ListFlyupAnimator
 import org.prevoz.android.util.ViewUtils
-import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView
 import javax.inject.Inject
 
@@ -157,74 +156,6 @@ class SearchResultsFragment(component: ApplicationComponent) : MvpFragment<Searc
         searchNotifyButtonContainer.clearAnimation()
         ViewCompat.animate(searchNotifyButtonContainer).alpha(0.0f).setDuration(200).withEndAction { searchNotifyButtonContainer.visibility = View.GONE }
     }
-
-
-    /*
-    private fun showNotificationsButton() {
-        searchNotifyButtonContainer.clearAnimation()
-
-        if (!shouldShowNotificationButton ||
-                searchNotifyButtonContainer.visibility == View.VISIBLE ||
-                !pushManager.isPushAvailable) {
-            return
-        }
-
-        // Show notifications button
-
-        updateNotificationButtonText()
-        searchNotifyButtonContainer.visibility = View.VISIBLE
-        searchNotifyButtonContainer.animate().alpha(1.0f).setDuration(200).setListener(null)
-    }
-
-    private fun updateNotificationButtonText() {
-        pushManager.isSubscribed(lastFrom, lastTo, lastDate)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { subscribed ->
-                    if (subscribed!!) {
-                        searchNotifyButtonIcon.setImageResource(R.drawable.ic_action_cancel)
-                        searchNofityButtonText.text = "Prenehaj z obveščanjem"
-                    } else {
-                        searchNotifyButtonIcon.setImageResource(R.drawable.ic_action_bell)
-                        searchNofityButtonText.text = "Obveščaj me o novih prevozih"
-                    }
-                }
-    }
-
-    private fun hideNotificationsButton() {
-        if (searchNotifyButtonContainer.visibility == View.GONE)
-            return
-
-        searchNotifyButtonContainer.clearAnimation()
-        ViewCompat.animate(searchNotifyButtonContainer).alpha(0.0f).setDuration(200).withEndAction { searchNotifyButtonContainer.visibility = View.GONE }
-    }
-
-    private fun clickNotificationButton() {
-        searchNotifyButton.isEnabled = false
-        searchNotifyButtonIcon.visibility = View.INVISIBLE
-        searchNotifyButtonProgress.visibility = View.VISIBLE
-
-        pushManager.isSubscribed(lastFrom, lastTo, lastDate)
-                .subscribe { subscribed -> pushManager.setSubscriptionStatus(activity, lastFrom, lastTo, lastDate, !subscribed) }
-    }
-
-
-    fun onEventMainThread(e: Events.NotificationSubscriptionStatusChanged) {
-        updateNotificationButtonText()
-        searchNotifyButton.isEnabled = true
-        searchNotifyButtonIcon.visibility = View.VISIBLE
-        searchNotifyButtonProgress.visibility = View.INVISIBLE
-    }
-
-    fun onEventMainThread(e: Events.MyRideStatusUpdated) {
-        if (adapter != null && adapter is SearchResultsAdapter) {
-            val srAdapter = adapter as SearchResultsAdapter?
-            if (e.deleted)
-                srAdapter!!.removeRide(e.ride.id)
-            srAdapter!!.updateRide(e.ride)
-            srAdapter.notifyDataSetChanged()
-        }
-    }
-    */
 
     fun showingResults(): Boolean {
         return resultList.adapter is SearchResultsAdapter
