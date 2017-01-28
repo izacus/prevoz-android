@@ -173,6 +173,7 @@ class MainActivity : PrevozActivity() {
         }
     }
 
+    /*
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val mi = menuInflater
         mi.inflate(R.menu.fragment_myrides, menu)
@@ -189,7 +190,7 @@ class MainActivity : PrevozActivity() {
         }
 
         return true
-    }
+    }*/
 
     /*
     @OnClick(R.id.main_left_user_box)

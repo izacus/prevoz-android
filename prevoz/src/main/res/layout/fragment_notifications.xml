@@ -1,36 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- 8 dp for listview padding and 5dp for card padding -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="4dp"
-        android:text="@string/notifications_subscribed_title"
-        style="@style/Prevoz.Header"
-        />
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/notifications_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingTop="8dp"
             android:scrollbarStyle="outsideOverlay"
-            >
-
-
-        </android.support.v7.widget.RecyclerView>
-
+            />
         <include layout="@layout/empty_view" />
-    </FrameLayout>
 
-</LinearLayout>
+</FrameLayout>
