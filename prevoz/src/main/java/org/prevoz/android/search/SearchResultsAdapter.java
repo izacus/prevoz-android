@@ -250,6 +250,7 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
         if (rideIndex == -1) return;
         results.remove(rideIndex);
         results.add(rideIndex, ride);
+        notifyDataSetChanged();
     }
 
     private static class ResultsViewHolder

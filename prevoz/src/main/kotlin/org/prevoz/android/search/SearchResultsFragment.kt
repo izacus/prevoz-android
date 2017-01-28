@@ -133,6 +133,18 @@ class SearchResultsFragment(component: ApplicationComponent) : MvpFragment<Searc
         }
     }
 
+    fun updateDisplayedRide(ride: RestRide) {
+        if (resultList.adapter is SearchResultsAdapter) {
+            (resultList.adapter as SearchResultsAdapter).updateRide(ride)
+        }
+    }
+
+    fun removeDisplayedRide(ride: RestRide) {
+        if (resultList.adapter is SearchResultsAdapter) {
+            (resultList.adapter as SearchResultsAdapter).removeRide(ride.id)
+        }
+    }
+
     fun hideList() {
         if (resultList.adapter != null) {
             ListDisappearAnimation(resultList).animate()

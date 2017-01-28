@@ -106,19 +106,6 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
         EventBus.getDefault().unregister(this)
     }
 
-    fun onEventMainThread(e: Events.NewSearchEvent) {
-        search(e.route, e.date, e.rideIds)
-    }
-
-    fun onEventMainThread(e: Events.ClearSearchEvent) {
-        showHistory()
-    }
-
-    fun onEventMainThread(e: Events.NotificationSubscriptionStatusChanged) {
-        view?.updateNotificationButtonText(e.subscribed)
-        view?.setNotificationButtonThrobber(false)
-    }
-
     /**
      * Displays the push notification button if the services are available.
      */
@@ -149,5 +136,26 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
                             { throwable ->
                                 ViewUtils.showMessage(view?.activity, "Obveščanja ni bilo mogoče vklopiti.", true)
                                 view?.setNotificationButtonThrobber(false) })
+    }
+
+    fun onEventMainThread(e: Events.NewSearchEvent) {
+        search(e.route, e.date, e.rideIds)
+    }
+
+    fun onEventMainThread(e: Events.ClearSearchEvent) {
+        showHistory()
+    }
+
+    fun onEventMainThread(e: Events.NotificationSubscriptionStatusChanged) {
+        view?.updateNotificationButtonText(e.subscribed)
+        view?.setNotificationButtonThrobber(false)
+    }
+
+    fun onEventMainThread(e: Events.MyRideStatusUpdated) {
+        if (e.deleted) {
+            view?.removeDisplayedRide(e.ride)
+        } else {
+            view?.updateDisplayedRide(e.ride)
+        }
     }
 }
