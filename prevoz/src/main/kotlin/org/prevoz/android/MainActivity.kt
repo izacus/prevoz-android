@@ -82,11 +82,11 @@ class MainActivity : PrevozActivity() {
     }
 
     fun setupViewPager() {
-        viewPager.adapter = MainPagerAdapter(resources, supportFragmentManager)
+        viewPager.adapter = MainPagerAdapter(applicationComponent, resources, supportFragmentManager)
     }
 
-    class MainPagerAdapter(val resources: Resources, fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
-        val searchFragment : SearchFragment = SearchFragment()
+    class MainPagerAdapter(applicationComponent: ApplicationComponent, val resources: Resources, fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
+        val searchFragment : SearchResultsFragment = SearchResultsFragment(applicationComponent)
         val myRidesFragment : MyRidesFragment = MyRidesFragment()
         val notificationsFragment : PushFragment = PushFragment()
 
