@@ -3,6 +3,7 @@ package org.prevoz.android.util;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.support.annotation.NonNull;
 
 import org.prevoz.android.R;
@@ -145,9 +146,23 @@ public class LocaleUtil
         Locale appLocale = LocaleUtil.getLocale();
         if (config.locale != appLocale)
         {
+            Configuration conf = ctx.getResources().getConfiguration();
+            updateConfiguration(conf, appLocale);
+            ctx.getResources().updateConfiguration(conf, ctx.getResources().getDisplayMetrics());
+
+            Configuration systemConf = Resources.getSystem().getConfiguration();
+            updateConfiguration(systemConf, appLocale);
+            Resources.getSystem().updateConfiguration(conf, ctx.getResources().getDisplayMetrics());
             Locale.setDefault(appLocale);
-            config.locale = appLocale;
-            ctx.getResources().updateConfiguration(config, ctx.getResources().getDisplayMetrics());
+        }
+    }
+
+    private static void updateConfiguration(Configuration conf, Locale locale) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1){
+            conf.setLocale(locale);
+        }else {
+            //noinspection deprecation
+            conf.locale = locale;
         }
     }
 

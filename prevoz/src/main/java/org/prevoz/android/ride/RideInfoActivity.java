@@ -25,6 +25,7 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
@@ -56,6 +57,7 @@ import org.prevoz.android.util.ViewUtils;
 import org.threeten.bp.format.DateTimeFormatter;
 
 import java.util.Date;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -156,6 +158,7 @@ public class RideInfoActivity extends PrevozActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        LocaleUtil.checkSetLocale(this, getResources().getConfiguration());
         super.onCreate(savedInstanceState);
         Icepick.restoreInstanceState(this, savedInstanceState);
         setContentView(R.layout.activity_rideinfo);
@@ -205,18 +208,18 @@ public class RideInfoActivity extends PrevozActivity {
         } else if (ride.published == null) {
             txtDriver.setText(ride.author + "\u00A0");
         } else {
+            String timeAgo = DateUtils.getRelativeTimeSpanString(ride.published.toInstant().toEpochMilli(),
+                    System.currentTimeMillis(),
+                    DateUtils.MINUTE_IN_MILLIS,
+                    DateUtils.FORMAT_ABBREV_MONTH | DateUtils.FORMAT_ABBREV_WEEKDAY).toString().toLowerCase(Locale.getDefault());
+
             if (ride.author == null || ride.author.length() == 0) {
-                Date date = new Date(ride.published.toInstant().toEpochMilli());
-                
-                // TODO: Get rid of it.
-                //txtDriver.setText(FuzzyDateTimeFormatter.getTimeAgo(this, date) + "\u00A0");   // Add non-breaking space at the end to prevent italic letter clipping
+                txtDriver.setText(timeAgo + "\u00A0");   // Add non-breaking space at the end to prevent italic letter clipping
             } else {
-                Date date = new Date(ride.published.toInstant().toEpochMilli());
                 SpannableStringBuilder ssb = new SpannableStringBuilder();
                 ssb.append(ride.author);
                 ssb.append(", ");
-                // TODO: Get rid of it
-                //ssb.append(FuzzyDateTimeFormatter.getTimeAgo(this, date));
+                ssb.append(timeAgo);
                 ssb.setSpan(new StyleSpan(Typeface.BOLD), 0, ride.author.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 ssb.append("\u00A0");
                 txtDriver.setText(ssb);

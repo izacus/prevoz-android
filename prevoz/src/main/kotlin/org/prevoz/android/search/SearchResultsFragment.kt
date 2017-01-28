@@ -1,52 +1,27 @@
 package org.prevoz.android.search
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.res.Configuration
 import android.os.Bundle
-import android.support.v4.app.FragmentTransaction
 import android.support.v4.view.ViewCompat
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
-
-import com.crashlytics.android.Crashlytics
-
-import org.prevoz.android.PrevozFragment
-import org.prevoz.android.R
-import org.prevoz.android.api.ApiClient
-import org.prevoz.android.api.rest.RestRide
-import org.prevoz.android.api.rest.RestSearchResults
-import org.prevoz.android.events.Events
-import org.prevoz.android.model.City
-import org.prevoz.android.model.Route
-import org.prevoz.android.ui.ListDisappearAnimation
-import org.prevoz.android.ui.ListFlyupAnimator
-import org.prevoz.android.util.LocaleUtil
-import org.prevoz.android.util.ViewUtils
-import org.threeten.bp.LocalDate
-import org.threeten.bp.format.DateTimeFormatter
-
-import java.util.ArrayList
-
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.hannesdorfmann.mosby.mvp.MvpFragment
-import de.greenrobot.event.EventBus
-import icepick.Icepick
-import icepick.State
 import org.prevoz.android.ApplicationComponent
 import org.prevoz.android.PrevozApplication
+import org.prevoz.android.R
+import org.prevoz.android.api.rest.RestRide
 import org.prevoz.android.model.PrevozDatabase
-import retrofit.RetrofitError
-import rx.Subscriber
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
+import org.prevoz.android.model.Route
+import org.prevoz.android.ui.ListDisappearAnimation
+import org.prevoz.android.ui.ListFlyupAnimator
+import org.prevoz.android.util.ViewUtils
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView
 import javax.inject.Inject
@@ -69,7 +44,6 @@ class SearchResultsFragment(component: ApplicationComponent) : MvpFragment<Searc
     lateinit var searchNofityButtonText: TextView
 
     lateinit var headerFragmentView: View
-    lateinit var adapter: StickyListHeadersAdapter
 
     override fun createPresenter(): SearchResultsPresenter {
         return SearchResultsPresenter((activity.application as PrevozApplication).component())
@@ -105,7 +79,7 @@ class SearchResultsFragment(component: ApplicationComponent) : MvpFragment<Searc
 
     fun showHistory(history: List<Route>, animate: Boolean) {
         val activity = activity ?: return
-        adapter = SearchHistoryAdapter(activity, history)
+        val adapter = SearchHistoryAdapter(activity, history)
         if (animate && resultList.adapter != null) {
             ListDisappearAnimation(resultList).animate()
         }
@@ -253,6 +227,6 @@ class SearchResultsFragment(component: ApplicationComponent) : MvpFragment<Searc
     */
 
     fun showingResults(): Boolean {
-        return adapter is SearchResultsAdapter
+        return resultList.adapter is SearchResultsAdapter
     }
 }
