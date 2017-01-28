@@ -27,6 +27,7 @@ class SearchFormPresenter(component: ApplicationComponent) : MvpPresenter<Search
     var selectedDate : LocalDate = LocalDate.now()
         set(value) {
             view?.showDate(value)
+            field = value
         }
 
     override fun attachView(view: SearchFragment?) {
