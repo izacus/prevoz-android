@@ -70,8 +70,7 @@ import retrofit.client.Response;
 import rx.schedulers.Schedulers;
 import si.virag.fuzzydateformatter.FuzzyDateTimeFormatter;
 
-public class RideInfoActivity extends PrevozActivity
-{
+public class RideInfoActivity extends PrevozActivity {
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
     private static final String ARG_RIDE = "ride";
@@ -81,28 +80,28 @@ public class RideInfoActivity extends PrevozActivity
     public static final String PARAM_ACTION_EDIT = "edit";
     public static final String PARAM_ACTION_SUBMIT = "submit";
 
-	public static void show(Activity parent, RestRide ride) {
-		Intent i = new Intent(parent, RideInfoActivity.class);
-		i.putExtra(ARG_RIDE, (Parcelable)ride);
-		parent.startActivity(i);
-	}
+    public static void show(Activity parent, RestRide ride) {
+        Intent i = new Intent(parent, RideInfoActivity.class);
+        i.putExtra(ARG_RIDE, (Parcelable) ride);
+        parent.startActivity(i);
+    }
 
-	public static void show(Activity parent, RestRide ride, String action, int requestCode) {
-		Intent i = new Intent(parent, RideInfoActivity.class);
-		i.putExtra(ARG_RIDE, (Parcelable)ride);
-		i.putExtra(ARG_ACTION, action);
-		parent.startActivityForResult(i, requestCode);
-	}
+    public static void show(Activity parent, RestRide ride, String action, int requestCode) {
+        Intent i = new Intent(parent, RideInfoActivity.class);
+        i.putExtra(ARG_RIDE, (Parcelable) ride);
+        i.putExtra(ARG_ACTION, action);
+        parent.startActivityForResult(i, requestCode);
+    }
 
 
-	public static void show(Activity parent, RestRide ride, Bundle options) {
-		Intent i = new Intent(parent, RideInfoActivity.class);
-		i.putExtra(ARG_RIDE, (Parcelable)ride);
-		ActivityCompat.startActivity(parent, i, options);
-	}
+    public static void show(Activity parent, RestRide ride, Bundle options) {
+        Intent i = new Intent(parent, RideInfoActivity.class);
+        i.putExtra(ARG_RIDE, (Parcelable) ride);
+        ActivityCompat.startActivity(parent, i, options);
+    }
 
-	@BindView(R.id.rideinfo_container)
-	protected View container;
+    @BindView(R.id.rideinfo_container)
+    protected View container;
 
     @BindView(R.id.rideinfo_favorite)
     protected ImageView imgFavorite;
@@ -148,54 +147,51 @@ public class RideInfoActivity extends PrevozActivity
     @BindView(R.id.rideinfo_button_sms)
     protected Button rightButton;
 
-    @State protected RestRide ride = null;
-    @State protected String action = null;
+    @State
+    protected RestRide ride = null;
+    @State
+    protected String action = null;
 
     GestureDetector detector;
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Icepick.restoreInstanceState(this, savedInstanceState);
-		setContentView(R.layout.activity_rideinfo);
-		ButterKnife.bind(this);
+        setContentView(R.layout.activity_rideinfo);
+        ButterKnife.bind(this);
 
-		ride = getIntent().getParcelableExtra(ARG_RIDE);
-		action = getIntent().getStringExtra(ARG_ACTION);
+        ride = getIntent().getParcelableExtra(ARG_RIDE);
+        action = getIntent().getStringExtra(ARG_ACTION);
 
         if (action == null) {
             action = PARAM_ACTION_SHOW;
         }
 
-        if (PARAM_ACTION_SHOW.equals(action) && ride.isAuthor)
-        {
+        if (PARAM_ACTION_SHOW.equals(action) && ride.isAuthor) {
             action = PARAM_ACTION_EDIT;
         }
 
 
-		imgFavorite.setVisibility(authUtils.isAuthenticated() && !ride.isAuthor ? View.VISIBLE : View.INVISIBLE);
-		updateFavoriteIcon();
+        imgFavorite.setVisibility(authUtils.isAuthenticated() && !ride.isAuthor ? View.VISIBLE : View.INVISIBLE);
+        updateFavoriteIcon();
 
-		txtFrom.setText(LocaleUtil.getLocalizedCityName(database, ride.fromCity, ride.fromCountry));
-		txtTo.setText(LocaleUtil.getLocalizedCityName(database, ride.toCity, ride.toCountry));
+        txtFrom.setText(LocaleUtil.getLocalizedCityName(database, ride.fromCity, ride.fromCountry));
+        txtTo.setText(LocaleUtil.getLocalizedCityName(database, ride.toCity, ride.toCountry));
         txtTime.setText(ride.date.format(timeFormatter));
 
-		if (ride.price == null || ride.price == 0)
-		{
-			txtPrice.setVisibility(View.INVISIBLE);
-		}
-		else
-		{
-			txtPrice.setText(String.format(LocaleUtil.getLocale(), "%1.1f €", ride.price));
-		}
+        if (ride.price == null || ride.price == 0) {
+            txtPrice.setVisibility(View.INVISIBLE);
+        } else {
+            txtPrice.setText(String.format(LocaleUtil.getLocale(), "%1.1f €", ride.price));
+        }
 
-		txtDate.setText(LocaleUtil.localizeDate(getResources(), ride.date));
-		vDetails.setVisibility(View.VISIBLE);
+        txtDate.setText(LocaleUtil.localizeDate(getResources(), ride.date));
+        vDetails.setVisibility(View.VISIBLE);
 
-		txtPhone.setText(getPhoneNumberString(ride.phoneNumber, ride.phoneNumberConfirmed));
-		setPeopleText();
-		txtComment.setText(ride.comment);
+        txtPhone.setText(getPhoneNumberString(ride.phoneNumber, ride.phoneNumberConfirmed));
+        setPeopleText();
+        txtComment.setText(ride.comment);
 
         if (TextUtils.isEmpty(ride.carInfo)) {
             txtCar.setVisibility(View.GONE);
@@ -204,42 +200,42 @@ public class RideInfoActivity extends PrevozActivity
             txtCar.setText(ride.carInfo);
         }
 
-		if ((ride.author == null || ride.author.length() == 0) && ride.published == null) {
-			txtDriver.setVisibility(View.GONE);
-		} else if (ride.published == null) {
-			txtDriver.setText(ride.author + "\u00A0");
-		} else {
-			if (ride.author == null || ride.author.length() == 0) {
+        if ((ride.author == null || ride.author.length() == 0) && ride.published == null) {
+            txtDriver.setVisibility(View.GONE);
+        } else if (ride.published == null) {
+            txtDriver.setText(ride.author + "\u00A0");
+        } else {
+            if (ride.author == null || ride.author.length() == 0) {
                 Date date = new Date(ride.published.toInstant().toEpochMilli());
-				txtDriver.setText(FuzzyDateTimeFormatter.getTimeAgo(this, date) + "\u00A0");   // Add non-breaking space at the end to prevent italic letter clipping
-			} else {
+                
+                // TODO: Get rid of it.
+                //txtDriver.setText(FuzzyDateTimeFormatter.getTimeAgo(this, date) + "\u00A0");   // Add non-breaking space at the end to prevent italic letter clipping
+            } else {
                 Date date = new Date(ride.published.toInstant().toEpochMilli());
                 SpannableStringBuilder ssb = new SpannableStringBuilder();
-				ssb.append(ride.author);
-				ssb.append(", ");
-				ssb.append(FuzzyDateTimeFormatter.getTimeAgo(this, date));
-				ssb.setSpan(new StyleSpan(Typeface.BOLD), 0, ride.author.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-				ssb.append("\u00A0");
-				txtDriver.setText(ssb);
-			}
-		}
+                ssb.append(ride.author);
+                ssb.append(", ");
+                // TODO: Get rid of it
+                //ssb.append(FuzzyDateTimeFormatter.getTimeAgo(this, date));
+                ssb.setSpan(new StyleSpan(Typeface.BOLD), 0, ride.author.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                ssb.append("\u00A0");
+                txtDriver.setText(ssb);
+            }
+        }
 
-		txtInsurance.setText(ride.insured ? "\u2713 Ima zavarovanje." : "\u2717 Nima zavarovanja.");
+        txtInsurance.setText(ride.insured ? "\u2713 Ima zavarovanje." : "\u2717 Nima zavarovanja.");
 
-		// Hide call/SMS buttons on devices without telephony support
-		PackageManager pm = getPackageManager();
-		if (PARAM_ACTION_SHOW.equals(action) && !pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY))
-		{
-			leftButton.setVisibility(View.GONE);
-			rightButton.setVisibility(View.GONE);
-		}
-		else if (PARAM_ACTION_EDIT.equals(action))
-		{
-			vFull.setVisibility(View.VISIBLE);
-			chkFull.setChecked(ride.isFull);
-		}
+        // Hide call/SMS buttons on devices without telephony support
+        PackageManager pm = getPackageManager();
+        if (PARAM_ACTION_SHOW.equals(action) && !pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) {
+            leftButton.setVisibility(View.GONE);
+            rightButton.setVisibility(View.GONE);
+        } else if (PARAM_ACTION_EDIT.equals(action)) {
+            vFull.setVisibility(View.VISIBLE);
+            chkFull.setChecked(ride.isFull);
+        }
 
-		setupActionButtons(action);
+        setupActionButtons(action);
 
         detector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
@@ -250,13 +246,11 @@ public class RideInfoActivity extends PrevozActivity
         });
     }
 
-	private void setPeopleText()
-    {
+    private void setPeopleText() {
         txtPeople.setText(String.valueOf(ride.numPeople) + (ride.isFull ? " (Polno)" : ""));
     }
 
-    private SpannableString getPhoneNumberString(String phoneNumber, boolean confirmed)
-    {
+    private SpannableString getPhoneNumberString(String phoneNumber, boolean confirmed) {
         SpannableString phoneNumberString = new SpannableString(phoneNumber + (confirmed ? "" : "\nNi potrjena"));
         if (confirmed)
             return phoneNumberString;
@@ -273,8 +267,7 @@ public class RideInfoActivity extends PrevozActivity
         return phoneNumberString;
     }
 
-    private void setupActionButtons(String currentAction)
-    {
+    private void setupActionButtons(String currentAction) {
         switch (currentAction) {
             case PARAM_ACTION_SUBMIT:
                 leftButton.setText(R.string.rideinfo_cancel);
@@ -298,18 +291,14 @@ public class RideInfoActivity extends PrevozActivity
     }
 
     @OnClick(R.id.rideinfo_button_call)
-    protected void onCallClicked()
-    {
-        if (PARAM_ACTION_SHOW.equals(action))
-        {
+    protected void onCallClicked() {
+        if (PARAM_ACTION_SHOW.equals(action)) {
             Intent intent = new Intent(Intent.ACTION_DIAL);
             intent.setData(Uri.parse("tel:" + ride.phoneNumber));
             startActivity(intent);
-        }
-        else if (PARAM_ACTION_EDIT.equals(action))
-        {
+        } else if (PARAM_ACTION_EDIT.equals(action)) {
             Intent intent = new Intent(this, NewRideActivity.class);
-            intent.putExtra(NewRideActivity.PARAM_EDIT_RIDE, (Parcelable)ride);
+            intent.putExtra(NewRideActivity.PARAM_EDIT_RIDE, (Parcelable) ride);
             ActivityCompat.startActivity(this, intent, ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_up, 0).toBundle());
         }
 
@@ -317,10 +306,8 @@ public class RideInfoActivity extends PrevozActivity
     }
 
     @OnClick(R.id.rideinfo_button_sms)
-    protected void onSmsClicked()
-    {
-        if (PARAM_ACTION_SHOW.equals(action))
-        {
+    protected void onSmsClicked() {
+        if (PARAM_ACTION_SHOW.equals(action)) {
             Intent intent = new Intent(Intent.ACTION_SENDTO);
             intent.setData(Uri.parse("smsto:" + ride.phoneNumber));
 
@@ -330,41 +317,36 @@ public class RideInfoActivity extends PrevozActivity
                 Toast.makeText(this, "Nimate nameščene nobene aplikacije za pošiljanje SMS sporočil.", Toast.LENGTH_SHORT).show();
             }
 
-        }
-        else if (PARAM_ACTION_EDIT.equals(action))
-        {
+        } else if (PARAM_ACTION_EDIT.equals(action)) {
             new AlertDialog.Builder(this, R.style.Prevoz_Theme_Dialog)
-                            .setTitle(String.format("%s - %s", ride.fromCity, ride.toCity))
-                            .setMessage(getString(R.string.ride_delete_message, LocaleUtil.getDayName(getResources(), ride.date).toLowerCase(LocaleUtil.getLocale()), LocaleUtil.getFormattedTime(ride.date)))
-                            .setNegativeButton(R.string.ride_delete_cancel, null)
-                            .setPositiveButton(R.string.ride_delete_ok, (dialog, which) -> {
-                                final ProgressDialog deleteDialog = new ProgressDialog(this);
-                                deleteDialog.setMessage(getString(R.string.ride_delete_progress));
-                                deleteDialog.show();
+                    .setTitle(String.format("%s - %s", ride.fromCity, ride.toCity))
+                    .setMessage(getString(R.string.ride_delete_message, LocaleUtil.getDayName(getResources(), ride.date).toLowerCase(LocaleUtil.getLocale()), LocaleUtil.getFormattedTime(ride.date)))
+                    .setNegativeButton(R.string.ride_delete_cancel, null)
+                    .setPositiveButton(R.string.ride_delete_ok, (dialog, which) -> {
+                        final ProgressDialog deleteDialog = new ProgressDialog(this);
+                        deleteDialog.setMessage(getString(R.string.ride_delete_progress));
+                        deleteDialog.show();
 
-                                ApiClient.getAdapter().deleteRide(String.valueOf(ride.id), new Callback<Response>() {
-                                    @Override
-                                    public void success(Response response, Response response2) {
-                                        finish();
-                                        EventBus.getDefault().post(new Events.MyRideStatusUpdated(ride, true));
-                                        deleteDialog.dismiss();
-                                        EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.ride_delete_success, false));
-                                    }
+                        ApiClient.getAdapter().deleteRide(String.valueOf(ride.id), new Callback<Response>() {
+                            @Override
+                            public void success(Response response, Response response2) {
+                                finish();
+                                EventBus.getDefault().post(new Events.MyRideStatusUpdated(ride, true));
+                                deleteDialog.dismiss();
+                                EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.ride_delete_success, false));
+                            }
 
-                                    @Override
-                                    public void failure(RetrofitError error) {
-                                        finish();
-                                        deleteDialog.dismiss();
-                                        EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.ride_delete_failure, true));
-                                    }
-                                });
-                            }).show();
-        }
-        else if (PARAM_ACTION_SUBMIT.equals(action)) {
+                            @Override
+                            public void failure(RetrofitError error) {
+                                finish();
+                                deleteDialog.dismiss();
+                                EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.ride_delete_failure, true));
+                            }
+                        });
+                    }).show();
+        } else if (PARAM_ACTION_SUBMIT.equals(action)) {
             submitRide();
-        }
-        else
-        {
+        } else {
             finish();
         }
     }
@@ -407,8 +389,7 @@ public class RideInfoActivity extends PrevozActivity
     }
 
     @OnCheckedChanged(R.id.rideinfo_ridefull)
-    protected void onFullClicked()
-    {
+    protected void onFullClicked() {
         chkFull.setEnabled(false);
         final boolean rideFull = chkFull.isChecked();
 
@@ -450,7 +431,7 @@ public class RideInfoActivity extends PrevozActivity
                         EventBus.getDefault().postSticky(new Events.ShowMessage(status.error.get(firstKey).get(0), true));
                     }
                 } else {
-                    EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.newride_publish_success ,false));
+                    EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.newride_publish_success, false));
                     EventBus.getDefault().postSticky(new Events.ShowFragment(UiFragment.FRAGMENT_MY_RIDES, false));
                     setResult(Activity.RESULT_OK);
                 }
@@ -481,8 +462,7 @@ public class RideInfoActivity extends PrevozActivity
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState)
-    {
+    public void onSaveInstanceState(Bundle outState) {
         Icepick.saveInstanceState(this, outState);
     }
 }
