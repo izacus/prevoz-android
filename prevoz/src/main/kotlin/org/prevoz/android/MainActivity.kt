@@ -173,6 +173,29 @@ class MainActivity : PrevozActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        val logoutItem = menu?.findItem(R.id.menu_logout)
+        logoutItem?.isEnabled = authUtils.isAuthenticated
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId) {
+            R.id.menu_logout -> {
+                AlertDialog.Builder(this, R.style.Prevoz_Theme_Dialog)
+                        .setTitle("Odjava")
+                        .setMessage("Se res želite odjaviti?")
+                        .setPositiveButton("Odjavi", { dialog, which ->  authUtils.logout().subscribeOn(Schedulers.io()).subscribe()})
+                        .setNegativeButton("Prekliči", null)
+                        .show()
+                return true
+            }
+        }
+
+        return false
+    }
+
     /*
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val mi = menuInflater
@@ -191,21 +214,6 @@ class MainActivity : PrevozActivity() {
 
         return true
     }*/
-
-    /*
-    @OnClick(R.id.main_left_user_box)
-    protected void logoutClick()
-    {
-        if (authUtils.getUsername() == null)
-            return;
-
-        new AlertDialog.Builder(this, R.style.Prevoz_Theme_Dialog)
-                       .setTitle("Odjava")
-                       .setMessage("Se res želite odjaviti?")
-                       .setPositiveButton("Odjavi", (dialog, which) -> authUtils.logout().subscribeOn(Schedulers.io()).subscribe())
-                       .setNegativeButton("Prekliči", null)
-                       .show();
-    } */
 
     protected fun triggerSearchFromIntent(intent: Intent) {
         //showFragment(UiFragment.FRAGMENT_SEARCH, false);
@@ -260,18 +268,17 @@ class MainActivity : PrevozActivity() {
         }
     }
 
-
-    public void onEventMainThread(Events.LoginStateChanged e)
-    {
-        checkAuthenticated();
-        EventBus.getDefault().removeStickyEvent(Events.LoginStateChanged.class);
-    }
-
     public void onEventMainThread(Events.ShowFragment e)
     {
         showFragment(e.fragment, e.backstack, e.params);
         EventBus.getDefault().removeStickyEvent(e);
     } */
+
+    fun onEventMainThread(e: Events.LoginStateChanged)
+    {
+        invalidateOptionsMenu()
+        EventBus.getDefault().removeStickyEvent(Events.LoginStateChanged::class.java)
+    }
 
     fun onEventMainThread(e: Events.ShowMessage) {
         ViewUtils.showMessage(this, e.getMessage(this), e.isError)
@@ -281,10 +288,6 @@ class MainActivity : PrevozActivity() {
     companion object {
         @JvmField val REQUEST_CODE_AUTHORIZE_MYRIDES = 100
         @JvmField val REQUEST_CODE_AUTHORIZE_NEWRIDE = 101
-
-        private val SEARCH_FRAGMENT_TAG = "SearchResultsFragment"
-        private val PUSH_NOTIFICATIONS_FRAGMENT_TAG = "PushNotificationsFragment"
-        private val MY_RIDES_FRAGMENT_TAG = "MyRidesFragment"
 
         private val PREF_SHOWN_LOGIN_PROMPT = "Prevoz.LoginPromptShown"
     }
