@@ -70,7 +70,6 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import rx.schedulers.Schedulers;
-import si.virag.fuzzydateformatter.FuzzyDateTimeFormatter;
 
 public class RideInfoActivity extends PrevozActivity {
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
