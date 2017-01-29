@@ -22,6 +22,7 @@ import org.threeten.bp.format.DateTimeParseException;
 
 import java.io.IOException;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
@@ -149,7 +150,7 @@ public class ApiClient
         @Override
         public void intercept(RequestFacade requestFacade)
         {
-            requestFacade.addHeader("User-Agent", String.format("Prevoz/%d Android/%d", PrevozApplication.VERSION, Build.VERSION.SDK_INT));
+            requestFacade.addHeader("User-Agent", String.format(Locale.US, "Prevoz/%d Android/%d", PrevozApplication.VERSION, Build.VERSION.SDK_INT));
 
             if (bearer != null) {
                 requestFacade.addHeader("Authorization", String.format("Bearer %s", bearer));

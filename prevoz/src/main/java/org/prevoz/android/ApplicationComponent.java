@@ -29,7 +29,6 @@ import dagger.Component;
 public interface ApplicationComponent {
     void inject(@NonNull PrevozApplication prevozApplication);
     void inject(@NonNull PrevozActivity activity);
-    void inject(@NonNull PrevozFragment fragment);
     void inject(@NonNull RideInfoActivity fragment);
     void inject(@NonNull CityNameTextValidator validator);
     void inject(@NonNull SearchFormPresenter searchFormPresenter);
