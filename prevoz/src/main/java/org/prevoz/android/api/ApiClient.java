@@ -31,7 +31,7 @@ import retrofit.converter.GsonConverter;
 
 public class ApiClient
 {
-    public static final String BASE_URL = "https://prevoz.org";
+    public static final String BASE_URL = "http://prevoz.org";
 
     @NonNull private static final RestAdapter adapter;
     @Nullable private static String bearer = null;
@@ -45,12 +45,14 @@ public class ApiClient
                 .registerTypeAdapter(Bookmark.class, new BookmarkAdapter())
                 .create();
 
+
+        OkHttpClient client = new OkHttpClient();
         adapter = new RestAdapter.Builder()
                                  .setEndpoint(BASE_URL)
                                  .setConverter(new GsonConverter(gson))
                                  .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
                                  .setRequestInterceptor(new CookieSetterInterceptor())
-                                 .setClient(new OkClient(new OkHttpClient()))
+                                 .setClient(new OkClient(client))
                                  .build();
     }
 
@@ -155,7 +157,6 @@ public class ApiClient
             if (bearer != null) {
                 requestFacade.addHeader("Authorization", String.format("Bearer %s", bearer));
                 requestFacade.addHeader("WWW-Authenticate", "Bearer realm=\"api\"");
-                // Server caches requests too enthusiasticly so append this to parameter list
             }
         }
     }
