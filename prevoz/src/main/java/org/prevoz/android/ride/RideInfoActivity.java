@@ -432,7 +432,7 @@ public class RideInfoActivity extends PrevozActivity {
                     }
                 } else {
                     EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.newride_publish_success, false));
-                    EventBus.getDefault().postSticky(new Events.ShowFragment(UiFragment.FRAGMENT_MY_RIDES, false));
+                    EventBus.getDefault().post(new Events.MyRideStatusUpdated(ride, false));
                     setResult(Activity.RESULT_OK);
                 }
 
