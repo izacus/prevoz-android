@@ -399,6 +399,7 @@ public class RideInfoActivity extends PrevozActivity {
                 ride.isFull = rideFull;
                 chkFull.setEnabled(true);
                 setPeopleText();
+                EventBus.getDefault().post(new Events.MyRideStatusUpdated(ride, false));
             }
 
             @Override

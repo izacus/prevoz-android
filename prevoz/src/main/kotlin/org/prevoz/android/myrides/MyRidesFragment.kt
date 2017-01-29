@@ -123,4 +123,8 @@ class MyRidesFragment : MvpFragment<MyRidesFragment, MyRidesPresenter>() {
         addButton.visibility = View.VISIBLE
         emptyText.text = "Pri nalaganju vaših prevozov je prišlo do napake."
     }
+
+    fun updateRideInList(ride: RestRide) {
+        adapter.updateRide(ride)
+    }
 }

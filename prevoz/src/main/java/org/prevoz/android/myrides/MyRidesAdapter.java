@@ -1,6 +1,7 @@
 package org.prevoz.android.myrides;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
+import org.jetbrains.annotations.Nullable;
 import org.prevoz.android.R;
 import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.model.City;
@@ -120,6 +122,18 @@ public class MyRidesAdapter extends RecyclerView.Adapter<MyRidesAdapter.ResultsV
         if (myrides.size() > 0) {
             myrides.clear();
             notifyDataSetChanged();
+        }
+    }
+
+    public void updateRide(@NonNull RestRide ride) {
+        if (myrides == null || myrides.size() == 0) return;
+        for (int i = 0; i < myrides.size(); i++) {
+            if (myrides.get(i).id == null) continue;
+            if (myrides.get(i).id.equals(ride.id)) {
+                myrides.set(i, ride);
+                notifyItemChanged(i);
+                return;
+            }
         }
     }
 
