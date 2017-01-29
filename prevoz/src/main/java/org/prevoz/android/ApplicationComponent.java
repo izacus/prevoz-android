@@ -7,6 +7,8 @@ import org.jetbrains.annotations.NotNull;
 import org.prevoz.android.auth.AuthenticationModule;
 import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.model.CityNameTextValidator;
+import org.prevoz.android.myrides.MyRidesFragment;
+import org.prevoz.android.myrides.MyRidesPresenter;
 import org.prevoz.android.push.PushManager;
 import org.prevoz.android.push.PushModule;
 import org.prevoz.android.push.PushReceiver;
@@ -33,6 +35,7 @@ public interface ApplicationComponent {
     void inject(@NonNull SearchFragment searchFragment);
     void inject(@NonNull SearchResultsPresenter searchResultsPresenter);
     void inject(@NotNull SearchResultsFragment searchResultsFragment);
+    void inject(@NonNull MyRidesPresenter myRidesFragment);
 
     Context context();
 

@@ -130,7 +130,6 @@ class SearchResultsFragment(component: ApplicationComponent) : MvpFragment<Searc
     }
 
     fun showEmptyMessage() {
-        searchNotifyButtonContainer.clearAnimation()
         searchNotifyButtonContainer.visibility = View.VISIBLE
         searchNotifyButtonContainer.animate().alpha(1.0f).setDuration(200).setListener(null)
         searchNotifyButtonIcon.visibility = View.GONE

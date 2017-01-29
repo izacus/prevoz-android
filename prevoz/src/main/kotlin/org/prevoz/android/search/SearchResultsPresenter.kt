@@ -108,6 +108,7 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
 
     override fun detachView(retainInstance: Boolean) {
         EventBus.getDefault().unregister(this)
+        view = null
     }
 
     /**
