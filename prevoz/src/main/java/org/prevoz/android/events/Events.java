@@ -8,7 +8,6 @@ import android.support.annotation.StringRes;
 
 import org.prevoz.android.UiFragment;
 import org.prevoz.android.api.rest.RestRide;
-import org.prevoz.android.model.City;
 import org.prevoz.android.model.Route;
 import org.threeten.bp.LocalDate;
 
@@ -65,8 +64,12 @@ public class Events
 
     public static class NotificationSubscriptionStatusChanged {
         public final boolean subscribed;
+        public final Route route;
+        public final LocalDate date;
 
-        public NotificationSubscriptionStatusChanged(boolean subscribed) {
+        public NotificationSubscriptionStatusChanged(@NonNull Route route, @NonNull LocalDate date, boolean subscribed) {
+            this.route = route;
+            this.date = date;
             this.subscribed = subscribed;
         }
 

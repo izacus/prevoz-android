@@ -39,7 +39,8 @@ class PushPresenter(applicationComponent: ApplicationComponent) : MvpPresenter<P
     }
 
     fun unsubscribeFrom(subscription: NotificationSubscription) {
-        pushManager.setSubscriptionStatus(Route(subscription.from, subscription.to), subscription.date, false).subscribe()
+        val route = Route(subscription.from, subscription.to)
+        pushManager.setSubscriptionStatus(route, subscription.date, false).subscribe()
     }
 
     fun onEventMainThread(e: Events.NotificationSubscriptionStatusChanged) {

@@ -152,7 +152,7 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
         Collections.sort(rides, (r1, r2) -> {
             // Check if this is a preferred route
             int cityNameCompare = 0;
-            if (askedForRoute != null) {
+            if (askedForRoute != null && !r1.getRoute().equals(r2.getRoute())) {
                 if (r1.getRoute().equals(askedForRoute)) {
                     cityNameCompare = -1;
                 } else if (r2.getRoute().equals(askedForRoute)) {

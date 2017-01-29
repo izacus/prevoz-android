@@ -31,7 +31,7 @@ import retrofit.converter.GsonConverter;
 
 public class ApiClient
 {
-    public static final String BASE_URL = "http://prevoz.org";
+    public static final String BASE_URL = "https://prevoz.org";
 
     @NonNull private static final RestAdapter adapter;
     @Nullable private static String bearer = null;

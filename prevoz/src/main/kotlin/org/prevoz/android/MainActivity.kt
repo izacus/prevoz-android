@@ -87,6 +87,7 @@ class MainActivity : PrevozActivity() {
     fun setupViewPager() {
         viewPagerAdapter = MainPagerAdapter(applicationComponent, resources, supportFragmentManager, pushManager)
         viewPager.adapter = viewPagerAdapter
+        viewPager.offscreenPageLimit = 3
     }
 
     class MainPagerAdapter(applicationComponent: ApplicationComponent,

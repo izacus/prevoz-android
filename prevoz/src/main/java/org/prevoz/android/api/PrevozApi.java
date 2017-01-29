@@ -52,7 +52,7 @@ public interface PrevozApi
     Observable<RestSearchResults> getMyRides();
 
     @GET("/api/search/bookmarks/")
-    Observable<RestSearchResults> getBookmarkedRides();
+    Observable<RestSearchResults> getBookmarkedRides(@Query("nocache") long time);
 
     @DELETE("/api/carshare/delete/{id}/")
     void deleteRide(@Path("id") String id, Callback<Response> cb);

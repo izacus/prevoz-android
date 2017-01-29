@@ -57,7 +57,7 @@ class MyRidesPresenter(component: ApplicationComponent) : MvpPresenter<MyRidesFr
                     }
                 }
 
-        val bookmarks = ApiClient.getAdapter().bookmarkedRides
+        val bookmarks = ApiClient.getAdapter().getBookmarkedRides(System.currentTimeMillis())
                 .flatMap { results ->
                     if (results == null || results.results == null) {
                         Observable.empty<List<RestRide>>()

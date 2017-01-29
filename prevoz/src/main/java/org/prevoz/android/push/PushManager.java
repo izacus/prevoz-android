@@ -115,7 +115,7 @@ public class PushManager
                     }
                 })
                 .doOnNext(success -> {
-                    if (success) EventBus.getDefault().post(new Events.NotificationSubscriptionStatusChanged(subscribed));
+                    if (success) EventBus.getDefault().post(new Events.NotificationSubscriptionStatusChanged(route, date, subscribed));
                 })
                 .subscribeOn(Schedulers.io())
                 .toSingle();
