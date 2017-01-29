@@ -91,14 +91,16 @@ class MyRidesPresenter(component: ApplicationComponent) : MvpPresenter<MyRidesFr
     }
 
     fun login() {
-        authUtils.requestAuthentication(view?.activity, MainActivity.REQUEST_CODE_AUTHORIZE_MYRIDES)
+        authUtils.requestAuthentication(view?.activity, 0)
     }
 
 
+    @Suppress("UNUSED_PARAMETER")
     fun onEventMainThread(e: Events.MyRideStatusUpdated) {
         loadRides()
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun onEventMainThread(e: Events.LoginStateChanged) {
         checkForAuthentication()
     }

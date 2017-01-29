@@ -65,6 +65,8 @@ class MainActivity : PrevozActivity() {
     @BindView(R.id.main_pager)
     lateinit var viewPager: ViewPager
 
+    lateinit var viewPagerAdapter : MainPagerAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -82,7 +84,8 @@ class MainActivity : PrevozActivity() {
     }
 
     fun setupViewPager() {
-        viewPager.adapter = MainPagerAdapter(applicationComponent, resources, supportFragmentManager)
+        viewPagerAdapter = MainPagerAdapter(applicationComponent, resources, supportFragmentManager)
+        viewPager.adapter = viewPagerAdapter
     }
 
     class MainPagerAdapter(applicationComponent: ApplicationComponent, val resources: Resources, fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
@@ -112,45 +115,6 @@ class MainActivity : PrevozActivity() {
             }
         }
     }
-
-    /*
-    protected void checkAuthenticated()
-    {
-        authUtils.getUsername()
-                 .subscribeOn(Schedulers.io())
-                 .observeOn(AndroidSchedulers.mainThread())
-                 .subscribe(this::setDrawerUsername);
-    }
-
-    protected void setDrawerUsername(String username)
-    {
-        if (username == null)
-        {
-            leftUsername.setText(getString(R.string.app_name));
-            leftLogout.setVisibility(View.GONE);
-
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-            if (prefs.getBoolean(PREF_SHOWN_LOGIN_PROMPT, false)) {
-                Typeface tf = Typeface.create(Typeface.DEFAULT, Typeface.BOLD);
-                Snackbar.with(this)
-                        .text("Niste prijavljeni.")
-                        .textTypeface(tf)
-                        .colorResource(R.color.prevoztheme_color_dark)
-                        .actionLabel("PRIJAVA")
-                        .actionLabelTypeface(tf)
-                        .actionListener(snackbar -> authUtils.requestAuthentication(MainActivity.this, 0))
-                        .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE)
-                        .show(this);
-
-                prefs.edit().putBoolean(PREF_SHOWN_LOGIN_PROMPT, true).apply();
-            }
-        }
-        else
-        {
-            leftUsername.setText(username);
-            leftLogout.setVisibility(View.VISIBLE);
-        }
-    } */
 
     override fun onResume() {
         super.onResume()
@@ -196,25 +160,6 @@ class MainActivity : PrevozActivity() {
         return false
     }
 
-    /*
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val mi = menuInflater
-        mi.inflate(R.menu.fragment_myrides, menu)
-
-        menu.findItem(R.id.menu_myrides_add).setOnMenuItemClickListener { item ->
-            if (!authUtils.isAuthenticated) {
-                authUtils.requestAuthentication(this@MainActivity, REQUEST_CODE_AUTHORIZE_NEWRIDE)
-            } else {
-                val i = Intent(this, NewRideActivity::class.java)
-                ActivityCompat.startActivity(this, i, ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_up, 0).toBundle())
-            }
-
-            true
-        }
-
-        return true
-    }*/
-
     protected fun triggerSearchFromIntent(intent: Intent) {
         //showFragment(UiFragment.FRAGMENT_SEARCH, false);
         val from = intent.getParcelableExtra<City>("from")
@@ -241,38 +186,14 @@ class MainActivity : PrevozActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_AUTHORIZE_MYRIDES || requestCode == REQUEST_CODE_AUTHORIZE_NEWRIDE) {
-            if (resultCode == Activity.RESULT_CANCELED) {
-                //showFragment(UiFragment.FRAGMENT_SEARCH, false);
-            } else if (resultCode == Activity.RESULT_OK) {
-                /*
-                if (requestCode == REQUEST_CODE_AUTHORIZE_MYRIDES)
-                    showFragment(UiFragment.FRAGMENT_MY_RIDES, false);
-                else {
-                    Intent i = new Intent(this, NewRideActivity.class);
-                    startActivity(i);
-                }*/
-            }
-        }
-    }
-
-    /*
     override fun onBackPressed() {
-        val fragment = supportFragmentManager.findFragmentByTag(SEARCH_FRAGMENT_TAG) as SearchResultsFragment
-        if (fragment != null && fragment.showingResults()) {
+        // Back should clear search on first fragment
+        if (viewPager.currentItem == 0 && viewPagerAdapter.searchFragment.showingResults()) {
             EventBus.getDefault().post(Events.ClearSearchEvent())
         } else {
             super.onBackPressed()
         }
     }
-
-    public void onEventMainThread(Events.ShowFragment e)
-    {
-        showFragment(e.fragment, e.backstack, e.params);
-        EventBus.getDefault().removeStickyEvent(e);
-    } */
 
     fun onEventMainThread(e: Events.LoginStateChanged)
     {
@@ -283,12 +204,5 @@ class MainActivity : PrevozActivity() {
     fun onEventMainThread(e: Events.ShowMessage) {
         ViewUtils.showMessage(this, e.getMessage(this), e.isError)
         EventBus.getDefault().removeStickyEvent(e)
-    }
-
-    companion object {
-        @JvmField val REQUEST_CODE_AUTHORIZE_MYRIDES = 100
-        @JvmField val REQUEST_CODE_AUTHORIZE_NEWRIDE = 101
-
-        private val PREF_SHOWN_LOGIN_PROMPT = "Prevoz.LoginPromptShown"
     }
 }
