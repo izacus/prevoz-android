@@ -14,7 +14,7 @@
     <uses-permission android:name="org.prevoz.permission.ACCESS_DATA" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
-	<application
+    <application
         android:name=".PrevozApplication"
         android:theme="@style/Prevoz.Theme"
         android:label="@string/app_name"
@@ -24,16 +24,17 @@
         android:supportsRtl="false"
         >
 
-		<activity android:name="MainActivity"
+        <activity android:name="MainActivity"
                   android:configChanges="locale"
                   android:label="@string/app_name"
                   android:launchMode="singleTask"
+                  android:theme="@style/Prevoz.Theme.Main"
             >
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
-		</activity>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity android:name=".auth.LoginActivity" android:label="@string/login_title"
                   android:parentActivityName=".MainActivity">

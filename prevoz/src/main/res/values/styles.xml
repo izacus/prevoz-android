@@ -10,7 +10,9 @@
         <item name="android:colorEdgeEffect" tools:targetApi="lollipop">@color/prevoztheme_color</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="windowActionModeOverlay">true</item>
+    </style>
+
+    <style name="Prevoz.Theme.Main" parent="Prevoz.Theme.Base">
     </style>
 
     <style name="Prevoz.Theme.NewRide" parent="Prevoz.Theme.Base">
