@@ -179,14 +179,7 @@ public class AuthenticationUtils
             }
         };
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-        {
-            am.getAuthToken(acc, "default", null, false, callback, null);
-        }
-        else
-        {
-            am.getAuthToken(acc, "default", false, callback, null);
-        }
+        am.getAuthToken(acc, "default", null, false, callback, null);
     }
 
     public Observable<Void> logout()

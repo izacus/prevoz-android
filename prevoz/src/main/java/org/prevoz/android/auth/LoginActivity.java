@@ -196,7 +196,7 @@ public class LoginActivity extends PrevozActivity
         {
             Log.d(LOG_TAG, "Loading " + url);
 
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1 && url.startsWith(REDIRECT_URL))
+            if (url.startsWith(REDIRECT_URL))
             {
                 Uri uri = Uri.parse(url);
                 String code = uri.getQueryParameter("code");
@@ -212,22 +212,8 @@ public class LoginActivity extends PrevozActivity
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon)
         {
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1 && url.startsWith(REDIRECT_URL))
-            {
-                if (tokenRequestInProgress)
-                    return;
-
-                tokenRequestInProgress = true;
-                Uri uri = Uri.parse(url);
-                String code = uri.getQueryParameter("code");
-                // TODO: Error handling.
-                getAccountUsernameAndApiKey(code);
-            }
-            else
-            {
                 super.onPageStarted(view, url, favicon);
                 setSupportProgressBarIndeterminateVisibility(true);
-            }
         }
 
         @Override

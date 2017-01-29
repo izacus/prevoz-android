@@ -362,18 +362,16 @@ public class RideInfoActivity extends PrevozActivity {
         }
 
         updateFavoriteIcon();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            imgFavorite.animate().scaleX(2.0f).scaleY(2.0f).alpha(0.2f).setDuration(200).setListener(new AnimatorListenerAdapter() {
-                @Override
-                @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-                public void onAnimationEnd(Animator animation) {
-                    super.onAnimationEnd(animation);
-                    imgFavorite.setAlpha(1.0f);
-                    imgFavorite.setScaleX(1);
-                    imgFavorite.setScaleY(1);
-                }
-            });
-        }
+        imgFavorite.animate().scaleX(2.0f).scaleY(2.0f).alpha(0.2f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+            @Override
+            @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                imgFavorite.setAlpha(1.0f);
+                imgFavorite.setScaleX(1);
+                imgFavorite.setScaleY(1);
+            }
+        });
 
         ApiClient.getAdapter().setRideBookmark(String.valueOf(ride.id), Bookmark.shouldShow(ride.bookmark) ? "bookmark" : "erase", new Callback<Response>() {
             @Override
