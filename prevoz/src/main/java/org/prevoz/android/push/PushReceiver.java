@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -47,36 +48,67 @@ public class PushReceiver extends BroadcastReceiver
 
         final City from = new City(extras.getString("fromcity"), extras.getString("from_country"));
         final City to = new City(extras.getString("tocity"), extras.getString("to_country"));
+        final LocalDate date = LocalDate.parse(extras.getString("date"), DateTimeFormatter.ISO_LOCAL_DATE);
+        createNewNotification(context, database, from, to, date, rideIds);
+    }
 
+    public static void createNewNotification(@NonNull Context context,
+                                             @NonNull PrevozDatabase database,
+                                             @NonNull City from,
+                                             @NonNull City to,
+                                             @NonNull LocalDate date,
+                                             @NonNull int[] rideIds) {
         // Create notification message:
         android.app.NotificationManager notifyManager = (android.app.NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-        String title = context.getString(R.string.notify_statusbar) + " " + from.getLocalizedName(database) + " - " + to.getLocalizedName(database);
+        String title = context.getResources().getQuantityString(R.plurals.notify_statusbar, rideIds.length) + " " + from.getLocalizedName(database) + " - " + to.getLocalizedName(database);
 
+        int id = from.hashCode() + to.hashCode();
         // Prepare search results launch intent
-        LocalDate when = LocalDate.parse(extras.getString("date"), DateTimeFormatter.ISO_LOCAL_DATE);
-
         Intent notificationIntent = new Intent(context, MainActivity.class);
         notificationIntent.putExtra("from", from);
         notificationIntent.putExtra("to", to);
-        notificationIntent.putExtra("when", when.atStartOfDay(LocaleUtil.getLocalTimezone()).toInstant().toEpochMilli());
+        notificationIntent.putExtra("when", date.atStartOfDay(LocaleUtil.getLocalTimezone()).toInstant().toEpochMilli());
         notificationIntent.putExtra("highlights", rideIds);
 
-        PendingIntent pIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pIntent = PendingIntent.getActivity(context, id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Notification notification = new NotificationCompat.Builder(context)
+        Notification publicNotification = new NotificationCompat.Builder(context)
+                .setSmallIcon(R.drawable.icon_ab)
+                .setContentTitle(context.getResources().getQuantityString(R.plurals.notify_statusbar_private, rideIds.length))
+                .setContentIntent(pIntent)
+                .setCategory(NotificationCompat.CATEGORY_SOCIAL)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setNumber(rideIds.length)
+                .setColor(context.getResources().getColor(R.color.prevoztheme_color))
+                .setWhen(System.currentTimeMillis())
+                .setShowWhen(true)
+                .setGroup("RIDES")
+                .setOngoing(false)
+                .setAutoCancel(true)
+                .build();
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.icon_ab)
                 .setContentTitle(title)
-                .setContentText(rideIds.length + " " + LocaleUtil.getStringNumberForm(context.getResources(), R.array.ride_forms, rideIds.length) + " v " + LocaleUtil.getNotificationDayName(context.getResources(), when).toLowerCase())
                 .setContentIntent(pIntent)
                 .setCategory(NotificationCompat.CATEGORY_SOCIAL)
                 .setAutoCancel(true)
+                .setNumber(rideIds.length)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setOngoing(false)
-                .getNotification();
+                .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
+                .setPublicVersion(publicNotification)
+                .setWhen(System.currentTimeMillis())
+                .setShowWhen(true)
+                .setGroup("RIDES")
+                .setColor(context.getResources().getColor(R.color.prevoztheme_color))
+                .setOngoing(false);
 
-        notification.number = rideIds.length;
-        notifyManager.notify(1, notification);
+        if (rideIds.length > 1) {
+            notificationBuilder.setContentText(rideIds.length + " " + LocaleUtil.getStringNumberForm(context.getResources(), R.array.ride_forms, rideIds.length) + " v " + LocaleUtil.getNotificationDayName(context.getResources(), date).toLowerCase());
+        }
+
+        Notification notification = notificationBuilder.build();
+        notifyManager.notify(id, notification);
     }
 
     public static int[] parseRideIds(String rideIds)

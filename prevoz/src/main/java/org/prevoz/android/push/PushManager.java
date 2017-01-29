@@ -1,6 +1,5 @@
 package org.prevoz.android.push;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -19,7 +18,6 @@ import org.prevoz.android.model.City;
 import org.prevoz.android.model.NotificationSubscription;
 import org.prevoz.android.model.PrevozDatabase;
 import org.prevoz.android.model.Route;
-import org.prevoz.android.util.ViewUtils;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
 
@@ -27,12 +25,9 @@ import java.io.IOException;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-import rx.Notification;
 import rx.Observable;
 import rx.Single;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.exceptions.OnErrorThrowable;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 

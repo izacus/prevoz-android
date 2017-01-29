@@ -43,15 +43,15 @@ import org.prevoz.android.util.ViewUtils
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalDate
 
-import java.util.Locale
-
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import de.greenrobot.event.EventBus
+import org.prevoz.android.push.PushReceiver
 import org.prevoz.android.search.SearchFragment
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import java.util.*
 
 @SuppressLint("Registered")
 class MainActivity : PrevozActivity() {
@@ -141,6 +141,11 @@ class MainActivity : PrevozActivity() {
         menuInflater.inflate(R.menu.menu_main, menu)
         val logoutItem = menu?.findItem(R.id.menu_logout)
         logoutItem?.isEnabled = authUtils.isAuthenticated
+
+        if (BuildConfig.DEBUG) {
+            menu?.add(1, 999, 100, "Ustvari obvestilo")
+        }
+
         return true
     }
 
@@ -155,13 +160,13 @@ class MainActivity : PrevozActivity() {
                         .show()
                 return true
             }
+            999 -> createDebugNotification()
         }
 
         return false
     }
 
     protected fun triggerSearchFromIntent(intent: Intent) {
-        //showFragment(UiFragment.FRAGMENT_SEARCH, false);
         val from = intent.getParcelableExtra<City>("from")
         val to = intent.getParcelableExtra<City>("to")
 
@@ -171,6 +176,14 @@ class MainActivity : PrevozActivity() {
         val route = Route(from, to)
         EventBus.getDefault().postSticky(Events.NewSearchEvent(route, date, highlights))
         EventBus.getDefault().postSticky(Events.SearchFillWithRoute(route, date, true))
+    }
+
+    fun createDebugNotification() {
+        var random = Random()
+        val from = if (random.nextBoolean()) City("Ljubljana", "SI") else City("Maribor", "SI")
+        val to = if (random.nextBoolean()) City("Murska Sobota", "SI") else City("Koper", "SI")
+        val rideIds = if(random.nextBoolean()) intArrayOf(12) else intArrayOf(12, 14, 16)
+        PushReceiver.createNewNotification(this, database, from, to, LocalDate.now(), rideIds)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
