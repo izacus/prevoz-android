@@ -1,10 +1,13 @@
 package org.prevoz.android.myrides
 
+import android.content.Intent
+import android.support.v4.app.ActivityCompat
+import android.support.v4.app.ActivityOptionsCompat
 import com.crashlytics.android.Crashlytics
 import com.hannesdorfmann.mosby.mvp.MvpPresenter
 import de.greenrobot.event.EventBus
 import org.prevoz.android.ApplicationComponent
-import org.prevoz.android.MainActivity
+import org.prevoz.android.R
 import org.prevoz.android.api.ApiClient
 import org.prevoz.android.api.rest.RestRide
 import org.prevoz.android.auth.AuthenticationUtils
@@ -14,11 +17,6 @@ import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import javax.inject.Inject
-import org.prevoz.android.R.anim.slide_up
-import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.app.ActivityCompat
-import android.content.Intent
-import org.prevoz.android.R
 
 
 class MyRidesPresenter(component: ApplicationComponent) : MvpPresenter<MyRidesFragment> {

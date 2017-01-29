@@ -98,7 +98,7 @@ class MyRidesFragment : MvpFragment<MyRidesFragment, MyRidesPresenter>() {
     }
 
     fun showMyRides(results: List<RestRide>) {
-        adapter.addRides(results)
+        adapter.setRides(results)
         myridesList.visibility = View.VISIBLE
         emptyView.visibility = View.INVISIBLE
         loginButton.visibility = View.GONE

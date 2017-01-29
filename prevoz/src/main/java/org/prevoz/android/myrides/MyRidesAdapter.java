@@ -34,6 +34,7 @@ public class MyRidesAdapter extends RecyclerView.Adapter<MyRidesAdapter.ResultsV
         this.context = context;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.myrides = new ArrayList<>();
+        setHasStableIds(true);
     }
 
     @Override
@@ -94,9 +95,9 @@ public class MyRidesAdapter extends RecyclerView.Adapter<MyRidesAdapter.ResultsV
         return myrides.size();
     }
 
-    public void addRides(List<RestRide> rides) {
+    public void setRides(List<RestRide> rides) {
         if (rides == null || rides.size() == 0) return;
-
+        myrides.clear();
         myrides.addAll(rides);
         Collections.sort(myrides, (r1, r2) -> {
             if (r1.isAuthor && !r2.isAuthor)
