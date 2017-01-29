@@ -11,6 +11,7 @@ import org.prevoz.android.myrides.MyRidesFragment;
 import org.prevoz.android.myrides.MyRidesPresenter;
 import org.prevoz.android.push.PushManager;
 import org.prevoz.android.push.PushModule;
+import org.prevoz.android.push.PushPresenter;
 import org.prevoz.android.push.PushReceiver;
 import org.prevoz.android.ride.RideInfoActivity;
 import org.prevoz.android.search.SearchFormPresenter;
@@ -36,6 +37,7 @@ public interface ApplicationComponent {
     void inject(@NonNull SearchResultsPresenter searchResultsPresenter);
     void inject(@NotNull SearchResultsFragment searchResultsFragment);
     void inject(@NonNull MyRidesPresenter myRidesFragment);
+    void inject(@NonNull PushPresenter pushPresenter);
 
     Context context();
 

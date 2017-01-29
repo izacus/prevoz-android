@@ -72,13 +72,18 @@ public class PushNotificationsAdapter extends RecyclerView.Adapter<PushNotificat
         @NonNull
         final View card;
 
+        @NonNull
+        final View deleteButton;
+
         public PushNotificationsHolder(View itemView) {
             super(itemView);
             card = itemView.findViewById(R.id.item_push_card);
             route = (TextView) itemView.findViewById(R.id.item_push_route);
             date = (TextView) itemView.findViewById(R.id.item_push_date);
+            deleteButton = itemView.findViewById(R.id.item_push_delete);
 
             card.setOnClickListener(v -> listener.onNotificationClicked(notifications.get(getAdapterPosition())));
+            deleteButton.setOnClickListener(v -> listener.onNotificationClicked(notifications.get(getAdapterPosition())));
         }
     }
 }
