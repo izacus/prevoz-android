@@ -6,10 +6,8 @@ import de.greenrobot.event.EventBus
 import org.prevoz.android.ApplicationComponent
 import org.prevoz.android.api.ApiClient
 import org.prevoz.android.api.rest.RestRide
-import org.prevoz.android.api.rest.RestSearchResults
 import org.prevoz.android.auth.AuthenticationUtils
 import org.prevoz.android.events.Events
-import org.prevoz.android.model.City
 import org.prevoz.android.model.PrevozDatabase
 import org.prevoz.android.model.Route
 import org.prevoz.android.push.PushManager
@@ -148,6 +146,7 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
     }
 
     fun onEventMainThread(e: Events.ClearSearchEvent) {
+        results = null
         showHistory()
     }
 
