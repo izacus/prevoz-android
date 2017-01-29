@@ -14,6 +14,12 @@ import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import javax.inject.Inject
+import org.prevoz.android.R.anim.slide_up
+import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.app.ActivityCompat
+import android.content.Intent
+import org.prevoz.android.R
+
 
 class MyRidesPresenter(component: ApplicationComponent) : MvpPresenter<MyRidesFragment> {
     init {
@@ -103,5 +109,10 @@ class MyRidesPresenter(component: ApplicationComponent) : MvpPresenter<MyRidesFr
     @Suppress("UNUSED_PARAMETER")
     fun onEventMainThread(e: Events.LoginStateChanged) {
         checkForAuthentication()
+    }
+
+    fun addRide() {
+        val i = Intent(view?.context, NewRideActivity::class.java)
+        ActivityCompat.startActivity(view?.context, i, ActivityOptionsCompat.makeCustomAnimation(view?.context, R.anim.slide_up, 0).toBundle())
     }
 }

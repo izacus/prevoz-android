@@ -1,6 +1,7 @@
 package org.prevoz.android.myrides
 
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -36,6 +37,9 @@ class MyRidesFragment : MvpFragment<MyRidesFragment, MyRidesPresenter>() {
     @BindView(R.id.myrides_throbber)
     lateinit var throbber: ProgressBar
 
+    @BindView(R.id.myrides_add)
+    lateinit var addButton: FloatingActionButton
+
     lateinit var adapter : MyRidesAdapter
 
     override fun createPresenter(): MyRidesPresenter {
@@ -70,12 +74,18 @@ class MyRidesFragment : MvpFragment<MyRidesFragment, MyRidesPresenter>() {
         presenter.login()
     }
 
+    @OnClick(R.id.myrides_add)
+    fun onAddButtonClick() {
+        presenter.addRide()
+    }
+
     fun showLoginPrompt() {
         emptyText.text = "Za ogled in dodajanje zaznamkov ter prevozov morate biti prijavljeni."
         emptyView.visibility = View.VISIBLE
         myridesList.visibility = View.INVISIBLE
         throbber.visibility = View.INVISIBLE
         loginButton.visibility = View.VISIBLE
+        addButton.visibility = View.INVISIBLE
     }
 
     fun showLoadingThrobber() {
@@ -83,6 +93,7 @@ class MyRidesFragment : MvpFragment<MyRidesFragment, MyRidesPresenter>() {
         myridesList.visibility = View.INVISIBLE
         throbber.visibility = View.VISIBLE
         loginButton.visibility = View.GONE
+        addButton.visibility = View.VISIBLE
         adapter.clear()
     }
 
@@ -92,6 +103,7 @@ class MyRidesFragment : MvpFragment<MyRidesFragment, MyRidesPresenter>() {
         emptyView.visibility = View.INVISIBLE
         loginButton.visibility = View.GONE
         throbber.visibility = View.INVISIBLE
+        addButton.visibility = View.VISIBLE
     }
 
     fun showEmptyView() {
@@ -99,6 +111,7 @@ class MyRidesFragment : MvpFragment<MyRidesFragment, MyRidesPresenter>() {
         throbber.visibility = View.INVISIBLE
         emptyView.visibility = View.VISIBLE
         loginButton.visibility = View.GONE
+        addButton.visibility = View.VISIBLE
         emptyText.text = "Nimate objavljenih ali zaznamovanih prevozov."
     }
 
@@ -107,6 +120,7 @@ class MyRidesFragment : MvpFragment<MyRidesFragment, MyRidesPresenter>() {
         throbber.visibility = View.INVISIBLE
         emptyView.visibility = View.VISIBLE
         loginButton.visibility = View.GONE
+        addButton.visibility = View.VISIBLE
         emptyText.text = "Pri nalaganju vaših prevozov je prišlo do napake."
     }
 }
