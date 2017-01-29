@@ -166,7 +166,7 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
 
             if (cityNameCompare == 0) {
                 if (r1.date != null && r2.date != null) {
-                    return (int)(r2.date.toEpochSecond() - r1.date.toEpochSecond());
+                    return r1.date.compareTo(r2.date);
                 } else if (r1.published != null && r2.published != null) {
                     return r1.compareTo(r2.published);
                 }

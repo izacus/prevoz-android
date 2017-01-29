@@ -145,6 +145,7 @@ class MainActivity : PrevozActivity() {
         menuInflater.inflate(R.menu.menu_main, menu)
         val logoutItem = menu?.findItem(R.id.menu_logout)
         logoutItem?.isEnabled = authUtils.isAuthenticated
+        logoutItem?.isVisible = authUtils.isAuthenticated
 
         if (BuildConfig.DEBUG) {
             menu?.add(1, 999, 100, "Ustvari obvestilo")

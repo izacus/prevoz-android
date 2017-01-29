@@ -103,7 +103,9 @@ class MyRidesPresenter(component: ApplicationComponent) : MvpPresenter<MyRidesFr
 
     @Suppress("UNUSED_PARAMETER")
     fun onEventMainThread(e: Events.MyRideStatusUpdated) {
-        loadRides()
+        if (authUtils.isAuthenticated) {
+            loadRides()
+        }
     }
 
     @Suppress("UNUSED_PARAMETER")
