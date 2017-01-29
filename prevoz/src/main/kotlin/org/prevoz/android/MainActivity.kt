@@ -107,7 +107,7 @@ class MainActivity : PrevozActivity() {
         }
 
         override fun getCount(): Int {
-            return if (pushManager.isPushAvailable) 3 else 2
+            return 3
         }
 
         override fun getPageTitle(position: Int): CharSequence {
