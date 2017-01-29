@@ -47,6 +47,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import de.greenrobot.event.EventBus
+import org.prevoz.android.push.PushManager
 import org.prevoz.android.push.PushReceiver
 import org.prevoz.android.search.SearchFragment
 import rx.android.schedulers.AndroidSchedulers
@@ -84,11 +85,14 @@ class MainActivity : PrevozActivity() {
     }
 
     fun setupViewPager() {
-        viewPagerAdapter = MainPagerAdapter(applicationComponent, resources, supportFragmentManager)
+        viewPagerAdapter = MainPagerAdapter(applicationComponent, resources, supportFragmentManager, pushManager)
         viewPager.adapter = viewPagerAdapter
     }
 
-    class MainPagerAdapter(applicationComponent: ApplicationComponent, val resources: Resources, fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
+    class MainPagerAdapter(applicationComponent: ApplicationComponent,
+                           val resources: Resources,
+                           fragmentManager: FragmentManager,
+                           val pushManager: PushManager) : FragmentPagerAdapter(fragmentManager) {
         val searchFragment : SearchResultsFragment = SearchResultsFragment(applicationComponent)
         val myRidesFragment : MyRidesFragment = MyRidesFragment()
         val notificationsFragment : PushFragment = PushFragment()
@@ -103,7 +107,7 @@ class MainActivity : PrevozActivity() {
         }
 
         override fun getCount(): Int {
-            return 3
+            return if (pushManager.isPushAvailable) 3 else 2
         }
 
         override fun getPageTitle(position: Int): CharSequence {
