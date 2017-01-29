@@ -48,9 +48,7 @@ public class PushFragment extends PrevozFragment
                     .subscribe(notifications -> {
                         ViewUtils.setupEmptyView(notificationList, emptyView, "Niste prijavljeni na nobena obvestila.");
                         adapter = new PushNotificationsAdapter(getActivity(), notifications, item -> onItemClicked(item));
-
                         notificationList.setAdapter(adapter);
-                        notificationList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
                         LinearLayoutManager llm = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                         notificationList.setLayoutManager(llm);
                         updateEmptyView();
