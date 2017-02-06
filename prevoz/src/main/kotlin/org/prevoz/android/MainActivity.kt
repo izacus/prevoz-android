@@ -94,7 +94,7 @@ class MainActivity : PrevozActivity() {
                            val resources: Resources,
                            fragmentManager: FragmentManager,
                            val pushManager: PushManager) : FragmentPagerAdapter(fragmentManager) {
-        val searchFragment : SearchResultsFragment = SearchResultsFragment(applicationComponent)
+        val searchFragment : SearchResultsFragment = SearchResultsFragment()
         val myRidesFragment : MyRidesFragment = MyRidesFragment()
         val notificationsFragment : PushFragment = PushFragment()
 

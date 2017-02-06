@@ -26,15 +26,11 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView
 import javax.inject.Inject
 
 
-class SearchResultsFragment(component: ApplicationComponent) : MvpFragment<SearchResultsFragment, SearchResultsPresenter>() {
-    init {
-        component.inject(this)
-    }
+class SearchResultsFragment : MvpFragment<SearchResultsFragment, SearchResultsPresenter>() {
 
     @Inject lateinit var database : PrevozDatabase
 
-    @BindView(R.id.search_results_list)
-    lateinit var resultList: StickyListHeadersListView
+    var resultList: StickyListHeadersListView? = null
 
     lateinit var searchNotifyButtonContainer: View
     lateinit var searchNotifyButton: View
@@ -51,6 +47,8 @@ class SearchResultsFragment(component: ApplicationComponent) : MvpFragment<Searc
     @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        (context.applicationContext as PrevozApplication).component().inject(this)
+
         retainInstance = true
         headerFragmentView = getLayoutInflater(savedInstanceState).inflate(R.layout.header_search_form, null, false)
 
@@ -64,8 +62,8 @@ class SearchResultsFragment(component: ApplicationComponent) : MvpFragment<Searc
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val views = inflater!!.inflate(R.layout.fragment_search_list, container, false)
-        ButterKnife.bind(this, views)
-        resultList.addHeaderView(headerFragmentView, null, true)
+        resultList = views.findViewById(R.id.search_results_list) as StickyListHeadersListView?
+        resultList?.addHeaderView(headerFragmentView, null, true)
 
         if (childFragmentManager.findFragmentByTag("SearchFragment") == null) {
             val ft = childFragmentManager.beginTransaction()
@@ -79,24 +77,24 @@ class SearchResultsFragment(component: ApplicationComponent) : MvpFragment<Searc
     fun showHistory(history: List<Route>, animate: Boolean) {
         val activity = activity ?: return
         val adapter = SearchHistoryAdapter(activity, history)
-        if (animate && resultList.adapter != null) {
+        if (animate && resultList?.adapter != null) {
             ListDisappearAnimation(resultList).animate()
         }
 
-        resultList.adapter = adapter
+        resultList?.adapter = adapter
         if (animate) ListFlyupAnimator(resultList).animate()
     }
 
     fun showResults(results: List<RestRide>, askedForRoute: Route?, highlightRideIds: IntArray) {
-        if (resultList.adapter is SearchResultsAdapter) {
-            val adapter = resultList.adapter as SearchResultsAdapter
+        if (resultList?.adapter is SearchResultsAdapter) {
+            val adapter = resultList?.adapter as SearchResultsAdapter
             adapter.setResults(results, highlightRideIds, askedForRoute)
             if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                resultList.smoothScrollToPosition(1)
+                resultList?.smoothScrollToPosition(1)
             }
         } else {
             val adapter = SearchResultsAdapter(activity, database, results, highlightRideIds, askedForRoute)
-            resultList.adapter = adapter
+            resultList?.adapter = adapter
         }
 
         if (results.isEmpty()) {
@@ -107,19 +105,19 @@ class SearchResultsFragment(component: ApplicationComponent) : MvpFragment<Searc
     }
 
     fun updateDisplayedRide(ride: RestRide) {
-        if (resultList.adapter is SearchResultsAdapter) {
-            (resultList.adapter as SearchResultsAdapter).updateRide(ride)
+        if (resultList?.adapter is SearchResultsAdapter) {
+            (resultList?.adapter as SearchResultsAdapter).updateRide(ride)
         }
     }
 
     fun removeDisplayedRide(ride: RestRide) {
-        if (resultList.adapter is SearchResultsAdapter) {
-            (resultList.adapter as SearchResultsAdapter).removeRide(ride.id)
+        if (resultList?.adapter is SearchResultsAdapter) {
+            (resultList?.adapter as SearchResultsAdapter).removeRide(ride.id)
         }
     }
 
     fun hideList() {
-        if (resultList.adapter != null) {
+        if (resultList?.adapter != null) {
             ListDisappearAnimation(resultList).animate()
         }
     }
@@ -169,6 +167,6 @@ class SearchResultsFragment(component: ApplicationComponent) : MvpFragment<Searc
     }
 
     fun showingResults(): Boolean {
-        return resultList.adapter is SearchResultsAdapter
+        return resultList?.adapter is SearchResultsAdapter
     }
 }

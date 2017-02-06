@@ -20,10 +20,10 @@
     <string name="newride_title">Nov prevoz</string>
 
     <plurals name="notify_statusbar">
-        <item quantity="one">Nov prevoz na relaciji</item>
-        <item quantity="two">Nova prevoza na relaciji</item>
-        <item quantity="few">Novi prevozi na relaciji</item>
-        <item quantity="other">Novi prevozi na relaciji</item>
+        <item quantity="one">Nov prevoz</item>
+        <item quantity="two">Nova prevoza</item>
+        <item quantity="few">Novi prevozi</item>
+        <item quantity="other">Novi prevozi</item>
     </plurals>
 
     <plurals name="notify_statusbar_private">
