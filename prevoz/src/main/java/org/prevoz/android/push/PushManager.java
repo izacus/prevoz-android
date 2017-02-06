@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.util.Pair;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -18,16 +19,25 @@ import org.prevoz.android.model.City;
 import org.prevoz.android.model.NotificationSubscription;
 import org.prevoz.android.model.PrevozDatabase;
 import org.prevoz.android.model.Route;
+import org.prevoz.android.provider.Notification;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import de.greenrobot.event.EventBus;
 import rx.Observable;
 import rx.Single;
 import rx.exceptions.OnErrorThrowable;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -40,7 +50,9 @@ public class PushManager
     private final Context context;
     private final PrevozDatabase database;
     private Observable<String> gcmIdObservable;
-    boolean available = false;
+    private boolean available = false;
+
+    private Set<RegisteredNotification> notifications = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     public PushManager(Context ctx, PrevozDatabase database)
     {
@@ -83,6 +95,10 @@ public class PushManager
                 .subscribeOn(Schedulers.io())
                 .subscribe(gcmId -> {
                 }, throwable -> Log.e(LOG_TAG, "Error", throwable));
+
+        database.getNotificationSubscriptions()
+                .flatMap(Observable::from)
+                .subscribe(notification -> notifications.add(new RegisteredNotification(notification.getRoute(), notification.getDate())));
     }
 
     public Single<List<NotificationSubscription>> getSubscriptions()
@@ -115,19 +131,53 @@ public class PushManager
                     }
                 })
                 .doOnNext(success -> {
-                    if (success) EventBus.getDefault().post(new Events.NotificationSubscriptionStatusChanged(route, date, subscribed));
+                    if (success) {
+                        EventBus.getDefault().post(new Events.NotificationSubscriptionStatusChanged(route, date, subscribed));
+                        if (subscribed) {
+                            notifications.add(new RegisteredNotification(route, date));
+                        } else {
+                            notifications.remove(new RegisteredNotification(route, date));
+                        }
+                    }
                 })
                 .subscribeOn(Schedulers.io())
                 .toSingle();
     }
 
-    public Single<Boolean> isSubscribed(@NonNull Route route, @NonNull LocalDate date)
+    public boolean isSubscribed(@NonNull Route route, @NonNull LocalDate date)
     {
-        return database.isSubscribedForNotification(route.getFrom(), route.getTo(), date);
+        return notifications.contains(new RegisteredNotification(route, date));
     }
 
     public boolean isPushAvailable()
     {
         return available;
+    }
+
+    private static final class RegisteredNotification {
+        @NonNull public final Route route;
+        @NonNull public final LocalDate date;
+
+        public RegisteredNotification(@NonNull Route route, @NonNull LocalDate date) {
+            this.route = route;
+            this.date = date;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            RegisteredNotification that = (RegisteredNotification) o;
+
+            return route.equals(that.route) && date.equals(that.date);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = route.hashCode();
+            result = 31 * result + date.hashCode();
+            return result;
+        }
     }
 }

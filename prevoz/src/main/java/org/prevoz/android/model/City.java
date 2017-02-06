@@ -54,6 +54,12 @@ public class City implements Comparable<City>, Parcelable
         return c.getDisplayName().equalsIgnoreCase(displayName) && c.getCountryCode().equalsIgnoreCase(countryCode);
     }
 
+    @Override
+    public int hashCode() {
+        int result = displayName != null ? displayName.hashCode() : 0;
+        result = 31 * result + (countryCode != null ? countryCode.hashCode() : 0);
+        return result;
+    }
 
     @Override
     public int describeContents()

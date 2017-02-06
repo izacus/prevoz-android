@@ -1,8 +1,12 @@
 package org.prevoz.android.provider;
 
+import android.support.annotation.NonNull;
+
 import com.pushtorefresh.storio.sqlite.annotations.StorIOSQLiteColumn;
 import com.pushtorefresh.storio.sqlite.annotations.StorIOSQLiteType;
 
+import org.prevoz.android.model.City;
+import org.prevoz.android.model.Route;
 import org.prevoz.android.util.LocaleUtil;
 import org.threeten.bp.Instant;
 import org.threeten.bp.LocalDate;
@@ -73,8 +77,14 @@ public class Notification
         return toCountry;
     }
 
+    @NonNull
     public LocalDate getDate() {
         return LocalDate.from(Instant.ofEpochMilli(date).atZone(LocaleUtil.getLocalTimezone()));
+    }
+
+    @NonNull
+    public Route getRoute() {
+        return new Route(new City(fromCity, fromCountry), new City(toCity, toCountry));
     }
 
     public LocalDateTime getRegistrationDate() {

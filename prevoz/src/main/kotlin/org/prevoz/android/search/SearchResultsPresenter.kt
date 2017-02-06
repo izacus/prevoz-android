@@ -121,11 +121,8 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
         if (route == null || date == null) return
         if (route.from == null || route.to == null) return
 
-        pushManager.isSubscribed(route, date)
-                   .subscribe { subscribed ->
-                       view?.showNotificationButton()
-                       view?.updateNotificationButtonText(subscribed)
-                   }
+        view?.showNotificationButton()
+        view?.updateNotificationButtonText(pushManager.isSubscribed(route, date))
     }
 
     fun switchNotificationState() {
@@ -133,8 +130,7 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
         val date = date
         if (route == null || date == null) return
         view?.setNotificationButtonThrobber(true)
-        pushManager.isSubscribed(route, date)
-                .flatMap { subscribed -> pushManager.setSubscriptionStatus(route, date, !subscribed) }
+        pushManager.setSubscriptionStatus(route, date, !pushManager.isSubscribed(route, date))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe( {
                                 view?.setNotificationButtonThrobber(false)

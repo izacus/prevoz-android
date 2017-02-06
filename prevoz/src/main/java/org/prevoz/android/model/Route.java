@@ -33,8 +33,7 @@ public class Route
         if (o == null || getClass() != o.getClass()) return false;
 
         Route route = (Route) o;
-        if (from != null ? !from.equals(route.from) : route.from != null) return false;
-        return to != null ? to.equals(route.to) : route.to == null;
+        return from != null ? from.equals(route.from) : route.from == null && (to != null ? to.equals(route.to) : route.to == null);
 
     }
 
