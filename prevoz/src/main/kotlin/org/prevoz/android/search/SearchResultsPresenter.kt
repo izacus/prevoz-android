@@ -97,10 +97,11 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
     }
 
     fun showHistory() {
+        val animate = results != null
         view?.hideNotificationButton()
         database.getLastSearches(5)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ history -> view?.showHistory(history, results != null) },
+                .subscribe({ history -> view?.showHistory(history, animate) },
                            { throwable -> Crashlytics.logException(throwable) } )
     }
 
@@ -148,8 +149,8 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
     }
 
     fun onEventMainThread(e: Events.ClearSearchEvent) {
-        results = null
         showHistory()
+        results = null
     }
 
     fun onEventMainThread(e: Events.NotificationSubscriptionStatusChanged) {
