@@ -30,6 +30,9 @@ class PushReceiverService : FirebaseMessagingService() {
     override fun onMessageReceived(msg: RemoteMessage?) {
         if (msg == null) return
         val data = msg.data
+
+        Log.d("Prevoz", "Message: " + data.toString())
+
         val rideIds = parseRideIds(data["rides"])
         if (rideIds.isEmpty()) return
 
@@ -39,8 +42,6 @@ class PushReceiverService : FirebaseMessagingService() {
             !data.containsKey("to_country")) {
             Crashlytics.log("Invalid GCM message received: " + data.toString())
         }
-
-        Log.d("Prevoz", "Message: " + data.toString())
 
         val from = City(data["fromcity"]!!, data["from_country"]!!)
         val to = City(data["tocity"]!!, data["to_country"]!!)
