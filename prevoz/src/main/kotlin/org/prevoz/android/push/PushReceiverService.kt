@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.support.v4.app.NotificationCompat
+import android.util.Log
 import com.crashlytics.android.Crashlytics
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -38,6 +39,8 @@ class PushReceiverService : FirebaseMessagingService() {
             !data.containsKey("to_country")) {
             Crashlytics.log("Invalid GCM message received: " + data.toString())
         }
+
+        Log.d("Prevoz", "Message: " + data.toString())
 
         val from = City(data["fromcity"]!!, data["from_country"]!!)
         val to = City(data["tocity"]!!, data["to_country"]!!)
@@ -122,5 +125,15 @@ class PushReceiverService : FirebaseMessagingService() {
             iIds[i] = ids[i]
 
         return iIds
+    }
+
+    fun parseRideTimes(rideTimesStr: String?): List<LocalDate> {
+        if (rideTimesStr == null) return emptyList()
+        var times = ArrayList<LocalDate>()
+        val tokenizer = StringTokenizer(stripped.trim { it <= ' ' }, ",")
+
+        while (tokenizer.hasMoreTokens()) {
+            
+        }
     }
 }
