@@ -384,9 +384,11 @@ public class RideInfoActivity extends PrevozActivity {
     @OnClick(R.id.rideinfo_favorite)
     protected void onFavoriteClicked() {
         if (Bookmark.shouldShow(ride.bookmark)) {
+            Answers.getInstance().logCustom(new CustomEvent("Bookmark - clear"));
             ride.bookmark = null;
         } else {
             ride.bookmark = Bookmark.BOOKMARK;
+            Answers.getInstance().logCustom(new CustomEvent("Bookmark - set"));
         }
 
         updateFavoriteIcon();

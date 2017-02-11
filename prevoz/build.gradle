@@ -120,7 +120,7 @@ dependencies {
     compile 'com.pushtorefresh.storio:sqlite-annotations:1.12.2'
     kapt 'com.pushtorefresh.storio:sqlite-annotations-processor:1.12.2'
 
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
         transitive = true
     }
 }
