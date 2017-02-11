@@ -1,6 +1,6 @@
 package org.prevoz.android.push;
 
-import android.content.Context;
+import android.support.annotation.NonNull;
 
 import org.prevoz.android.ApplicationModule;
 import org.prevoz.android.model.PrevozDatabase;
@@ -15,8 +15,8 @@ public class PushModule {
 
     @Provides
     @Singleton
-    public PushManager providePushManager(Context context, PrevozDatabase database) {
-        return new PushManager(context, database);
+    public PushManager providePushManager(@NonNull PrevozDatabase database) {
+        return new PushManager(database);
     }
 
 }

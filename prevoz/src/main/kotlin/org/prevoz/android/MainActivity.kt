@@ -1,56 +1,37 @@
 package org.prevoz.android
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.ActivityManager
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.design.widget.TabLayout
-import android.support.v4.app.*
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
+import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.Toolbar
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.ListView
-import android.widget.TextView
-
-import com.nispok.snackbar.Snackbar
-
+import butterknife.BindView
+import butterknife.ButterKnife
+import de.greenrobot.event.EventBus
 import org.prevoz.android.events.Events
 import org.prevoz.android.model.City
 import org.prevoz.android.model.Route
 import org.prevoz.android.myrides.MyRidesFragment
-import org.prevoz.android.myrides.NewRideActivity
 import org.prevoz.android.push.PushFragment
+import org.prevoz.android.push.PushManager
 import org.prevoz.android.search.SearchResultsFragment
 import org.prevoz.android.util.LocaleUtil
 import org.prevoz.android.util.PrevozActivity
 import org.prevoz.android.util.ViewUtils
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalDate
-
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
-import de.greenrobot.event.EventBus
-import org.prevoz.android.push.PushManager
-import org.prevoz.android.push.PushReceiver
-import org.prevoz.android.search.SearchFragment
-import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import java.util.*
 
@@ -147,11 +128,6 @@ class MainActivity : PrevozActivity() {
         val logoutItem = menu?.findItem(R.id.menu_logout)
         logoutItem?.isEnabled = authUtils.isAuthenticated
         logoutItem?.isVisible = authUtils.isAuthenticated
-
-        if (BuildConfig.DEBUG) {
-            menu?.add(1, 999, 100, "Ustvari obvestilo")
-        }
-
         return true
     }
 
@@ -166,7 +142,6 @@ class MainActivity : PrevozActivity() {
                         .show()
                 return true
             }
-            999 -> createDebugNotification()
         }
 
         return false
@@ -182,14 +157,6 @@ class MainActivity : PrevozActivity() {
         val route = Route(from, to)
         EventBus.getDefault().postSticky(Events.NewSearchEvent(route, date, highlights))
         EventBus.getDefault().postSticky(Events.SearchFillWithRoute(route, date, true))
-    }
-
-    fun createDebugNotification() {
-        var random = Random()
-        val from = if (random.nextBoolean()) City("Ljubljana", "SI") else City("Maribor", "SI")
-        val to = if (random.nextBoolean()) City("Murska Sobota", "SI") else City("Koper", "SI")
-        val rideIds = if(random.nextBoolean()) intArrayOf(12) else intArrayOf(12, 14, 16)
-        PushReceiver.createNewNotification(this, database, from, to, LocalDate.now(), rideIds)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

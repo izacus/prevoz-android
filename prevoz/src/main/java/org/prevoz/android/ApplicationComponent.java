@@ -7,12 +7,11 @@ import org.jetbrains.annotations.NotNull;
 import org.prevoz.android.auth.AuthenticationModule;
 import org.prevoz.android.auth.AuthenticationUtils;
 import org.prevoz.android.model.CityNameTextValidator;
-import org.prevoz.android.myrides.MyRidesFragment;
 import org.prevoz.android.myrides.MyRidesPresenter;
 import org.prevoz.android.push.PushManager;
 import org.prevoz.android.push.PushModule;
 import org.prevoz.android.push.PushPresenter;
-import org.prevoz.android.push.PushReceiver;
+import org.prevoz.android.push.PushReceiverService;
 import org.prevoz.android.ride.RideInfoActivity;
 import org.prevoz.android.search.SearchFormPresenter;
 import org.prevoz.android.search.SearchFragment;
@@ -37,12 +36,10 @@ public interface ApplicationComponent {
     void inject(@NotNull SearchResultsFragment searchResultsFragment);
     void inject(@NonNull MyRidesPresenter myRidesFragment);
     void inject(@NonNull PushPresenter pushPresenter);
+    void inject(@NonNull PushReceiverService receiverService);
 
     Context context();
 
     AuthenticationUtils authUtils();
     PushManager pushManager();
-
-    void inject(PushReceiver pushReceiver);
-
 }

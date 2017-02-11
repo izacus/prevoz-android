@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
@@ -75,15 +74,11 @@
             <meta-data android:name="android.accounts.AccountAuthenticator" android:resource="@xml/authenticator" />
         </service>
 
-        <receiver android:name=".push.PushReceiver"
-                  android:permission="com.google.android.c2dm.permission.SEND" >
-
+        <service android:name=".push.PushReceiverService" android:exported="true">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="org.prevoz.android" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-
-        </receiver>
+        </service>
 
         <meta-data android:name="com.crashlytics.ApiKey" android:value="5387e48d80669f4e2a3a0ca327b54e39b9e74e5f"/>
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
