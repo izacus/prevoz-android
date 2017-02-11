@@ -1,5 +1,6 @@
 package org.prevoz.android.search
 
+import android.net.ConnectivityManager
 import com.crashlytics.android.Crashlytics
 import com.hannesdorfmann.mosby.mvp.MvpPresenter
 import de.greenrobot.event.EventBus
@@ -29,6 +30,7 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
     @Inject lateinit var database : PrevozDatabase
     @Inject lateinit var authUtils : AuthenticationUtils
     @Inject lateinit var pushManager : PushManager
+    @Inject lateinit var connectivityService : ConnectivityManager
 
     var view : SearchResultsFragment? = null
 
@@ -49,8 +51,15 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
 
 
     fun search(route: Route, date: LocalDate, highlightRideIds: IntArray) {
+        if (connectivityService.activeNetworkInfo == null || !connectivityService.activeNetworkInfo.isConnected) {
+            view?.showNetworkError()
+            EventBus.getDefault().post(Events.SearchComplete())
+            return
+        }
+
         view?.hideList()
         view?.hideNotificationButton()
+
         this.route = route
         this.highlightRideIds = highlightRideIds
         this.date = date

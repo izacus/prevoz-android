@@ -13,6 +13,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,6 +43,7 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 
+import org.prevoz.android.PrevozApplication;
 import org.prevoz.android.R;
 import org.prevoz.android.UiFragment;
 import org.prevoz.android.api.ApiClient;
@@ -58,6 +60,8 @@ import org.threeten.bp.format.DateTimeFormatter;
 
 import java.util.Date;
 import java.util.Locale;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -155,12 +159,16 @@ public class RideInfoActivity extends PrevozActivity {
 
     GestureDetector detector;
 
+    @Inject
+    ConnectivityManager connectivityService;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         LocaleUtil.checkSetLocale(this, getResources().getConfiguration());
         super.onCreate(savedInstanceState);
         Icepick.restoreInstanceState(this, savedInstanceState);
         setContentView(R.layout.activity_rideinfo);
+        ((PrevozApplication)getApplication()).component().inject(this);
         ButterKnife.bind(this);
 
         ride = getIntent().getParcelableExtra(ARG_RIDE);
@@ -412,6 +420,12 @@ public class RideInfoActivity extends PrevozActivity {
     }
 
     protected void submitRide() {
+        if (connectivityService.getActiveNetworkInfo() == null || !connectivityService.getActiveNetworkInfo().isConnected()) {
+            EventBus.getDefault().postSticky(new Events.ShowMessage("Ni mogoče oddati prevoza, internet ni na voljo!", true));
+            finish();
+            return;
+        }
+
         final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setMessage("Oddajam prevoz...");
         dialog.show();
@@ -447,6 +461,7 @@ public class RideInfoActivity extends PrevozActivity {
                     EventBus.getDefault().postSticky(new Events.ShowMessage("Vaša prijava ni več veljavna, prosimo ponovno se prijavite.", true));
                     authUtils.logout().subscribeOn(Schedulers.io()).subscribe();
                 } else {
+                    Crashlytics.logException(error.getCause());
                     EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.newride_publish_failure, true));
                 }
 

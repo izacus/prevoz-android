@@ -127,6 +127,11 @@ class SearchResultsFragment : MvpFragment<SearchResultsFragment, SearchResultsPr
         ViewUtils.showMessage(activity, "Napaka med iskanjem, a internet deluje?", true)
     }
 
+    fun showNetworkError() {
+        val activity = activity ?: return
+        ViewUtils.showMessage(activity, "Ni mogoče iskati, internet ni na voljo!", true)
+    }
+
     fun showEmptyMessage() {
         searchNotifyButtonContainer.visibility = View.VISIBLE
         searchNotifyButtonContainer.animate().alpha(1.0f).setDuration(200).setListener(null)

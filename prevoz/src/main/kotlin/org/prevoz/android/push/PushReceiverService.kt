@@ -126,14 +126,4 @@ class PushReceiverService : FirebaseMessagingService() {
 
         return iIds
     }
-
-    fun parseRideTimes(rideTimesStr: String?): List<LocalDate> {
-        if (rideTimesStr == null) return emptyList()
-        var times = ArrayList<LocalDate>()
-        val tokenizer = StringTokenizer(stripped.trim { it <= ' ' }, ",")
-
-        while (tokenizer.hasMoreTokens()) {
-            
-        }
-    }
 }
