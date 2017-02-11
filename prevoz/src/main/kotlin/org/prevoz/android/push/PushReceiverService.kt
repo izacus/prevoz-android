@@ -22,7 +22,7 @@ import javax.inject.Inject
 class PushReceiverService : FirebaseMessagingService() {
 
     init {
-        (application as PrevozApplication).component().inject(this)
+        (application as PrevozApplication?)?.component()?.inject(this)
     }
 
     @Inject lateinit var database : PrevozDatabase

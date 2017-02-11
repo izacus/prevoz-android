@@ -124,6 +124,15 @@ class MyRidesFragment : MvpFragment<MyRidesFragment, MyRidesPresenter>() {
         emptyText.text = "Pri nalaganju vaših prevozov je prišlo do napake."
     }
 
+    fun showNetworkError() {
+        myridesList.visibility = View.INVISIBLE
+        throbber.visibility = View.INVISIBLE
+        emptyView.visibility = View.VISIBLE
+        loginButton.visibility = View.GONE
+        addButton.visibility = View.VISIBLE
+        emptyText.text = "Brez interneta ni mogoče naložiti vaših prevozov."
+    }
+
     fun updateRideInList(ride: RestRide) {
         adapter.updateRide(ride)
     }

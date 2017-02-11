@@ -1,6 +1,7 @@
 package org.prevoz.android.myrides
 
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
 import com.crashlytics.android.Crashlytics
@@ -14,6 +15,7 @@ import org.prevoz.android.auth.AuthenticationUtils
 import org.prevoz.android.events.Events
 import retrofit.RetrofitError
 import rx.Observable
+import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import javax.inject.Inject
@@ -25,8 +27,10 @@ class MyRidesPresenter(component: ApplicationComponent) : MvpPresenter<MyRidesFr
     }
 
     @Inject lateinit var authUtils : AuthenticationUtils
+    @Inject lateinit var connectivityService : ConnectivityManager
 
     var view : MyRidesFragment? = null
+    var myRidesSubscription : Subscription? = null
 
     override fun attachView(view: MyRidesFragment?) {
         this.view = view
@@ -36,6 +40,8 @@ class MyRidesPresenter(component: ApplicationComponent) : MvpPresenter<MyRidesFr
 
     override fun detachView(retainInstance: Boolean) {
         this.view = null
+        this.myRidesSubscription?.unsubscribe()
+        this.myRidesSubscription = null
     }
 
     fun checkForAuthentication() {
@@ -47,6 +53,12 @@ class MyRidesPresenter(component: ApplicationComponent) : MvpPresenter<MyRidesFr
     }
 
     private fun loadRides() {
+        if (myRidesSubscription != null) return
+        if (connectivityService.activeNetworkInfo == null || !connectivityService.activeNetworkInfo.isConnected) {
+            view?.showNetworkError()
+            return
+        }
+
         view?.showLoadingThrobber()
         val myRides = ApiClient.getAdapter().myRides
                 .flatMap { results ->
@@ -66,7 +78,7 @@ class MyRidesPresenter(component: ApplicationComponent) : MvpPresenter<MyRidesFr
                     }
                 }
 
-        myRides.mergeWith(bookmarks)
+        myRidesSubscription = myRides.mergeWith(bookmarks)
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -79,6 +91,8 @@ class MyRidesPresenter(component: ApplicationComponent) : MvpPresenter<MyRidesFr
                     }
                 }, {
                     e -> handleLoadingError(e)
+                }, {
+                    myRidesSubscription = null
                 })
     }
 
@@ -88,10 +102,11 @@ class MyRidesPresenter(component: ApplicationComponent) : MvpPresenter<MyRidesFr
             if (e.response?.status == 403 || e.response?.status == 401) {
                 authUtils.logout().subscribeOn(Schedulers.io()).toBlocking().firstOrDefault(null)
                 view?.showLoginPrompt()
+                return
             }
-        } else {
-            view?.showLoadingError()
         }
+
+        view?.showLoadingError()
     }
 
     fun login() {
