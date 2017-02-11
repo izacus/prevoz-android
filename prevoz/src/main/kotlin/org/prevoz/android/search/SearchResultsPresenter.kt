@@ -2,6 +2,10 @@ package org.prevoz.android.search
 
 import android.net.ConnectivityManager
 import com.crashlytics.android.Crashlytics
+import com.crashlytics.android.answers.Answers
+import com.crashlytics.android.answers.ContentViewEvent
+import com.crashlytics.android.answers.CustomEvent
+import com.crashlytics.android.answers.SearchEvent
 import com.hannesdorfmann.mosby.mvp.MvpPresenter
 import de.greenrobot.event.EventBus
 import org.prevoz.android.ApplicationComponent
@@ -97,6 +101,7 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
 
     fun showResults(results: List<RestRide>, route: Route, highlightRideIds: IntArray) {
         this.results = results
+        Answers.getInstance().logSearch(SearchEvent().putQuery(route.toString()))
         if (results.isEmpty()) {
             view?.showEmptyMessage()
         } else {
@@ -139,7 +144,10 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
         val date = date
         if (route == null || date == null) return
         view?.setNotificationButtonThrobber(true)
-        pushManager.setSubscriptionStatus(route, date, !pushManager.isSubscribed(route, date))
+
+        val subscribe = !pushManager.isSubscribed(route, date)
+        Answers.getInstance().logCustom(if (subscribe) CustomEvent("Subscribe to push") else CustomEvent("Unsubscribe from push"))
+        pushManager.setSubscriptionStatus(route, date, subscribe)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe( {
                                 view?.setNotificationButtonThrobber(false)

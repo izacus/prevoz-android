@@ -10,6 +10,9 @@ import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
+import com.crashlytics.android.answers.CustomEvent;
 import com.rengwuxian.materialedittext.MaterialAutoCompleteTextView;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.rengwuxian.materialedittext.validation.METValidator;
@@ -131,6 +134,8 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
             textPhone.setText(prefs.getString(PREF_PHONE_NO, ""));
             chkInsurance.setChecked(prefs.getBoolean(PREF_HAS_INSURANCE, false));
         }
+
+        Answers.getInstance().logCustom(new CustomEvent("New ride opened"));
     }
 
     protected void fillInEditRide(RestRide editRide)

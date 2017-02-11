@@ -42,6 +42,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
+import com.crashlytics.android.answers.CustomEvent;
 
 import org.prevoz.android.PrevozApplication;
 import org.prevoz.android.R;
@@ -254,6 +257,23 @@ public class RideInfoActivity extends PrevozActivity {
                 return true;
             }
         });
+
+        ContentViewEvent event = new ContentViewEvent();
+        event.putContentName(ride.getRoute().toString());
+        event.putContentId(ride.id.toString());
+        switch (action) {
+            case PARAM_ACTION_SHOW:
+                event.putContentType("Ride");
+                break;
+            case PARAM_ACTION_EDIT:
+                event.putContentType("Ride - edit");
+                break;
+            case PARAM_ACTION_SUBMIT:
+                event.putContentType("New ride");
+                break;
+        }
+
+        Answers.getInstance().logContentView(event);
     }
 
     private void setPeopleText() {
@@ -449,6 +469,7 @@ public class RideInfoActivity extends PrevozActivity {
                     EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.newride_publish_success, false));
                     EventBus.getDefault().post(new Events.MyRideStatusUpdated(ride, false));
                     setResult(Activity.RESULT_OK);
+                    Answers.getInstance().logCustom(new CustomEvent("New ride submitted"));
                 }
 
                 finish();

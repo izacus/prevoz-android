@@ -4,9 +4,11 @@ import android.content.Context;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import org.prevoz.android.BuildConfig;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestPushStatus;
 import org.prevoz.android.events.Events;
@@ -48,6 +50,10 @@ public class PushManager
     {
         fcmId = FirebaseInstanceId.getInstance().getToken();
         available = (fcmId != null);
+
+        if (BuildConfig.DEBUG) {
+            Log.d("Prevoz", "FCM ID: " + fcmId);
+        }
 
         database.getNotificationSubscriptions()
                 .flatMap(Observable::from)

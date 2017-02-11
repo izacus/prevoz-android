@@ -25,6 +25,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.LoginEvent;
 
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
@@ -150,8 +152,11 @@ public class LoginActivity extends PrevozActivity
                   })
                   .subscribeOn(Schedulers.io())
                   .observeOn(AndroidSchedulers.mainThread())
-                  .subscribe(authInfoPair -> {},
+                  .subscribe(authInfoPair -> {
+                              Answers.getInstance().logLogin(new LoginEvent().putSuccess(true));
+                          },
                           throwable -> {
+                              Answers.getInstance().logLogin(new LoginEvent().putSuccess(false));
                               Crashlytics.logException(throwable.getCause());
                               ApiClient.setBearer(null);
                               final Bundle result = new Bundle();
@@ -260,8 +265,9 @@ public class LoginActivity extends PrevozActivity
     {
         if (webview.canGoBack())
             webview.goBack();
-        else
+        else {
             super.onBackPressed();
+        }
     }
 
     @Override
