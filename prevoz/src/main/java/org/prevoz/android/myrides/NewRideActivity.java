@@ -39,8 +39,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
-import icepick.Icepick;
-import icepick.State;
 
 public class NewRideActivity extends PrevozActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
@@ -70,10 +68,10 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
     @BindView(R.id.newride_insurance)
     protected CheckBox chkInsurance;
 
-    @State protected ZonedDateTime setTime;
-    @State protected boolean dateSet;
-    @State protected boolean timeSet;
-    @State protected Long editRideId;
+    protected ZonedDateTime setTime;
+    protected boolean dateSet;
+    protected boolean timeSet;
+    protected Long editRideId;
 
     private boolean shouldGoFromDateToTime = false;
 
@@ -136,6 +134,13 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
         }
 
         Answers.getInstance().logCustom(new CustomEvent("New ride opened"));
+
+        if (savedInstanceState != null) {
+            setTime = (ZonedDateTime) savedInstanceState.getSerializable("time");
+            dateSet = savedInstanceState.getBoolean("dateSet");
+            timeSet = savedInstanceState.getBoolean("timeSet");
+            editRideId = savedInstanceState.getLong("editRideId");
+        }
     }
 
     protected void fillInEditRide(RestRide editRide)
@@ -284,7 +289,12 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Icepick.saveInstanceState(this, outState);
+
+        // TODO Move to MVP
+        outState.putSerializable("time", setTime);
+        outState.putBoolean("dateSet", dateSet);
+        outState.putBoolean("timeSet", timeSet);
+        outState.putLong("editRideId", editRideId);
     }
 
     @Override
