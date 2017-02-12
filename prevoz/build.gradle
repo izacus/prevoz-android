@@ -87,10 +87,6 @@ dependencies {
     // Google
     compile 'com.google.firebase:firebase-messaging:10.0.1'
 
-    // Icepick
-    compile 'frankiesardo:icepick:3.2.0'
-    kapt 'frankiesardo:icepick-processor:3.2.0'
-
     // Retrofit + ButterKnife
     compile 'com.jakewharton:butterknife:8.4.0'
     kapt 'com.jakewharton:butterknife-compiler:8.4.0'

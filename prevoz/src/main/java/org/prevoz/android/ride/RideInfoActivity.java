@@ -71,8 +71,6 @@ import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
-import icepick.Icepick;
-import icepick.State;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -155,9 +153,7 @@ public class RideInfoActivity extends PrevozActivity {
     @BindView(R.id.rideinfo_button_sms)
     protected Button rightButton;
 
-    @State
     protected RestRide ride = null;
-    @State
     protected String action = null;
 
     GestureDetector detector;
@@ -169,13 +165,17 @@ public class RideInfoActivity extends PrevozActivity {
     public void onCreate(Bundle savedInstanceState) {
         LocaleUtil.checkSetLocale(this, getResources().getConfiguration());
         super.onCreate(savedInstanceState);
-        Icepick.restoreInstanceState(this, savedInstanceState);
         setContentView(R.layout.activity_rideinfo);
         ((PrevozApplication)getApplication()).component().inject(this);
         ButterKnife.bind(this);
 
-        ride = getIntent().getParcelableExtra(ARG_RIDE);
-        action = getIntent().getStringExtra(ARG_ACTION);
+        if (savedInstanceState != null) {
+            ride = savedInstanceState.getParcelable("ride");
+            action = savedInstanceState.getString("action");
+        } else {
+            ride = getIntent().getParcelableExtra(ARG_RIDE);
+            action = getIntent().getStringExtra(ARG_ACTION);
+        }
 
         if (action == null) {
             action = PARAM_ACTION_SHOW;
@@ -502,6 +502,7 @@ public class RideInfoActivity extends PrevozActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Icepick.saveInstanceState(this, outState);
+        outState.putParcelable("ride", ride);
+        outState.putString("action", action);
     }
 }
