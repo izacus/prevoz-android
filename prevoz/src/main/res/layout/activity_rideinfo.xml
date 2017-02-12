@@ -74,6 +74,7 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_action_clock"
                     android:scaleType="center"
+                    android:contentDescription="@null"
                     />
 
                 <TextView
@@ -97,6 +98,7 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_action_ticket"
                     android:scaleType="center"
+                    android:contentDescription="@null"
                     />
 
                 <TextView
@@ -158,6 +160,7 @@
                         android:src="@drawable/ic_action_phone_start"
                         android:drawableLeft="@drawable/ic_action_phone_start"
                         android:scaleType="center"
+                        android:contentDescription="@null"
                         />
 
                     <TextView
@@ -185,6 +188,7 @@
                         android:src="@drawable/ic_action_users"
                         android:drawableLeft="@drawable/ic_action_phone_start"
                         android:scaleType="center"
+                        android:contentDescription="@null"
                         />
 
                     <TextView
@@ -329,6 +333,7 @@
             android:scaleType="center"
             android:layout_gravity="top|right"
             android:src="@drawable/ic_favorite_outline"
+            android:contentDescription="Dodaj med priljubljene"
             />
 
     </FrameLayout>

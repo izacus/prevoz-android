@@ -96,6 +96,7 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_action_calendar_day"
                 android:scaleType="center"
+                android:contentDescription="@null"
                 />
 
             <com.rengwuxian.materialedittext.MaterialEditText
@@ -140,6 +141,7 @@
                     android:layout_height="match_parent"
                     android:scaleType="center"
                     android:src="@drawable/ic_action_send"
+                    android:contentDescription="@null"
                     />
 
                 <ProgressBar

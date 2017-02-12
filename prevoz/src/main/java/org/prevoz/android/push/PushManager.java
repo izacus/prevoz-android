@@ -1,5 +1,6 @@
 package org.prevoz.android.push;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -46,6 +47,7 @@ public class PushManager
         setup();
     }
 
+    @SuppressLint("MissingFirebaseInstanceTokenRefresh")
     protected void setup()
     {
         fcmId = FirebaseInstanceId.getInstance().getToken();
