@@ -168,4 +168,13 @@
         </LinearLayout>
     </LinearLayout>
 
+    <!-- This is an ugly hack to handle town control tap. -->
+    <View
+        android:id="@+id/search_swap_towns_interceptor"
+        android:layout_width="64dp"
+        android:layout_height="116dp"
+        android:layout_gravity="left"
+        android:elevation="112dp"
+        android:background="@android:color/transparent" />
+
 </FrameLayout>

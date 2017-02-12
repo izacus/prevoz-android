@@ -42,6 +42,15 @@ class SearchFormPresenter(component: ApplicationComponent) : MvpPresenter<Search
         view?.showDateDialog(selectedDate)
     }
 
+    fun swapCities() {
+        val tmp = from
+        from = to
+        to = tmp
+
+        view?.showFrom(from)
+        view?.showTo(to)
+    }
+
     fun search() {
         view?.showLoadingThrobber()
         Schedulers.io().createWorker().schedule {

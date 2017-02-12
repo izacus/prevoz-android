@@ -1,6 +1,7 @@
 package org.prevoz.android.search
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -105,36 +106,10 @@ class SearchFragment : MvpFragment<SearchFragment, SearchFormPresenter>(), DateP
         presenter.search()
     }
 
-    /*
-    public void onEventMainThread(Events.SearchComplete e)
-    {
-        updateSearchButtonProgress(false);
+    @OnClick(R.id.search_swap_towns_interceptor)
+    fun onLocationIconClicked() {
+        presenter.swapCities()
     }
-
-    public void onEventMainThread(Events.SearchFillWithRoute e)
-    {
-        Route r = e.route;
-        if (r.getFrom() == null)
-            searchFrom.setText("");
-        else
-            searchFrom.setText(r.getFrom().toString());
-
-        if (r.getTo() == null)
-            searchTo.setText("");
-        else
-            searchTo.setText(r.getTo().toString());
-
-        if (e.date != null)
-        {
-            selectedDate = e.date;
-            updateShownDate();
-        }
-
-        if (e.searchInProgress)
-            updateSearchButtonProgress(true);
-
-        EventBus.getDefault().removeStickyEvent(e);
-    }*/
 
     fun showDate(selectedDate: LocalDate) {
         searchDate.setText(LocaleUtil.localizeDate(resources, selectedDate.atStartOfDay(LocaleUtil.getLocalTimezone())))
