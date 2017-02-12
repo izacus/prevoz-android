@@ -1,5 +1,7 @@
 package org.prevoz.android.model;
 
+import android.util.Log;
+
 /**
  * Carries basic route information
  *
@@ -31,9 +33,10 @@ public class Route
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Route route = (Route) o;
-        return from != null ? from.equals(route.from) : route.from == null && (to != null ? to.equals(route.to) : route.to == null);
+        boolean fromEqual = (from == null && route.from == null) || (from != null && from.equals(route.from));
+        boolean toEqual = (to == null && route.to == null) || (to != null && to.equals(route.to));
+        return fromEqual && toEqual;
 
     }
 

@@ -81,10 +81,14 @@ public class RestRide implements Comparable, Parcelable, Serializable
     @SerializedName("is_author")
     public boolean isAuthor;
 
+    // Caches
     @Nullable
     private String localizedFromCity;
     @Nullable
     private String localizedToCity;
+
+    @Nullable
+    private Route route;
 
     public RestRide(String fromCity, String fromCountry, String toCity, String toCountry, @Nullable Float price, @Nullable Integer numPeople, ZonedDateTime date, @Nullable String phoneNumber, boolean insured, @Nullable String comment)
     {
@@ -151,7 +155,13 @@ public class RestRide implements Comparable, Parcelable, Serializable
     }
 
     @NonNull public Route getRoute() {
-        return new Route(new City(fromCity, fromCountry), new City(toCity, toCountry));
+        if (route == null) route = new Route(new City(fromCity, fromCountry), new City(toCity, toCountry));
+        return route;
+    }
+
+    @Override
+    public String toString() {
+        return getRoute().toString() + "/" + date;
     }
 
     @Override

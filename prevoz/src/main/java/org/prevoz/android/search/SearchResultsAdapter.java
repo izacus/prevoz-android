@@ -12,6 +12,7 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.SuperscriptSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import org.prevoz.android.model.Route;
 import org.prevoz.android.ride.RideInfoActivity;
 import org.prevoz.android.util.LocaleUtil;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -143,26 +145,37 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
 
     public synchronized void setResults(@NonNull List<RestRide> rides, @NonNull int[] highlights, @Nullable Route askedForRoute)
     {
+        if (askedForRoute.getFrom() == null && askedForRoute.getTo() == null) askedForRoute = null;
         buildResults(rides, highlights, askedForRoute);
         notifyDataSetChanged();
     }
 
-    private void buildResults(@NonNull List<RestRide> rides, @NonNull int[] highlightIds, @Nullable Route askedForRoute)
+    private void buildResults(final @NonNull List<RestRide> restRides, final @NonNull int[] highlightIds, final @Nullable Route askedForRoute)
     {
+        List<RestRide> rides = new ArrayList<>(restRides);
         Collections.sort(rides, (r1, r2) -> {
             // Check if this is a preferred route
-            int cityNameCompare = 0;
             if (askedForRoute != null && !r1.getRoute().equals(r2.getRoute())) {
                 if (r1.getRoute().equals(askedForRoute)) {
-                    cityNameCompare = -1;
+                    return -1;
                 } else if (r2.getRoute().equals(askedForRoute)) {
-                    cityNameCompare = 1;
+                    return 1;
+                }
+
+                if (askedForRoute.getFrom() == null) {
+                    if (!r1.getRoute().getTo().equals(r2.getRoute().getTo())) {
+                        if (r1.getRoute().getTo().equals(askedForRoute.getTo())) return -1;
+                        if (r2.getRoute().getTo().equals(askedForRoute.getTo())) return 1;
+                    }
+                } else if (askedForRoute.getTo() == null) {
+                    if (!r1.getRoute().getFrom().equals(r2.getRoute().getFrom())) {
+                        if (r1.getRoute().getFrom().equals(askedForRoute.getFrom())) return -1;
+                        if (r2.getRoute().getFrom().equals(askedForRoute.getFrom())) return 1;
+                    }
                 }
             }
 
-            if (cityNameCompare == 0) {
-                cityNameCompare = (r1.fromCity + r1.toCity).compareTo(r2.fromCity + r2.toCity);
-            }
+            int cityNameCompare = (r1.fromCity + r1.toCity).compareTo(r2.fromCity + r2.toCity);
 
             if (cityNameCompare == 0) {
                 if (r1.date != null && r2.date != null) {
@@ -214,9 +227,8 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
     {
         // Guard for some rare corner-cases
         if (position >= results.size()) return -1;
-
         RestRide ride = results.get(position);
-        return (ride.fromCity.hashCode() + ride.fromCountry.hashCode()) * (ride.toCity.hashCode() + ride.toCountry.hashCode());
+        return ride.getRoute().hashCode();
     }
 
     public void removeRide(Long id)

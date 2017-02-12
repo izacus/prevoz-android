@@ -47,9 +47,7 @@ public class City implements Comparable<City>, Parcelable
     @Override
     public boolean equals(Object o)
     {
-        if (!(o instanceof City))
-            return false;
-
+        if (!(o instanceof City)) return false;
         City c = (City)o;
         return c.getDisplayName().equalsIgnoreCase(displayName) && c.getCountryCode().equalsIgnoreCase(countryCode);
     }
