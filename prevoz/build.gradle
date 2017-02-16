@@ -33,7 +33,7 @@ android {
         applicationId "org.prevoz.android"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 44
+        versionCode 45
         versionName "3.3"
         resConfigs "sl"
 
