@@ -139,7 +139,11 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
             setTime = (ZonedDateTime) savedInstanceState.getSerializable("time");
             dateSet = savedInstanceState.getBoolean("dateSet");
             timeSet = savedInstanceState.getBoolean("timeSet");
-            editRideId = savedInstanceState.getLong("editRideId");
+            if (savedInstanceState.containsKey("editRideId")) {
+                editRideId = savedInstanceState.getLong("editRideId");
+            } else {
+                editRideId = null;
+            }
         }
     }
 
@@ -294,7 +298,9 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
         outState.putSerializable("time", setTime);
         outState.putBoolean("dateSet", dateSet);
         outState.putBoolean("timeSet", timeSet);
-        outState.putLong("editRideId", editRideId);
+        if (editRideId != null) {
+            outState.putLong("editRideId", editRideId);
+        }
     }
 
     @Override

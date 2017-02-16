@@ -260,7 +260,10 @@ public class RideInfoActivity extends PrevozActivity {
 
         ContentViewEvent event = new ContentViewEvent();
         event.putContentName(ride.getRoute().toString());
-        event.putContentId(ride.id.toString());
+        if (ride.id != null) {
+            event.putContentId(ride.id.toString());
+        }
+
         switch (action) {
             case PARAM_ACTION_SHOW:
                 event.putContentType("Ride");
