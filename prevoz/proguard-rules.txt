@@ -123,3 +123,7 @@
 -dontwarn android.support.v7.**
 -keep class !android.support.v7.internal.view.menu.**,android.support.v7.** {*;}
 -keep interface android.support.v7.** { *; }
+
+# Crashlytics
+-keep class com.crashlytics.** { *; }
+-dontwarn com.crashlytics.**

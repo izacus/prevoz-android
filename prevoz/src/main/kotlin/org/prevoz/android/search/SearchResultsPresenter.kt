@@ -83,12 +83,12 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe( { results -> showResults(results?.results ?: listOf(), route, highlightRideIds) },
-                            { throwable -> handleError(throwable as RetrofitError) },
+                            { throwable -> handleError(throwable) },
                             { EventBus.getDefault().post(Events.SearchComplete()) })
     }
 
-    fun handleError(error: RetrofitError) {
-        if (error.response.status == 403 && ApiClient.getBearer() != null) {
+    fun handleError(error: Throwable) {
+        if (error is RetrofitError && error.response.status == 403 && ApiClient.getBearer() != null) {
             Crashlytics.logException(error.cause)
             authUtils.logout().subscribeOn(Schedulers.io()).subscribe()
             ApiClient.setBearer(null)
@@ -97,6 +97,8 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
             view?.showSearchError()
             view?.hideNotificationButton()
         }
+
+        if (error !is RetrofitError) Crashlytics.logException(error)
     }
 
     fun showResults(results: List<RestRide>, route: Route, highlightRideIds: IntArray) {
