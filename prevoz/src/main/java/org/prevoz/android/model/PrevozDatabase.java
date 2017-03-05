@@ -359,10 +359,7 @@ public class PrevozDatabase {
 
     public Observable<Boolean> addNotificationSubscription(@NonNull Route route, @NonNull LocalDate date) {
         long epoch = localDateToEpoch(date);
-        Notification notification = new Notification(route.getFrom().getDisplayName(),
-                                                     route.getFrom().getCountryCode(),
-                                                     route.getTo().getDisplayName(),
-                                                     route.getTo().getCountryCode(),
+        Notification notification = new Notification(route,
                                                      epoch);
         return databasePrepared.flatMap(storIOSQLite -> storIOSQLite.put()
                                                         .object(notification)

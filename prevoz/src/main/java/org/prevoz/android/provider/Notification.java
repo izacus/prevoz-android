@@ -45,11 +45,12 @@ public class Notification
 
     Notification() {}
 
-    public Notification(String fromCity, String fromCountry, String toCity, String toCountry, long date) {
-        this.fromCity = fromCity;
-        this.fromCountry = fromCountry;
-        this.toCity = toCity;
-        this.toCountry = toCountry;
+    public Notification(Route route, long date) {
+        this.id = 31 * route.hashCode() + date;
+        this.fromCity = route.getFrom().getDisplayName();
+        this.fromCountry = route.getFrom().getCountryCode();
+        this.toCity = route.getTo().getDisplayName();
+        this.toCountry = route.getTo().getCountryCode();
         this.date = date;
         this.registrationDate = LocalDate.now()
                                          .atStartOfDay(LocaleUtil.getLocalTimezone())

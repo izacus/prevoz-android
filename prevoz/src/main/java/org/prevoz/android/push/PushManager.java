@@ -82,6 +82,7 @@ public class PushManager
                     @Override
                     public Observable<Boolean> call(RestPushStatus status) {
                         if (!status.isSuccessful()) throw new RuntimeException("Failed to set push status.");
+                        Log.d(LOG_TAG, "Subscription changed for " + route + " / " + date + " / " + subscribed);
                         if (subscribed) {
                             return database.addNotificationSubscription(route, date);
                         } else {
