@@ -111,8 +111,9 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
             view?.showEmptyMessage()
         } else {
             view?.showResults(results, route, highlightRideIds)
-            showNotificationButtonIfAvailable()
         }
+
+        showNotificationButtonIfAvailable()
     }
 
     fun showHistory() {

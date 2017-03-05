@@ -31,6 +31,7 @@ class SearchResultsFragment : MvpFragment<SearchResultsFragment, SearchResultsPr
     @Inject lateinit var database : PrevozDatabase
 
     var resultList: StickyListHeadersListView? = null
+    var resultListEmpty: View? = null
 
     lateinit var searchNotifyButtonContainer: View
     lateinit var searchNotifyButton: View
@@ -64,6 +65,7 @@ class SearchResultsFragment : MvpFragment<SearchResultsFragment, SearchResultsPr
         val views = inflater!!.inflate(R.layout.fragment_search_list, container, false)
         resultList = views.findViewById(R.id.search_results_list) as StickyListHeadersListView?
         resultList?.addHeaderView(headerFragmentView, null, true)
+        resultListEmpty = views.findViewById(R.id.search_results_empty)
 
         if (childFragmentManager.findFragmentByTag("SearchFragment") == null) {
             val ft = childFragmentManager.beginTransaction()
@@ -81,6 +83,7 @@ class SearchResultsFragment : MvpFragment<SearchResultsFragment, SearchResultsPr
             ListDisappearAnimation(resultList).animate()
         }
 
+        resultListEmpty?.visibility = View.INVISIBLE
         resultList?.adapter = adapter
         if (animate) ListFlyupAnimator(resultList).animate()
     }
@@ -96,6 +99,7 @@ class SearchResultsFragment : MvpFragment<SearchResultsFragment, SearchResultsPr
             val adapter = SearchResultsAdapter(activity, database, results, highlightRideIds, askedForRoute)
             resultList?.adapter = adapter
         }
+        resultListEmpty?.visibility = View.INVISIBLE
 
         if (results.isEmpty()) {
             showEmptyMessage()
@@ -120,6 +124,8 @@ class SearchResultsFragment : MvpFragment<SearchResultsFragment, SearchResultsPr
         if (resultList?.adapter != null) {
             ListDisappearAnimation(resultList).animate()
         }
+
+        resultListEmpty?.visibility = View.INVISIBLE
     }
 
     fun showSearchError() {
@@ -133,12 +139,7 @@ class SearchResultsFragment : MvpFragment<SearchResultsFragment, SearchResultsPr
     }
 
     fun showEmptyMessage() {
-        searchNotifyButtonContainer.visibility = View.VISIBLE
-        searchNotifyButtonContainer.animate().alpha(1.0f).setDuration(200).setListener(null)
-        searchNotifyButtonIcon.visibility = View.GONE
-        searchNotifyButtonProgress.visibility = View.GONE
-        searchNofityButtonText.text = getString(R.string.search_no_results)
-        searchNotifyButtonContainer.isEnabled = false
+        resultListEmpty?.visibility = View.VISIBLE
     }
 
     fun showNotificationButton() {
