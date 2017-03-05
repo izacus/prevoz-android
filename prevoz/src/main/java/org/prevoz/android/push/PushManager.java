@@ -53,9 +53,7 @@ public class PushManager
         fcmId = FirebaseInstanceId.getInstance().getToken();
         available = (fcmId != null);
 
-        if (BuildConfig.DEBUG) {
-            Log.d("Prevoz", "FCM ID: " + fcmId);
-        }
+        Log.i("Prevoz", "Prevoz FCM ID: " + fcmId);
 
         database.getNotificationSubscriptions()
                 .flatMap(Observable::from)
