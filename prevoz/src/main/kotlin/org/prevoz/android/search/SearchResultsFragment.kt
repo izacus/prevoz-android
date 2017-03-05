@@ -173,6 +173,6 @@ class SearchResultsFragment : MvpFragment<SearchResultsFragment, SearchResultsPr
     }
 
     fun showingResults(): Boolean {
-        return resultList?.adapter is SearchResultsAdapter
+        return resultList?.adapter is SearchResultsAdapter || resultListEmpty?.visibility == View.VISIBLE
     }
 }

@@ -35,7 +35,7 @@ public class ListFlyupAnimator implements ViewTreeObserver.OnPreDrawListener
         for (int i = 1; i < view.getChildCount(); i++ )
         {
             final View child = view.getChildAt(i);
-            int position = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200.0f, view.getResources().getDisplayMetrics());
+            int position = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, view.getHeight() * 2, view.getResources().getDisplayMetrics());
             child.setTranslationY(position);
             child.setAlpha(0);
             ViewCompat.animate(child).withLayer().translationY(0f).alpha(1.0f).setStartDelay(delay).setDuration(300).setInterpolator(interpolator);
