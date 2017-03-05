@@ -31,7 +31,7 @@ public class ListDisappearAnimation implements ViewTreeObserver.OnPreDrawListene
         {
             final View child = view.getChildAt(i);
             ViewCompat.setLayerType(child, ViewCompat.LAYER_TYPE_HARDWARE, null);
-            int position = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200.0f, view.getResources().getDisplayMetrics());
+            int position = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, view.getHeight(), view.getResources().getDisplayMetrics());
             ViewCompat.animate(child).withLayer().translationY(position).alpha(0).setDuration(150).setInterpolator(new AccelerateInterpolator());
         }
 

@@ -112,6 +112,7 @@ public class PushManager
 
     public boolean isPushAvailable()
     {
+        if (fcmId == null) setup();
         return available;
     }
 

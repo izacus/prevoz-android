@@ -88,7 +88,10 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
     }
 
     fun handleError(error: Throwable) {
-        if (error is RetrofitError && error.response.status == 403 && ApiClient.getBearer() != null) {
+        if (error is RetrofitError &&
+            error.response != null &&
+            error.response.status == 403 &&
+            ApiClient.getBearer() != null) {
             Crashlytics.logException(error.cause)
             authUtils.logout().subscribeOn(Schedulers.io()).subscribe()
             ApiClient.setBearer(null)
