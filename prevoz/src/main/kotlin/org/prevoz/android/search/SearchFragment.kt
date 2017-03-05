@@ -121,6 +121,8 @@ class SearchFragment : MvpFragment<SearchFragment, SearchFormPresenter>(), DateP
         } else {
             searchFrom.setText(from.toString())
         }
+
+        searchFrom.clearFocus()
     }
 
     fun showTo(to: City?) {
@@ -129,6 +131,8 @@ class SearchFragment : MvpFragment<SearchFragment, SearchFormPresenter>(), DateP
         } else {
             searchTo.setText(to.toString())
         }
+
+        searchTo.clearFocus()
     }
 
     fun showDateDialog(selectedDate: LocalDate) {
