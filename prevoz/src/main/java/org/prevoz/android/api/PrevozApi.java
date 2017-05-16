@@ -7,6 +7,8 @@ import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.api.rest.RestSearchResults;
 import org.prevoz.android.api.rest.RestStatus;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -46,7 +48,7 @@ public interface PrevozApi
                               @Field("action") String action);
 
     @POST("/api/carshare/create/")
-    void postRide(@Body RestRide ride, Callback<RestStatus> cb);
+    Call<RestStatus> postRide(@Body RestRide ride);
 
     @GET("/api/carshare/list/")
     Observable<RestSearchResults> getMyRides();
@@ -55,11 +57,11 @@ public interface PrevozApi
     Observable<RestSearchResults> getBookmarkedRides(@Query("nocache") long time);
 
     @DELETE("/api/carshare/delete/{id}/")
-    void deleteRide(@Path("id") String id, Callback<Response> cb);
+    Call<ResponseBody> deleteRide(@Path("id") String id);
 
     @FormUrlEncoded
     @POST("/api/carshare/full/{id}/")
-    void setFull(@Path("id") String id, @Field("state") String state, Callback<Response> cb);
+    Call<ResponseBody> setFull(@Path("id") String id, @Field("state") String state);
 
     @FormUrlEncoded
     @POST("/oauth2/access_token/")
@@ -79,5 +81,5 @@ public interface PrevozApi
 
     @FormUrlEncoded
     @POST("/api/carshare/bookmark/{id}/")
-    void setRideBookmark(@Path("id") String id, @Field("state") String state, Callback<Response> cb);
+    Call<ResponseBody> setRideBookmark(@Path("id") String id, @Field("state") String state);
 }

@@ -61,6 +61,7 @@ class MyRidesPresenter(component: ApplicationComponent) : MvpPresenter<MyRidesFr
 
         view?.showLoadingThrobber()
         val myRides = ApiClient.getAdapter().myRides
+                .subscribeOn(Schedulers.io())
                 .flatMap { results ->
                     if (results == null || results.results == null) {
                         Observable.empty<List<RestRide>>()
@@ -70,6 +71,7 @@ class MyRidesPresenter(component: ApplicationComponent) : MvpPresenter<MyRidesFr
                 }
 
         val bookmarks = ApiClient.getAdapter().getBookmarkedRides(System.currentTimeMillis())
+                .subscribeOn(Schedulers.io())
                 .flatMap { results ->
                     if (results == null || results.results == null) {
                         Observable.empty<List<RestRide>>()
@@ -80,6 +82,7 @@ class MyRidesPresenter(component: ApplicationComponent) : MvpPresenter<MyRidesFr
 
         myRidesSubscription = myRides.mergeWith(bookmarks)
                 .toList()
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     results ->
@@ -100,9 +103,12 @@ class MyRidesPresenter(component: ApplicationComponent) : MvpPresenter<MyRidesFr
         Crashlytics.logException(e.cause)
         if (e is HttpException) {
             if (e.code() == 403 || e.code() == 401) {
-                authUtils.logout().subscribeOn(Schedulers.io()).toBlocking().firstOrDefault(null)
-                view?.showLoginPrompt()
-                return
+                authUtils.logout()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({
+                            view?.showLoginPrompt()
+                        });
             }
         }
 

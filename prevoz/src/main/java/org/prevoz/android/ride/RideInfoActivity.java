@@ -72,6 +72,7 @@ import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -361,9 +362,10 @@ public class RideInfoActivity extends PrevozActivity {
                         deleteDialog.setMessage(getString(R.string.ride_delete_progress));
                         deleteDialog.show();
 
-                        ApiClient.getAdapter().deleteRide(String.valueOf(ride.id), new Callback<Response>() {
+                        Call<ResponseBody> call = ApiClient.getAdapter().deleteRide(String.valueOf(ride.id));
+                        call.enqueue(new Callback<ResponseBody>() {
                             @Override
-                            public void onResponse(Call<Response> call, Response<Response> response) {
+                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                 finish();
                                 EventBus.getDefault().post(new Events.MyRideStatusUpdated(ride, true));
                                 deleteDialog.dismiss();
@@ -371,7 +373,7 @@ public class RideInfoActivity extends PrevozActivity {
                             }
 
                             @Override
-                            public void onFailure(Call<Response> call, Throwable throwable) {
+                            public void onFailure(Call<ResponseBody> call, Throwable throwable) {
                                 finish();
                                 deleteDialog.dismiss();
                                 EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.ride_delete_failure, true));
@@ -407,15 +409,17 @@ public class RideInfoActivity extends PrevozActivity {
             }
         });
 
-        ApiClient.getAdapter().setRideBookmark(String.valueOf(ride.id), Bookmark.shouldShow(ride.bookmark) ? "bookmark" : "erase", new Callback<Response>() {
+        Call<ResponseBody> response = ApiClient.getAdapter().setRideBookmark(String.valueOf(ride.id), Bookmark.shouldShow(ride.bookmark) ? "bookmark" : "erase");
+        response.enqueue(new Callback<ResponseBody>() {
+
             @Override
-            public void onResponse(Call<Response> call, Response<Response> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Log.i("Prevoz", "Bookmark set OK.");
                 EventBus.getDefault().postSticky(new Events.MyRideStatusUpdated(ride, false));
             }
 
             @Override
-            public void onFailure(Call<Response> call, Throwable throwable) {
+            public void onFailure(Call<ResponseBody> call, Throwable throwable) {
                 Log.e("Prevoz", "Failed to set bookmark status.", throwable);
                 Crashlytics.logException(throwable);
             }
@@ -427,9 +431,10 @@ public class RideInfoActivity extends PrevozActivity {
         chkFull.setEnabled(false);
         final boolean rideFull = chkFull.isChecked();
 
-        ApiClient.getAdapter().setFull(String.valueOf(ride.id), rideFull ? PrevozApi.FULL_STATE_FULL : PrevozApi.FULL_STATE_AVAILABLE, new Callback<Response>() {
+        Call<ResponseBody> call = ApiClient.getAdapter().setFull(String.valueOf(ride.id), rideFull ? PrevozApi.FULL_STATE_FULL : PrevozApi.FULL_STATE_AVAILABLE);
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<Response> call, Response<Response> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 ride.isFull = rideFull;
                 chkFull.setEnabled(true);
                 setPeopleText();
@@ -437,7 +442,7 @@ public class RideInfoActivity extends PrevozActivity {
             }
 
             @Override
-            public void onFailure(Call<Response> call, Throwable throwable) {
+            public void onFailure(Call<ResponseBody> call, Throwable throwable) {
                 chkFull.setChecked(!rideFull);
                 ViewUtils.showMessage(RideInfoActivity.this, "Stanja prevoza ni bilo mogoče spremeniti :(", true);
                 chkFull.setEnabled(true);
@@ -456,7 +461,8 @@ public class RideInfoActivity extends PrevozActivity {
         dialog.setMessage("Oddajam prevoz...");
         dialog.show();
 
-        ApiClient.getAdapter().postRide(ride, new Callback<RestStatus>() {
+        Call<RestStatus> call = ApiClient.getAdapter().postRide(ride);
+        call.enqueue(new Callback<RestStatus>() {
             @Override
             public void onResponse(Call<RestStatus> call, Response<RestStatus> response) {
                 try {
