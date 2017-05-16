@@ -11,7 +11,6 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-import com.squareup.okhttp.OkHttpClient;
 
 import org.prevoz.android.BuildConfig;
 import org.prevoz.android.PrevozApplication;
@@ -24,16 +23,21 @@ import java.io.IOException;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-import retrofit.RequestInterceptor;
-import retrofit.RestAdapter;
-import retrofit.client.OkClient;
-import retrofit.converter.GsonConverter;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 
 public class ApiClient
 {
     public static final String BASE_URL = "https://prevoz.org";
 
-    @NonNull private static final RestAdapter adapter;
+    @NonNull private static final Retrofit adapter;
     @Nullable private static String bearer = null;
 
     static
@@ -45,15 +49,22 @@ public class ApiClient
                 .registerTypeAdapter(Bookmark.class, new BookmarkAdapter())
                 .create();
 
+        OkHttpClient.Builder client = new OkHttpClient.Builder()
+                .addInterceptor(new CookieSetterInterceptor());
 
-        OkHttpClient client = new OkHttpClient();
-        adapter = new RestAdapter.Builder()
-                                 .setEndpoint(BASE_URL)
-                                 .setConverter(new GsonConverter(gson))
-                                 .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
-                                 .setRequestInterceptor(new CookieSetterInterceptor())
-                                 .setClient(new OkClient(client))
-                                 .build();
+        if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            client.addInterceptor(loggingInterceptor);
+        }
+
+
+        adapter = new Retrofit.Builder()
+                              .baseUrl(BASE_URL)
+                              .addConverterFactory(GsonConverterFactory.create(gson))
+                              .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                              .client(client.build())
+                              .build();
     }
 
     public static PrevozApi getAdapter()
@@ -147,17 +158,20 @@ public class ApiClient
         }
     }
 
-    private static class CookieSetterInterceptor implements RequestInterceptor
+    private static class CookieSetterInterceptor implements Interceptor
     {
         @Override
-        public void intercept(RequestFacade requestFacade)
-        {
-            requestFacade.addHeader("User-Agent", String.format(Locale.US, "Prevoz/%d Android/%d", PrevozApplication.VERSION, Build.VERSION.SDK_INT));
+        public Response intercept(Chain chain) throws IOException {
+            Request original = chain.request();
+            Request.Builder authorizedRequest = original.newBuilder()
+                    .addHeader("User-Agent", String.format(Locale.US, "Prevoz/%d Android/%d", PrevozApplication.VERSION, Build.VERSION.SDK_INT));
 
             if (bearer != null) {
-                requestFacade.addHeader("Authorization", String.format("Bearer %s", bearer));
-                requestFacade.addHeader("WWW-Authenticate", "Bearer realm=\"api\"");
+                authorizedRequest.addHeader("Authorization", String.format("Bearer %s", bearer));
+                authorizedRequest.addHeader("WWW-Authenticate", "Bearer realm=\"api\"");
             }
+
+            return chain.proceed(authorizedRequest.build());
         }
     }
 }

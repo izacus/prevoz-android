@@ -61,6 +61,7 @@ import org.prevoz.android.util.PrevozActivity;
 import org.prevoz.android.util.ViewUtils;
 import org.threeten.bp.format.DateTimeFormatter;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Locale;
 
@@ -71,9 +72,9 @@ import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import rx.schedulers.Schedulers;
 
 public class RideInfoActivity extends PrevozActivity {
@@ -362,7 +363,7 @@ public class RideInfoActivity extends PrevozActivity {
 
                         ApiClient.getAdapter().deleteRide(String.valueOf(ride.id), new Callback<Response>() {
                             @Override
-                            public void success(Response response, Response response2) {
+                            public void onResponse(Call<Response> call, Response<Response> response) {
                                 finish();
                                 EventBus.getDefault().post(new Events.MyRideStatusUpdated(ride, true));
                                 deleteDialog.dismiss();
@@ -370,7 +371,7 @@ public class RideInfoActivity extends PrevozActivity {
                             }
 
                             @Override
-                            public void failure(RetrofitError error) {
+                            public void onFailure(Call<Response> call, Throwable throwable) {
                                 finish();
                                 deleteDialog.dismiss();
                                 EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.ride_delete_failure, true));
@@ -408,15 +409,15 @@ public class RideInfoActivity extends PrevozActivity {
 
         ApiClient.getAdapter().setRideBookmark(String.valueOf(ride.id), Bookmark.shouldShow(ride.bookmark) ? "bookmark" : "erase", new Callback<Response>() {
             @Override
-            public void success(Response response, Response response2) {
+            public void onResponse(Call<Response> call, Response<Response> response) {
                 Log.i("Prevoz", "Bookmark set OK.");
                 EventBus.getDefault().postSticky(new Events.MyRideStatusUpdated(ride, false));
             }
 
             @Override
-            public void failure(RetrofitError error) {
-                Log.e("Prevoz", "Failed to set bookmark status.", error);
-                Crashlytics.logException(error);
+            public void onFailure(Call<Response> call, Throwable throwable) {
+                Log.e("Prevoz", "Failed to set bookmark status.", throwable);
+                Crashlytics.logException(throwable);
             }
         });
     }
@@ -428,7 +429,7 @@ public class RideInfoActivity extends PrevozActivity {
 
         ApiClient.getAdapter().setFull(String.valueOf(ride.id), rideFull ? PrevozApi.FULL_STATE_FULL : PrevozApi.FULL_STATE_AVAILABLE, new Callback<Response>() {
             @Override
-            public void success(Response response, Response response2) {
+            public void onResponse(Call<Response> call, Response<Response> response) {
                 ride.isFull = rideFull;
                 chkFull.setEnabled(true);
                 setPeopleText();
@@ -436,7 +437,7 @@ public class RideInfoActivity extends PrevozActivity {
             }
 
             @Override
-            public void failure(RetrofitError retrofitError) {
+            public void onFailure(Call<Response> call, Throwable throwable) {
                 chkFull.setChecked(!rideFull);
                 ViewUtils.showMessage(RideInfoActivity.this, "Stanja prevoza ni bilo mogoče spremeniti :(", true);
                 chkFull.setEnabled(true);
@@ -457,7 +458,7 @@ public class RideInfoActivity extends PrevozActivity {
 
         ApiClient.getAdapter().postRide(ride, new Callback<RestStatus>() {
             @Override
-            public void success(RestStatus status, Response response) {
+            public void onResponse(Call<RestStatus> call, Response<RestStatus> response) {
                 try {
                     dialog.dismiss();
                 } catch (IllegalArgumentException e) {
@@ -465,32 +466,31 @@ public class RideInfoActivity extends PrevozActivity {
                     return;
                 }
 
-                if (!("created".equals(status.status) || "updated".equals(status.status))) {
-                    if (status.error != null && status.error.size() > 0) {
-                        String firstKey = status.error.keySet().iterator().next();
-                        EventBus.getDefault().postSticky(new Events.ShowMessage(status.error.get(firstKey).get(0), true));
-                    }
+                if (!response.isSuccessful() && response.code() == 403) {
+                    EventBus.getDefault().postSticky(new Events.ShowMessage("Vaša prijava ni več veljavna, prosimo ponovno se prijavite.", true));
+                    authUtils.logout().subscribeOn(Schedulers.io()).subscribe();
                 } else {
-                    EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.newride_publish_success, false));
-                    EventBus.getDefault().post(new Events.MyRideStatusUpdated(ride, false));
-                    setResult(Activity.RESULT_OK);
-                    Answers.getInstance().logCustom(new CustomEvent("New ride submitted"));
+                    if (!("created".equals(response.body()) || "updated".equals(response.body()))) {
+                        if (response.body().error != null && response.body().error.size() > 0) {
+                            String firstKey = response.body().error.keySet().iterator().next();
+                            EventBus.getDefault().postSticky(new Events.ShowMessage(response.body().error.get(firstKey).get(0), true));
+                        }
+                    } else {
+                        EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.newride_publish_success, false));
+                        EventBus.getDefault().post(new Events.MyRideStatusUpdated(ride, false));
+                        setResult(Activity.RESULT_OK);
+                        Answers.getInstance().logCustom(new CustomEvent("New ride submitted"));
+                    }
                 }
 
                 finish();
             }
 
             @Override
-            public void failure(RetrofitError error) {
+            public void onFailure(Call<RestStatus> call, Throwable throwable) {
                 if (dialog.isShowing()) dialog.dismiss();
-                if (error.getResponse() != null && error.getResponse().getStatus() == 403) {
-                    EventBus.getDefault().postSticky(new Events.ShowMessage("Vaša prijava ni več veljavna, prosimo ponovno se prijavite.", true));
-                    authUtils.logout().subscribeOn(Schedulers.io()).subscribe();
-                } else {
-                    Crashlytics.logException(error.getCause());
-                    EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.newride_publish_failure, true));
-                }
-
+                Crashlytics.logException(throwable);
+                EventBus.getDefault().postSticky(new Events.ShowMessage(R.string.newride_publish_failure, true));
                 setResult(Activity.RESULT_CANCELED);
                 finish();
             }

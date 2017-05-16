@@ -13,7 +13,7 @@ import org.prevoz.android.api.ApiClient
 import org.prevoz.android.api.rest.RestRide
 import org.prevoz.android.auth.AuthenticationUtils
 import org.prevoz.android.events.Events
-import retrofit.RetrofitError
+import retrofit2.HttpException
 import rx.Observable
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
@@ -98,8 +98,8 @@ class MyRidesPresenter(component: ApplicationComponent) : MvpPresenter<MyRidesFr
 
     fun handleLoadingError(e: Throwable) {
         Crashlytics.logException(e.cause)
-        if (e is RetrofitError) {
-            if (e.response?.status == 403 || e.response?.status == 401) {
+        if (e is HttpException) {
+            if (e.code() == 403 || e.code() == 401) {
                 authUtils.logout().subscribeOn(Schedulers.io()).toBlocking().firstOrDefault(null)
                 view?.showLoginPrompt()
                 return

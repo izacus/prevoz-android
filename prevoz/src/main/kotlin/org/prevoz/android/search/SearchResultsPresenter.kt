@@ -20,7 +20,7 @@ import org.prevoz.android.util.LocaleUtil
 import org.prevoz.android.util.ViewUtils
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
-import retrofit.RetrofitError
+import retrofit2.HttpException
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -88,9 +88,8 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
     }
 
     fun handleError(error: Throwable) {
-        if (error is RetrofitError &&
-            error.response != null &&
-            error.response.status == 403 &&
+        if (error is HttpException &&
+            error.code() == 403 &&
             ApiClient.getBearer() != null) {
             Crashlytics.logException(error.cause)
             authUtils.logout().subscribeOn(Schedulers.io()).subscribe()
@@ -101,7 +100,7 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
             view?.hideNotificationButton()
         }
 
-        if (error !is RetrofitError) Crashlytics.logException(error)
+        if (error !is HttpException) Crashlytics.logException(error)
     }
 
     fun showResults(results: List<RestRide>, route: Route, highlightRideIds: IntArray) {

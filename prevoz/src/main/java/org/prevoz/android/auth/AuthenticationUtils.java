@@ -17,7 +17,6 @@ import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 
-import com.squareup.okhttp.Response;
 import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.events.Events;
@@ -25,7 +24,6 @@ import org.prevoz.android.events.Events;
 import java.io.IOException;
 
 import de.greenrobot.event.EventBus;
-import retrofit.RetrofitError;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -161,14 +159,6 @@ public class AuthenticationUtils
                                     },
                                     error -> {
                                         Crashlytics.logException(error.getCause());
-
-                                        if (error instanceof RetrofitError) {
-                                            RetrofitError re = (RetrofitError)error;
-                                            if (re.getBody() != null) {
-                                                Crashlytics.log(Log.ERROR, LOG_TAG, re.getBody().toString());
-                                            }
-                                        }
-
                                         logout().subscribeOn(Schedulers.io()).onErrorReturn(null).subscribe();
                                     });
                 }
