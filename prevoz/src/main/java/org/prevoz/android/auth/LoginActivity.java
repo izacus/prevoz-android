@@ -6,12 +6,21 @@ import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.customtabs.CustomTabsCallback;
+import android.support.customtabs.CustomTabsClient;
+import android.support.customtabs.CustomTabsIntent;
+import android.support.customtabs.CustomTabsServiceConnection;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -55,19 +64,37 @@ public class LoginActivity extends PrevozActivity
     private AccountAuthenticatorResponse authenticatorResponse;
     private Bundle authenticatorResult;
 
-    @BindView(R.id.toolbar)
-    protected Toolbar toolbar;
-
-    @BindView(R.id.login_webview)
-    protected WebView webview;
-
-    private boolean tokenRequestInProgress = false; // Workaround for Android 2.3
+    @Nullable private CustomTabsClient client;
+    @NonNull private CustomTabsCallback callback;
+    @NonNull private CustomTabsServiceConnection connection;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+
+        if (Intent.ACTION_VIEW.equals(intent.getAction()) && intent.getData() != null) {
+            String code = intent.getData().getQueryParameter("code");
+            // TODO: Error handling.
+            getAccountUsernameAndApiKey(code);
+        } else {
+            // Generate OAuth login URL
+            String authenticationUrl = null;
+            try {
+                authenticationUrl = ApiClient.BASE_URL + String.format("/oauth2/authorize/%s/code/?client_id=%s&response_type=code&redirect_uri=%s", CLIENT_ID, CLIENT_ID, URLEncoder.encode(REDIRECT_URL, "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                Crashlytics.logException(e);
+            }
+
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(authenticationUrl));
+            startActivity(browserIntent);
+            finish();
+        }
+    }
+
+    /*supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         getApplicationComponent().inject(this);
@@ -120,13 +147,13 @@ public class LoginActivity extends PrevozActivity
         CookieManager.getInstance().removeAllCookie();
         Log.d(LOG_TAG, "Opening login at " + authenticationUrl);
         webview.loadUrl(authenticationUrl);
-        setSupportProgressBarIndeterminate(true);
-    }
+        setSupportProgressBarIndeterminate(true); */
+
 
     private void getAccountUsernameAndApiKey(final String code)
     {
         final ProgressDialog dialog = ProgressDialog.show(this, "Prijava", "Prijavljam....", true, false);
-        webview.setVisibility(View.INVISIBLE);
+        //webview.setVisibility(View.INVISIBLE);
 
         Observable<RestAuthTokenResponse> accessToken = ApiClient.getAdapter().getAccessToken("authorization_code", CLIENT_ID, CLIENT_SECRET, code, REDIRECT_URL)
                                                         .cache();
@@ -236,58 +263,5 @@ public class LoginActivity extends PrevozActivity
             //autologin = new DeviceAccountLogin(LoginActivity.this, view);
             //autologin.handleLogin(realm, account, args);
         }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        webview.saveState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        webview.restoreState(savedInstanceState);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onBackPressed()
-    {
-        if (webview.canGoBack())
-            webview.goBack();
-        else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public void finish()
-    {
-        if (authenticatorResponse != null)
-        {
-            if (authenticatorResult != null)
-            {
-                authenticatorResponse.onResult(authenticatorResult);
-                setResult(RESULT_OK);
-            }
-            else
-            {
-                authenticatorResponse.onError(AccountManager.ERROR_CODE_CANCELED, "Cancelled.");
-            }
-        }
-
-
-        CookieManager.getInstance().removeAllCookie();
-        super.finish();
     }
 }

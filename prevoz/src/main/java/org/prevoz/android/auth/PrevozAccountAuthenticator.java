@@ -38,7 +38,6 @@ public class PrevozAccountAuthenticator extends AbstractAccountAuthenticator
                                                                     Bundle options) throws NetworkErrorException
     {
         Log.d(LOG_TAG, "AddAccount.");
-
         final Bundle result = new Bundle();
         final Intent loginActivityIntent = new Intent(ctx, LoginActivity.class);
         loginActivityIntent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
