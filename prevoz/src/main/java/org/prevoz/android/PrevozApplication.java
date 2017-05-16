@@ -8,6 +8,7 @@ import android.os.Environment;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.core.CrashlyticsCore;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
 import org.prevoz.android.auth.AuthenticationUtils;
@@ -37,7 +38,10 @@ public class PrevozApplication extends Application
     {
         LocaleUtil.checkSetLocale(this, getResources().getConfiguration());
         super.onCreate();
-        Fabric.with(this, new Crashlytics(), new Answers());
+
+        Crashlytics crashlytics = new Crashlytics.Builder().core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build()).build();
+        Fabric.with(this, crashlytics, new Answers());
+
         AndroidThreeTen.init(this);
         component = DaggerApplicationComponent.builder()
                                               .applicationModule(new ApplicationModule(this))
