@@ -67,14 +67,17 @@
 # platform version.  We know about them, and they are safe.
 -dontwarn android.support.**
 
-# Retrofit
--dontwarn rx.**
--dontwarn retrofit.**
--keep class retrofit.** { *; }
--keep class sun.misc.Unsafe { *; }
--keep class org.prevoz.android.api.rest.** { *; }
+
+# Retrofit 2.X
+## https://square.github.io/retrofit/ ##
+
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
+
 -keepclasseswithmembers class * {
-    @retrofit.http.* <methods>;
+    @retrofit2.http.* <methods>;
 }
 
 # Database
@@ -82,13 +85,33 @@
 -keep class edu.mit.mobile.android.content.** { *; }
 
 # OkHttp
--keep class com.squareup.okhttp.** { *; }
--keep interface com.squareup.okhttp.** { *; }
--dontwarn com.squareup.okhttp.**
+-keepattributes Signature
+-keepattributes *Annotation*
+-keep class okhttp3.** { *; }
+-keep interface okhttp3.** { *; }
+-dontwarn okhttp3.**
 
 # Okio
--dontwarn org.codehaus.mojo.**
--dontwarn java.nio.file.**
+-keep class sun.misc.Unsafe { *; }
+-dontwarn sun.misc.Unsafe
+-dontwarn java.nio.file.*
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+-dontwarn okio.**
+
+# RxJava 0.21
+
+-keep class rx.schedulers.Schedulers {
+    public static <methods>;
+}
+-keep class rx.schedulers.ImmediateScheduler {
+    public <methods>;
+}
+-keep class rx.schedulers.TestScheduler {
+    public <methods>;
+}
+-keep class rx.schedulers.Schedulers {
+    public static ** test();
+}
 
 # EventBus
 -keepclassmembers class ** {
