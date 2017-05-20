@@ -84,29 +84,41 @@ class SearchResultsFragment : MvpFragment<SearchResultsFragment, SearchResultsPr
             ListDisappearAnimation(resultList).animate()
         }
 
-        resultListEmpty?.visibility = View.INVISIBLE
-        resultList?.adapter = adapter
-        if (animate) ListFlyupAnimator(resultList).animate()
+        if (animate) {
+            resultList?.postDelayed({
+                resultListEmpty?.visibility = View.INVISIBLE
+                resultList?.adapter = adapter
+                resultList?.invalidate()
+                ListFlyupAnimator(resultList).animate()
+            }, 150)
+        } else {
+            resultListEmpty?.visibility = View.INVISIBLE
+            resultList?.adapter = adapter
+        }
     }
 
     fun showResults(results: List<RestRide>, askedForRoute: Route?, highlightRideIds: IntArray) {
-        if (resultList?.adapter is SearchResultsAdapter) {
-            val adapter = resultList?.adapter as SearchResultsAdapter
-            adapter.setResults(results, highlightRideIds, askedForRoute)
-            if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                resultList?.smoothScrollToPosition(1)
+        resultList?.postDelayed({
+            if (resultList?.adapter is SearchResultsAdapter) {
+                val adapter = resultList?.adapter as SearchResultsAdapter
+                adapter.setResults(results, highlightRideIds, askedForRoute)
+                if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    resultList?.smoothScrollToPosition(1)
+                }
+            } else {
+                val adapter = SearchResultsAdapter(activity, database, results, highlightRideIds, askedForRoute)
+                resultList?.adapter = adapter
             }
-        } else {
-            val adapter = SearchResultsAdapter(activity, database, results, highlightRideIds, askedForRoute)
-            resultList?.adapter = adapter
-        }
-        resultListEmpty?.visibility = View.INVISIBLE
 
-        if (results.isEmpty()) {
-            showEmptyMessage()
-        } else {
-            ListFlyupAnimator(resultList).animate()
-        }
+            resultListEmpty?.visibility = View.INVISIBLE
+
+            if (results.isEmpty()) {
+                showEmptyMessage()
+            } else {
+                resultList?.invalidate()
+                ListFlyupAnimator(resultList).animate()
+            }
+        }, 150)
     }
 
     fun updateDisplayedRide(ride: RestRide) {
