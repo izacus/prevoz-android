@@ -35,8 +35,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".auth.LoginActivity" android:label="@string/login_title"
-                  android:parentActivityName=".MainActivity">
+        <activity android:name=".auth.LoginActivity"
+                  android:label="@string/login_title"
+                  android:parentActivityName=".MainActivity"
+                  android:theme="@style/Prevoz.Theme.Login"
+            >
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

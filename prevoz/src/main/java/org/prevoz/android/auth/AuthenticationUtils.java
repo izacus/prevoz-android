@@ -147,7 +147,7 @@ public class AuthenticationUtils
                 // Refresh authentication token if required.
                 if (sp.getLong(PrevozAccountAuthenticator.PREF_KEY_EXPIRES, 0) < System.currentTimeMillis()) {
                     ApiClient.getAdapter()
-                            .getRefreshedToken("refresh_token", am.getPassword(acc), LoginActivity.CLIENT_ID, LoginActivity.CLIENT_SECRET, "read write")
+                            .getRefreshedToken("refresh_token", am.getPassword(acc), LoginActivity.Companion.getCLIENT_ID(), LoginActivity.Companion.getCLIENT_SECRET(), "read write")
                             .subscribeOn(Schedulers.io())
                             .subscribe(token -> {
                                         ApiClient.setBearer(token.accessToken);

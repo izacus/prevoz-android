@@ -19,6 +19,10 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
+    <style name="Prevoz.Theme.Login" parent="Prevoz.Theme.Base">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
     <style name="Prevoz.Theme.Dialog" parent="@style/Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorPrimary">@color/prevoztheme_color</item>
         <item name="colorPrimaryDark">@color/prevoztheme_color_dark</item>
