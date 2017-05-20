@@ -6,6 +6,7 @@ import android.accounts.AccountManager
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.ProgressDialog
+import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.Intent
 import android.content.SharedPreferences
@@ -86,16 +87,23 @@ class LoginActivity : PrevozActivity() {
 
     private fun startExternalBrowserLoginFlow(authenticationUrl: String) {
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(authenticationUrl))
-        startActivity(browserIntent)
+        browserIntent.`package` = "com.android.chrome"  // Only chrome really provides reliable login here.
+
+        try {
+            startActivity(browserIntent)
+        } catch (ex: ActivityNotFoundException) {
+            // Chrome browser presumably not installed so allow user to choose instead
+            browserIntent.`package` = null
+            startActivity(intent)
+        }
+
         finish()
     }
 
     private fun getAccountUsernameAndApiKey(code: String) {
         val dialog = ProgressDialog.show(this, "Prijava", "Prijavljam....", true, false)
-        //webview.setVisibility(View.INVISIBLE);
-
         val accessToken = ApiClient.getAdapter().getAccessToken("authorization_code", CLIENT_ID, CLIENT_SECRET, code, REDIRECT_URL)
-                .cache()
+                                   .cache()
 
         val accountStatus = accessToken.flatMap { restAuthTokenResponse ->
             ApiClient.setBearer(restAuthTokenResponse.accessToken)
