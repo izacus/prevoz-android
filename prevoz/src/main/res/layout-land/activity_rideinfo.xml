@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rideinfo_container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@android:color/white"
+    >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="500dp"
+            android:layout_height="wrap_content"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
+                android:background="@color/prevoztheme_color"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:id="@+id/rideinfo_from"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="@android:color/white"
+                    android:textSize="26sp"
+                    style="?android:attr/textAppearanceLarge"
+                    />
+
+                <TextView
+                    android:id="@+id/rideinfo_to"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="@android:color/white"
+                    android:textSize="26sp"
+                    style="?android:attr/textAppearanceLarge"
+                    android:gravity="right|center_vertical"
+                    />
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#DDDDDD" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                >
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_action_clock"
+                    android:scaleType="center"
+                    android:contentDescription="@null"
+                    />
+
+                <TextView
+                    android:id="@+id/rideinfo_time"
+                    android:layout_width="90dp"
+                    android:layout_height="match_parent"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textSize="35sp"
+                    android:gravity="center"
+                    android:textColor="@android:color/black"
+                    style="?android:attr/textAppearanceLarge"
+                    />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_action_ticket"
+                    android:scaleType="center"
+                    android:contentDescription="@null"
+                    />
+
+                <TextView
+                    android:id="@+id/rideinfo_price"
+                    android:layout_width="90dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="35sp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textColor="@android:color/black"
+                    style="?android:attr/textAppearanceListItemSmall"
+                    />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/rideinfo_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+
+                android:drawableLeft="@drawable/ic_action_calendar_day"
+                android:drawablePadding="8dp"
+
+                android:fontFamily="sans-serif-light"
+                android:gravity="center_vertical"
+                android:textColor="@android:color/black"
+                style="?android:attr/textAppearanceMedium"
+                />
+
+            <LinearLayout
+                android:id="@+id/rideinfo_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                >
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="16dp"
+                    android:layout_height="1dp"
+                    android:background="#DDDDDD" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginTop="4dp"
+                    android:orientation="horizontal"
+                    >
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_action_phone_start"
+                        android:drawableLeft="@drawable/ic_action_phone_start"
+                        android:scaleType="center"
+                        android:contentDescription="@null"
+                        />
+
+                    <TextView
+                        android:id="@+id/rideinfo_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="6dp"
+                        android:includeFontPadding="false"
+
+                        android:fontFamily="sans-serif-light"
+                        android:gravity="center_vertical"
+                        android:textIsSelectable="true"
+                        android:textColor="@android:color/black"
+                        style="?android:attr/textAppearanceMedium"
+                        />
+
+
+                    <TextView
+                        android:id="@+id/rideinfo_insurance"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:includeFontPadding="false"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        style="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/prevoztheme_color"
+                        />
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_action_users"
+                        android:drawableLeft="@drawable/ic_action_phone_start"
+                        android:scaleType="center"
+                        android:contentDescription="@null"
+                        />
+
+                    <TextView
+                        android:id="@+id/rideinfo_people"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="6dp"
+                        android:includeFontPadding="false"
+
+                        android:fontFamily="sans-serif-light"
+                        android:gravity="center_vertical"
+                        android:textColor="@android:color/black"
+                        style="?android:attr/textAppearanceMedium"
+                        />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/rideinfo_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="8dp"
+                    android:textIsSelectable="true"
+                    android:textColor="@android:color/black"
+                    style="?android:attr/textAppearanceMedium"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+                        android:id="@+id/rideinfo_car"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|left"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:textColor="@android:color/darker_gray"
+                        android:textStyle="italic"
+                        style="?android:attr/textAppearanceSmall"
+                        />
+
+                    <TextView
+                        android:id="@+id/rideinfo_driver"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|right"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:textColor="@android:color/darker_gray"
+                        android:textStyle="italic"
+                        style="?android:attr/textAppearanceSmall"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/rideinfo_full_box"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="8dp"
+                        android:layout_height="1dp"
+                        android:background="#DDDDDD" />
+
+                    <CheckBox
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rideinfo_ridefull"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:textColor="@android:color/black"
+                        android:text="@string/rideinfo_ride_full"
+                        />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:layout_height="1dp"
+                    android:background="#DDDDDD" />
+
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal"
+                     >
+
+                     <Button
+                         android:id="@+id/rideinfo_button_call"
+                         android:layout_width="0dp"
+                         android:layout_height="48dp"
+                         android:layout_weight="1"
+                         android:textColor="@color/prevoztheme_color"
+                         android:background="?selectableItemBackground"
+                         style="?android:textAppearanceButton"
+
+                         android:text="@string/rideinfo_call"
+                         />
+
+                     <Button
+                         android:id="@+id/rideinfo_button_sms"
+                         android:layout_width="0dp"
+                         android:layout_height="48dp"
+                         android:layout_weight="1"
+                         android:textColor="@color/prevoztheme_color"
+                         android:background="?selectableItemBackground"
+                         style="?android:textAppearanceButton"
+
+                         android:text="@string/rideinfo_send_sms"
+                         />
+
+                 </LinearLayout>
+
+             </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/rideinfo_favorite"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="center"
+            android:layout_gravity="top|right"
+            android:src="@drawable/ic_favorite_outline"
+            android:contentDescription="Dodaj med priljubljene"
+            />
+
+    </FrameLayout>
+</ScrollView>
