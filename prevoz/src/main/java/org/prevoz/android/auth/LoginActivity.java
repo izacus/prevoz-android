@@ -57,9 +57,9 @@ import rx.schedulers.Schedulers;
 public class LoginActivity extends PrevozActivity
 {
     private static final String LOG_TAG = "Prevoz.Login";
-    public static final String CLIENT_ID = "b89d13d3b102d84963bb";
-    public static final String CLIENT_SECRET = "d94e76ff9086e1fe428519b6aed6dbe65adde616";
-    private static final String REDIRECT_URL = "http://app.local/login_done/";
+    public static final String CLIENT_ID = "QTwUBJLA8ZngFS5iK2h2kcV68qAftyLIi2gjXkIy";
+    public static final String CLIENT_SECRET = "qcPKCeIScAU8Ca009BwokX4xW86AhSaPZu1rqu2ZCygMPhsrG57sF1gMcryzCBqf2qwSuZpGFVkurl0ZtiVwLi62B3pLYoawTk2z0qX2PcSePZvVkrjGsntxSbxOroSc";
+    private static final String REDIRECT_URL = "https://prevoz.org/prevoz/application_approve/done/";
 
     private AccountAuthenticatorResponse authenticatorResponse;
     private Bundle authenticatorResult;
@@ -83,7 +83,7 @@ public class LoginActivity extends PrevozActivity
             // Generate OAuth login URL
             String authenticationUrl = null;
             try {
-                authenticationUrl = ApiClient.BASE_URL + String.format("/oauth2/authorize/%s/code/?client_id=%s&response_type=code&redirect_uri=%s", CLIENT_ID, CLIENT_ID, URLEncoder.encode(REDIRECT_URL, "UTF-8"));
+                authenticationUrl = ApiClient.BASE_URL + String.format("/prevoz/application_approve/%s/?client_id=%s&response_type=code&redirect_uri=%s", CLIENT_ID, CLIENT_ID, URLEncoder.encode(REDIRECT_URL, "UTF-8"));
             } catch (UnsupportedEncodingException e) {
                 Crashlytics.logException(e);
             }

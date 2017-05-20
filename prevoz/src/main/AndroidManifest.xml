@@ -42,9 +42,9 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:host="app.local"/>
-                <data android:scheme="http"/>
-                <data android:pathPrefix="/login_done"/>
+                <data android:host="prevoz.org"/>
+                <data android:scheme="https"/>
+                <data android:pathPrefix="/prevoz/application_approve/done/"/>
             </intent-filter>
 
             <meta-data
