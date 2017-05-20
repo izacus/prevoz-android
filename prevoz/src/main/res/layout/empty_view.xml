@@ -38,12 +38,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             >
-            <Button
+            <android.support.v7.widget.AppCompatButton
                 android:id="@+id/empty_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:backgroundTint="@color/prevoztheme_color"
+                app:backgroundTint="@color/prevoztheme_color"
+                app:backgroundTintMode="src_in"
                 android:textColor="@android:color/white"
                 android:visibility="gone"
                 />
