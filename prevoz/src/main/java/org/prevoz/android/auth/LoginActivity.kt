@@ -48,6 +48,8 @@ import java.net.URLEncoder
 
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.crashlytics.android.answers.LevelEndEvent
+import com.crashlytics.android.answers.LevelStartEvent
 import de.greenrobot.event.EventBus
 import org.prevoz.android.MainActivity
 import rx.Observable
@@ -77,6 +79,7 @@ class LoginActivity : PrevozActivity() {
                 Crashlytics.logException(e)
             }
 
+            Answers.getInstance().logLevelStart(LevelStartEvent().putLevelName("Login"))
             startExternalBrowserLoginFlow(authenticationUrl!!)
         }
     }
@@ -115,9 +118,13 @@ class LoginActivity : PrevozActivity() {
                 }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ authInfoPair -> Answers.getInstance().logLogin(LoginEvent().putSuccess(true)) },
+                .subscribe({ authInfoPair ->
+                            Answers.getInstance().logLogin(LoginEvent().putSuccess(true))
+                            Answers.getInstance().logLevelEnd(LevelEndEvent().putLevelName("Login").putSuccess(true))
+                        },
                         { throwable ->
                             Answers.getInstance().logLogin(LoginEvent().putSuccess(false))
+                            Answers.getInstance().logLevelEnd(LevelEndEvent().putLevelName("Login").putSuccess(false))
                             Crashlytics.logException(throwable.cause)
                             ApiClient.setBearer(null)
                             val result = Bundle()
