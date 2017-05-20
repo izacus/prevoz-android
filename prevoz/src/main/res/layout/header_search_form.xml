@@ -44,7 +44,11 @@
                         android:id="@+id/search_notify_button_icon"
                         android:contentDescription="@null"
                         android:layout_width="32dp"
-                        android:layout_height="48dp"/>
+                        android:layout_height="48dp"
+                        android:tint="@color/prevoztheme_color"
+                        android:tintMode="src_in"
+                        android:scaleType="centerInside"
+                    />
 
                 <ProgressBar
                         android:id="@+id/search_notify_button_progress"

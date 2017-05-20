@@ -3,6 +3,7 @@ package org.prevoz.android.search
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.os.Bundle
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.view.ViewCompat
 import android.view.LayoutInflater
 import android.view.View
@@ -158,10 +159,10 @@ class SearchResultsFragment : MvpFragment<SearchResultsFragment, SearchResultsPr
 
     fun updateNotificationButtonText(subscribed: Boolean) {
         if (subscribed) {
-            searchNotifyButtonIcon.setImageResource(R.drawable.ic_action_cancel)
+            searchNotifyButtonIcon.setImageResource(R.drawable.ic_notifications_off_black_24dp)
             searchNofityButtonText.text = "Prenehaj z obveščanjem"
         } else {
-            searchNotifyButtonIcon.setImageResource(R.drawable.ic_action_bell)
+            searchNotifyButtonIcon.setImageResource(R.drawable.ic_notifications_black_24dp)
             searchNofityButtonText.text = "Obveščaj me o novih prevozih"
         }
     }
