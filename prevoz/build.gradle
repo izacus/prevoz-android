@@ -31,7 +31,7 @@ android {
         applicationId "org.prevoz.android"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 48
+        versionCode 49
         versionName "3.4"
         resConfigs "sl"
     }
@@ -82,7 +82,7 @@ dependencies {
     compile 'com.android.support:customtabs:25.3.1'
 
     // Google
-    compile 'com.google.firebase:firebase-messaging:10.2.4'
+    compile 'com.google.firebase:firebase-messaging:10.2.6'
 
     // Retrofit + ButterKnife
     compile 'com.jakewharton:butterknife:8.4.0'
@@ -96,10 +96,10 @@ dependencies {
 
     // RxJava
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'io.reactivex:rxjava:1.2.7'
+    compile 'io.reactivex:rxjava:1.3.0'
 
     // Date
-    compile 'com.jakewharton.threetenabp:threetenabp:1.0.4'
+    compile 'com.jakewharton.threetenabp:threetenabp:1.0.5'
 
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'se.emilsjolander:stickylistheaders:2.7.0'

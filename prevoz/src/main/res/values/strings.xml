@@ -12,7 +12,7 @@
     <string name="search_form_date">Datum</string>
     <string name="search_form_button_search">Išči</string>
     <string name="search_form_button_searching">Iščem…</string>
-    <string name="login_title">Prijava</string>
+    <string name="login_title">Prevoz - Prijava</string>
     <string name="search_no_results">Najden ni bil noben prevoz</string>
 
     <string name="rideinfo_call">Pokliči</string>
