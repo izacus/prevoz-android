@@ -87,16 +87,7 @@ class LoginActivity : PrevozActivity() {
 
     private fun startExternalBrowserLoginFlow(authenticationUrl: String) {
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(authenticationUrl))
-        browserIntent.`package` = "com.android.chrome"  // Only chrome really provides reliable login here.
-
-        try {
-            startActivity(browserIntent)
-        } catch (ex: ActivityNotFoundException) {
-            // Chrome browser presumably not installed so allow user to choose instead
-            browserIntent.`package` = null
-            startActivity(intent)
-        }
-
+        startActivity(browserIntent)
         finish()
     }
 
@@ -206,6 +197,6 @@ class LoginActivity : PrevozActivity() {
         private val LOG_TAG = "Prevoz.Login"
         val CLIENT_ID = "QTwUBJLA8ZngFS5iK2h2kcV68qAftyLIi2gjXkIy"
         val CLIENT_SECRET = "qcPKCeIScAU8Ca009BwokX4xW86AhSaPZu1rqu2ZCygMPhsrG57sF1gMcryzCBqf2qwSuZpGFVkurl0ZtiVwLi62B3pLYoawTk2z0qX2PcSePZvVkrjGsntxSbxOroSc"
-        private val REDIRECT_URL = "https://prevoz.org/prevoz/application_approve/done/"
+        private val REDIRECT_URL = "prevoz://auth/done/"
     }
 }
