@@ -476,7 +476,7 @@ public class RideInfoActivity extends PrevozActivity {
                     EventBus.getDefault().postSticky(new Events.ShowMessage("Vaša prijava ni več veljavna, prosimo ponovno se prijavite.", true));
                     authUtils.logout().subscribeOn(Schedulers.io()).subscribe();
                 } else {
-                    if (!("created".equals(response.body()) || "updated".equals(response.body()))) {
+                    if (response.body() == null || !("created".equals(response.body().status) || "updated".equals(response.body().status))) {
                         if (response.body().error != null && response.body().error.size() > 0) {
                             String firstKey = response.body().error.keySet().iterator().next();
                             EventBus.getDefault().postSticky(new Events.ShowMessage(response.body().error.get(firstKey).get(0), true));
