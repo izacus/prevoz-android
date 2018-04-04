@@ -43,7 +43,7 @@ class MyRidesFragment : MvpFragment<MyRidesFragment, MyRidesPresenter>() {
     lateinit var adapter : MyRidesAdapter
 
     override fun createPresenter(): MyRidesPresenter {
-        return MyRidesPresenter((activity.application as PrevozApplication).component())
+        return MyRidesPresenter((activity!!.application as PrevozApplication).component())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +51,7 @@ class MyRidesFragment : MvpFragment<MyRidesFragment, MyRidesPresenter>() {
         adapter = MyRidesAdapter(activity)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val views = inflater?.inflate(R.layout.fragment_myrides, container, false)
         ButterKnife.bind(this, views as View)
         myridesList.setHasFixedSize(true)

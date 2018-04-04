@@ -58,8 +58,8 @@ class SearchFragment : MvpFragment<SearchFragment, SearchFormPresenter>(), DateP
         return SearchFormPresenter((activity as PrevozActivity).applicationComponent)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val views = inflater!!.inflate(R.layout.fragment_search, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val views = inflater.inflate(R.layout.fragment_search, container, false)
         ButterKnife.bind(this, views)
         setupViews()
         return views
@@ -81,8 +81,8 @@ class SearchFragment : MvpFragment<SearchFragment, SearchFormPresenter>(), DateP
         searchFrom.validator = CityNameTextValidator(activity, database)
         searchTo.validator = CityNameTextValidator(activity, database)
 
-        val fromAdapter = CityAutocompleteAdapter(activity, database)
-        val toAdapter = CityAutocompleteAdapter(activity, database)
+        val fromAdapter = CityAutocompleteAdapter(activity!!, database)
+        val toAdapter = CityAutocompleteAdapter(activity!!, database)
         searchFrom.setAdapter(fromAdapter)
         searchTo.setAdapter(toAdapter)
     }

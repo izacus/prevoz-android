@@ -43,13 +43,13 @@ class SearchResultsFragment : MvpFragment<SearchResultsFragment, SearchResultsPr
     lateinit var headerFragmentView: View
 
     override fun createPresenter(): SearchResultsPresenter {
-        return SearchResultsPresenter((activity.application as PrevozApplication).component())
+        return SearchResultsPresenter((activity!!.application as PrevozApplication).component())
     }
 
     @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (context.applicationContext as PrevozApplication).component().inject(this)
+        (context!!.applicationContext as PrevozApplication).component().inject(this)
 
         retainInstance = true
         headerFragmentView = getLayoutInflater(savedInstanceState).inflate(R.layout.header_search_form, null, false)
@@ -62,8 +62,8 @@ class SearchResultsFragment : MvpFragment<SearchResultsFragment, SearchResultsPr
         searchNotifyButtonContainer.setOnClickListener { v -> presenter.switchNotificationState() }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val views = inflater!!.inflate(R.layout.fragment_search_list, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val views = inflater.inflate(R.layout.fragment_search_list, container, false)
         resultList = views.findViewById(R.id.search_results_list) as StickyListHeadersListView?
         resultList?.addHeaderView(headerFragmentView, null, true)
         resultListEmpty = views.findViewById(R.id.search_results_empty)
@@ -106,7 +106,7 @@ class SearchResultsFragment : MvpFragment<SearchResultsFragment, SearchResultsPr
                     resultList?.smoothScrollToPosition(1)
                 }
             } else {
-                val adapter = SearchResultsAdapter(activity, database, results, highlightRideIds, askedForRoute)
+                val adapter = SearchResultsAdapter(activity!!, database, results, highlightRideIds, askedForRoute)
                 resultList?.adapter = adapter
             }
 

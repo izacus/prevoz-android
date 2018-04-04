@@ -27,11 +27,11 @@ class PushFragment : MvpFragment<PushFragment, PushPresenter>() {
 
 
     override fun createPresenter(): PushPresenter {
-        return PushPresenter((activity.application as PrevozApplication).component())
+        return PushPresenter((activity!!.application as PrevozApplication).component())
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val views = inflater?.inflate(R.layout.fragment_notifications, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val views = inflater.inflate(R.layout.fragment_notifications, container, false)
         ButterKnife.bind(this, views as View)
         ViewUtils.setupEmptyView(notificationList, emptyView, "Niste prijavljeni na nobena obvestila.")
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -53,7 +53,7 @@ class PushFragment : MvpFragment<PushFragment, PushPresenter>() {
     }
 
     fun showNotificationRemoveDialog(subscription : NotificationSubscription) {
-        AlertDialog.Builder(activity, R.style.Prevoz_Theme_Dialog)
+        AlertDialog.Builder(activity!!, R.style.Prevoz_Theme_Dialog)
                 .setTitle(String.format("%s - %s", subscription.from.toString(), subscription.to.toString()))
                 .setMessage(String.format("Ali se res želite odjaviti od obveščanja v %s?", LocaleUtil.getNotificationDayName(resources, subscription.date).toLowerCase()))
                 .setNegativeButton("Prekliči", null)

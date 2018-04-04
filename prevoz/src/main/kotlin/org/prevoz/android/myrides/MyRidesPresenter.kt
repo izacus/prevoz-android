@@ -134,7 +134,7 @@ class MyRidesPresenter(component: ApplicationComponent) : MvpPresenter<MyRidesFr
     }
 
     fun addRide() {
-        val i = Intent(view?.context, NewRideActivity::class.java)
-        ActivityCompat.startActivity(view?.context, i, ActivityOptionsCompat.makeCustomAnimation(view?.context, R.anim.slide_up, 0).toBundle())
+        val i = Intent(view?.context!!, NewRideActivity::class.java)
+        ActivityCompat.startActivity(view?.context!!, i, ActivityOptionsCompat.makeCustomAnimation(view?.context!!, R.anim.slide_up, 0).toBundle())
     }
 }
