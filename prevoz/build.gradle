@@ -26,6 +26,7 @@ repositories {
     jcenter()
     maven { url 'https://maven.fabric.io/public' }
     maven { url 'https://clojars.org/repo/' }
+    maven { url 'https://jitpack.io' }
 }
 
 android {
@@ -103,7 +104,7 @@ dependencies {
     implementation 'com.jakewharton.threetenabp:threetenabp:1.0.5'
 
     implementation 'de.greenrobot:eventbus:2.4.0'
-    implementation 'se.emilsjolander:stickylistheaders:2.7.0'
+    implementation 'com.github.mtotschnig:StickyListHeaders:2.7.1'
     implementation 'com.timehop.stickyheadersrecyclerview:library:0.4.3@aar'
 
     // UI
