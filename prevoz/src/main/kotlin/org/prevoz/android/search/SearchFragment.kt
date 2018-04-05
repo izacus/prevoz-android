@@ -65,9 +65,9 @@ class SearchFragment : MvpFragment<SearchFragment, SearchFormPresenter>(), DateP
         return views
     }
 
-    fun setupViews() {
+    private fun setupViews() {
         // Handle input action for next on to
-        searchTo.setOnEditorActionListener { v, actionId, event ->
+        searchTo.setOnEditorActionListener { _, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_NEXT) {
                 onDateClicked()
                 searchTo.clearFocus()

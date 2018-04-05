@@ -71,23 +71,35 @@ class LoginActivity : PrevozActivity() {
             // TODO: Error handling.
             getAccountUsernameAndApiKey(code)
         } else {
-            // Generate OAuth login URL
-            var authenticationUrl: String? = null
             try {
-                authenticationUrl = ApiClient.BASE_URL + String.format("/prevoz/application_approve/%s/?client_id=%s&response_type=code&redirect_uri=%s", CLIENT_ID, CLIENT_ID, URLEncoder.encode(REDIRECT_URL, "UTF-8"))
+                // Generate OAuth login URL
+                val authenticationUrl = ApiClient.BASE_URL + String.format("/prevoz/application_approve/%s/?client_id=%s&response_type=code&redirect_uri=%s", CLIENT_ID, CLIENT_ID, URLEncoder.encode(REDIRECT_URL, "UTF-8"))
+                Answers.getInstance().logLevelStart(LevelStartEvent().putLevelName("Login"))
+                try {
+                    startCustomTabsLoginFlow(authenticationUrl)
+                } catch (e: ActivityNotFoundException) {
+                    startExternalBrowserLoginFlow(authenticationUrl)
+                }
             } catch (e: UnsupportedEncodingException) {
                 Crashlytics.logException(e)
             }
 
-            Answers.getInstance().logLevelStart(LevelStartEvent().putLevelName("Login"))
-            startExternalBrowserLoginFlow(authenticationUrl!!)
+            finish()
         }
+    }
+
+    private fun startCustomTabsLoginFlow(authenticationUrl: String) {
+        val builder = CustomTabsIntent.Builder()
+        builder.setInstantAppsEnabled(false)
+        builder.setShowTitle(true)
+        builder.setToolbarColor(ContextCompat.getColor(this, R.color.prevoztheme_color_dark))
+        val intent = builder.build()
+        intent.launchUrl(this, Uri.parse(authenticationUrl))
     }
 
     private fun startExternalBrowserLoginFlow(authenticationUrl: String) {
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(authenticationUrl))
         startActivity(browserIntent)
-        finish()
     }
 
     private fun getAccountUsernameAndApiKey(code: String) {
