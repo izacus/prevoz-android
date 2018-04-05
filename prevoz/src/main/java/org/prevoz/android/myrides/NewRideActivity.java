@@ -254,8 +254,9 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
         }
     }
 
+
     @Override
-    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
+    public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
         setTime = setTime.withHour(hourOfDay).withMinute(minute);
         timeSet = true;
         updateDateTimeDisplay(false, true);
