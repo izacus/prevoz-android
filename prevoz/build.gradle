@@ -89,8 +89,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-perf:12.0.1'
 
     // Retrofit + ButterKnife
-    implementation 'com.jakewharton:butterknife:8.4.0'
-    kapt 'com.jakewharton:butterknife-compiler:8.4.0'
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    kapt 'com.jakewharton:butterknife-compiler:8.8.1'
 
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
@@ -116,9 +116,9 @@ dependencies {
     implementation 'com.hannesdorfmann.mosby:mvp:2.0.1'
 
     // DB
-    implementation 'com.pushtorefresh.storio:sqlite:1.12.2'
-    implementation 'com.pushtorefresh.storio:sqlite-annotations:1.12.2'
-    kapt 'com.pushtorefresh.storio:sqlite-annotations-processor:1.12.2'
+    implementation 'com.pushtorefresh.storio:sqlite:1.13.0'
+    implementation 'com.pushtorefresh.storio:sqlite-annotations:1.13.0'
+    kapt 'com.pushtorefresh.storio:sqlite-annotations-processor:1.13.0'
 
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
         transitive = true
