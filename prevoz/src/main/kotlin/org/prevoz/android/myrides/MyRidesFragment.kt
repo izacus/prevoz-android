@@ -2,6 +2,7 @@ package org.prevoz.android.myrides
 
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
+import android.support.transition.TransitionManager
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -26,7 +27,7 @@ class MyRidesFragment : MvpFragment<MyRidesFragment, MyRidesPresenter>() {
     lateinit var myridesList: RecyclerView
 
     @BindView(R.id.empty_view)
-    lateinit var emptyView: View
+    lateinit var emptyView: ViewGroup
 
     @BindView(R.id.empty_text)
     lateinit var emptyText: TextView
@@ -52,7 +53,7 @@ class MyRidesFragment : MvpFragment<MyRidesFragment, MyRidesPresenter>() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val views = inflater?.inflate(R.layout.fragment_myrides, container, false)
+        val views = inflater.inflate(R.layout.fragment_myrides, container, false)
         ButterKnife.bind(this, views as View)
         myridesList.setHasFixedSize(true)
         myridesList.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
@@ -80,6 +81,7 @@ class MyRidesFragment : MvpFragment<MyRidesFragment, MyRidesPresenter>() {
     }
 
     fun showLoginPrompt() {
+        TransitionManager.beginDelayedTransition(emptyView)
         emptyText.text = "Za ogled in dodajanje zaznamkov ter prevozov morate biti prijavljeni."
         emptyView.visibility = View.VISIBLE
         myridesList.visibility = View.INVISIBLE
@@ -89,6 +91,7 @@ class MyRidesFragment : MvpFragment<MyRidesFragment, MyRidesPresenter>() {
     }
 
     fun showLoadingThrobber() {
+        TransitionManager.beginDelayedTransition(emptyView)
         emptyView.visibility = View.INVISIBLE
         myridesList.visibility = View.INVISIBLE
         throbber.visibility = View.VISIBLE
@@ -98,6 +101,7 @@ class MyRidesFragment : MvpFragment<MyRidesFragment, MyRidesPresenter>() {
     }
 
     fun showMyRides(results: List<RestRide>) {
+        TransitionManager.beginDelayedTransition(emptyView)
         adapter.setRides(results)
         myridesList.visibility = View.VISIBLE
         emptyView.visibility = View.INVISIBLE
@@ -107,6 +111,7 @@ class MyRidesFragment : MvpFragment<MyRidesFragment, MyRidesPresenter>() {
     }
 
     fun showEmptyView() {
+        TransitionManager.beginDelayedTransition(emptyView)
         myridesList.visibility = View.INVISIBLE
         throbber.visibility = View.INVISIBLE
         emptyView.visibility = View.VISIBLE
@@ -116,6 +121,7 @@ class MyRidesFragment : MvpFragment<MyRidesFragment, MyRidesPresenter>() {
     }
 
     fun showLoadingError() {
+        TransitionManager.beginDelayedTransition(emptyView)
         myridesList.visibility = View.INVISIBLE
         throbber.visibility = View.INVISIBLE
         emptyView.visibility = View.VISIBLE
@@ -125,6 +131,7 @@ class MyRidesFragment : MvpFragment<MyRidesFragment, MyRidesPresenter>() {
     }
 
     fun showNetworkError() {
+        TransitionManager.beginDelayedTransition(emptyView)
         myridesList.visibility = View.INVISIBLE
         throbber.visibility = View.INVISIBLE
         emptyView.visibility = View.VISIBLE

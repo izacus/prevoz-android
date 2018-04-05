@@ -105,7 +105,7 @@ class LoginActivity : PrevozActivity() {
     private fun getAccountUsernameAndApiKey(code: String) {
         val dialog = ProgressDialog.show(this, "Prijava", "Prijavljam....", true, false)
         val accessToken = ApiClient.getAdapter().getAccessToken("authorization_code", CLIENT_ID, CLIENT_SECRET, code, REDIRECT_URL)
-                                   .cache()
+                .cache()
 
         val accountStatus = accessToken.flatMap { restAuthTokenResponse ->
             ApiClient.setBearer(restAuthTokenResponse.accessToken)
@@ -129,9 +129,9 @@ class LoginActivity : PrevozActivity() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ authInfoPair ->
-                            Answers.getInstance().logLogin(LoginEvent().putSuccess(true))
-                            Answers.getInstance().logLevelEnd(LevelEndEvent().putLevelName("Login").putSuccess(true))
-                        },
+                    Answers.getInstance().logLogin(LoginEvent().putSuccess(true))
+                    Answers.getInstance().logLevelEnd(LevelEndEvent().putLevelName("Login").putSuccess(true))
+                },
                         { throwable ->
                             Answers.getInstance().logLogin(LoginEvent().putSuccess(false))
                             Answers.getInstance().logLevelEnd(LevelEndEvent().putLevelName("Login").putSuccess(false))
@@ -170,42 +170,7 @@ class LoginActivity : PrevozActivity() {
         }
     }
 
-    private inner class WebViewController : WebViewClient() {
-        override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-            Log.d(LOG_TAG, "Loading " + url)
-
-            if (url.startsWith(REDIRECT_URL)) {
-                val uri = Uri.parse(url)
-                val code = uri.getQueryParameter("code")
-                // TODO: Error handling.
-                getAccountUsernameAndApiKey(code)
-                return true
-            }
-
-            view.loadUrl(url)
-            return true
-        }
-
-        override fun onPageStarted(view: WebView, url: String, favicon: Bitmap) {
-            super.onPageStarted(view, url, favicon)
-            setSupportProgressBarIndeterminateVisibility(true)
-        }
-
-        override fun onPageFinished(view: WebView, url: String) {
-            super.onPageFinished(view, url)
-            setSupportProgressBarIndeterminateVisibility(false)
-        }
-
-        @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
-        override fun onReceivedLoginRequest(view: WebView, realm: String, account: String, args: String) {
-            super.onReceivedLoginRequest(view, realm, account, args)
-            //autologin = new DeviceAccountLogin(LoginActivity.this, view);
-            //autologin.handleLogin(realm, account, args);
-        }
-    }
-
     companion object {
-        private val LOG_TAG = "Prevoz.Login"
         val CLIENT_ID = "QTwUBJLA8ZngFS5iK2h2kcV68qAftyLIi2gjXkIy"
         val CLIENT_SECRET = "qcPKCeIScAU8Ca009BwokX4xW86AhSaPZu1rqu2ZCygMPhsrG57sF1gMcryzCBqf2qwSuZpGFVkurl0ZtiVwLi62B3pLYoawTk2z0qX2PcSePZvVkrjGsntxSbxOroSc"
         private val REDIRECT_URL = "prevoz://auth/done/"
