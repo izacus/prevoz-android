@@ -3,58 +3,31 @@ package org.prevoz.android.auth
 import android.accounts.Account
 import android.accounts.AccountAuthenticatorResponse
 import android.accounts.AccountManager
-import android.annotation.SuppressLint
-import android.annotation.TargetApi
 import android.app.ProgressDialog
 import android.content.ActivityNotFoundException
-import android.content.ComponentName
 import android.content.Intent
-import android.content.SharedPreferences
-import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.customtabs.CustomTabsCallback
-import android.support.customtabs.CustomTabsClient
 import android.support.customtabs.CustomTabsIntent
-import android.support.customtabs.CustomTabsServiceConnection
 import android.support.v4.content.ContextCompat
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v7.widget.Toolbar
-import android.util.Log
-import android.view.MenuItem
-import android.view.View
-import android.view.Window
-import android.webkit.CookieManager
-import android.webkit.CookieSyncManager
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
-
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.answers.Answers
+import com.crashlytics.android.answers.LevelEndEvent
+import com.crashlytics.android.answers.LevelStartEvent
 import com.crashlytics.android.answers.LoginEvent
-
+import de.greenrobot.event.EventBus
+import org.prevoz.android.MainActivity
 import org.prevoz.android.R
 import org.prevoz.android.api.ApiClient
 import org.prevoz.android.api.rest.RestAccountStatus
-import org.prevoz.android.api.rest.RestAuthTokenResponse
 import org.prevoz.android.events.Events
 import org.prevoz.android.util.PrevozActivity
-
-import java.io.UnsupportedEncodingException
-import java.net.URLEncoder
-
-import butterknife.BindView
-import butterknife.ButterKnife
-import com.crashlytics.android.answers.LevelEndEvent
-import com.crashlytics.android.answers.LevelStartEvent
-import de.greenrobot.event.EventBus
-import org.prevoz.android.MainActivity
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import java.io.UnsupportedEncodingException
+import java.net.URLEncoder
 
 class LoginActivity : PrevozActivity() {
 

@@ -1,6 +1,7 @@
 package org.prevoz.android.push
 
 import android.os.Bundle
+import android.support.transition.TransitionManager
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -23,8 +24,7 @@ class PushFragment : MvpFragment<PushFragment, PushPresenter>() {
     lateinit var notificationList: RecyclerView
 
     @BindView(R.id.empty_view)
-    lateinit var emptyView: View
-
+    lateinit var emptyView: ViewGroup
 
     override fun createPresenter(): PushPresenter {
         return PushPresenter((activity!!.application as PrevozApplication).component())
@@ -40,6 +40,7 @@ class PushFragment : MvpFragment<PushFragment, PushPresenter>() {
     }
 
     fun showNotifications(notifications: List<NotificationSubscription>) {
+        TransitionManager.beginDelayedTransition(emptyView)
         if (notifications.isEmpty()) {
             notificationList.visibility = View.INVISIBLE
             emptyView.visibility = View.VISIBLE
@@ -52,7 +53,7 @@ class PushFragment : MvpFragment<PushFragment, PushPresenter>() {
         }
     }
 
-    fun showNotificationRemoveDialog(subscription : NotificationSubscription) {
+    private fun showNotificationRemoveDialog(subscription : NotificationSubscription) {
         AlertDialog.Builder(activity!!, R.style.Prevoz_Theme_Dialog)
                 .setTitle(String.format("%s - %s", subscription.from.toString(), subscription.to.toString()))
                 .setMessage(String.format("Ali se res želite odjaviti od obveščanja v %s?", LocaleUtil.getNotificationDayName(resources, subscription.date).toLowerCase()))
