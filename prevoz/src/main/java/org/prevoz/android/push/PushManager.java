@@ -75,16 +75,13 @@ public class PushManager
                     route.getTo().getCountryCode(),
                     date.format(DateTimeFormatter.ISO_LOCAL_DATE),
                     subscribed ? "subscribe" : "unsubscribe")
-                .flatMap(new Func1<RestPushStatus, Observable<Boolean>>() {
-                    @Override
-                    public Observable<Boolean> call(RestPushStatus status) {
-                        if (!status.isSuccessful()) throw new RuntimeException("Failed to set push status.");
-                        Log.d(LOG_TAG, "Subscription changed for " + route + " / " + date + " / " + subscribed);
-                        if (subscribed) {
-                            return database.addNotificationSubscription(route, date);
-                        } else {
-                            return database.deleteNotificationSubscription(route, date);
-                        }
+                .flatMap((Func1<RestPushStatus, Observable<Boolean>>) status -> {
+                    if (!status.isSuccessful()) throw new RuntimeException("Failed to set push status.");
+                    Log.d(LOG_TAG, "Subscription changed for " + route + " / " + date + " / " + subscribed);
+                    if (subscribed) {
+                        return database.addNotificationSubscription(route, date);
+                    } else {
+                        return database.deleteNotificationSubscription(route, date);
                     }
                 })
                 .doOnNext(success -> {

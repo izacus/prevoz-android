@@ -29,8 +29,8 @@ class MyRidesPresenter(component: ApplicationComponent) : MvpPresenter<MyRidesFr
     @Inject lateinit var authUtils : AuthenticationUtils
     @Inject lateinit var connectivityService : ConnectivityManager
 
-    var view : MyRidesFragment? = null
-    var myRidesSubscription : Subscription? = null
+    private var view : MyRidesFragment? = null
+    private var myRidesSubscription : Subscription? = null
 
     override fun attachView(view: MyRidesFragment?) {
         this.view = view
@@ -63,7 +63,7 @@ class MyRidesPresenter(component: ApplicationComponent) : MvpPresenter<MyRidesFr
         val myRides = ApiClient.getAdapter().myRides
                 .subscribeOn(Schedulers.io())
                 .flatMap { results ->
-                    if (results == null || results.results == null) {
+                    if (results?.results == null) {
                         Observable.empty<List<RestRide>>()
                     } else {
                         Observable.from(results.results!!)
@@ -73,7 +73,7 @@ class MyRidesPresenter(component: ApplicationComponent) : MvpPresenter<MyRidesFr
         val bookmarks = ApiClient.getAdapter().getBookmarkedRides(System.currentTimeMillis())
                 .subscribeOn(Schedulers.io())
                 .flatMap { results ->
-                    if (results == null || results.results == null) {
+                    if (results?.results == null) {
                         Observable.empty<List<RestRide>>()
                     } else {
                         Observable.from(results.results!!)
@@ -99,7 +99,7 @@ class MyRidesPresenter(component: ApplicationComponent) : MvpPresenter<MyRidesFr
                 })
     }
 
-    fun handleLoadingError(e: Throwable) {
+    private fun handleLoadingError(e: Throwable) {
         Crashlytics.logException(e.cause)
         if (e is HttpException) {
             if (e.code() == 403 || e.code() == 401) {
@@ -108,7 +108,7 @@ class MyRidesPresenter(component: ApplicationComponent) : MvpPresenter<MyRidesFr
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({
                             view?.showLoginPrompt()
-                        });
+                        })
             }
         }
 
@@ -120,7 +120,7 @@ class MyRidesPresenter(component: ApplicationComponent) : MvpPresenter<MyRidesFr
     }
 
 
-    @Suppress("UNUSED_PARAMETER")
+    @Suppress("UNUSED_PARAMETER", "unused")
     fun onEventMainThread(e: Events.MyRideStatusUpdated) {
         view?.updateRideInList(e.ride)
         if (authUtils.isAuthenticated) {
@@ -128,7 +128,7 @@ class MyRidesPresenter(component: ApplicationComponent) : MvpPresenter<MyRidesFr
         }
     }
 
-    @Suppress("UNUSED_PARAMETER")
+    @Suppress("UNUSED_PARAMETER", "unused")
     fun onEventMainThread(e: Events.LoginStateChanged) {
         checkForAuthentication()
     }

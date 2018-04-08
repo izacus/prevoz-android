@@ -36,7 +36,7 @@ public final class PushNotificationsAdapter extends RecyclerView.Adapter<PushNot
 
 
     @Override
-    public PushNotificationsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PushNotificationsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(ctx).inflate(R.layout.item_notification, parent, false);
         return new PushNotificationsHolder(v);
     }

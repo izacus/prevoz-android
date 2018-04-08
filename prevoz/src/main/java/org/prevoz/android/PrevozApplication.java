@@ -55,15 +55,22 @@ public class PrevozApplication extends Application
             e.printStackTrace();
         }
 
-        new PruneHistory().execute();
+        new PruneHistory(database, authUtils).execute();
     }
 
     public ApplicationComponent component() {
         return component;
     }
 
-    private class PruneHistory extends AsyncTask<Void, Void, Void>
+    private static class PruneHistory extends AsyncTask<Void, Void, Void>
     {
+        private final PrevozDatabase database;
+        private final AuthenticationUtils authUtils;
+
+        public PruneHistory(PrevozDatabase database, AuthenticationUtils authenticationUtils) {
+            this.database = database;
+            this.authUtils = authenticationUtils;
+        }
 
         @Override
         protected Void doInBackground(Void... params)
@@ -74,8 +81,9 @@ public class PrevozApplication extends Application
 
             // Check for old database file
             File settingsDb = new File(Environment.getDataDirectory(), "/databases/settings.db");
-            if (settingsDb.exists())
+            if (settingsDb.exists()) {
                 settingsDb.delete();
+            }
 
             return null;
         }

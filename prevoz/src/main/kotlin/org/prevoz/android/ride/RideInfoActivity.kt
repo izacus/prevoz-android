@@ -43,7 +43,7 @@ import javax.inject.Inject
 class RideInfoActivity : MvpActivity<RideInfoActivity, RideInfoPresenter>() {
 
     companion object {
-        @JvmField val TIMER_FORMATTER = DateTimeFormatter.ofPattern("HH:mm")
+        @JvmField val TIMER_FORMATTER : DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
         const val ARG_RIDE = "ride"
         const val ARG_ACTION = "action"
@@ -51,13 +51,6 @@ class RideInfoActivity : MvpActivity<RideInfoActivity, RideInfoPresenter>() {
         const val PARAM_ACTION_SHOW = "show"
         const val PARAM_ACTION_EDIT = "edit"
         const val PARAM_ACTION_SUBMIT = "submit"
-
-        @JvmStatic
-        fun show(parent: Activity, ride: RestRide) {
-            val i = Intent(parent, RideInfoActivity::class.java)
-            i.putExtra(ARG_RIDE, ride as Parcelable)
-            parent.startActivity(i)
-        }
 
         @JvmStatic
         fun show(parent: Activity, ride: RestRide, action: String, requestCode: Int) {
@@ -124,9 +117,9 @@ class RideInfoActivity : MvpActivity<RideInfoActivity, RideInfoPresenter>() {
 
     @Inject lateinit var localeUtil: LocaleUtil
 
-    lateinit var gestureDetector: GestureDetector
+    private lateinit var gestureDetector: GestureDetector
 
-    var progressDialog: ProgressDialog? = null
+    private var progressDialog: ProgressDialog? = null
 
     override fun createPresenter(): RideInfoPresenter {
         val ride = intent.getParcelableExtra<RestRide>(ARG_RIDE)
@@ -196,7 +189,7 @@ class RideInfoActivity : MvpActivity<RideInfoActivity, RideInfoPresenter>() {
                     DateUtils.MINUTE_IN_MILLIS,
                     DateUtils.FORMAT_ABBREV_MONTH or DateUtils.FORMAT_ABBREV_WEEKDAY).toString().toLowerCase(Locale.getDefault())
 
-            if (ride.author == null || ride.author!!.length == 0) {
+            if (ride.author == null || ride.author!!.isEmpty()) {
                 txtDriver.text = timeAgo + "\u00A0"   // Add non-breaking space at the end to prevent italic letter clipping
             } else {
                 val ssb = SpannableStringBuilder()
@@ -234,8 +227,8 @@ class RideInfoActivity : MvpActivity<RideInfoActivity, RideInfoPresenter>() {
         }
     }
 
-    fun setPeopleText(numPeople: Int, full: Boolean) {
-        txtPeople.setText(numPeople.toString() + if (full) " (Polno)" else "")
+    private fun setPeopleText(numPeople: Int, full: Boolean) {
+        txtPeople.text = numPeople.toString() + if (full) " (Polno)" else ""
     }
 
     fun hideButtons() {

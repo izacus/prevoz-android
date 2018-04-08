@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
@@ -80,8 +82,11 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
         ((PrevozApplication)getApplication()).component().inject(this);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         setTime = ZonedDateTime.now(LocaleUtil.getLocalTimezone());
         if (setTime.getMinute() >= 45 || setTime.getMinute() <= 15) {
@@ -282,7 +287,7 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
                textTo.validateWith(new RegexpValidator(getString(R.string.newride_error_to_missing), ".+")) &
                textTime.validateWith(new METValidator(getString(R.string.newride_error_date_passed)) {
                     @Override
-                    public boolean isValid(CharSequence charSequence, boolean b) {
+                    public boolean isValid(@NonNull CharSequence charSequence, boolean b) {
                         return ZonedDateTime.now(LocaleUtil.getLocalTimezone()).isBefore(setTime);
                     }
                });

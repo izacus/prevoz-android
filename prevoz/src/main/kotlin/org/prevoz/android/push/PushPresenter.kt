@@ -29,7 +29,7 @@ class PushPresenter(applicationComponent: ApplicationComponent) : MvpPresenter<P
         this.view = null
     }
 
-    fun loadNotifications() {
+    private fun loadNotifications() {
         pushManager.subscriptions
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { notifications ->
@@ -42,6 +42,7 @@ class PushPresenter(applicationComponent: ApplicationComponent) : MvpPresenter<P
         pushManager.setSubscriptionStatus(route, subscription.date, false).subscribe()
     }
 
+    @Suppress("unused")
     fun onEventMainThread(@Suppress("UNUSED_PARAMETER") e: Events.NotificationSubscriptionStatusChanged) {
         loadNotifications()
     }

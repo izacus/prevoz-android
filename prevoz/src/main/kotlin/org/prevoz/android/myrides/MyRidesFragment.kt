@@ -41,7 +41,7 @@ class MyRidesFragment : MvpFragment<MyRidesFragment, MyRidesPresenter>() {
     @Inject
     lateinit var localeUtil: LocaleUtil
 
-    lateinit var adapter : MyRidesAdapter
+    private lateinit var adapter : MyRidesAdapter
 
     override fun createPresenter(): MyRidesPresenter {
         return MyRidesPresenter((activity!!.application as PrevozApplication).component())

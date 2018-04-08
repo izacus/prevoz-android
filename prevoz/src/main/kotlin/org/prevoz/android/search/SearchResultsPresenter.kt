@@ -39,11 +39,11 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
     var view : SearchResultsFragment? = null
 
     // Current search in progress
-    var currentSearchSubscription: Subscription? = null
-    var route : Route? = null
-    var date: LocalDate? = null
-    var results : List<RestRide>? = null
-    var highlightRideIds: IntArray = intArrayOf()
+    private var currentSearchSubscription: Subscription? = null
+    private var route : Route? = null
+    private var date: LocalDate? = null
+    private var results : List<RestRide>? = null
+    private var highlightRideIds: IntArray = intArrayOf()
 
     override fun attachView(view: SearchResultsFragment?) {
         this.view = view
@@ -87,7 +87,7 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
                             { EventBus.getDefault().post(Events.SearchComplete()) })
     }
 
-    fun handleError(error: Throwable) {
+    private fun handleError(error: Throwable) {
         if (error is HttpException &&
             error.code() == 403 &&
             ApiClient.getBearer() != null) {
@@ -103,7 +103,7 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
         if (error !is HttpException) Crashlytics.logException(error)
     }
 
-    fun showResults(results: List<RestRide>, route: Route, highlightRideIds: IntArray) {
+    private fun showResults(results: List<RestRide>, route: Route, highlightRideIds: IntArray) {
         this.results = results
         Answers.getInstance().logSearch(SearchEvent().putQuery(route.toString()))
         if (results.isEmpty()) {
@@ -115,7 +115,7 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
         showNotificationButtonIfAvailable()
     }
 
-    fun showHistory() {
+    private fun showHistory() {
         val animate = results != null
         view?.hideNotificationButton()
         database.getLastSearches(5)
@@ -132,7 +132,7 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
     /**
      * Displays the push notification button if the services are available.
      */
-    fun showNotificationButtonIfAvailable() {
+    private fun showNotificationButtonIfAvailable() {
         if (!pushManager.isPushAvailable) return
         val route = route
         val date = date
@@ -163,21 +163,25 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
                                 view?.setNotificationButtonThrobber(false) })
     }
 
+    @Suppress("unused")
     fun onEventMainThread(e: Events.NewSearchEvent) {
         search(e.route, e.date, e.rideIds)
     }
 
+    @Suppress("unused")
     fun onEventMainThread(@Suppress("UNUSED_PARAMETER") e: Events.ClearSearchEvent) {
         showHistory()
         results = null
     }
 
+    @Suppress("unused")
     fun onEventMainThread(e: Events.NotificationSubscriptionStatusChanged) {
         if (e.route != route && e.date != date) return
         view?.updateNotificationButtonText(e.subscribed)
         view?.setNotificationButtonThrobber(false)
     }
 
+    @Suppress("unused")
     fun onEventMainThread(e: Events.MyRideStatusUpdated) {
         if (e.deleted) {
             view?.removeDisplayedRide(e.ride)

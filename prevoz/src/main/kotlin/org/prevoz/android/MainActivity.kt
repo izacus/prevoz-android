@@ -48,7 +48,7 @@ class MainActivity : PrevozActivity() {
     @BindView(R.id.main_pager)
     lateinit var viewPager: ViewPager
 
-    lateinit var viewPagerAdapter : MainPagerAdapter
+    private lateinit var viewPagerAdapter : MainPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,18 +67,18 @@ class MainActivity : PrevozActivity() {
         tabLayout.setupWithViewPager(viewPager)
     }
 
-    fun setupViewPager() {
-        viewPagerAdapter = MainPagerAdapter(resources, supportFragmentManager, pushManager)
+    private fun setupViewPager() {
+        viewPagerAdapter = MainPagerAdapter(resources, supportFragmentManager)
         viewPager.adapter = viewPagerAdapter
         viewPager.offscreenPageLimit = 3
     }
 
     class MainPagerAdapter(val resources: Resources,
-                           fragmentManager: FragmentManager,
-                           val pushManager: PushManager) : FragmentPagerAdapter(fragmentManager) {
+                           fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
         val searchFragment : SearchResultsFragment = SearchResultsFragment()
-        val myRidesFragment : MyRidesFragment = MyRidesFragment()
-        val notificationsFragment : PushFragment = PushFragment()
+
+        private val myRidesFragment : MyRidesFragment = MyRidesFragment()
+        private val notificationsFragment : PushFragment = PushFragment()
 
         override fun getItem(position: Int): Fragment {
             return when(position) {
@@ -182,12 +182,14 @@ class MainActivity : PrevozActivity() {
         }
     }
 
+    @Suppress("unused")
     fun onEventMainThread(@Suppress("UNUSED_PARAMETER") e: Events.LoginStateChanged)
     {
         invalidateOptionsMenu()
         EventBus.getDefault().removeStickyEvent(Events.LoginStateChanged::class.java)
     }
 
+    @Suppress("unused")
     fun onEventMainThread(e: Events.ShowMessage) {
         ViewUtils.showMessage(this, e.getMessage(this), e.isError)
         EventBus.getDefault().removeStickyEvent(e)

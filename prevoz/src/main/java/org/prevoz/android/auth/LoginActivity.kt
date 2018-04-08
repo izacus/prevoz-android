@@ -144,8 +144,8 @@ class LoginActivity : PrevozActivity() {
     }
 
     companion object {
-        val CLIENT_ID = "QTwUBJLA8ZngFS5iK2h2kcV68qAftyLIi2gjXkIy"
-        val CLIENT_SECRET = "qcPKCeIScAU8Ca009BwokX4xW86AhSaPZu1rqu2ZCygMPhsrG57sF1gMcryzCBqf2qwSuZpGFVkurl0ZtiVwLi62B3pLYoawTk2z0qX2PcSePZvVkrjGsntxSbxOroSc"
-        private val REDIRECT_URL = "prevoz://auth/done/"
+        const val CLIENT_ID = "QTwUBJLA8ZngFS5iK2h2kcV68qAftyLIi2gjXkIy"
+        const val CLIENT_SECRET = "qcPKCeIScAU8Ca009BwokX4xW86AhSaPZu1rqu2ZCygMPhsrG57sF1gMcryzCBqf2qwSuZpGFVkurl0ZtiVwLi62B3pLYoawTk2z0qX2PcSePZvVkrjGsntxSbxOroSc"
+        private const val REDIRECT_URL = "prevoz://auth/done/"
     }
 }

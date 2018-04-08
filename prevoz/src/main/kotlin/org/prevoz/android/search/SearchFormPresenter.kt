@@ -54,7 +54,7 @@ class SearchFormPresenter(component: ApplicationComponent) : MvpPresenter<Search
         view?.showLoadingThrobber()
         Schedulers.io().createWorker().schedule {
             database.addSearchToHistory(from, to, selectedDate)
-            EventBus.getDefault().post(Events.NewSearchEvent(Route(from, to), selectedDate));
+            EventBus.getDefault().post(Events.NewSearchEvent(Route(from, to), selectedDate))
         }
     }
 
@@ -63,10 +63,12 @@ class SearchFormPresenter(component: ApplicationComponent) : MvpPresenter<Search
         EventBus.getDefault().unregister(this)
     }
 
+    @Suppress("unused")
     fun onEventMainThread(@Suppress("UNUSED_PARAMETER") e : Events.SearchComplete) {
         view?.hideLoadingThrobber()
     }
 
+    @Suppress("unused")
     fun onEventMainThread(e : Events.SearchFillWithRoute) {
         from = e.route.from
         to = e.route.to

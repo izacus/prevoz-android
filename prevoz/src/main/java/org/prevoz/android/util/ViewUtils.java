@@ -21,7 +21,7 @@ public class ViewUtils
     private static Typeface snackbarTypeface;
 
     public static void setupEmptyView(RecyclerView listView, View emptyView, String text) {
-        TextView textView = (TextView) emptyView.findViewById(R.id.empty_text);
+        TextView textView = emptyView.findViewById(R.id.empty_text);
         textView.setText(text);
         emptyView.setVisibility(View.VISIBLE);
     }
@@ -39,8 +39,9 @@ public class ViewUtils
 
         InputMethodManager inputManager = (InputMethodManager)ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
         View currentFocus = ctx.getCurrentFocus();
-        if (currentFocus != null)
-            inputManager.hideSoftInputFromWindow(currentFocus.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+        if (currentFocus != null && inputManager != null) {
+            inputManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 
     public static void showMessage(Activity context, int messageTextResId, boolean failure) {

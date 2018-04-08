@@ -42,7 +42,7 @@ public class CityAutocompleteAdapter extends SimpleCursorAdapter implements Filt
         super.bindView(view, context, cursor);
         int idx = cursor.getColumnIndex(Location.COUNTRY);
 
-        TextView countryName = (TextView) view.findViewById(R.id.city_country);
+        TextView countryName = view.findViewById(R.id.city_country);
         String countryCode = cursor.getString(idx);
         if (LocaleUtil.getCurrentCountryCode().equals(countryCode))
         {

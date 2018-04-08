@@ -43,7 +43,7 @@ public final class MyRidesAdapter extends RecyclerView.Adapter<MyRidesAdapter.Re
 
     @NonNull
     @Override
-    public ResultsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ResultsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = inflater.inflate(R.layout.item_myride, parent, false);
         return new ResultsViewHolder(v);
     }
@@ -68,15 +68,14 @@ public final class MyRidesAdapter extends RecyclerView.Adapter<MyRidesAdapter.Re
 
         Route r = new Route(new City(ride.fromCity, ride.fromCountry), new City(ride.toCity, ride.toCountry));
         holder.path.setText(r.toString());
-        holder.card.setOnClickListener(v -> {
-            RideInfoActivity.show(context, ride, ride.isAuthor ? RideInfoActivity.PARAM_ACTION_EDIT : RideInfoActivity.PARAM_ACTION_SHOW, 0);
-        });
+        holder.card.setOnClickListener(v -> RideInfoActivity.show(context, ride, ride.isAuthor ? RideInfoActivity.PARAM_ACTION_EDIT : RideInfoActivity.PARAM_ACTION_SHOW, 0));
     }
 
     @Override
     public long getItemId(int position)
     {
-        return myrides.get(position).id;
+        Long id = myrides.get(position).id;
+        return id == null ? 0 : id;
     }
 
     @Override
@@ -132,7 +131,8 @@ public final class MyRidesAdapter extends RecyclerView.Adapter<MyRidesAdapter.Re
         if (myrides.size() == 0) return;
         for (int i = 0; i < myrides.size(); i++) {
             if (myrides.get(i).id == null) continue;
-            if (myrides.get(i).id.equals(ride.id)) {
+            Long id = myrides.get(i).id;
+            if (id != null && id.equals(ride.id)) {
                 myrides.set(i, ride);
                 notifyItemChanged(i);
                 return;
@@ -150,10 +150,10 @@ public final class MyRidesAdapter extends RecyclerView.Adapter<MyRidesAdapter.Re
         ResultsViewHolder(View v) {
             super(v);
             card = v.findViewById(R.id.item_myride_card);
-            time = (TextView) v.findViewById(R.id.item_myride_time);
-            date = (TextView) v.findViewById(R.id.item_myride_date);
-            price = (TextView) v.findViewById(R.id.item_myride_price);
-            path = (TextView) v.findViewById(R.id.item_myride_path);
+            time = v.findViewById(R.id.item_myride_time);
+            date = v.findViewById(R.id.item_myride_date);
+            price = v.findViewById(R.id.item_myride_price);
+            path = v.findViewById(R.id.item_myride_path);
         }
     }
 

@@ -52,11 +52,11 @@ class PushReceiverService : FirebaseMessagingService() {
         createNewNotification(from, to, date, rideIds, if (rideTimes.size == rideIds.size) rideTimes else null)
     }
 
-    fun createNewNotification(from: City,
-                              to: City,
-                              date: LocalDate,
-                              rideIds: IntArray,
-                              rideTimes: List<LocalTime>?) {
+    private fun createNewNotification(from: City,
+                                      to: City,
+                                      date: LocalDate,
+                                      rideIds: IntArray,
+                                      rideTimes: List<LocalTime>?) {
         // Create notification message:
         val notifyManager = getSystemService(Context.NOTIFICATION_SERVICE) as android.app.NotificationManager
         var title = resources.getQuantityString(R.plurals.notify_statusbar, rideIds.size, rideIds.size)
@@ -108,8 +108,7 @@ class PushReceiverService : FirebaseMessagingService() {
 
         if (rideIds.size > 1) {
             if (rideTimes != null) {
-                val times = rideTimes.map { it.format(DateTimeFormatter.ofPattern("HH:mm")) }
-                        .joinToString()
+                val times = rideTimes.joinToString { it.format(DateTimeFormatter.ofPattern("HH:mm")) }
                 notificationBuilder.setContentText(times)
             }
         }
@@ -119,21 +118,19 @@ class PushReceiverService : FirebaseMessagingService() {
     }
 
 
-    fun parseRideIds(rideIds: String?): IntArray {
+    private fun parseRideIds(rideIds: String?): IntArray {
         if (rideIds == null) return IntArray(0)
         val jsonArray = JSONArray(rideIds)
 
-        val ids = (0..jsonArray.length() - 1)
+        return (0 until jsonArray.length())
                 .map { jsonArray.getInt(it) }.toIntArray()
-        return ids
     }
 
-    fun parseRideTimes(rideTimes: String?): List<LocalTime> {
+    private fun parseRideTimes(rideTimes: String?): List<LocalTime> {
         if (rideTimes == null) return listOf()
         val jsonArray = JSONArray(rideTimes)
 
-        val times = (0..jsonArray.length() - 1)
+        return (0 until jsonArray.length())
             .map { LocalTime.parse(jsonArray.getString(it), DateTimeFormatter.ISO_DATE_TIME) }
-        return times
     }
 }

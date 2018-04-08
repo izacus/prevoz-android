@@ -13,6 +13,7 @@ import org.prevoz.android.events.Events;
 import org.prevoz.android.model.Route;
 
 import java.util.List;
+import java.util.Objects;
 
 import de.greenrobot.event.EventBus;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
@@ -27,7 +28,7 @@ public class SearchHistoryAdapter extends BaseAdapter implements StickyListHeade
     public SearchHistoryAdapter(@NonNull Context ctx, @NonNull List<Route> historyItems)
     {
         this.searchHistory = historyItems;
-        this.inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.inflater = (LayoutInflater) Objects.requireNonNull(ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
     }
 
     @Override
@@ -82,7 +83,7 @@ public class SearchHistoryAdapter extends BaseAdapter implements StickyListHeade
         View c = v.findViewById(R.id.item_history_card);
         c.setOnClickListener(view -> EventBus.getDefault().post(new Events.SearchFillWithRoute(route)));
 
-        TextView txt = (TextView) v.findViewById(R.id.item_history_text);
+        TextView txt = v.findViewById(R.id.item_history_text);
         txt.setText(route.toString());
         return v;
     }

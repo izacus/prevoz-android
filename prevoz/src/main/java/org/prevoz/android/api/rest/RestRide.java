@@ -119,18 +119,18 @@ public class RestRide implements Comparable, Parcelable, Serializable
     }
 
     @Override
-    public boolean equals(Object o)
-    {
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof RestRide)) return false;
 
         RestRide restRide = (RestRide) o;
-        return id.equals(restRide.id);
+        return id != null && id.equals(restRide.id);
     }
 
     @Override
     public int hashCode()
     {
+        if (id == null) return 0;
         return (int) (id ^ (id >>> 32));
     }
 

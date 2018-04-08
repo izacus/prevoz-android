@@ -66,7 +66,8 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
     @Override
     public long getItemId(int position)
     {
-        return results.get(position).id;
+        Long id = results.get(position).id;
+        return id == null ? 0 : id;
     }
 
     @Override
@@ -78,10 +79,10 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
         {
             v = inflater.inflate(R.layout.item_search_result, parent, false);
             View c = v.findViewById(R.id.item_result_card);
-            TextView time = (TextView) v.findViewById(R.id.item_result_time);
-            TextView price = (TextView) v.findViewById(R.id.item_result_price);
-            TextView driver = (TextView) v.findViewById(R.id.item_result_driver);
-            ImageView bookmark = (ImageView) v.findViewById(R.id.item_result_bookmark);
+            TextView time = v.findViewById(R.id.item_result_time);
+            TextView price = v.findViewById(R.id.item_result_price);
+            TextView driver = v.findViewById(R.id.item_result_driver);
+            ImageView bookmark = v.findViewById(R.id.item_result_bookmark);
 
             v.setTag(new ResultsViewHolder(c, time, price, driver, bookmark));
         }
@@ -141,7 +142,7 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
 
     public synchronized void setResults(@NonNull List<RestRide> rides, @NonNull int[] highlights, @Nullable Route askedForRoute)
     {
-        if (askedForRoute.getFrom() == null && askedForRoute.getTo() == null) askedForRoute = null;
+        if (askedForRoute != null && askedForRoute.getFrom() == null && askedForRoute.getTo() == null) askedForRoute = null;
         buildResults(rides, highlights, askedForRoute);
         notifyDataSetChanged();
     }
@@ -197,7 +198,7 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
         if (v == null)
         {
             v = inflater.inflate(R.layout.item_search_title, parent, false);
-            TextView titleView = (TextView) v.findViewById(R.id.search_item_title);
+            TextView titleView = v.findViewById(R.id.search_item_title);
             v.setTag(titleView);
         }
 
@@ -233,7 +234,7 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
         RestRide ride = null;
         for (RestRide r : results)
         {
-            if (r.id.equals(id))
+            if (r.id != null && r.id.equals(id))
             {
                 ride = r;
                 break;
@@ -249,7 +250,7 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
     public void updateRide(RestRide ride) {
         int rideIndex = -1;
         for (int i = 0; i < results.size(); i++) {
-            if (ride.id.equals(results.get(i).id)) {
+            if (ride.id != null && ride.id.equals(results.get(i).id)) {
                 rideIndex = i;
                 break;
             }

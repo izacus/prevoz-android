@@ -32,7 +32,7 @@ import retrofit2.Response
 import rx.schedulers.Schedulers
 import javax.inject.Inject
 
-class RideInfoPresenter(component: ApplicationComponent, val ride: RestRide, val action: Action) : MvpPresenter<RideInfoActivity> {
+class RideInfoPresenter(component: ApplicationComponent, private val ride: RestRide, private val action: Action) : MvpPresenter<RideInfoActivity> {
 
     init {
         component.inject(this)
