@@ -1,12 +1,20 @@
 package org.prevoz.android.push;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import org.prevoz.android.R;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestPushStatus;
 import org.prevoz.android.events.Events;
@@ -19,6 +27,7 @@ import org.threeten.bp.format.DateTimeFormatter;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -30,17 +39,22 @@ import rx.schedulers.Schedulers;
 
 public class PushManager
 {
+    public static final String NEW_RIDE_CHANNEL_ID = "new-rides-channel";
+
     private static final String LOG_TAG = "Prevoz.Push";
 
+    @NonNull private final Context applicationContext;
     @NonNull private final PrevozDatabase database;
     @Nullable private String fcmId;
     private boolean available = false;
 
     private Set<RegisteredNotification> notifications = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
-    public PushManager(@NonNull PrevozDatabase database)
+    public PushManager(@NonNull Context applicationContext,
+                       @NonNull PrevozDatabase database)
     {
         this.database = database;
+        this.applicationContext = applicationContext;
         setup();
     }
 
@@ -51,6 +65,19 @@ public class PushManager
         available = (fcmId != null);
 
         Log.i("Prevoz", "Prevoz FCM ID: " + fcmId);
+
+        // Create notification channel
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = (NotificationManager) Objects.requireNonNull(applicationContext.getSystemService(Context.NOTIFICATION_SERVICE));
+            NotificationChannel newRidesChannel = new NotificationChannel(NEW_RIDE_CHANNEL_ID, "Novi prevozi", NotificationManager.IMPORTANCE_HIGH);
+            newRidesChannel.setDescription("Obvestila o novih prevozih");
+            newRidesChannel.setLightColor(ContextCompat.getColor(applicationContext, R.color.prevoztheme_color));
+            newRidesChannel.enableLights(true);
+            newRidesChannel.enableVibration(true);
+            newRidesChannel.setShowBadge(true);
+            newRidesChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+            notificationManager.createNotificationChannel(newRidesChannel);
+        }
 
         database.getNotificationSubscriptions()
                 .flatMap(Observable::from)

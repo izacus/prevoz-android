@@ -74,14 +74,14 @@ class PushReceiverService : FirebaseMessagingService() {
 
         val pIntent = PendingIntent.getActivity(this, id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        val publicNotification = NotificationCompat.Builder(this)
+        val publicNotification = NotificationCompat.Builder(this, PushManager.NEW_RIDE_CHANNEL_ID)
                 .setSmallIcon(R.drawable.icon_ab)
                 .setContentTitle(resources.getQuantityString(R.plurals.notify_statusbar, rideIds.size))
                 .setContentIntent(pIntent)
                 .setCategory(NotificationCompat.CATEGORY_SOCIAL)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setNumber(rideIds.size)
-                .setColor(resources.getColor(R.color.prevoztheme_color))
+                .setColor(ContextCompat.getColor(this, R.color.prevoztheme_color))
                 .setWhen(System.currentTimeMillis())
                 .setShowWhen(true)
                 .setGroup("RIDES")
@@ -89,7 +89,7 @@ class PushReceiverService : FirebaseMessagingService() {
                 .setAutoCancel(true)
                 .build()
 
-        val notificationBuilder = NotificationCompat.Builder(this)
+        val notificationBuilder = NotificationCompat.Builder(this, PushManager.NEW_RIDE_CHANNEL_ID)
                 .setSmallIcon(R.drawable.icon_ab)
                 .setContentTitle(title)
                 .setSubText(from.getLocalizedName(localeUtil) + " - " + to.getLocalizedName(localeUtil) + " v " + LocaleUtil.getNotificationDayName(resources, date))

@@ -62,12 +62,12 @@ public class PrevozApplication extends Application
         return component;
     }
 
-    private static class PruneHistory extends AsyncTask<Void, Void, Void>
+    private static final class PruneHistory extends AsyncTask<Void, Void, Void>
     {
         private final PrevozDatabase database;
         private final AuthenticationUtils authUtils;
 
-        public PruneHistory(PrevozDatabase database, AuthenticationUtils authenticationUtils) {
+        PruneHistory(PrevozDatabase database, AuthenticationUtils authenticationUtils) {
             this.database = database;
             this.authUtils = authenticationUtils;
         }
