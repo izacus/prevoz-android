@@ -18,7 +18,10 @@ public class CityAutocompleteAdapter extends SimpleCursorAdapter implements Filt
     @NonNull
     private final PrevozDatabase database;
 
-    public CityAutocompleteAdapter(@NonNull Context context, @NonNull PrevozDatabase database)
+    @NonNull
+    private final LocaleUtil localeUtil;
+
+    public CityAutocompleteAdapter(@NonNull Context context, @NonNull PrevozDatabase database, @NonNull LocaleUtil localeUtil)
     {
         super(context,
               R.layout.item_autocomplete,
@@ -30,6 +33,7 @@ public class CityAutocompleteAdapter extends SimpleCursorAdapter implements Filt
         setFilterQueryProvider(this);
         setCursorToStringConverter(this);
         this.database = database;
+        this.localeUtil = localeUtil;
     }
 
     @Override
@@ -47,7 +51,7 @@ public class CityAutocompleteAdapter extends SimpleCursorAdapter implements Filt
         else
         {
             countryName.setVisibility(View.VISIBLE);
-            countryName.setText(LocaleUtil.getLocalizedCountryName(database, countryCode));
+            countryName.setText(localeUtil.getLocalizedCountryName(countryCode));
         }
     }
 
@@ -62,6 +66,6 @@ public class CityAutocompleteAdapter extends SimpleCursorAdapter implements Filt
     {
         int colIndex = cursor.getColumnIndex(Location.NAME);
         int ctrIndex = cursor.getColumnIndex(Location.COUNTRY);
-        return LocaleUtil.getLocalizedCityName(database, cursor.getString(colIndex), cursor.getString(ctrIndex));
+        return localeUtil.getLocalizedCityName(cursor.getString(colIndex), cursor.getString(ctrIndex));
     }
 }

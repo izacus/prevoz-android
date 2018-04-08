@@ -43,7 +43,7 @@ class PushPresenter(applicationComponent: ApplicationComponent) : MvpPresenter<P
         pushManager.setSubscriptionStatus(route, subscription.date, false).subscribe()
     }
 
-    fun onEventMainThread(e: Events.NotificationSubscriptionStatusChanged) {
+    fun onEventMainThread(@Suppress("UNUSED_PARAMETER") e: Events.NotificationSubscriptionStatusChanged) {
         loadNotifications()
     }
 }

@@ -24,21 +24,25 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
-public class MyRidesAdapter extends RecyclerView.Adapter<MyRidesAdapter.ResultsViewHolder> implements StickyRecyclerHeadersAdapter<MyRidesAdapter.HeadersViewHolder>
+public final class MyRidesAdapter extends RecyclerView.Adapter<MyRidesAdapter.ResultsViewHolder> implements StickyRecyclerHeadersAdapter<MyRidesAdapter.HeadersViewHolder>
 {
-    private final FragmentActivity context;
-    private final List<RestRide> myrides;
-    private final LayoutInflater inflater;
+    @NonNull private final FragmentActivity context;
+    @NonNull private final List<RestRide> myrides;
+    @NonNull private final LayoutInflater inflater;
+    @NonNull private final LocaleUtil localeUtil;
 
-    public MyRidesAdapter(FragmentActivity context)
+    public MyRidesAdapter(@NonNull FragmentActivity context, @NonNull LocaleUtil localeUtil)
     {
         this.context = context;
-        this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.inflater = (LayoutInflater) Objects.requireNonNull(context.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
         this.myrides = new ArrayList<>();
+        this.localeUtil = localeUtil;
         setHasStableIds(true);
     }
 
+    @NonNull
     @Override
     public ResultsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = inflater.inflate(R.layout.item_myride, parent, false);
@@ -46,12 +50,12 @@ public class MyRidesAdapter extends RecyclerView.Adapter<MyRidesAdapter.ResultsV
     }
 
     @Override
-    public void onBindViewHolder(ResultsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ResultsViewHolder holder, int position) {
         final RestRide ride = myrides.get(position);
         SpannableStringBuilder time = new SpannableStringBuilder(LocaleUtil.getFormattedTime(ride.date));
 
         holder.time.setText(time);
-        holder.date.setText(LocaleUtil.getShortFormattedDate(context.getResources(), ride.date));
+        holder.date.setText(localeUtil.getShortFormattedDate(ride.date));
 
         if (ride.price == null || ride.price == 0)
         {
@@ -126,7 +130,7 @@ public class MyRidesAdapter extends RecyclerView.Adapter<MyRidesAdapter.ResultsV
     }
 
     public void updateRide(@NonNull RestRide ride) {
-        if (myrides == null || myrides.size() == 0) return;
+        if (myrides.size() == 0) return;
         for (int i = 0; i < myrides.size(); i++) {
             if (myrides.get(i).id == null) continue;
             if (myrides.get(i).id.equals(ride.id)) {
@@ -144,7 +148,7 @@ public class MyRidesAdapter extends RecyclerView.Adapter<MyRidesAdapter.ResultsV
         final TextView path;
         final TextView date;
 
-        public ResultsViewHolder(View v) {
+        ResultsViewHolder(View v) {
             super(v);
             card = v.findViewById(R.id.item_myride_card);
             time = (TextView) v.findViewById(R.id.item_myride_time);
@@ -152,15 +156,13 @@ public class MyRidesAdapter extends RecyclerView.Adapter<MyRidesAdapter.ResultsV
             price = (TextView) v.findViewById(R.id.item_myride_price);
             path = (TextView) v.findViewById(R.id.item_myride_path);
         }
-
-
     }
 
     static class HeadersViewHolder extends RecyclerView.ViewHolder {
 
         final TextView text;
 
-        public HeadersViewHolder(View itemView) {
+        HeadersViewHolder(View itemView) {
             super(itemView);
             text = (TextView)itemView.findViewById(R.id.search_item_title);
         }

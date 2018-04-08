@@ -1,6 +1,5 @@
 package org.prevoz.android.model;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.widget.AutoCompleteTextView;
 
@@ -8,17 +7,14 @@ import org.prevoz.android.provider.Location;
 import org.prevoz.android.util.LocaleUtil;
 import org.prevoz.android.util.StringUtil;
 
-/**
- * ${FILE_NAME}
- * <p/>
- * Created on 18/05/14
- */
 public class CityNameTextValidator implements AutoCompleteTextView.Validator
 {
-    protected final PrevozDatabase database;
+    private final LocaleUtil localeUtil;
+    private final PrevozDatabase database;
 
-    public CityNameTextValidator(Context ctx, PrevozDatabase database) {
-        this.database = database;
+    public CityNameTextValidator(LocaleUtil localeUtil, PrevozDatabase prevozDatabase) {
+        this.localeUtil = localeUtil;
+        this.database = prevozDatabase;
     }
 
     @Override
@@ -40,7 +36,7 @@ public class CityNameTextValidator implements AutoCompleteTextView.Validator
         {
             int idx = cityCandidates.getColumnIndex(Location.NAME);
             int cidx = cityCandidates.getColumnIndex(Location.COUNTRY);
-            return LocaleUtil.getLocalizedCityName(database, cityCandidates.getString(idx), cityCandidates.getString(cidx));
+            return localeUtil.getLocalizedCityName(cityCandidates.getString(idx), cityCandidates.getString(cidx));
         }
 
         return null;

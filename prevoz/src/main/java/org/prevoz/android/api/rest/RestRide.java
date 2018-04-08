@@ -107,15 +107,15 @@ public class RestRide implements Comparable, Parcelable, Serializable
         this.comment = comment;
     }
 
-    public String getLocalizedFrom(PrevozDatabase database) {
+    public String getLocalizedFrom(LocaleUtil localeUtil) {
         if (localizedFromCity == null)
-            localizedFromCity = LocaleUtil.getLocalizedCityName(database, fromCity, fromCountry);
+            localizedFromCity = localeUtil.getLocalizedCityName(fromCity, fromCountry);
         return localizedFromCity;
     }
 
-    public String getLocalizedTo(PrevozDatabase database) {
+    public String getLocalizedTo(LocaleUtil localeUtil) {
         if (localizedToCity == null)
-            localizedToCity = LocaleUtil.getLocalizedCityName(database, toCity, toCountry);
+            localizedToCity = localeUtil.getLocalizedCityName(toCity, toCountry);
         return localizedToCity;
     }
 

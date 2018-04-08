@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.support.v4.app.NotificationCompat
+import android.support.v4.content.ContextCompat
 import android.util.Log
 import com.crashlytics.android.Crashlytics
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -13,17 +14,15 @@ import org.prevoz.android.MainActivity
 import org.prevoz.android.PrevozApplication
 import org.prevoz.android.R
 import org.prevoz.android.model.City
-import org.prevoz.android.model.PrevozDatabase
 import org.prevoz.android.util.LocaleUtil
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalTime
 import org.threeten.bp.format.DateTimeFormatter
-import java.util.*
 import javax.inject.Inject
 
 class PushReceiverService : FirebaseMessagingService() {
 
-    @Inject lateinit var database : PrevozDatabase
+    @Inject lateinit var localeUtil: LocaleUtil
 
     override fun onCreate() {
         super.onCreate()
@@ -50,11 +49,10 @@ class PushReceiverService : FirebaseMessagingService() {
         if (rideIds.isEmpty()) return
         val rideTimes = parseRideTimes(data["times"])
 
-        createNewNotification(database, from, to, date, rideIds, if (rideTimes.size == rideIds.size) rideTimes else null)
+        createNewNotification(from, to, date, rideIds, if (rideTimes.size == rideIds.size) rideTimes else null)
     }
 
-    fun createNewNotification(database: PrevozDatabase,
-                              from: City,
+    fun createNewNotification(from: City,
                               to: City,
                               date: LocalDate,
                               rideIds: IntArray,
@@ -94,7 +92,7 @@ class PushReceiverService : FirebaseMessagingService() {
         val notificationBuilder = NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.icon_ab)
                 .setContentTitle(title)
-                .setSubText(from.getLocalizedName(database) + " - " + to.getLocalizedName(database) + " v " + LocaleUtil.getNotificationDayName(resources, date))
+                .setSubText(from.getLocalizedName(localeUtil) + " - " + to.getLocalizedName(localeUtil) + " v " + LocaleUtil.getNotificationDayName(resources, date))
                 .setContentIntent(pIntent)
                 .setCategory(NotificationCompat.CATEGORY_SOCIAL)
                 .setAutoCancel(true)
@@ -105,7 +103,7 @@ class PushReceiverService : FirebaseMessagingService() {
                 .setWhen(System.currentTimeMillis())
                 .setShowWhen(true)
                 .setGroup("RIDES")
-                .setColor(resources.getColor(R.color.prevoztheme_color))
+                .setColor(ContextCompat.getColor(this, R.color.prevoztheme_color))
                 .setOngoing(false)
 
         if (rideIds.size > 1) {

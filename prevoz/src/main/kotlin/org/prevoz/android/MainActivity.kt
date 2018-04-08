@@ -12,6 +12,7 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.Toolbar
@@ -56,7 +57,8 @@ class MainActivity : PrevozActivity() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val icon = BitmapFactory.decodeResource(resources, R.drawable.icon_ab)
-            val td = ActivityManager.TaskDescription(getString(R.string.app_name), icon, resources.getColor(R.color.prevoztheme_color_dark))
+            val color = ContextCompat.getColor(this, R.color.prevoztheme_color_dark)
+            val td = ActivityManager.TaskDescription(getString(R.string.app_name), icon, color)
             setTaskDescription(td)
         }
 
@@ -66,13 +68,12 @@ class MainActivity : PrevozActivity() {
     }
 
     fun setupViewPager() {
-        viewPagerAdapter = MainPagerAdapter(applicationComponent, resources, supportFragmentManager, pushManager)
+        viewPagerAdapter = MainPagerAdapter(resources, supportFragmentManager, pushManager)
         viewPager.adapter = viewPagerAdapter
         viewPager.offscreenPageLimit = 3
     }
 
-    class MainPagerAdapter(applicationComponent: ApplicationComponent,
-                           val resources: Resources,
+    class MainPagerAdapter(val resources: Resources,
                            fragmentManager: FragmentManager,
                            val pushManager: PushManager) : FragmentPagerAdapter(fragmentManager) {
         val searchFragment : SearchResultsFragment = SearchResultsFragment()
@@ -137,7 +138,7 @@ class MainActivity : PrevozActivity() {
                 AlertDialog.Builder(this, R.style.Prevoz_Theme_Dialog)
                         .setTitle("Odjava")
                         .setMessage("Se res želite odjaviti?")
-                        .setPositiveButton("Odjavi", { dialog, which ->  authUtils.logout().subscribeOn(Schedulers.io()).subscribe()})
+                        .setPositiveButton("Odjavi", { _, _ ->  authUtils.logout().subscribeOn(Schedulers.io()).subscribe()})
                         .setNegativeButton("Prekliči", null)
                         .show()
                 return true
@@ -181,7 +182,7 @@ class MainActivity : PrevozActivity() {
         }
     }
 
-    fun onEventMainThread(e: Events.LoginStateChanged)
+    fun onEventMainThread(@Suppress("UNUSED_PARAMETER") e: Events.LoginStateChanged)
     {
         invalidateOptionsMenu()
         EventBus.getDefault().removeStickyEvent(Events.LoginStateChanged::class.java)

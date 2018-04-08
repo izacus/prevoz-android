@@ -17,6 +17,7 @@ import org.prevoz.android.model.NotificationSubscription
 import org.prevoz.android.model.Route
 import org.prevoz.android.util.LocaleUtil
 import org.prevoz.android.util.ViewUtils
+import javax.inject.Inject
 
 class PushFragment : MvpFragment<PushFragment, PushPresenter>() {
 
@@ -26,8 +27,16 @@ class PushFragment : MvpFragment<PushFragment, PushPresenter>() {
     @BindView(R.id.empty_view)
     lateinit var emptyView: ViewGroup
 
+    @Inject
+    lateinit var localeUtil: LocaleUtil
+
     override fun createPresenter(): PushPresenter {
         return PushPresenter((activity!!.application as PrevozApplication).component())
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (activity!!.application as PrevozApplication).component().inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -47,7 +56,7 @@ class PushFragment : MvpFragment<PushFragment, PushPresenter>() {
         } else {
             notificationList.visibility = View.VISIBLE
             emptyView.visibility = View.INVISIBLE
-            notificationList.adapter = PushNotificationsAdapter(context, notifications, {
+            notificationList.adapter = PushNotificationsAdapter(context, localeUtil, notifications, {
                 subscription -> showNotificationRemoveDialog(subscription)
             })
         }
@@ -58,7 +67,7 @@ class PushFragment : MvpFragment<PushFragment, PushPresenter>() {
                 .setTitle(String.format("%s - %s", subscription.from.toString(), subscription.to.toString()))
                 .setMessage(String.format("Ali se res želite odjaviti od obveščanja v %s?", LocaleUtil.getNotificationDayName(resources, subscription.date).toLowerCase()))
                 .setNegativeButton("Prekliči", null)
-                .setPositiveButton("Odjavi") { dialog, which ->
+                .setPositiveButton("Odjavi") { _, _ ->
                     presenter.unsubscribeFrom(subscription)
                 }.show()
     }

@@ -3,25 +3,21 @@ package org.prevoz.android.search
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.os.Bundle
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v4.view.ViewCompat
+import android.support.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.hannesdorfmann.mosby.mvp.MvpFragment
-import org.prevoz.android.ApplicationComponent
 import org.prevoz.android.PrevozApplication
 import org.prevoz.android.R
 import org.prevoz.android.api.rest.RestRide
-import org.prevoz.android.model.PrevozDatabase
 import org.prevoz.android.model.Route
 import org.prevoz.android.ui.ListDisappearAnimation
 import org.prevoz.android.ui.ListFlyupAnimator
+import org.prevoz.android.util.LocaleUtil
 import org.prevoz.android.util.ViewUtils
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView
 import javax.inject.Inject
@@ -29,18 +25,17 @@ import javax.inject.Inject
 
 class SearchResultsFragment : MvpFragment<SearchResultsFragment, SearchResultsPresenter>() {
 
-    @Inject lateinit var database : PrevozDatabase
+    @Inject lateinit var localeUtil: LocaleUtil
 
-    var resultList: StickyListHeadersListView? = null
-    var resultListEmpty: View? = null
+    private var resultList: StickyListHeadersListView? = null
+    private var resultListEmpty: View? = null
 
-    lateinit var searchNotifyButtonContainer: View
-    lateinit var searchNotifyButton: View
-    lateinit var searchNotifyButtonIcon: ImageView
-    lateinit var searchNotifyButtonProgress: ProgressBar
-    lateinit var searchNofityButtonText: TextView
+    private lateinit var searchNotifyButton: ViewGroup
+    private lateinit var searchNotifyButtonIcon: ImageView
+    private lateinit var searchNotifyButtonProgress: ProgressBar
+    private lateinit var searchNofityButtonText: TextView
 
-    lateinit var headerFragmentView: View
+    private lateinit var headerFragmentView: View
 
     override fun createPresenter(): SearchResultsPresenter {
         return SearchResultsPresenter((activity!!.application as PrevozApplication).component())
@@ -54,12 +49,11 @@ class SearchResultsFragment : MvpFragment<SearchResultsFragment, SearchResultsPr
         retainInstance = true
         headerFragmentView = getLayoutInflater(savedInstanceState).inflate(R.layout.header_search_form, null, false)
 
-        searchNotifyButtonContainer = headerFragmentView.findViewById(R.id.search_notify_button_container)
         searchNofityButtonText = headerFragmentView.findViewById(R.id.search_notify_button_text) as TextView
         searchNotifyButtonIcon = headerFragmentView.findViewById(R.id.search_notify_button_icon) as ImageView
         searchNotifyButtonProgress = headerFragmentView.findViewById(R.id.search_notify_button_progress) as ProgressBar
         searchNotifyButton = headerFragmentView.findViewById(R.id.search_notify_button)
-        searchNotifyButtonContainer.setOnClickListener { v -> presenter.switchNotificationState() }
+        searchNotifyButton.setOnClickListener { _ -> presenter.switchNotificationState() }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -106,7 +100,7 @@ class SearchResultsFragment : MvpFragment<SearchResultsFragment, SearchResultsPr
                     resultList?.smoothScrollToPosition(1)
                 }
             } else {
-                val adapter = SearchResultsAdapter(activity!!, database, results, highlightRideIds, askedForRoute)
+                val adapter = SearchResultsAdapter(activity!!, localeUtil, results, highlightRideIds, askedForRoute)
                 resultList?.adapter = adapter
             }
 
@@ -156,20 +150,21 @@ class SearchResultsFragment : MvpFragment<SearchResultsFragment, SearchResultsPr
     }
 
     fun showNotificationButton() {
-        searchNotifyButtonContainer.clearAnimation()
-        searchNotifyButtonContainer.visibility = View.VISIBLE
+        TransitionManager.beginDelayedTransition(searchNotifyButton)
+        searchNotifyButton.visibility = View.VISIBLE
         searchNotifyButtonIcon.visibility = View.VISIBLE
-        searchNotifyButtonContainer.isEnabled = true
-        searchNotifyButtonContainer.animate().alpha(1.0f).setDuration(200).setListener(null)
+        searchNotifyButton.isEnabled = true
     }
 
     fun setNotificationButtonThrobber(visible: Boolean) {
+        TransitionManager.beginDelayedTransition(searchNotifyButton)
         searchNotifyButton.isEnabled = !visible
         searchNotifyButtonIcon.visibility = if (visible) View.INVISIBLE else View.VISIBLE
         searchNotifyButtonProgress.visibility = if (visible) View.VISIBLE else View.INVISIBLE
     }
 
     fun updateNotificationButtonText(subscribed: Boolean) {
+        TransitionManager.beginDelayedTransition(searchNotifyButton)
         if (subscribed) {
             searchNotifyButtonIcon.setImageResource(R.drawable.ic_notifications_off_black_24dp)
             searchNofityButtonText.text = "Prenehaj z obveščanjem"
@@ -177,12 +172,13 @@ class SearchResultsFragment : MvpFragment<SearchResultsFragment, SearchResultsPr
             searchNotifyButtonIcon.setImageResource(R.drawable.ic_notifications_black_24dp)
             searchNofityButtonText.text = "Obveščaj me o novih prevozih"
         }
+
+        searchNofityButtonText.requestLayout()
     }
 
     fun hideNotificationButton() {
-        if (searchNotifyButtonContainer.visibility == View.GONE) return
-        searchNotifyButtonContainer.clearAnimation()
-        ViewCompat.animate(searchNotifyButtonContainer).alpha(0.0f).setDuration(200).withEndAction { searchNotifyButtonContainer.visibility = View.GONE }
+        TransitionManager.beginDelayedTransition(searchNotifyButton)
+        searchNotifyButton.visibility = View.GONE
     }
 
     fun showingResults(): Boolean {

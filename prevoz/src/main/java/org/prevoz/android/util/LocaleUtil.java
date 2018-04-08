@@ -26,23 +26,31 @@ public class LocaleUtil
     private static Locale localeCache = null;
     private static ZoneId timezoneCache = null;
 
+    private final PrevozDatabase database;
+    private final Resources res;
+
+    public LocaleUtil(Resources resources, PrevozDatabase database) {
+        this.res = resources;
+        this.database = database;
+    }
+
     public static String getFormattedTime(ZonedDateTime date) {
         return timeFormatter.format(date);
     }
 
-    public static String getDayName(Resources res, ZonedDateTime date)
+    public String getDayName(ZonedDateTime date)
     {
         String[] dayNames = res.getStringArray(R.array.day_names);
         return dayNames[date.getDayOfWeek().getValue() - 1];
     }
 
-    public static String getShortDayName(Resources res, ZonedDateTime date)
+    public String getShortDayName(ZonedDateTime date)
     {
         String[] shortDayNames = res.getStringArray(R.array.short_day_names);
         return shortDayNames[date.getDayOfWeek().getValue() - 1];
     }
 
-    public static String getFormattedDate(Resources res, ZonedDateTime date)
+    public String getFormattedDate(ZonedDateTime date)
     {
         String[] monthNames = res.getStringArray(R.array.month_names);
         return date.getDayOfMonth() + ". "
@@ -54,48 +62,26 @@ public class LocaleUtil
         return String.format(getLocale(), "%1.1f €", currency);
     }
 
-    public static String getShortFormattedDate(Resources res, ZonedDateTime date)
+    public String getShortFormattedDate(ZonedDateTime date)
     {
-        return getShortDayName(res, date) + ", " + date.getDayOfMonth() + ". " + date.getMonthValue() + ".";
+        return getShortDayName(date) + ", " + date.getDayOfMonth() + ". " + date.getMonthValue() + ".";
     }
 
     /**
      * Builds a localized date string with day name
      */
-    public static String localizeDate(Resources resources, ZonedDateTime date)
+    public String localizeDate(ZonedDateTime date)
     {
         ZonedDateTime today = LocalDate.now().atStartOfDay(LocaleUtil.getLocalTimezone());
         ZonedDateTime tomorrow = LocalDate.now().atStartOfDay(LocaleUtil.getLocalTimezone()).plus(1, ChronoUnit.DAYS);
 
         if (date.isAfter(today) && date.isBefore(tomorrow) || date.isEqual(today)) {
-            return resources.getString(R.string.today);
+            return res.getString(R.string.today);
         } else if (date.isAfter(tomorrow) && date.isBefore(tomorrow.plus(1, ChronoUnit.DAYS)) || date.isEqual(tomorrow)) {
-            return resources.getString(R.string.tomorrow);
+            return res.getString(R.string.tomorrow);
         }
 
-        return LocaleUtil.getDayName(resources, date) + ", " + LocaleUtil.getFormattedDate(resources, date);
-    }
-
-
-    public static String getStringNumberForm(Resources res, int resourceArray,
-                                             int number)
-    {
-        String[] wordArray = res.getStringArray(resourceArray);
-
-        int mod = number % 100;
-
-        switch (mod)
-        {
-            case 1:
-                return wordArray[0];
-            case 2:
-                return wordArray[1];
-            case 3:
-            case 4:
-                return wordArray[2];
-            default:
-                return wordArray[3];
-        }
+        return getDayName(date) + ", " + getFormattedDate(date);
     }
 
     public static ZoneId getLocalTimezone()
@@ -116,7 +102,7 @@ public class LocaleUtil
         return localeCache;
     }
 
-    public static String getLocalizedCountryName(PrevozDatabase database, String countryCode)
+    public String getLocalizedCountryName(String countryCode)
     {
         if (!localizedCountryNamesCache.containsKey(countryCode))
         {
@@ -126,7 +112,7 @@ public class LocaleUtil
         return localizedCountryNamesCache.get(countryCode);
     }
 
-    @NonNull public static String getLocalizedCityName(PrevozDatabase database, String cityName, String countryCode)
+    @NonNull public String getLocalizedCityName(String cityName, String countryCode)
     {
         if (!localizedCityNamesCache.containsKey(cityName))
         {

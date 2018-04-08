@@ -12,7 +12,6 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.SuperscriptSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,15 +22,12 @@ import android.widget.TextView;
 import org.prevoz.android.R;
 import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.model.Bookmark;
-import org.prevoz.android.model.City;
-import org.prevoz.android.model.PrevozDatabase;
 import org.prevoz.android.model.Route;
 import org.prevoz.android.ride.RideInfoActivity;
 import org.prevoz.android.util.LocaleUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -41,16 +37,16 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 public class SearchResultsAdapter extends BaseAdapter implements StickyListHeadersAdapter
 {
     private final FragmentActivity context;
-    private final PrevozDatabase database;
+    private final LocaleUtil localeUtil;
 
     private List<RestRide> results;
     private Set<Integer> highlights;
     private final LayoutInflater inflater;
 
-    public SearchResultsAdapter(@NonNull FragmentActivity context, @NonNull PrevozDatabase database, @NonNull List<RestRide> results, @NonNull int[] highlights, @Nullable Route askedForRoute)
+    public SearchResultsAdapter(@NonNull FragmentActivity context, @NonNull LocaleUtil localeUtil, @NonNull List<RestRide> results, @NonNull int[] highlights, @Nullable Route askedForRoute)
     {
         this.context = context;
-        this.database = database;
+        this.localeUtil = localeUtil;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         buildResults(results, highlights, askedForRoute);
     }
@@ -214,9 +210,9 @@ public class SearchResultsAdapter extends BaseAdapter implements StickyListHeade
 
 
         RestRide item = results.get(position);
-        String titleText = LocaleUtil.getLocalizedCityName(database, item.fromCity, item.fromCountry) +
+        String titleText = localeUtil.getLocalizedCityName(item.fromCity, item.fromCountry) +
                            " - " +
-                           LocaleUtil.getLocalizedCityName(database, item.toCity, item.toCountry);
+                           localeUtil.getLocalizedCityName(item.toCity, item.toCountry);
 
         titleView.setText(titleText);
         return v;

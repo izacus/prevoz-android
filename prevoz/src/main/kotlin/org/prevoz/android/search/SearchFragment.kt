@@ -1,7 +1,7 @@
 package org.prevoz.android.search
 
 import android.os.Bundle
-import android.util.Log
+import android.support.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,8 +29,12 @@ import javax.inject.Inject
 
 class SearchFragment : MvpFragment<SearchFragment, SearchFormPresenter>(), DatePickerDialog.OnDateSetListener {
 
+    @Inject lateinit var localeUtil: LocaleUtil
     @Inject lateinit var database: PrevozDatabase
+    @Inject lateinit var cityNameTextValidator: CityNameTextValidator
 
+    @BindView(R.id.search_container)
+    lateinit var searchContainer: ViewGroup
     @BindView(R.id.search_date_edit)
     lateinit var searchDate: EditText
     @BindView(R.id.search_from)
@@ -67,7 +71,7 @@ class SearchFragment : MvpFragment<SearchFragment, SearchFormPresenter>(), DateP
 
     private fun setupViews() {
         // Handle input action for next on to
-        searchTo.setOnEditorActionListener { _, actionId, event ->
+        searchTo.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_NEXT) {
                 onDateClicked()
                 searchTo.clearFocus()
@@ -78,11 +82,11 @@ class SearchFragment : MvpFragment<SearchFragment, SearchFormPresenter>(), DateP
             }
         }
 
-        searchFrom.validator = CityNameTextValidator(activity, database)
-        searchTo.validator = CityNameTextValidator(activity, database)
+        searchFrom.validator = cityNameTextValidator
+        searchTo.validator = cityNameTextValidator
 
-        val fromAdapter = CityAutocompleteAdapter(activity!!, database)
-        val toAdapter = CityAutocompleteAdapter(activity!!, database)
+        val fromAdapter = CityAutocompleteAdapter(activity!!, database, localeUtil)
+        val toAdapter = CityAutocompleteAdapter(activity!!, database, localeUtil)
         searchFrom.setAdapter(fromAdapter)
         searchTo.setAdapter(toAdapter)
     }
@@ -108,14 +112,17 @@ class SearchFragment : MvpFragment<SearchFragment, SearchFormPresenter>(), DateP
 
     @OnClick(R.id.search_swap_towns_interceptor)
     fun onLocationIconClicked() {
+        TransitionManager.beginDelayedTransition(searchContainer)
         presenter.swapCities()
     }
 
     fun showDate(selectedDate: LocalDate) {
-        searchDate.setText(LocaleUtil.localizeDate(resources, selectedDate.atStartOfDay(LocaleUtil.getLocalTimezone())))
+        TransitionManager.beginDelayedTransition(searchContainer)
+        searchDate.setText(localeUtil.localizeDate(selectedDate.atStartOfDay(LocaleUtil.getLocalTimezone())))
     }
 
     fun showFrom(from: City?) {
+        TransitionManager.beginDelayedTransition(searchContainer)
         if (from == null) {
             searchFrom.setText("")
         } else {
@@ -126,6 +133,7 @@ class SearchFragment : MvpFragment<SearchFragment, SearchFormPresenter>(), DateP
     }
 
     fun showTo(to: City?) {
+        TransitionManager.beginDelayedTransition(searchContainer)
         if (to == null) {
             searchTo.setText("")
         } else {

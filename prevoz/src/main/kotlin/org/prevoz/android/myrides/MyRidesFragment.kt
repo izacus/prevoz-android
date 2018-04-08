@@ -20,26 +20,26 @@ import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration
 import org.prevoz.android.PrevozApplication
 import org.prevoz.android.R
 import org.prevoz.android.api.rest.RestRide
+import org.prevoz.android.util.LocaleUtil
+import javax.inject.Inject
 
 class MyRidesFragment : MvpFragment<MyRidesFragment, MyRidesPresenter>() {
 
     @BindView(R.id.myrides_list)
     lateinit var myridesList: RecyclerView
-
     @BindView(R.id.empty_view)
     lateinit var emptyView: ViewGroup
-
     @BindView(R.id.empty_text)
     lateinit var emptyText: TextView
-
     @BindView(R.id.empty_button)
     lateinit var loginButton: Button
-
     @BindView(R.id.myrides_throbber)
     lateinit var throbber: ProgressBar
-
     @BindView(R.id.myrides_add)
     lateinit var addButton: FloatingActionButton
+
+    @Inject
+    lateinit var localeUtil: LocaleUtil
 
     lateinit var adapter : MyRidesAdapter
 
@@ -49,7 +49,8 @@ class MyRidesFragment : MvpFragment<MyRidesFragment, MyRidesPresenter>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = MyRidesAdapter(activity)
+        (activity!!.application as PrevozApplication).component().inject(this)
+        adapter = MyRidesAdapter(activity!!, localeUtil)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

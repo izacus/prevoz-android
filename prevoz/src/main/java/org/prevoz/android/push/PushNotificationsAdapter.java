@@ -14,7 +14,7 @@ import org.prevoz.android.util.LocaleUtil;
 
 import java.util.List;
 
-public class PushNotificationsAdapter extends RecyclerView.Adapter<PushNotificationsAdapter.PushNotificationsHolder>
+public final class PushNotificationsAdapter extends RecyclerView.Adapter<PushNotificationsAdapter.PushNotificationsHolder>
 {
     public interface PushItemClickedListener {
         void onNotificationClicked(NotificationSubscription item);
@@ -22,13 +22,14 @@ public class PushNotificationsAdapter extends RecyclerView.Adapter<PushNotificat
 
     private final Context ctx;
     private final PushItemClickedListener listener;
+    private final LocaleUtil localeUtil;
 
     private List<NotificationSubscription> notifications;
 
-
-    public PushNotificationsAdapter(Context context, List<NotificationSubscription> notifications, PushItemClickedListener listener)
+    public PushNotificationsAdapter(Context context, LocaleUtil localeUtil, List<NotificationSubscription> notifications, PushItemClickedListener listener)
     {
         this.ctx = context;
+        this.localeUtil = localeUtil;
         this.notifications = notifications;
         this.listener = listener;
     }
@@ -44,7 +45,7 @@ public class PushNotificationsAdapter extends RecyclerView.Adapter<PushNotificat
     public void onBindViewHolder(PushNotificationsHolder holder, int position) {
         NotificationSubscription sub = notifications.get(position);
         holder.route.setText(sub.getFrom().toString() + " - " + sub.getTo().toString());
-        holder.date.setText(LocaleUtil.localizeDate(ctx.getResources(), sub.getDate().atStartOfDay(LocaleUtil.getLocalTimezone())));
+        holder.date.setText(localeUtil.localizeDate(sub.getDate().atStartOfDay(LocaleUtil.getLocalTimezone())));
     }
 
     @Override
@@ -63,7 +64,7 @@ public class PushNotificationsAdapter extends RecyclerView.Adapter<PushNotificat
         notifyDataSetChanged();
     }
 
-    class PushNotificationsHolder extends RecyclerView.ViewHolder {
+    final class PushNotificationsHolder extends RecyclerView.ViewHolder {
 
         @NonNull
         final TextView route;
@@ -75,7 +76,7 @@ public class PushNotificationsAdapter extends RecyclerView.Adapter<PushNotificat
         @NonNull
         final View deleteButton;
 
-        public PushNotificationsHolder(View itemView) {
+        PushNotificationsHolder(View itemView) {
             super(itemView);
             card = itemView.findViewById(R.id.item_push_card);
             route = (TextView) itemView.findViewById(R.id.item_push_route);

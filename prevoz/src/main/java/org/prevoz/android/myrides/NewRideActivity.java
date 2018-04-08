@@ -27,6 +27,7 @@ import org.prevoz.android.api.rest.RestRide;
 import org.prevoz.android.events.Events;
 import org.prevoz.android.model.City;
 import org.prevoz.android.model.CityNameTextValidator;
+import org.prevoz.android.model.PrevozDatabase;
 import org.prevoz.android.ride.RideInfoActivity;
 import org.prevoz.android.search.CityAutocompleteAdapter;
 import org.prevoz.android.util.LocaleUtil;
@@ -34,6 +35,8 @@ import org.prevoz.android.util.PrevozActivity;
 import org.prevoz.android.util.StringUtil;
 import org.prevoz.android.util.ViewUtils;
 import org.threeten.bp.ZonedDateTime;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -93,10 +96,10 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
             setTime = setTime.withMinute(30);
         }
 
-        textFrom.setAdapter(new CityAutocompleteAdapter(this, database));
-        textTo.setAdapter(new CityAutocompleteAdapter(this, database));
-        textFrom.setValidator(new CityNameTextValidator(this, database));
-        textTo.setValidator(new CityNameTextValidator(this, database));
+        textFrom.setAdapter(new CityAutocompleteAdapter(this, database, localeUtil));
+        textTo.setAdapter(new CityAutocompleteAdapter(this, database, localeUtil));
+        textFrom.setValidator(cityNameTextValidator);
+        textTo.setValidator(cityNameTextValidator);
 
         // Setup IME actions
         textTo.setOnEditorActionListener((v, actionId, event) -> {
@@ -266,7 +269,7 @@ public class NewRideActivity extends PrevozActivity implements DatePickerDialog.
     protected void updateDateTimeDisplay(boolean date, boolean time)
     {
         if (date)
-            textDate.setText(LocaleUtil.localizeDate(getResources(), setTime));
+            textDate.setText(localeUtil.localizeDate(setTime));
 
         if (time)
             textTime.setText(LocaleUtil.getFormattedTime(setTime));

@@ -9,6 +9,7 @@ import android.util.DisplayMetrics;
 import org.prevoz.android.ApplicationComponent;
 import org.prevoz.android.PrevozApplication;
 import org.prevoz.android.auth.AuthenticationUtils;
+import org.prevoz.android.model.CityNameTextValidator;
 import org.prevoz.android.model.PrevozDatabase;
 import org.prevoz.android.push.PushManager;
 
@@ -22,6 +23,8 @@ public class PrevozActivity extends AppCompatActivity {
     @Inject protected AuthenticationUtils authUtils;
     @Inject protected PushManager pushManager;
     @Inject protected PrevozDatabase database;
+    @Inject protected CityNameTextValidator cityNameTextValidator;
+    @Inject protected LocaleUtil localeUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

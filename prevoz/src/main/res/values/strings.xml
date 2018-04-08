@@ -112,6 +112,7 @@
     <string name="newride_insurance">Nezgodno zavarovanje potnikov</string>
     <string name="newride_notes">Opombe</string>
     <string name="newride_button_submit">Oddaj prevoz</string>
+    <string name="newride_submit_progress">Oddajam prevoz…</string>
     <string name="main_logout">Odjava</string>
     <string name="newride_publish_success">Prevoz je bil oddan.</string>
     <string name="newride_publish_failure">Pri oddajanju je prišlo do napake :(</string>

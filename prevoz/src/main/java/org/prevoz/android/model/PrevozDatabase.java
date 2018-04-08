@@ -48,7 +48,7 @@ import rx.Single;
 import rx.schedulers.Schedulers;
 import rx.subjects.ReplaySubject;
 
-public class PrevozDatabase {
+public final class PrevozDatabase {
     private static final String LOG_TAG = "Prevoz.Database";
     private static final String PREF_CONTENT_DB_VERSION = "content_db_ver";
     private static final String DATABASE_NAME = "dataprovider"; // For legacy reasons.
@@ -112,7 +112,7 @@ public class PrevozDatabase {
 
             // Cities
             {
-                sqlite.internal().beginTransaction();
+                sqlite.lowLevel().beginTransaction();
                 String[] lines = FileUtil.readLines(context, R.raw.locations);
                 for (String line : lines)
                 {
@@ -120,21 +120,21 @@ public class PrevozDatabase {
                     Location location = new Location(tokens[1], tokens[2], tokens[3], Float.parseFloat(tokens[4]), Float.parseFloat(tokens[5]),  Integer.parseInt(tokens[0]));
                     sqlite.put().object(location).prepare().executeAsBlocking();
                 }
-                sqlite.internal().setTransactionSuccessful();
-                sqlite.internal().endTransaction();
+                sqlite.lowLevel().setTransactionSuccessful();
+                sqlite.lowLevel().endTransaction();
             }
 
             // Countries
             {
                 String[] lines = FileUtil.readLines(context, R.raw.countries);
-                sqlite.internal().beginTransaction();
+                sqlite.lowLevel().beginTransaction();
                 for (String line : lines) {
                     String[] tokens = line.split(",");
                     Country country = new Country(tokens[0], tokens[2], tokens[1]);
                     sqlite.put().object(country).prepare().executeAsBlocking();
                 }
-                sqlite.internal().setTransactionSuccessful();
-                sqlite.internal().endTransaction();
+                sqlite.lowLevel().setTransactionSuccessful();
+                sqlite.lowLevel().endTransaction();
             }
 
             prefs.edit().putInt(PREF_CONTENT_DB_VERSION, CONTENT_DB_VERSION).apply();
@@ -161,7 +161,7 @@ public class PrevozDatabase {
                                 .whereArgs(city, city)
                                 .build())
                     .prepare()
-                    .createObservable()
+                    .asRxObservable()
                     .first())
                     .flatMap(cursor -> {
                         int idx = cursor.getColumnIndex(Location.NAME);
@@ -187,7 +187,7 @@ public class PrevozDatabase {
                         .whereArgs(actualLocale, countryCode)
                         .build())
                 .prepare()
-                .createObservable()
+                .asRxObservable()
                 .first())
                 .flatMap(Observable::from)
                 .map(Country::getName)
@@ -205,7 +205,7 @@ public class PrevozDatabase {
                             .whereArgs(city)
                             .build())
                 .prepare()
-                .createObservable()
+                .asRxObservable()
                 .first())
                 .map(num -> num > 0)
                 .subscribeOn(Schedulers.io())
@@ -263,7 +263,7 @@ public class PrevozDatabase {
                                         .whereArgs(fcity, fcountry, tcity, tcountry)
                                         .build())
                             .prepare()
-                            .createObservable()
+                            .asRxObservable()
                             .first())
                             .subscribeOn(Schedulers.io())
                             .flatMap(Observable::from)
@@ -274,7 +274,7 @@ public class PrevozDatabase {
                                 return searchHistoryItem;
                              })
                             .zipWith(databasePrepared, Pair::new)
-                            .flatMap(pair -> pair.second.put().object(pair.first).prepare().createObservable().first())
+                            .flatMap(pair -> pair.second.put().object(pair.first).prepare().asRxObservable().first())
                             .subscribeOn(Schedulers.io())
                             .subscribe(r -> {},
                                        e -> Log.e(LOG_TAG, "Failed to instert search history item!", e));
@@ -289,7 +289,7 @@ public class PrevozDatabase {
                                         .limit(count)
                                         .build())
                 .prepare()
-                .createObservable()
+                .asRxObservable()
                 .first())
                 .flatMap(Observable::from)
                 .map(item -> new Route(item.getFrom(), item.getTo()))
@@ -308,7 +308,7 @@ public class PrevozDatabase {
                                         .orderBy(SearchHistoryItem.SEARCH_DATE + " DESC")
                                         .build())
                             .prepare()
-                            .createObservable()
+                            .asRxObservable()
                             .first())
                             .flatMap(Observable::from);
 
@@ -320,40 +320,18 @@ public class PrevozDatabase {
                                     .objects(pair.first)
                                     .useTransaction(true)
                                     .prepare()
-                                    .createObservable()
+                                    .asRxObservable()
                                     .first())
                     .subscribeOn(Schedulers.io())
                     .subscribe(a -> {},
                                e -> Log.e(LOG_TAG, "Failed to truncate search table!", e));
     }
 
-    public Single<Boolean> isSubscribedForNotification(@NonNull City from, @NonNull City to, LocalDate date) {
-        long epoch = localDateToEpoch(date);
-
-        return databasePrepared.flatMap(storIOSQLite -> storIOSQLite.get()
-                        .numberOfResults()
-                        .withQuery(Query.builder()
-                                    .table(Notification.TABLE)
-                                    .where( Notification.FROM_CITY + " = ? AND " + Notification.FROM_COUNTRY + " = ? AND " +
-                                            Notification.TO_CITY + " = ? AND " + Notification.TO_COUNTRY + " = ? AND " +
-                                            Notification.DATE + " = ?")
-                                    .whereArgs(from.getDisplayName(), from.getCountryCode(),
-                                               to.getDisplayName(), to.getCountryCode(),
-                                               epoch)
-                                    .build())
-                        .prepare()
-                        .createObservable()
-                        .first())
-                        .map(count -> count > 0)
-                        .subscribeOn(Schedulers.io())
-                        .toSingle();
-    }
-
     public Observable<List<Notification>> getNotificationSubscriptions() {
         return databasePrepared.flatMap(storIOSQLite -> storIOSQLite.get()
                         .listOfObjects(Notification.class)
                         .withQuery(Query.builder().table(Notification.TABLE).build())
-                        .prepare().createObservable().first())
+                        .prepare().asRxObservable().first())
                         .subscribeOn(Schedulers.io());
     }
 
@@ -364,7 +342,7 @@ public class PrevozDatabase {
         return databasePrepared.flatMap(storIOSQLite -> storIOSQLite.put()
                                                         .object(notification)
                                                         .prepare()
-                                                        .createObservable()
+                                                        .asRxObservable()
                                                         .first())
                                 .subscribeOn(Schedulers.io())
                                 .map(v -> true);
@@ -382,7 +360,7 @@ public class PrevozDatabase {
                                                                route.getTo().getDisplayName(), route.getTo().getCountryCode(), epoch)
                                                     .build())
                                         .prepare()
-                                        .createObservable()
+                                        .asRxObservable()
                                         .first())
                                 .subscribeOn(Schedulers.io())
                                 .map(v -> true);
@@ -396,7 +374,7 @@ public class PrevozDatabase {
                                                 .where(Notification.DATE + " < ?")
                                                 .whereArgs(today)
                                     .build())
-                                    .prepare().createObservable())
+                                    .prepare().asRxObservable())
                         .subscribeOn(Schedulers.io())
                         .subscribe(v -> {},
                                    e -> Log.e(LOG_TAG, "Failed to prune notifications.", e));
@@ -457,7 +435,7 @@ public class PrevozDatabase {
 
     private static final class PrevozDatabaseOpenHelper extends SQLiteOpenHelper {
 
-        public PrevozDatabaseOpenHelper(Context context) {
+        PrevozDatabaseOpenHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
 

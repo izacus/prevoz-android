@@ -27,9 +27,9 @@ public class City implements Comparable<City>, Parcelable
         return countryCode;
     }
 
-    @NonNull public String getLocalizedName(PrevozDatabase database)
+    @NonNull public String getLocalizedName(LocaleUtil localeUtil)
     {
-        return LocaleUtil.getLocalizedCityName(database, getDisplayName(), getCountryCode());
+        return localeUtil.getLocalizedCityName(getDisplayName(), getCountryCode());
     }
 
     @Override

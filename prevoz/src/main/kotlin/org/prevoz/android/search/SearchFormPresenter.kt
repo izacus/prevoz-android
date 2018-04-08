@@ -64,7 +64,7 @@ class SearchFormPresenter(component: ApplicationComponent) : MvpPresenter<Search
         EventBus.getDefault().unregister(this)
     }
 
-    fun onEventMainThread(e : Events.SearchComplete) {
+    fun onEventMainThread(@Suppress("UNUSED_PARAMETER") e : Events.SearchComplete) {
         view?.hideLoadingThrobber()
     }
 

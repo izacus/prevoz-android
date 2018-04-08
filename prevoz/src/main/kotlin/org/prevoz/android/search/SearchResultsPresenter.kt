@@ -3,7 +3,6 @@ package org.prevoz.android.search
 import android.net.ConnectivityManager
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.answers.Answers
-import com.crashlytics.android.answers.ContentViewEvent
 import com.crashlytics.android.answers.CustomEvent
 import com.crashlytics.android.answers.SearchEvent
 import com.hannesdorfmann.mosby.mvp.MvpPresenter
@@ -31,6 +30,7 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
         component.inject(this)
     }
 
+    @Inject lateinit var localeUtil: LocaleUtil
     @Inject lateinit var database : PrevozDatabase
     @Inject lateinit var authUtils : AuthenticationUtils
     @Inject lateinit var pushManager : PushManager
@@ -74,8 +74,8 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
                     // Preload database caches
                     LocaleUtil.getFormattedCurrency(1.0)
                     for (ride in results?.results ?: emptyList()) {
-                        ride.getLocalizedFrom(database)
-                        ride.getLocalizedTo(database)
+                        ride.getLocalizedFrom(localeUtil)
+                        ride.getLocalizedTo(localeUtil)
                     }
 
                     results
@@ -158,6 +158,7 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
                                 view?.setNotificationButtonThrobber(false)
                             },
                             { throwable ->
+                                Crashlytics.logException(throwable)
                                 ViewUtils.showMessage(view?.activity, "Obveščanja ni bilo mogoče vklopiti.", true)
                                 view?.setNotificationButtonThrobber(false) })
     }
@@ -166,7 +167,7 @@ class SearchResultsPresenter(component: ApplicationComponent) : MvpPresenter<Sea
         search(e.route, e.date, e.rideIds)
     }
 
-    fun onEventMainThread(e: Events.ClearSearchEvent) {
+    fun onEventMainThread(@Suppress("UNUSED_PARAMETER") e: Events.ClearSearchEvent) {
         showHistory()
         results = null
     }
