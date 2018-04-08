@@ -14,7 +14,6 @@ import com.hannesdorfmann.mosby.mvp.MvpFragment
 import org.prevoz.android.PrevozApplication
 import org.prevoz.android.R
 import org.prevoz.android.model.NotificationSubscription
-import org.prevoz.android.model.Route
 import org.prevoz.android.util.LocaleUtil
 import org.prevoz.android.util.ViewUtils
 import javax.inject.Inject

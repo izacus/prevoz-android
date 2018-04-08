@@ -6,7 +6,6 @@
     <string name="tomorrow">jutri</string>
 
     <!-- Search form strings -->
-    <string name="search_form_title">Iskanje</string>
     <string name="search_form_from_hint">Kraj odhoda</string>
     <string name="search_form_to_hint">Kraj prihoda</string>
     <string name="search_form_date">Datum</string>
@@ -79,14 +78,6 @@
         <item>nedeljo</item>
     </string-array>
 
-    <!-- Auto-login bar description [CHAR-LIMIT=40] -->
-    <string name="autologin_bar_text">Sign in as</string>
-    <!-- Login button [CHAR-LIMIT=10] -->
-    <string name="autologin_bar_login_text">Sign in</string>
-    <!-- Hide button [CHAR-LIMIT=10] -->
-    <string name="autologin_bar_hide_text">Hide</string>
-    <!-- Login failure text [CHAR-LIMIT=25] -->
-    <string name="autologin_bar_error">Couldn\'t sign in.</string>
     <string name="ride_delete_message">Ali želite izbrisati prevoz v %1$s ob %2$s?</string>
     <string name="ride_delete_ok">Izbriši</string>
     <string name="ride_delete_cancel">Prekliči</string>
@@ -101,10 +92,7 @@
     <string name="newride_error_date_passed">Datum in čas prevoza je že minil.</string>
     <string name="newride_error_to_missing">Vnesite kraj prihoda.</string>
     <string name="newride_error_from_missing">Vnesite kraj odhoda.</string>
-    <string name="menu_newride">Nov prevoz</string>
-    <string name="notifications_subscribed_title">Naročena obvestila</string>
     <string name="search_noresults">Za ta dan in relacijo ni objavljenih prevozov.</string>
-    <string name="myrides_title">Moji prevozi</string>
     <string name="newride_time">Čas</string>
     <string name="newride_price">Stroški</string>
     <string name="newride_people">Oseb</string>
@@ -113,7 +101,6 @@
     <string name="newride_notes">Opombe</string>
     <string name="newride_button_submit">Oddaj prevoz</string>
     <string name="newride_submit_progress">Oddajam prevoz…</string>
-    <string name="main_logout">Odjava</string>
     <string name="newride_publish_success">Prevoz je bil oddan.</string>
     <string name="newride_publish_failure">Pri oddajanju je prišlo do napake :(</string>
     <string name="rideinfo_ride_full">Prevoz je poln.</string>

@@ -3,7 +3,6 @@ package org.prevoz.android.push
 import com.hannesdorfmann.mosby.mvp.MvpPresenter
 import de.greenrobot.event.EventBus
 import org.prevoz.android.ApplicationComponent
-import org.prevoz.android.auth.AuthenticationUtils
 import org.prevoz.android.events.Events
 import org.prevoz.android.model.NotificationSubscription
 import org.prevoz.android.model.Route

@@ -1,7 +1,5 @@
 package org.prevoz.android.model;
 
-import android.util.Log;
-
 /**
  * Carries basic route information
  *

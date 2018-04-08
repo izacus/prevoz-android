@@ -1,15 +1,12 @@
 package org.prevoz.android.push;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
-import org.prevoz.android.BuildConfig;
 import org.prevoz.android.api.ApiClient;
 import org.prevoz.android.api.rest.RestPushStatus;
 import org.prevoz.android.events.Events;

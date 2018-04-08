@@ -2,7 +2,6 @@ package org.prevoz.android;
 
 import android.app.Application;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Environment;
 
@@ -16,7 +15,6 @@ import org.prevoz.android.model.PrevozDatabase;
 import org.prevoz.android.util.LocaleUtil;
 
 import java.io.File;
-import java.util.Locale;
 
 import javax.inject.Inject;
 

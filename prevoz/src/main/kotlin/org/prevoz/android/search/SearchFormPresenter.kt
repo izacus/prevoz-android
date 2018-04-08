@@ -1,6 +1,5 @@
 package org.prevoz.android.search
 
-import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter
 import com.hannesdorfmann.mosby.mvp.MvpPresenter
 import de.greenrobot.event.EventBus
 import org.prevoz.android.ApplicationComponent

@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter
 import android.annotation.TargetApi
 import android.app.Activity
 import android.app.ProgressDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -37,7 +36,7 @@ import org.prevoz.android.R
 import org.prevoz.android.api.rest.RestRide
 import org.prevoz.android.util.LocaleUtil
 import org.prevoz.android.util.ViewUtils
-import org.threeten.bp.format.DateTimeFormatter;
+import org.threeten.bp.format.DateTimeFormatter
 import java.util.*
 import javax.inject.Inject
 

@@ -9,7 +9,6 @@ import com.google.gson.annotations.SerializedName;
 
 import org.prevoz.android.model.Bookmark;
 import org.prevoz.android.model.City;
-import org.prevoz.android.model.PrevozDatabase;
 import org.prevoz.android.model.Route;
 import org.prevoz.android.util.LocaleUtil;
 import org.threeten.bp.Instant;
