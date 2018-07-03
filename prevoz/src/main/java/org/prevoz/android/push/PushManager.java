@@ -140,7 +140,7 @@ public class PushManager
         @NonNull public final Route route;
         @NonNull public final LocalDate date;
 
-        public RegisteredNotification(@NonNull Route route, @NonNull LocalDate date) {
+        RegisteredNotification(@NonNull Route route, @NonNull LocalDate date) {
             this.route = route;
             this.date = date;
         }
