@@ -61,10 +61,13 @@ public class PushManager
     @SuppressLint("MissingFirebaseInstanceTokenRefresh")
     protected void setup()
     {
-        fcmId = FirebaseInstanceId.getInstance().getToken();
-        available = (fcmId != null);
+        available = false;
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(result -> {
+            fcmId = result.getToken();
+            available = true;
+            Log.i("Prevoz", "Prevoz FCM ID: " + fcmId);
+        });
 
-        Log.i("Prevoz", "Prevoz FCM ID: " + fcmId);
 
         // Create notification channel
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
